@@ -31,6 +31,32 @@ def test_media_protocol_requires_distillation_not_copying_external_advice():
     assert "Reject brittle numeric heuristics as hard policy" in text
 
 
+def test_wechat_media_is_no_login_first_and_has_a_dedicated_playbook():
+    protocol = (ROOT / "MEDIA_DISTILLATION_PROTOCOL.md").read_text(encoding="utf-8")
+    playbook = (ROOT / "WECHAT_MEDIA_EXTRACTION_PLAYBOOK.md").read_text(encoding="utf-8")
+
+    assert "WECHAT_MEDIA_EXTRACTION_PLAYBOOK.md" in protocol
+    assert "Do NOT require YouTube, Bilibili, user login or a manual upload by default" in protocol
+    assert "must not ask the user to log in simply because login would be easier" in protocol
+
+    assert "Default ladder" in playbook
+    assert "public page -> embedded state -> direct media request" in playbook
+    assert "authenticated playback -> user file upload" in playbook
+    assert "do not ask for WeChat login or file upload first" in playbook
+    assert "blob:" in playbook
+    assert "direct MP4" in playbook
+    assert "HLS" in playbook
+    assert "LOGIN_REQUIRED" in playbook
+
+
+def test_wechat_playbook_keeps_access_control_boundary():
+    playbook = (ROOT / "WECHAT_MEDIA_EXTRACTION_PLAYBOOK.md").read_text(encoding="utf-8")
+
+    assert "Do not bypass paywalls" in playbook
+    assert "Do not use this as a way to bypass DRM" in playbook
+    assert "public/authorized playback" in playbook
+
+
 def test_reference_case_records_full_audio_and_visual_review_without_collapsing_evidence_types():
     text = (ROOT / "MEDIA_DISTILLATION_PROTOCOL.md").read_text(encoding="utf-8")
 
@@ -45,7 +71,7 @@ def test_reference_case_records_full_audio_and_visual_review_without_collapsing_
 def test_reference_case_explicitly_rejects_brittle_or_out_of_scope_advice():
     text = (ROOT / "MEDIA_DISTILLATION_PROTOCOL.md").read_text(encoding="utf-8")
 
-    assert "fixed \u201csmart-zone\u201d token threshold such as 150K" in text
+    assert "fixed “smart-zone” token threshold such as 150K" in text
     assert "fixed long-context pricing threshold" in text
     assert "hard-coded Astra/Sol/Luna model-selection ladder" in text
     assert "anecdotal account-ban claims as system policy" in text
