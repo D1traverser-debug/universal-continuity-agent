@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "migration_id": "continuity-library-to-github-20261009",
+  "source": "ChatGPT Library /00_跨对话继承系统 plus /00_跨对话继承_唯一入口.md",
+  "destination": "D1traverser-debug/universal-continuity-agent",
+  "status": "IN_PROGRESS",
+  "authority_target": {
+    "engineering_source_of_truth": "GITHUB_MAIN",
+    "cross_chat_bootstrap": "CHATGPT_LIBRARY_THIN_POINTER",
+    "business_state": "DOMAIN_OWNER_RUNTIME_OR_REPO"
+  },
+  "safety": {
+    "delete_library_full_system_only_after_github_verification": true,
+    "do_not_move_business_agent_logic_into_continuity_repo": true,
+    "do_not_delete_domain_checkpoints": true
+  },
+  "created_at": "2026-10-09",
+  "next_action": "materialize current Library continuity tree and import it into this repository"
+}
