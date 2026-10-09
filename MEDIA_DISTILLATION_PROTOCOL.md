@@ -13,7 +13,7 @@ Strongest evidence.
 Examples:
 - full platform transcript or official captions covering the complete timeline;
 - original audio track or direct media stream;
-- original video stream with frame/scene access;
+- original video stream with full-duration visual/scene analysis;
 - time-addressable transcript or frame evidence.
 
 Sub-status MUST be separate:
@@ -52,9 +52,10 @@ For a user-provided media URL:
 1. Resolve canonical identity: author, title, duration, date, stable media ID.
 2. Look for the same author's public mirror of the exact media (for example WeChat -> YouTube) using title/author/duration/chapter alignment.
 3. Prefer platform-native full transcript/captions when available.
-4. Try direct audio/video stream extraction only when needed for missing evidence.
-5. Read same-author canonical companion material for structure, links and technical details.
-6. Use page metadata and third-party material only to fill clearly labeled gaps.
+4. Use an end-to-end visual/video analysis path when the user wants the video itself learned, not just the spoken content.
+5. Try direct audio/video stream extraction only when needed for missing evidence.
+6. Read same-author canonical companion material for structure, links and technical details.
+7. Use page metadata and third-party material only to fill clearly labeled gaps.
 
 If the user prohibits a retrieval tool, do not use it.
 
@@ -73,7 +74,7 @@ If identity is uncertain, label it as a related source rather than the same vide
 
 Allowed claims:
 - “完整读完音轨/字幕”: only when transcript/audio coverage spans the full media timeline.
-- “完整看完视频画面”: only when the original video stream/scene sequence was actually reviewed across the full duration.
+- “完整看完视频画面”: only when the original/same-media video scene sequence was actually analyzed across the full duration.
 - “视觉抽样完成”: when representative chapter boundaries/scene changes were inspected but the full stream was not.
 
 Forbidden shortcut:
@@ -104,17 +105,21 @@ These are durable architectural principles, not copied wording:
 - Temporary side questions should not mutate durable task stage unless they change the task itself.
 - Verification scope should match change/risk rather than always expanding to unrelated full-system checks.
 - Reversible internal work should proceed autonomously; irreversible/external actions keep their approval boundary.
+- Routing/instruction surfaces should primarily define goals, context, constraints, completion/decision boundaries and where to load deeper knowledge, rather than micromanaging every reasoning step.
 
 ## 7. Explicit non-adoptions
 
 Do NOT turn these media-specific claims into Universal Continuity invariants without separate evidence:
 - a fixed “smart-zone” token threshold such as 150K;
+- a fixed long-context pricing threshold;
 - a universal model-switch/cache-cost rule;
-- a hard-coded model-selection ladder;
+- a hard-coded Astra/Sol/Luna model-selection ladder;
 - automatic installation of third-party browser/model bridges;
+- anecdotal account-ban claims as system policy;
+- experimental Codex feature availability as a durable dependency;
 - broad testing rules unrelated to continuity changes.
 
-Those may be useful heuristics in their own domains, but they are outside Continuity's core authority or may change with products/models.
+Those may be useful observations in their own domains, but they are outside Continuity's core authority, may change with products/models, or require separate verification.
 
 ## 8. Current reference case
 
@@ -125,6 +130,14 @@ Evidence state at adoption time:
 - exact same-author YouTube mirror resolved by title/author/duration/topic/chapter alignment;
 - full YouTube transcript obtained for the complete 20:14 timeline;
 - same-author companion article fully read;
-- full visual stream review not yet claimed.
+- full-duration visual scene analysis completed from 00:00 through 20:14 on the same YouTube media;
+- visual walkthrough covered the actual displayed Obsidian canvas, source/document lists, benchmark/pricing tables, decision tree, handoff skill, experimental config/issue, model/source examples, ChatGPT-Codex integration diagrams, Prompt/AGENTS.md/Skills examples, agent/subagent/testing guidance, and final migration checklist;
+- audio/transcript and visual evidence were compared with the same-author article; only Continuity-scope principles survived adoption.
+
+Reference-case disposition:
+- `AUDIO_TRANSCRIPT_FULL = true`
+- `VISUAL_FULL_STREAM_REVIEW = true`
+- `SAME_AUTHOR_COMPANION_FULL = true`
+- `EVIDENCE_LEVELS_KEPT_DISTINCT = true`
 
 This reference case exists to enforce evidence honesty, not to make the media itself an authority over the Agent.
