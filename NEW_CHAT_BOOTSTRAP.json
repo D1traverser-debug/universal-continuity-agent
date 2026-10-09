@@ -1,10 +1,12 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "updated_at": "2026-10-09",
   "applies": "first substantive user message of every new chat",
   "flow": [
     "Classify CONTINUE vs NEW_TASK before loading task state.",
-    "For CONTINUE, resolve through Universal Continuity and owner checkpoint.",
+    "For bare CONTINUE such as 继承/继续 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json and query every required source before reporting a total candidate count.",
+    "If any required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
+    "For semantic CONTINUE with an exact task/domain hint, route to the matching owner first and resolve the exact task without requiring a global scan.",
     "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
     "If the task is likely to span chats or has meaningful external/artifact state, persist before deep work.",
     "For any durable USER task, establish stable task_id and display_name_zh before substantive work; if display_name_zh is missing, ask the user once, persist the answer, then continue the original work without another confirmation.",
@@ -12,6 +14,14 @@
     "If it is a new domain/system, bootstrap it under GENERIC_HANDOFF, then create the first task.",
     "Checkpoint on meaningful state changes throughout execution; do not wait for context exhaustion."
   ],
+  "bare_inherit_discovery": {
+    "policy": "BARE_INHERIT_DISCOVERY.json",
+    "must_query_all_required_sources": true,
+    "dedupe_key": "task_id",
+    "report_count_only_when_complete": true,
+    "on_missing_source": "INCOMPLETE_DISCOVERY",
+    "partial_result_label_required": true
+  },
   "durable_task_triggers": [
     "user frames it as a project/system/series",
     "multi-step work with external tools/files",
@@ -86,6 +96,7 @@
     "simple_one_shot": "Proceed normally if Continuity storage is unavailable.",
     "explicit_known_domain_task": "Use domain owner directly when exact task identity is available; do not let global router become a single point of failure.",
     "resume_unknown_state": "FAIL_CLOSED; never reconstruct executable state from chat guesswork.",
+    "bare_inherit_partial_owner_failure": "INCOMPLETE_DISCOVERY; do not claim a total candidate count from partial owner results.",
     "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds."
   }
 }
