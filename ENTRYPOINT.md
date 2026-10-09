@@ -1,7 +1,7 @@
 # Universal Continuity — Entry Point
 
 Status: ACTIVE
-Contract: v3.3
+Contract: v3.4
 Engineering authority: this repository `main`
 
 ## Core model
@@ -26,8 +26,10 @@ On the first substantive message of a new chat:
 1. Classify `CONTINUE` vs `NEW_TASK`.
 2. `NEW_TASK`: inherit durable learning only. Never import another task's stage, draft, blocker, or next action.
 3. If the new work is durable/multi-step, establish stable `task_id`, owner and `display_name_zh`, then persist its checkpoint before deep work.
-4. `CONTINUE`: resolve resumable USER tasks through registered owner adapters and authoritative task manifests/checkpoints. If the recovered USER task lacks `display_name_zh`, perform the one-time naming handshake before substantive work.
-5. Once a task/owner is selected, exit global discovery and stay on the domain hot path.
+4. Bare `CONTINUE` such as `继承` with no exact task hint: execute `BARE_INHERIT_DISCOVERY.json` and query every required owner source before claiming how many recoverable tasks exist.
+5. If any required source was not queried or failed, return `INCOMPLETE_DISCOVERY`; partial results may be shown only as incomplete and must never be described as the full list.
+6. Explicit `CONTINUE` such as `继承：A股荐股` or `继续金融文章写作`: route directly to the matching owner/task first; a global scan is not required.
+7. Once a task/owner is selected, exit global discovery and stay on the domain hot path.
 
 ## Bare inherit eligibility
 
@@ -38,7 +40,15 @@ A task may appear for plain `继承/继续` only if all are true:
 - `resume_visibility == DEFAULT`
 - status is `ACTIVE`, `WAITING`, or `BLOCKED`
 
-`SYSTEM_INFRA`, `TEST`, `FIXTURE`, `EVAL`, `MIGRATION`, hidden and explicit-only tasks are excluded.
+`SYSTEM_INFRA`, `TEST`, `FIXTURE`, `EVAL`, `MIGRATION`, `PAUSED`, hidden, archived and explicit-only tasks are excluded.
+
+## Bare inherit completeness
+
+The authoritative required-source list lives in `BARE_INHERIT_DISCOVERY.json`.
+
+A resolver may say “当前有 N 个默认可继承任务” only after all required sources have been queried successfully and candidates have been deduplicated by `task_id`.
+
+If discovery is incomplete, it must say so. This is fail-closed behavior: inconsistent partial counts are worse than an explicit incomplete result.
 
 ## Candidate behavior
 
@@ -95,7 +105,7 @@ Checkpoint the latest execution truth, not a transcript.
 Continuity must stay off the steady-state business hot path:
 
 - global discovery runs only on the first substantive message, explicit re-inherit, task switch, or detected authority drift;
-- candidate discovery uses metadata first;
+- bare discovery reads metadata/index surfaces only;
 - full domain checkpoint loads only after owner/task selection;
 - one-shot questions proceed without creating durable tasks or asking for a task name;
 - if global continuity routing is unavailable but an exact domain task is known, the domain owner may recover it directly.
@@ -108,4 +118,4 @@ Continuity must stay off the steady-state business hot path:
 4. Mirrors/history only as recovery evidence.
 5. Chat memory is never execution authority.
 
-Read next: `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `OWNER_ADAPTER_CONTRACT.json`, `NEW_CHAT_BOOTSTRAP.json`.
+Read next: `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
