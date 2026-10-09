@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.5",
+  "schema_version": "3.6",
   "role": "REBUILDABLE_CACHE_NOT_AUTHORITY",
   "authority": "per-task TASK_MANIFEST.json or stronger domain owner checkpoint",
   "tasks": [
@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_5_STARTUP_HOOK_REQUIRED",
-      "next_action": "配置账户级 Custom Instructions 启动钩子，并在真正新聊天中用裸‘继承’做端到端验收。",
+      "current_stage": "V3_6_PROGRESSIVE_CONTEXT_RECOVERY_ACTIVE",
+      "next_action": "继续验证和维护 v3.6 渐进式上下文恢复与媒体蒸馏协议；视觉流可用时补齐参考视频视觉层。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-      "contract_version": "CONTINUITY_V3_5",
+      "contract_version": "CONTINUITY_V3_6",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-09T13:16:00Z"
+      "updated_at": "2026-10-09T13:40:00Z"
     }
   ]
 }
