@@ -1,4 +1,4 @@
-# Universal Continuity Protocol v3.3
+# Universal Continuity Protocol v3.4
 
 ## Scope
 Universal Continuity handles cross-chat task discovery, routing, resume eligibility, compatibility, user-facing task naming and checkpoint pointers. Domain agents retain their own business logic and state machines.
@@ -11,13 +11,19 @@ If a durable USER task lacks `display_name_zh`, ask the user once which Chinese 
 ## New work
 New work inherits durable learning, not another task's unfinished stage, draft, blocker or next action. Multi-step work expected to span chats should establish task ID, owner and Chinese display name, then persist identity/checkpoint before deep execution.
 
-## Resume discovery
-Plain continuation considers only USER tasks that are resumable, default-visible and ACTIVE/WAITING/BLOCKED. Infrastructure, test, fixture, eval and migration tasks require explicit targeting.
+## Bare inherit discovery quorum
+Plain `继承/继续` without an exact task hint is a global discovery operation. It MUST follow `BARE_INHERIT_DISCOVERY.json`.
 
-Discovery order:
-1. registered domain-owner resumable metadata;
-2. generic durable tasks when no stronger owner exists;
-3. legacy persistent evidence only when the first two layers cannot resolve the task.
+Before reporting a total number of recoverable tasks, the resolver must query every required bare-inherit source listed in that policy, deduplicate by `task_id`, and apply the default USER predicate.
+
+If any required source is unavailable or was not queried, the result is `INCOMPLETE_DISCOVERY`. Partial candidates may be shown only when clearly labeled incomplete. A partial list must never be described as “全部任务”, “一共 N 个”, or otherwise presented as the authoritative total.
+
+This rule exists specifically to prevent different chats from returning different task counts because one chat skipped an owner such as NOVEL_OS or A-share.
+
+## Resume discovery
+Plain continuation considers only USER tasks that are resumable, default-visible and ACTIVE/WAITING/BLOCKED. Infrastructure, test, fixture, eval, migration, paused, hidden and archived tasks are excluded.
+
+For bare continuation, discovery is quorum-based rather than best-effort. For an explicit semantic hint such as `继承：A股荐股`, the resolver may route directly to the matching owner and exact task without scanning unrelated owners.
 
 ## Semantic routing
 When the user names a task/domain/topic, query that owner first. Candidate lists prefer `display_name_zh` and fall back to `title`. One strong match resumes directly. Multiple strong matches return a compact metadata list; checkpoints are never merged.
@@ -45,10 +51,10 @@ Checkpoint material state changes rather than every message. A useful checkpoint
 Unknown recurring domains begin under GENERIC_HANDOFF only as a bootstrap. Once a domain becomes recurring, rule-heavy or executable, create a dedicated domain owner/home and leave Universal Continuity as routing infrastructure.
 
 ## Degraded mode
-One-shot work proceeds even if continuity storage is unavailable. Exact known-domain tasks may recover directly from their owner. Unknown old-state recovery fails closed rather than guessing. Cross-chat durability is only claimed after persistence succeeds.
+One-shot work proceeds even if continuity storage is unavailable. Exact known-domain tasks may recover directly from their owner. Unknown old-state recovery fails closed rather than guessing. A bare inherit with an unavailable required owner returns `INCOMPLETE_DISCOVERY` instead of inventing a total count. Cross-chat durability is only claimed after persistence succeeds.
 
 ## Performance
-Global discovery runs only at new-chat bootstrap, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path. The naming handshake occurs only for durable USER tasks missing a Chinese display name and therefore does not burden ordinary one-shot work.
+Global discovery runs only at new-chat bootstrap, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path. Bare inherit reads metadata/index surfaces only. The naming handshake occurs only for durable USER tasks missing a Chinese display name and therefore does not burden ordinary one-shot work.
 
 ## Engineering authority
-The universal resolver, contract, tests, templates and CI live in this repository. Business agents implement adapters/checkpoints and do not fork the universal resolver.
+The universal resolver, contract, discovery policy, tests, templates and CI live in this repository. Business agents implement adapters/checkpoints and do not fork the universal resolver.
