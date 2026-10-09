@@ -39,7 +39,7 @@ def test_bare_inherit_never_claims_total_from_partial_discovery():
     assert policy["count_rule"] == "DO_NOT_REPORT_TOTAL_CANDIDATE_COUNT_UNLESS_DISCOVERY_COMPLETE"
     assert policy["partial_results_rule"].startswith("MAY_SHOW_PARTIAL_RESULTS_ONLY_IF_EXPLICITLY_LABELED_INCOMPLETE")
 
-    assert contract["schema_version"] == "3.6"
+    assert contract["schema_version"] == "3.7"
     assert contract["bare_inherit_discovery"]["count_requires_complete_discovery"] is True
     assert contract["rules"]["bare_inherit_requires_complete_owner_discovery_before_reporting_count"] is True
 
