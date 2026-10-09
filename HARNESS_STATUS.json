@@ -1,14 +1,16 @@
 {
-  "schema_version": "3.6",
-  "updated_at": "2026-10-09",
-  "status": "PASS_V36_E2E_PROGRESSIVE_RECOVERY_FULL_MEDIA_AUDITED",
+  "schema_version": "3.7",
+  "updated_at": "2026-10-10",
+  "status": "V37_VALIDATION_IN_PROGRESS",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37941434439,
-    "job_id": 113856522098,
-    "editable_install": "PASS",
-    "pytest": "PASS",
-    "pytest_count": 41
+    "github_actions_run_id": null,
+    "job_id": null,
+    "editable_install": "PENDING_LATEST_HEAD",
+    "pytest": "PENDING_LATEST_HEAD",
+    "pytest_count": null,
+    "previous_v36_run_id": 37941434439,
+    "previous_v36_pytest_count": 41
   },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
@@ -46,6 +48,28 @@
     "major_goal_branch_uses_child_task": true,
     "risk_matched_verification": true
   },
+  "progress_observability": {
+    "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
+    "resume_progress_receipt": "IMPLEMENTED_PENDING_CI",
+    "turn_commit_receipt": "IMPLEMENTED_PENDING_CI",
+    "committed_requires_reread": true,
+    "no_material_change_avoids_heartbeat": true
+  },
+  "runtime_hardening_v37": {
+    "runtime_schema_aligned": true,
+    "package_version_aligned": true,
+    "top_level_resume_epoch_canonical": true,
+    "nested_lease_epoch_optional": true,
+    "explicit_system_infra_takeover_supported": true,
+    "version_consistency_test_added": true
+  },
+  "continuous_learning": {
+    "policy": "CONTINUOUS_LEARNING_POLICY.md",
+    "skill_map": "skills/universal-continuity/SKILL.md",
+    "latest_learning_pass": "research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md",
+    "proactive_maintenance_scouting": true,
+    "ordinary_business_hot_path_scouting": false
+  },
   "media_distillation": {
     "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
     "reference_case": "Jason Efficiency Lab GPT-6 Codex core tips",
@@ -53,10 +77,7 @@
     "audio_transcript_full": true,
     "same_author_companion_article_full": true,
     "visual_full_stream_review": true,
-    "visual_status": "FULL_END_TO_END_VIDEO_WATCH_00_00_TO_20_14",
-    "visual_evidence_scope": ["Obsidian canvas", "source/document lists", "benchmark/pricing tables", "context decision tree", "handoff skill", "experimental config/issues", "model/integration diagrams", "Prompt/AGENTS.md/Skills examples", "subagent/testing guidance", "migration checklist"],
-    "evidence_levels_kept_distinct": true,
-    "distillation_rule": "adopt only verified Continuity-scope principles; reject brittle numeric, pricing, model-routing, third-party bridge, anecdotal and experimental-feature claims as core invariants"
+    "evidence_levels_kept_distinct": true
   },
   "human_task_identity": {
     "field": "display_name_zh",
