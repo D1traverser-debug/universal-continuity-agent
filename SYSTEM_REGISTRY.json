@@ -1,0 +1,10 @@
+{
+  "schema_version": "3.2",
+  "role": "REBUILDABLE_CACHE_NOT_AUTHORITY",
+  "authority": "per-system SYSTEM_MANIFEST.json",
+  "systems": [],
+  "new_system_bootstrap": {
+    "default_owner": "GENERIC_HANDOFF",
+    "continuity_stores_full_business_rules": false
+  }
+}
