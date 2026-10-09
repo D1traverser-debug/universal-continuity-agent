@@ -96,7 +96,7 @@
   },
   "performance": {
     "startup_hook_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
-    "bootstrap_scope": "FIRST_EXPLICIT_CONTINUATION_OR_FIRST_SUBSTANTIVE_MESSAGE_AFTER_ROUTING",
+    "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_ONLY",
     "steady_state": "After task/owner selection, do not repeat global discovery until task switch, explicit re-inherit, or detected lease/contract drift.",
     "discovery_payload": "Read manifest/index metadata only; load full business checkpoint after owner selection.",
     "checkpoint_coalescing": "Coalesce small related state changes within one completed work batch; checkpoint every material state transition.",
