@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.1",
+  "schema_version": "3.2",
   "required_metadata": [
     "task_id",
     "task_class",
@@ -24,8 +24,17 @@
     "list_resumable_tasks_metadata_only",
     "get_task_checkpoint_by_id",
     "compatibility_check",
-    "resume_or_migrate_or_block"
+    "resume_or_migrate_or_block",
+    "provide_short_handoff_or_equivalent_checkpoint",
+    "provide_stable_artifact_refs_for_next_action"
   ],
+  "context_recovery": {
+    "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "owner_should_not_require_full_history_preload": true,
+    "handoff_role": "current execution truth",
+    "artifact_reference_preferred_over_duplicate_content": true,
+    "old_chat_history": "last resort only"
+  },
   "bare_inherit_predicate": {
     "task_class": ["USER"],
     "resume_eligible": true,
@@ -37,7 +46,8 @@
     "missing_resume_eligible": false,
     "missing_resume_visibility": "EXPLICIT_ONLY",
     "missing_contract_version": "legacy-unclassified",
-    "missing_display_name_zh": "ASK_USER_ONCE; do not invent a permanent user-facing name"
+    "missing_display_name_zh": "ASK_USER_ONCE; do not invent a permanent user-facing name",
+    "missing_checkpoint_or_next_action": "UNKNOWN; do not reconstruct executable state from chat memory"
   },
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
