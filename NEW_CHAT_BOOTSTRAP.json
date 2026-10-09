@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.1",
+  "updated_at": "2026-10-09",
+  "applies": "first substantive user message of every new chat",
+  "flow": [
+    "Classify CONTINUE vs NEW_TASK before loading task state.",
+    "For CONTINUE, resolve through Universal Continuity and owner checkpoint.",
+    "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
+    "If the task is likely to span chats or has meaningful external/artifact state, persist before deep work.",
+    "If it belongs to an existing system, create/register a task under that system owner.",
+    "If it is a new domain/system, bootstrap it under GENERIC_HANDOFF, then create the first task.",
+    "Checkpoint on meaningful state changes throughout execution; do not wait for context exhaustion."
+  ],
+  "durable_task_triggers": [
+    "user frames it as a project/system/series",
+    "multi-step work with external tools/files",
+    "work expected to continue in another chat",
+    "meaningful artifacts or external state are created",
+    "task has stage/next_action/blocker",
+    "user asks to save/continue later"
+  ],
+  "do_not_persist": [
+    "casual chat",
+    "simple factual Q&A",
+    "one-shot explanation with no continuing state"
+  ],
+  "write_order": [
+    "SYSTEM_MANIFEST authority if new system",
+    "TASK_MANIFEST authority",
+    "best-effort rebuildable registry cache update",
+    "initial checkpoint",
+    "perform substantive work",
+    "event-driven checkpoint updates"
+  ],
+  "checkpoint_triggers": [
+    "goal/constraint/authorization/priority change",
+    "important decision",
+    "stage or next_action change",
+    "completed material batch",
+    "key artifact created/replaced",
+    "blocker/waiting change",
+    "owner/skill/runtime/contract change",
+    "before switching tasks",
+    "before/after long or high-risk tool chain",
+    "pause/complete/archive/reopen",
+    "conversation interruption risk"
+  ],
+  "rule": "Checkpoint stores the latest execution truth, not a transcript.",
+  "single_writer": {
+    "model": "NEW_CHAT_TAKEOVER_SUPERSEDES_OLD_CHAT",
+    "user_workflow_assumption": "After a task is inherited into a new chat, the old chat is retired and not used for that task.",
+    "resume_epoch_required": true,
+    "lease_required": true,
+    "acquire_flow": [
+      "read authoritative TASK_MANIFEST",
+      "increment resume_epoch and write new active_lease",
+      "re-read TASK_MANIFEST and verify own lease before substantive work",
+      "old chat lease is stale and must not checkpoint"
+    ],
+    "limitation": "GitHub per-file manifest updates use the previously read blob SHA as a compare-and-swap guard; stale writers fail closed."
+  },
+  "performance": {
+    "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_ONLY",
+    "steady_state": "After task/owner selection, do not repeat global discovery until task switch, explicit re-inherit, or detected lease/contract drift.",
+    "discovery_payload": "Read manifest/index metadata only; load full business checkpoint after owner selection.",
+    "checkpoint_coalescing": "Coalesce small related state changes within one completed work batch; checkpoint every material state transition.",
+    "max_candidate_surface": 5
+  },
+  "degraded_mode": {
+    "simple_one_shot": "Proceed normally if Continuity storage is unavailable.",
+    "explicit_known_domain_task": "Use domain owner directly when exact task identity is available; do not let global router become a single point of failure.",
+    "resume_unknown_state": "FAIL_CLOSED; never reconstruct executable state from chat guesswork.",
+    "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds."
+  }
+}
