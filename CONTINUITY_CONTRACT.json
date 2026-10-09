@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.6",
+  "schema_version": "3.7",
   "purpose": "Universal cross-chat task continuity contract",
   "startup_trigger": {
     "required_for_bare_inherit": true,
@@ -49,11 +49,29 @@
     "side_query_does_not_mutate_stage_by_default": true,
     "major_goal_branch_uses_child_task": true
   },
+  "progress_observability": {
+    "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
+    "resume_progress_receipt_required": true,
+    "resume_progress_receipt_boundary": "capture authoritative persisted state before takeover mutation and surface it before substantive resumed work",
+    "turn_commit_receipt_required_for_active_durable_task": true,
+    "commit_status": ["COMMITTED", "NO_MATERIAL_CHANGE", "COMMIT_FAILED", "STALE_WRITER", "NOT_APPLICABLE"],
+    "committed_requires_authoritative_reread_verification": true,
+    "no_heartbeat_write_when_no_material_change": true,
+    "failed_commit_must_warn_next_chat_may_not_contain_new_progress": true
+  },
   "media_distillation": {
     "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
     "source_levels_must_remain_distinct": true,
     "full_transcript_does_not_equal_full_visual_review": true,
     "important_product_claims_require_first_party_verification_before_adoption": true
+  },
+  "continuous_learning": {
+    "policy": "CONTINUOUS_LEARNING_POLICY.md",
+    "proactive_on_maintenance_or_detected_gap": true,
+    "steady_state_business_hot_path_research": false,
+    "adoption_requires_scope_fit_and_evidence": true,
+    "mechanically_testable_adoptions_require_tests": true,
+    "skills_should_be_modular_and_loaded_on_demand": true
   },
   "rules": {
     "chat_is_ephemeral_task_is_durable": true,
@@ -61,6 +79,7 @@
     "explicit_continuation_required_for_task_state": true,
     "explicit_continue_command_must_trigger_continuity_before_learning_only_reply": true,
     "non_user_tasks_excluded_from_bare_inherit": true,
+    "explicit_system_infra_task_may_resume_when_explicit_only_and_resume_eligible": true,
     "owner_state_beats_continuity_pointer": true,
     "compatibility_check_required_before_resume": true,
     "generic_layer_must_not_duplicate_domain_state_machine": true,
@@ -83,7 +102,10 @@
     "resume_preloads_minimum_required_context": true,
     "handoff_must_prefer_references_over_duplication": true,
     "old_chat_history_is_last_resort_recovery_evidence": true,
-    "verification_scope_must_match_change_risk": true
+    "verification_scope_must_match_change_risk": true,
+    "user_must_see_pre_resume_persisted_progress": true,
+    "every_final_response_on_active_durable_task_must_report_commit_status": true,
+    "assistant_self_report_is_not_persistence_proof": true
   },
   "runtime_harness": {
     "module": "runtime/universal_continuity.py",
@@ -93,7 +115,10 @@
     "generic_task_registry": "GENERIC_TASK_REGISTRY.json",
     "bare_inherit_discovery": "BARE_INHERIT_DISCOVERY.json",
     "context_recovery_policy": "CONTEXT_RECOVERY_POLICY.json",
+    "progress_observability_policy": "PROGRESS_OBSERVABILITY_POLICY.json",
     "media_distillation_protocol": "MEDIA_DISTILLATION_PROTOCOL.md",
+    "continuous_learning_policy": "CONTINUOUS_LEARNING_POLICY.md",
+    "skill_map": "skills/universal-continuity/SKILL.md",
     "task_manifest_home": "tasks/<task>/TASK_MANIFEST.json",
     "system_manifest_home": "systems/<system>/SYSTEM_MANIFEST.json",
     "new_chat_bootstrap": "NEW_CHAT_BOOTSTRAP.json"
@@ -105,12 +130,15 @@
     "handoff_should_reference_exact_artifacts_needed_for_next_action": true,
     "terminal_tasks_must_not_be_default_visible": true,
     "non_user_tasks_must_not_be_default_visible": true,
-    "legacy_missing_metadata_fails_closed": true
+    "legacy_missing_metadata_fails_closed": true,
+    "material_turn_change_requires_authoritative_checkpoint_before_final_response": true
   },
   "writer_lease": {
     "model": "single-active-chat",
     "fields": ["resume_epoch", "active_lease.lease_id", "active_lease.acquired_at", "active_lease.supersedes_lease_id"],
+    "canonical_epoch_location": "top-level resume_epoch; nested active_lease.resume_epoch may be present but is not required",
     "takeover": "new chat increments resume_epoch and replaces active_lease",
+    "explicit_system_infra_takeover": "allowed only for resume_eligible EXPLICIT_ONLY SYSTEM_INFRA tasks explicitly selected by the user",
     "prework_verification": "re-read TASK_MANIFEST and confirm own lease before substantive work",
     "checkpoint_guard": "writer must re-read manifest and match lease_id + resume_epoch before checkpoint",
     "old_chat_policy": "retired after successful takeover; stale writer must fail closed",
@@ -125,6 +153,8 @@
     "full_checkpoint_load_after_selection": true,
     "old_history_load": "only when stronger durable state is insufficient",
     "max_candidates": 5,
-    "checkpointing": "event-driven and coalesced by completed work batch"
+    "checkpointing": "event-driven and coalesced by completed work batch",
+    "turn_receipt_does_not_force_write_when_state_unchanged": true,
+    "proactive_learning_off_business_hot_path": true
   }
 }
