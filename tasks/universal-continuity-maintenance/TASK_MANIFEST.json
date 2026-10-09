@@ -1,6 +1,6 @@
 {
-  "schema_version": "3.6",
-  "manifest_version": 8,
+  "schema_version": "3.7",
+  "manifest_version": 9,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,11 +10,11 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-09T15:54:49Z",
-  "current_stage": "V3_6_OWNER_HANDOFF_CONFORMANCE_REPAIR",
-  "next_action": "按 audits/OWNER_HANDOFF_AUDIT_2026-10-09.md 的优先级执行 owner 修复：先验证 Financial Writing v0.3 规则的权威 artifact 并压缩 handoff；再解析 A股 authority/cutover 的稳定 artifact ref；最后验证 Video Growth 重复 checkpoint 字段的更强权威位置后再压缩。不得删除尚无更强持久权威的唯一要求。",
+  "updated_at": "2026-10-09T16:22:30Z",
+  "current_stage": "V3_7_PROGRESS_OBSERVABILITY_ACTIVE_OWNER_CONFORMANCE_AND_FRESH_CHAT_E2E",
+  "next_action": "下一次真正新聊天发生明确继承时验收 v3.7 的 继承前进度 -> compatibility/takeover -> 进度提交 UX；无需等待该 E2E，继续按 audits/OWNER_HANDOFF_AUDIT_2026-10-09.md 修复 Financial Writing、A股 authority ref、Video Growth checkpoint，并按 CONTINUOUS_LEARNING_POLICY.md 主动学习可验证的 Continuity-scope 改进。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-  "contract_version": "CONTINUITY_V3_6",
+  "contract_version": "CONTINUITY_V3_7",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 1,
   "active_lease": {
@@ -25,6 +25,23 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏"],
-  "artifact_refs": ["ENTRYPOINT.md", "STARTUP_HOOK.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "CONTEXT_RECOVERY_POLICY.json", "MEDIA_DISTILLATION_PROTOCOL.md", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json", "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md"]
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏", "继承前进度", "进度提交", "持续学习"],
+  "artifact_refs": [
+    "ENTRYPOINT.md",
+    "STARTUP_HOOK.md",
+    "PROTOCOL.md",
+    "CONTINUITY_CONTRACT.json",
+    "BARE_INHERIT_DISCOVERY.json",
+    "CONTEXT_RECOVERY_POLICY.json",
+    "PROGRESS_OBSERVABILITY_POLICY.json",
+    "CONTINUOUS_LEARNING_POLICY.md",
+    "MEDIA_DISTILLATION_PROTOCOL.md",
+    "OWNER_ADAPTER_CONTRACT.json",
+    "NEW_CHAT_BOOTSTRAP.json",
+    "OWNER_REGISTRY.json",
+    "HARNESS_STATUS.json",
+    "skills/universal-continuity/SKILL.md",
+    "research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md",
+    "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md"
+  ]
 }
