@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.5",
-  "updated_at": "2026-10-09",
+  "schema_version": "1.6",
+  "updated_at": "2026-10-10",
   "applies": "first explicit continuation or first substantive user message after account-level routing",
   "startup_hook": {
     "required": true,
@@ -17,13 +17,16 @@
     "If any required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
     "For semantic CONTINUE with an exact task/domain hint, route to the matching owner first and resolve the exact task without requiring a global scan.",
     "Classify task topology using CONTEXT_RECOVERY_POLICY.json: same-goal continue, fresh-handoff same-goal, side query, fork child task, or new task.",
-    "For resumed work, load context progressively: metadata -> short authoritative handoff -> exact artifacts needed for next_action -> selective owner search/history -> old chat history only as last resort.",
+    "For resumed work, read authoritative metadata plus the short handoff/checkpoint and capture the pre-takeover Resume Progress Receipt before mutating resume_epoch or active_lease.",
+    "Surface 继承前进度 to the user: persisted stage, next action, blocker/waiting state, checkpoint/version and pre-takeover epoch.",
     "Run compatibility check before replaying executable state.",
     "Acquire and verify the writer lease before substantive same-task work in a new chat.",
+    "Load exact artifacts required by next_action; use selective history only for a concrete gap and old chat history only as last resort.",
     "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
     "If the task is likely to span chats or has meaningful external/artifact state, persist before deep work.",
     "For any durable USER task, establish stable task_id and display_name_zh before substantive work; if display_name_zh is missing, ask the user once, persist the answer, then continue the original work without another confirmation.",
-    "Checkpoint material state changes throughout execution; do not wait for context exhaustion."
+    "Checkpoint material state changes throughout execution; do not wait for context exhaustion.",
+    "Before every final response while a durable task is active, persist any material state change, re-read authoritative state, and surface 进度提交 according to PROGRESS_OBSERVABILITY_POLICY.json."
   ],
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
@@ -40,6 +43,16 @@
     "handoff_is_transcript": false,
     "artifact_reference_preferred_over_copy": true,
     "fixed_token_threshold": null
+  },
+  "progress_observability": {
+    "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
+    "resume_receipt_label": "继承前进度",
+    "resume_receipt_before_takeover_mutation": true,
+    "turn_receipt_label": "进度提交",
+    "turn_receipt_every_final_response_for_active_durable_task": true,
+    "committed_requires_authoritative_reread": true,
+    "no_material_change_does_not_force_write": true,
+    "commit_failure_must_warn_recovery_gap": true
   },
   "task_topology": {
     "same_goal": "reuse task_id",
@@ -104,8 +117,11 @@
     "user_workflow_assumption": "After a task is inherited into a new chat, the old chat is retired and not used for that task.",
     "resume_epoch_required": true,
     "lease_required": true,
+    "canonical_epoch_location": "top-level resume_epoch; nested active_lease.resume_epoch is optional compatibility data",
+    "explicit_system_infra_takeover": "resume_eligible + EXPLICIT_ONLY + explicit user selection only",
     "acquire_flow": [
-      "read authoritative TASK_MANIFEST",
+      "read authoritative TASK_MANIFEST and short checkpoint",
+      "capture and surface pre-takeover Resume Progress Receipt",
       "increment resume_epoch and write new active_lease",
       "re-read TASK_MANIFEST and verify own lease before substantive work",
       "old chat lease is stale and must not checkpoint"
@@ -119,6 +135,8 @@
     "discovery_payload": "Read manifest/index metadata only; read short handoff after selection; load deeper artifacts only when needed.",
     "old_history_policy": "LAST_RESORT",
     "checkpoint_coalescing": "Coalesce small related state changes within one completed work batch; checkpoint every material state transition.",
+    "turn_receipt_without_state_change": "NO_MATERIAL_CHANGE; no heartbeat write",
+    "continuous_learning_scope": "maintenance/gap-resolution only, not ordinary business hot path",
     "max_candidate_surface": 5
   },
   "verification": {
@@ -132,6 +150,7 @@
     "resume_unknown_state": "FAIL_CLOSED; never reconstruct executable state from chat guesswork.",
     "bare_inherit_partial_owner_failure": "INCOMPLETE_DISCOVERY; do not claim a total candidate count from partial owner results.",
     "startup_hook_missing": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED; do not silently convert explicit continuation into learning-only inheritance.",
-    "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds."
+    "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds.",
+    "turn_checkpoint_failure": "Report COMMIT_FAILED; explicitly state that material progress from this turn may not survive the next chat."
   }
 }
