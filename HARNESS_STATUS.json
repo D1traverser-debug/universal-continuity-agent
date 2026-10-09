@@ -1,23 +1,30 @@
 {
-  "schema_version": "3.5",
+  "schema_version": "3.6",
   "updated_at": "2026-10-09",
-  "status": "PASS_CORE_V35_STARTUP_HOOK_REQUIRED",
+  "status": "PASS_V36_CORE_E2E_ACCEPTED_CI_REFRESH_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "last_known_green_run_id": 37934390253,
+    "last_known_green_run_id": 37935945901,
     "editable_install": "PASS",
     "pytest": "PASS",
-    "pytest_count": 27
+    "note": "v3.6 CI must refresh this evidence after policy/test changes land"
   },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
     "account_level_hook_required": true,
     "github_presence_alone_is_not_trigger": true,
     "library_presence_alone_is_not_trigger": true,
-    "observed_failure_mode": "Bare 继承 answered from generic learning-only memory without invoking Continuity.",
-    "failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
-    "end_to_end_bare_inherit_claim": false,
-    "end_to_end_acceptance_pending": "Configure account-level Custom Instructions hook, then test in a truly new chat with exactly 继承."
+    "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "end_to_end_bare_inherit_claim": true,
+    "acceptance_evidence": {
+      "date": "2026-10-09",
+      "source": "user-supplied fresh-chat acceptance screenshot",
+      "bare_command": "继承",
+      "required_owner_quorum": 5,
+      "required_owner_quorum_succeeded": true,
+      "authoritative_default_candidate_count": 4,
+      "live_candidate_names_persisted_in_public_harness": false
+    }
   },
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
@@ -26,6 +33,27 @@
     "candidate_count_requires_complete_discovery": true,
     "dedupe_key": "task_id",
     "live_user_task_names_not_stored_in_public_harness": true
+  },
+  "context_recovery": {
+    "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "progressive_disclosure": true,
+    "load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
+    "handoff_is_execution_truth_not_transcript": true,
+    "artifact_reference_preferred_over_duplication": true,
+    "fixed_token_threshold_as_invariant": false,
+    "side_query_mutates_stage_by_default": false,
+    "major_goal_branch_uses_child_task": true,
+    "risk_matched_verification": true
+  },
+  "media_distillation": {
+    "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
+    "reference_case": "Jason Efficiency Lab GPT-6 Codex core tips",
+    "same_media_identity_resolved": true,
+    "audio_transcript_full": true,
+    "same_author_companion_article_full": true,
+    "visual_full_stream_review": false,
+    "visual_status": "PENDING_FULL_STREAM_OR_SCENE_ACCESS",
+    "evidence_levels_kept_distinct": true
   },
   "human_task_identity": {
     "field": "display_name_zh",
