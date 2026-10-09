@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.5",
+  "schema_version": "3.6",
   "purpose": "Universal cross-chat task continuity contract",
   "startup_trigger": {
     "required_for_bare_inherit": true,
@@ -19,8 +19,9 @@
   "resume_visibility": ["DEFAULT", "EXPLICIT_ONLY", "HIDDEN"],
   "status": ["ACTIVE", "WAITING", "BLOCKED", "PAUSED", "COMPLETE", "ABANDONED", "ARCHIVED"],
   "compatibility_result": ["COMPATIBLE", "MIGRATABLE", "INCOMPATIBLE", "UNKNOWN"],
+  "continuation_mode": ["CONTINUE_SAME_GOAL", "FRESH_HANDOFF_SAME_GOAL", "SIDE_QUERY", "FORK_CHILD_TASK", "NEW_TASK"],
   "required_fields": ["task_id", "task_class", "domain", "title", "status", "resume_eligible", "resume_visibility", "recovery_owner", "updated_at", "manifest_ref", "manifest_version", "resume_epoch"],
-  "recommended_fields": ["display_name_zh", "current_stage", "next_action", "checkpoint_ref", "artifact_refs", "contract_version", "skill_version", "runtime_version", "created_at", "parent_task_id", "parallel_with", "keywords", "active_lease"],
+  "recommended_fields": ["display_name_zh", "current_stage", "next_action", "checkpoint_ref", "artifact_refs", "contract_version", "skill_version", "runtime_version", "created_at", "parent_task_id", "parallel_with", "keywords", "active_lease", "blockers"],
   "user_task_human_identity": {
     "field": "display_name_zh",
     "required_for_persisted_user_tasks": true,
@@ -37,6 +38,22 @@
     "count_requires_complete_discovery": true,
     "partial_results_must_be_labeled_incomplete": true,
     "dedupe_key": "task_id"
+  },
+  "context_recovery": {
+    "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "progressive_disclosure_required": true,
+    "resume_load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
+    "handoff_is_execution_truth_not_transcript": true,
+    "reference_existing_artifacts_instead_of_copying": true,
+    "fixed_context_token_threshold_forbidden": true,
+    "side_query_does_not_mutate_stage_by_default": true,
+    "major_goal_branch_uses_child_task": true
+  },
+  "media_distillation": {
+    "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
+    "source_levels_must_remain_distinct": true,
+    "full_transcript_does_not_equal_full_visual_review": true,
+    "important_product_claims_require_first_party_verification_before_adoption": true
   },
   "rules": {
     "chat_is_ephemeral_task_is_durable": true,
@@ -62,7 +79,11 @@
     "known_domain_owner_can_bypass_global_router_when_router_unavailable": true,
     "global_discovery_first_message_only": true,
     "bare_inherit_requires_complete_owner_discovery_before_reporting_count": true,
-    "github_or_library_presence_alone_does_not_imply_bootstrap_triggered": true
+    "github_or_library_presence_alone_does_not_imply_bootstrap_triggered": true,
+    "resume_preloads_minimum_required_context": true,
+    "handoff_must_prefer_references_over_duplication": true,
+    "old_chat_history_is_last_resort_recovery_evidence": true,
+    "verification_scope_must_match_change_risk": true
   },
   "runtime_harness": {
     "module": "runtime/universal_continuity.py",
@@ -71,6 +92,8 @@
     "owner_adapter_contract": "OWNER_ADAPTER_CONTRACT.json",
     "generic_task_registry": "GENERIC_TASK_REGISTRY.json",
     "bare_inherit_discovery": "BARE_INHERIT_DISCOVERY.json",
+    "context_recovery_policy": "CONTEXT_RECOVERY_POLICY.json",
+    "media_distillation_protocol": "MEDIA_DISTILLATION_PROTOCOL.md",
     "task_manifest_home": "tasks/<task>/TASK_MANIFEST.json",
     "system_manifest_home": "systems/<system>/SYSTEM_MANIFEST.json",
     "new_chat_bootstrap": "NEW_CHAT_BOOTSTRAP.json"
@@ -78,6 +101,8 @@
   "checkpoint_quality_rules": {
     "persisted_user_requires_display_name_zh": true,
     "resumable_user_requires_checkpoint_ref": true,
+    "resumable_task_requires_current_stage_and_next_action": true,
+    "handoff_should_reference_exact_artifacts_needed_for_next_action": true,
     "terminal_tasks_must_not_be_default_visible": true,
     "non_user_tasks_must_not_be_default_visible": true,
     "legacy_missing_metadata_fails_closed": true
@@ -96,7 +121,9 @@
     "new_chat_global_discovery": "first explicit continuation message only",
     "steady_state": "no repeated global scan after task/owner selected",
     "candidate_metadata_only": true,
+    "short_handoff_before_deep_artifacts": true,
     "full_checkpoint_load_after_selection": true,
+    "old_history_load": "only when stronger durable state is insufficient",
     "max_candidates": 5,
     "checkpointing": "event-driven and coalesced by completed work batch"
   }
