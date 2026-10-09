@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "continuity_contract": "3.6",
+  "purpose": "Keep resumed work accurate while minimizing context bloat and duplicate state.",
+  "principles": {
+    "context_capacity_is_not_default_working_set": true,
+    "checkpoint_is_execution_truth_not_transcript": true,
+    "reference_existing_artifacts_instead_of_copying_them": true,
+    "progressive_disclosure_required": true,
+    "old_chat_history_is_last_resort_evidence_not_primary_authority": true,
+    "task_identity_follows_goal_not_chat_window": true,
+    "side_questions_do_not_mutate_durable_stage_unless_the_task_changes": true,
+    "verification_scope_matches_change_risk": true
+  },
+  "resume_load_order": [
+    {
+      "step": 1,
+      "load": "task index/manifest metadata",
+      "purpose": "resolve identity, owner, status, visibility, stage, next_action and checkpoint pointer"
+    },
+    {
+      "step": 2,
+      "load": "short authoritative HANDOFF/checkpoint",
+      "purpose": "recover current execution truth and compatibility context"
+    },
+    {
+      "step": 3,
+      "load": "exact referenced artifacts needed for next_action",
+      "purpose": "verify state against source artifacts without preloading unrelated history"
+    },
+    {
+      "step": 4,
+      "load": "selective owner search/history",
+      "purpose": "resolve a concrete ambiguity or missing evidence only"
+    },
+    {
+      "step": 5,
+      "load": "old conversation transcript/history",
+      "purpose": "last-resort recovery evidence when stronger durable state is insufficient"
+    }
+  ],
+  "handoff_contract": {
+    "must_include": [
+      "task_id",
+      "display_name_zh when USER",
+      "owner",
+      "status",
+      "current_stage",
+      "next_action",
+      "blockers_or_waiting_state",
+      "authority_or_contract_version",
+      "artifact_refs needed to verify next_action"
+    ],
+    "should_include_when_relevant": [
+      "recent_material_decisions",
+      "open_questions that materially change execution",
+      "compatibility state",
+      "writer lease/resume epoch pointer"
+    ],
+    "must_not_duplicate": [
+      "full specs already stored elsewhere",
+      "full plans already stored elsewhere",
+      "issues/commits/diffs already addressable by reference",
+      "large research corpora",
+      "chat transcript",
+      "unchanged domain rules already owned by the domain agent"
+    ],
+    "rule": "Prefer stable references plus the minimum interpretation needed to resume safely."
+  },
+  "task_topology": {
+    "CONTINUE_SAME_GOAL": "same task_id; keep current owner and checkpoint chain",
+    "FRESH_HANDOFF_SAME_GOAL": "same task_id; new chat takes over after checkpoint + compatibility + lease verification",
+    "SIDE_QUERY": "answer separately; do not mutate current_stage/next_action unless the answer changes the durable task",
+    "FORK_CHILD_TASK": "create a new task_id with parent_task_id when exploring a materially different major goal that should preserve the original task independently",
+    "NEW_TASK": "new task_id; inherit durable learning only, not unfinished execution state"
+  },
+  "context_health": {
+    "no_fixed_token_threshold": true,
+    "signals_for_fresh_handoff": [
+      "current chat contains multiple obsolete plans or contradictory branches",
+      "next_action cannot be stated compactly without replaying long history",
+      "task stage has materially changed and old context is mostly historical",
+      "model/tool/runtime authority changed and legacy execution semantics risk contaminating decisions",
+      "user explicitly requests a clean new chat"
+    ],
+    "signals_not_sufficient_alone": [
+      "large theoretical context window",
+      "an external heuristic such as a fixed 150K smart-zone threshold"
+    ]
+  },
+  "verification": {
+    "low_risk_reversible_change": "targeted checks only",
+    "contract_or_router_change": "targeted regression plus cross-owner invariants",
+    "authority_or_persistence_change": "full relevant continuity harness and end-to-end acceptance where available",
+    "rule": "Do not run broad unrelated tests merely because tests exist."
+  },
+  "scope_exclusions": [
+    "model pricing strategy",
+    "hard-coded model routing ladder",
+    "prompt-cache economics",
+    "third-party browser/model bridges",
+    "fixed context smart-zone token numbers"
+  ]
+}
