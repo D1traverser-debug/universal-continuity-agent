@@ -1,7 +1,7 @@
 # Universal Continuity — Entry Point
 
 Status: ACTIVE
-Contract: v3.6
+Contract: v3.7
 Engineering authority: this repository `main`
 
 ## Critical startup boundary
@@ -16,7 +16,7 @@ Without that hook, a new chat may answer from generic Memory/past-chat context a
 
 Chat is an ephemeral execution window. Task is the durable object.
 
-Universal Continuity owns task discovery, routing, resume eligibility, compatibility, takeover lease semantics, human-readable task labels and recovery pointers. It does not duplicate domain business logic or domain state machines.
+Universal Continuity owns task discovery, routing, resume eligibility, compatibility, takeover lease semantics, human-readable task labels, progress observability and recovery pointers. It does not duplicate domain business logic or domain state machines.
 
 ## Intent precedence
 
@@ -40,11 +40,14 @@ Once the account-level startup hook has routed the message here:
 1. Classify `CONTINUE` vs `NEW_TASK`.
 2. Bare `CONTINUE`: execute `BARE_INHERIT_DISCOVERY.json`; query every required owner source before reporting a total count.
 3. Named `CONTINUE`: route directly to the matching owner/task first.
-4. Resolve compatibility.
-5. Read the short authoritative handoff/checkpoint before loading deeper context.
-6. Load only the exact referenced artifacts needed for the current `next_action`.
+4. Read the exact authoritative task manifest plus short owner handoff/checkpoint.
+5. Capture the **pre-takeover persisted state** and surface a `继承前进度` receipt according to `PROGRESS_OBSERVABILITY_POLICY.json`.
+6. Resolve compatibility.
 7. Acquire/verify the new writer lease for same-task takeover.
-8. Continue from the real `current_stage / next_action`.
+8. Load only the exact referenced artifacts needed for the current `next_action`.
+9. Continue from the real `current_stage / next_action`.
+
+The pre-resume receipt must be captured before `resume_epoch` / `active_lease` is mutated. It should tell the user where the previous durable checkpoint actually stopped, including stage, next action and any blocker/waiting state.
 
 If any required bare-inherit source fails, return `INCOMPLETE_DISCOVERY`; never present partial results as the authoritative total.
 
@@ -63,6 +66,26 @@ Default context load order:
 Do not preload the entire old conversation simply because a large context window exists.
 
 A HANDOFF is current execution truth, not a transcript summary. If a spec, plan, issue, commit, diff, artifact or domain rule already exists elsewhere, reference it instead of copying it into the handoff.
+
+## Progress observability
+
+Follow `PROGRESS_OBSERVABILITY_POLICY.json`.
+
+### Resume Progress Receipt
+
+Once an exact task has been selected and its authoritative checkpoint is known, show **继承前进度** before substantive resumed work. The receipt is a snapshot of the durable state that existed before this chat took over; do not rewrite history with the new lease epoch.
+
+### Turn Commit Receipt
+
+For every final user-facing response while a durable task is active, report **进度提交** with one of:
+
+- `COMMITTED`: material progress was persisted and authoritative state was re-read/verified;
+- `NO_MATERIAL_CHANGE`: this turn did not change the durable resume point, so no meaningless heartbeat write was created;
+- `COMMIT_FAILED`: material progress should have been persisted but the write or verification failed; explicitly warn that the new progress may not survive the next chat;
+- `STALE_WRITER`: this chat no longer owns the writer lease and must not checkpoint;
+- `NOT_APPLICABLE`: no durable task is active.
+
+A successful tool call is not enough to claim `COMMITTED`; authoritative re-read verification is required.
 
 ## Task topology
 
@@ -85,6 +108,8 @@ A task may appear for plain `继承/继续` only if all are true:
 
 `SYSTEM_INFRA`, `TEST`, `FIXTURE`, `EVAL`, `MIGRATION`, `PAUSED`, hidden, archived and explicit-only tasks are excluded.
 
+An explicitly named `SYSTEM_INFRA` task may be resumed only when it is `resume_eligible == true` and `resume_visibility == EXPLICIT_ONLY`; this never makes it a bare-inherit candidate.
+
 ## Candidate behavior
 
 - Candidate UI prefers `display_name_zh`; falls back to `title` only for legacy unnamed tasks.
@@ -98,10 +123,13 @@ A task may appear for plain `继承/继续` only if all are true:
 When a task is inherited into a new chat:
 
 1. Read the authoritative task manifest/checkpoint.
-2. Increment `resume_epoch` and acquire a new `active_lease`.
-3. Persist using the storage owner's compare-and-swap/version guard when available.
-4. Re-read and verify the new lease before substantive work.
-5. The old chat is retired. A stale lease must not checkpoint.
+2. Capture the pre-takeover progress receipt.
+3. Increment `resume_epoch` and acquire a new `active_lease`.
+4. Persist using the storage owner's compare-and-swap/version guard when available.
+5. Re-read and verify the new lease before substantive work.
+6. The old chat is retired. A stale lease must not checkpoint.
+
+The canonical epoch lives at top-level `resume_epoch`. Older/current owner manifests may omit a duplicate nested `active_lease.resume_epoch`; the harness must tolerate that and use the top-level epoch.
 
 Different tasks may proceed independently in different chats.
 
@@ -114,11 +142,13 @@ Every resumed task must be classified as one of:
 - `INCOMPATIBLE`: do not replay obsolete execution semantics; preserve only still-valid requirements/evidence/artifacts.
 - `UNKNOWN`: fail closed until authority is resolved.
 
-## Media/research evidence
+## Continuous learning
 
-When evolving this system from videos, articles or community material, follow `MEDIA_DISTILLATION_PROTOCOL.md`.
+Follow `CONTINUOUS_LEARNING_POLICY.md` and `MEDIA_DISTILLATION_PROTOCOL.md`.
 
-A full transcript may justify “spoken content fully reviewed”. It does **not** justify “full visual review”. External advice must be distilled, scoped and, where it affects OpenAI/product behavior, checked against current first-party documentation before becoming system policy.
+Continuity should proactively study relevant agent systems, Skills, harnesses, durable-execution patterns, official product documentation and media when maintaining the system or when a real failure exposes a gap. Do not put broad research on the ordinary business hot path.
+
+External advice is input, not authority. Important product claims require current first-party verification; media evidence levels remain distinct. Accepted learning must be encoded in the smallest appropriate policy/Skill/runtime surface and mechanically tested when testable.
 
 ## Performance invariant
 
@@ -128,6 +158,9 @@ Continuity must stay off the steady-state business hot path:
 - global discovery runs only when needed;
 - discovery reads metadata only;
 - recovery reads a short handoff before deeper artifacts;
+- progress receipts do not trigger new global scans;
+- no material state change means no heartbeat checkpoint write;
+- proactive research runs during maintenance/gap resolution, not every business turn;
 - old chat history is a last resort;
 - one-shot questions do not create durable tasks or trigger task-name prompts.
 
@@ -139,4 +172,4 @@ Continuity must stay off the steady-state business hot path:
 4. Mirrors/history only as recovery evidence.
 5. Chat memory is never execution authority.
 
-Read next: `STARTUP_HOOK.md`, `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `CONTEXT_RECOVERY_POLICY.json`, `MEDIA_DISTILLATION_PROTOCOL.md`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
+Read next: `STARTUP_HOOK.md`, `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `CONTEXT_RECOVERY_POLICY.json`, `PROGRESS_OBSERVABILITY_POLICY.json`, `CONTINUOUS_LEARNING_POLICY.md`, `MEDIA_DISTILLATION_PROTOCOL.md`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
