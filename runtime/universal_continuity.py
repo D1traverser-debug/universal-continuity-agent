@@ -242,8 +242,9 @@ def _score_hint(task: TaskMetadata, hint: str | None, owner_hint: str | None, do
         reasons.append("domain")
     if hint:
         h = hint.strip().lower()
-        display_text = " ".join(x for x in (task.display_name_zh, task.title) if x).lower()
-        if h and h in display_text:
+        labels = [str(x).strip().lower() for x in (task.display_name_zh, task.title) if x and str(x).strip()]
+        display_text = " ".join(labels)
+        if h and any(h in label or label in h for label in labels):
             score += 8.0
             reasons.append("title-substring")
         if _contains_cjk(h):
