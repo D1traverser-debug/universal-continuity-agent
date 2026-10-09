@@ -1,6 +1,6 @@
 {
   "schema_version": "3.3",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_OS",
-  "updated_at": "2026-10-09T10:45:43Z",
+  "updated_at": "2026-10-09T10:48:03Z",
   "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
   "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state and continue CH9 from the READY contract without redoing completed CH8 work.",
   "checkpoint_ref": "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/CONTINUITY_TASK_CHECKPOINT.json",
@@ -41,6 +41,8 @@
   "continuity_acceptance": {
     "result": "PASS",
     "owner_acceptance_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ACCEPTANCE.json",
+    "owner_guard_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_GUARD_RESULT.json",
+    "owner_guard_script_ref": "/NOVEL_OS_小说系统/00_SYSTEM/scripts/continuity_adapter_guard.py",
     "test_ref": "tests/test_novel_os_task_manifest.py",
     "new_chat_recovery": "PASS",
     "takeover_simulation": "PASS"
@@ -64,6 +66,7 @@
     "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/NEXT_CHAPTER_CONTRACT.md",
     "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/CURRENT_STATE.md",
     "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/LATEST_RECOVERY.md",
-    "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ACCEPTANCE.json"
+    "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ACCEPTANCE.json",
+    "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_GUARD_RESULT.json"
   ]
 }
