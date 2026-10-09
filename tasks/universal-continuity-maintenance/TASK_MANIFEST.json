@@ -1,6 +1,6 @@
 {
   "schema_version": "3.6",
-  "manifest_version": 7,
+  "manifest_version": 8,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-09T15:52:27Z",
-  "current_stage": "V3_6_PROGRESSIVE_CONTEXT_RECOVERY_ACTIVE",
-  "next_action": "继续横向审计其余 required owner 的 handoff/checkpoint，检查简洁性、权威来源、当前执行真相与 artifact 引用质量；只修复有明确证据的问题。",
+  "updated_at": "2026-10-09T15:54:49Z",
+  "current_stage": "V3_6_OWNER_HANDOFF_CONFORMANCE_REPAIR",
+  "next_action": "按 audits/OWNER_HANDOFF_AUDIT_2026-10-09.md 的优先级执行 owner 修复：先验证 Financial Writing v0.3 规则的权威 artifact 并压缩 handoff；再解析 A股 authority/cutover 的稳定 artifact ref；最后验证 Video Growth 重复 checkpoint 字段的更强权威位置后再压缩。不得删除尚无更强持久权威的唯一要求。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_6",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
@@ -26,5 +26,5 @@
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
   "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏"],
-  "artifact_refs": ["ENTRYPOINT.md", "STARTUP_HOOK.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "CONTEXT_RECOVERY_POLICY.json", "MEDIA_DISTILLATION_PROTOCOL.md", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json"]
+  "artifact_refs": ["ENTRYPOINT.md", "STARTUP_HOOK.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "CONTEXT_RECOVERY_POLICY.json", "MEDIA_DISTILLATION_PROTOCOL.md", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json", "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md"]
 }
