@@ -78,7 +78,7 @@ A public browser playback session is still a no-login path if no WeChat account 
 
 Some WeChat Channels implementations expose a media URL together with playback metadata such as a `decode_key` in the authorized/public playback response.
 
-If the media is public/authorized and the playback response itself provides all material required to reconstruct the playable file, that transport representation may be normalized locally for analysis.
+If the media is public/authorized and the playback response itself provides all material required to reconstruct the playable file, that transport representation may be normalized locally for analysis. This rule applies only to public/authorized playback, not to content whose access would require bypassing a restriction.
 
 Do not use this as a way to bypass DRM, paywalls, private-account restrictions or missing authorization. If access depends on circumventing a technical access control rather than reconstructing already-authorized playback, stop.
 
