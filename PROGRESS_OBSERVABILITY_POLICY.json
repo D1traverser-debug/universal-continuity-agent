@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "continuity_contract": "3.7",
+  "purpose": "Make cross-chat continuity observable to the user and mechanically honest about persisted progress.",
+  "resume_progress_receipt": {
+    "name": "Resume Progress Receipt",
+    "user_label_zh": "继承前进度",
+    "trigger": "after exact task selection and authoritative checkpoint read, before substantive resumed work",
+    "snapshot_boundary": "capture the authoritative persisted state before the new-chat lease/takeover mutates resume_epoch or active_lease",
+    "required_fields": [
+      "task_id",
+      "display_name_zh_or_title",
+      "persisted_at",
+      "status",
+      "current_stage",
+      "next_action",
+      "blockers_or_waiting_state",
+      "checkpoint_ref",
+      "manifest_version",
+      "resume_epoch_before_takeover"
+    ],
+    "source_order": ["authoritative task manifest", "short owner handoff/checkpoint"],
+    "rules": [
+      "Never reconstruct pre-resume progress from chat memory when authoritative state exists.",
+      "Do not claim completed work that is absent from the authoritative checkpoint.",
+      "Show the receipt before substantive continuation so the user can see where the task was actually left.",
+      "If the task is WAITING or BLOCKED, surface the waiting/blocker reason explicitly.",
+      "If required state is unavailable, fail closed instead of inventing a progress summary."
+    ]
+  },
+  "turn_commit_receipt": {
+    "name": "Turn Commit Receipt",
+    "user_label_zh": "进度提交",
+    "trigger": "every final user-facing response while a durable task is active",
+    "statuses": ["COMMITTED", "NO_MATERIAL_CHANGE", "COMMIT_FAILED", "STALE_WRITER", "NOT_APPLICABLE"],
+    "required_fields": [
+      "commit_status",
+      "task_id_or_not_applicable",
+      "current_persisted_stage",
+      "current_persisted_next_action",
+      "checkpoint_ref_or_not_applicable",
+      "manifest_version_or_owner_version",
+      "verified_after_write"
+    ],
+    "rules": {
+      "material_change": "If the turn changes stage, next_action, blocker/waiting state, authority/version context, durable decision, or material artifact state, persistence is required before the final response.",
+      "no_material_change": "Do not create meaningless heartbeat writes. Report NO_MATERIAL_CHANGE and state the unchanged durable resume point.",
+      "committed": "COMMITTED may be reported only after the write succeeded and the authoritative state was re-read/verified. A tool success without re-read is insufficient.",
+      "failed": "If material progress should have been persisted but the write or verification fails, report COMMIT_FAILED and explicitly state that the new progress may not survive the next chat.",
+      "stale_writer": "If the current lease/epoch no longer matches, report STALE_WRITER and do not checkpoint.",
+      "external_owner": "When business state is owned outside the universal repository, verification must use that owner's authoritative version/checkpoint rather than pretending a Universal cache write proves business persistence."
+    }
+  },
+  "anti_false_positive": {
+    "assistant_self_report_is_not_proof": true,
+    "cache_update_is_not_authoritative_commit": true,
+    "commit_sha_without_authoritative_state_verification_is_not_enough": true,
+    "receipt_must_distinguish_no_change_from_failed_commit": true
+  },
+  "performance": {
+    "do_not_write_every_turn_if_state_unchanged": true,
+    "receipts_are_small": true,
+    "no_global_discovery_for_turn_receipts": true,
+    "after_owner_selection_use_owner_authority_only": true
+  }
+}
