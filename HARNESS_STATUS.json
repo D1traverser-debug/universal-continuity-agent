@@ -1,14 +1,14 @@
 {
   "schema_version": "3.6",
   "updated_at": "2026-10-09",
-  "status": "PASS_V36_E2E_PROGRESSIVE_RECOVERY_AUDITED",
+  "status": "PASS_V36_E2E_PROGRESSIVE_RECOVERY_FULL_MEDIA_AUDITED",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37940370435,
-    "job_id": 113852904144,
+    "github_actions_run_id": 37941434439,
+    "job_id": 113856522098,
     "editable_install": "PASS",
     "pytest": "PASS",
-    "pytest_count": 40
+    "pytest_count": 41
   },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
@@ -52,9 +52,11 @@
     "same_media_identity_resolved": true,
     "audio_transcript_full": true,
     "same_author_companion_article_full": true,
-    "visual_full_stream_review": false,
-    "visual_status": "PENDING_FULL_STREAM_OR_SCENE_ACCESS",
-    "evidence_levels_kept_distinct": true
+    "visual_full_stream_review": true,
+    "visual_status": "FULL_END_TO_END_VIDEO_WATCH_00_00_TO_20_14",
+    "visual_evidence_scope": ["Obsidian canvas", "source/document lists", "benchmark/pricing tables", "context decision tree", "handoff skill", "experimental config/issues", "model/integration diagrams", "Prompt/AGENTS.md/Skills examples", "subagent/testing guidance", "migration checklist"],
+    "evidence_levels_kept_distinct": true,
+    "distillation_rule": "adopt only verified Continuity-scope principles; reject brittle numeric, pricing, model-routing, third-party bridge, anecdotal and experimental-feature claims as core invariants"
   },
   "human_task_identity": {
     "field": "display_name_zh",
