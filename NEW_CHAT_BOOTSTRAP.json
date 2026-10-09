@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.4",
+  "schema_version": "1.5",
   "updated_at": "2026-10-09",
   "applies": "first explicit continuation or first substantive user message after account-level routing",
   "startup_hook": {
@@ -16,12 +16,14 @@
     "For bare CONTINUE such as 继承/继续/恢复 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json and query every required source before reporting a total candidate count.",
     "If any required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
     "For semantic CONTINUE with an exact task/domain hint, route to the matching owner first and resolve the exact task without requiring a global scan.",
+    "Classify task topology using CONTEXT_RECOVERY_POLICY.json: same-goal continue, fresh-handoff same-goal, side query, fork child task, or new task.",
+    "For resumed work, load context progressively: metadata -> short authoritative handoff -> exact artifacts needed for next_action -> selective owner search/history -> old chat history only as last resort.",
+    "Run compatibility check before replaying executable state.",
+    "Acquire and verify the writer lease before substantive same-task work in a new chat.",
     "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
     "If the task is likely to span chats or has meaningful external/artifact state, persist before deep work.",
     "For any durable USER task, establish stable task_id and display_name_zh before substantive work; if display_name_zh is missing, ask the user once, persist the answer, then continue the original work without another confirmation.",
-    "If it belongs to an existing system, create/register a task under that system owner.",
-    "If it is a new domain/system, bootstrap it under GENERIC_HANDOFF, then create the first task.",
-    "Checkpoint on meaningful state changes throughout execution; do not wait for context exhaustion."
+    "Checkpoint material state changes throughout execution; do not wait for context exhaustion."
   ],
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
@@ -30,6 +32,21 @@
     "report_count_only_when_complete": true,
     "on_missing_source": "INCOMPLETE_DISCOVERY",
     "partial_result_label_required": true
+  },
+  "context_recovery": {
+    "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
+    "preload_entire_old_chat": false,
+    "handoff_is_transcript": false,
+    "artifact_reference_preferred_over_copy": true,
+    "fixed_token_threshold": null
+  },
+  "task_topology": {
+    "same_goal": "reuse task_id",
+    "same_goal_fresh_context": "same task_id + new chat takeover",
+    "temporary_side_question": "do not mutate durable stage unless task meaning changes",
+    "material_major_branch": "new child task_id with parent_task_id",
+    "independent_work": "new task_id + learning only"
   },
   "durable_task_triggers": [
     "user frames it as a project/system/series",
@@ -62,7 +79,7 @@
     "display_name_zh; ask user once if missing",
     "TASK_MANIFEST authority",
     "best-effort rebuildable registry cache update",
-    "initial checkpoint",
+    "initial short checkpoint/handoff with artifact refs",
     "perform substantive work",
     "event-driven checkpoint updates"
   ],
@@ -78,9 +95,10 @@
     "before switching tasks",
     "before/after long or high-risk tool chain",
     "pause/complete/archive/reopen",
-    "conversation interruption risk"
+    "conversation interruption risk",
+    "before a fresh-context handoff"
   ],
-  "rule": "Checkpoint stores the latest execution truth, not a transcript.",
+  "rule": "Checkpoint stores the latest execution truth, not a transcript. Reference existing artifacts rather than duplicating them.",
   "single_writer": {
     "model": "NEW_CHAT_TAKEOVER_SUPERSEDES_OLD_CHAT",
     "user_workflow_assumption": "After a task is inherited into a new chat, the old chat is retired and not used for that task.",
@@ -98,9 +116,15 @@
     "startup_hook_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
     "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_ONLY",
     "steady_state": "After task/owner selection, do not repeat global discovery until task switch, explicit re-inherit, or detected lease/contract drift.",
-    "discovery_payload": "Read manifest/index metadata only; load full business checkpoint after owner selection.",
+    "discovery_payload": "Read manifest/index metadata only; read short handoff after selection; load deeper artifacts only when needed.",
+    "old_history_policy": "LAST_RESORT",
     "checkpoint_coalescing": "Coalesce small related state changes within one completed work batch; checkpoint every material state transition.",
     "max_candidate_surface": 5
+  },
+  "verification": {
+    "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "principle": "risk-matched verification",
+    "broad_unrelated_tests_by_default": false
   },
   "degraded_mode": {
     "simple_one_shot": "Proceed normally if Continuity storage is unavailable.",
