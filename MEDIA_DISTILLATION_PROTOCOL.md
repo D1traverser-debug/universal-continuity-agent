@@ -45,21 +45,39 @@ Good for identity resolution and navigation, not for reconstructing the full con
 ### L4 — Third-party summaries/transcripts
 Use only as corroboration or discovery hints. Never allow L4 to silently override L1/L2.
 
-## 2. Fast extraction order
+## 2. Platform-independent extraction order
 
-For a user-provided media URL:
+For a user-provided media URL, the original platform is the default path. A mirror is an optimization, never a dependency.
 
-1. Resolve canonical identity: author, title, duration, date, stable media ID.
-2. Look for the same author's public mirror of the exact media (for example WeChat -> YouTube) using title/author/duration/chapter alignment.
-3. Prefer platform-native full transcript/captions when available.
-4. Use an end-to-end visual/video analysis path when the user wants the video itself learned, not just the spoken content.
-5. Try direct audio/video stream extraction only when needed for missing evidence.
-6. Read same-author canonical companion material for structure, links and technical details.
-7. Use page metadata and third-party material only to fill clearly labeled gaps.
+1. Resolve canonical identity on the original platform: author, title, duration, date, stable media/page identity.
+2. Inspect original-platform page state for transcript/captions, media metadata, embedded player state, media IDs and stream references.
+3. Prefer an original-platform full transcript/caption track when available.
+4. If transcript is absent, obtain the original audio/video stream when technically accessible and produce a full transcript from the audio.
+5. When the user wants the video itself learned, review the full visual timeline or explicitly mark the result as visual sampling only.
+6. Read same-author companion material for structure, links and technical detail, but keep it separate from original-media evidence.
+7. An exact same-author mirror may be used to accelerate extraction only after identity is verified; it must not be required for completion.
+8. Use third-party material only to fill clearly labeled gaps.
 
 If the user prohibits a retrieval tool, do not use it.
 
-## 3. Same-media identity check
+## 3. WeChat-only path
+
+WeChat/Weixin content is a first-class source. Do NOT require YouTube, Bilibili or another mirror.
+
+For a WeChat Official Account article/video or Weixin video page:
+
+1. Open and parse the original WeChat page first.
+2. Resolve page/media identity and inspect the page's embedded state for player metadata, media IDs, caption/transcript references and signed media/stream references.
+3. If the original page exposes transcript/captions, retrieve the complete timeline directly.
+4. If no transcript is exposed but an original media stream is accessible, retrieve that media, extract the audio, transcribe the full duration, and analyze the video timeline.
+5. If the stream URL is session-bound, use an authenticated/connected browser session to resolve and play the original media rather than immediately searching for a mirror.
+6. If the original media can be played but cannot be exported, perform browser-based visual review and capture time-addressable evidence where the available browser tooling permits it; do not claim audio/full-visual completion beyond what was actually reviewed.
+7. If WeChat blocks extraction behind login/session/anti-automation and no connected browser path can expose the media, the guaranteed fallback is the user-provided original video/audio file. This is the last resort, not the default request.
+8. Only after the original-platform path is attempted may an exact same-author mirror be used as an accelerator. If no mirror exists, the WeChat-only path remains valid.
+
+Completion labels for WeChat-only work remain identical to every other platform. There is no weaker standard merely because the source is WeChat.
+
+## 4. Same-media identity check
 
 A mirror may be treated as the same media only when multiple independent signals align, such as:
 - exact or near-exact title;
@@ -70,7 +88,9 @@ A mirror may be treated as the same media only when multiple independent signals
 
 If identity is uncertain, label it as a related source rather than the same video.
 
-## 4. Completion claims
+A mirror is never promoted above the original source merely because it is easier to scrape.
+
+## 5. Completion claims
 
 Allowed claims:
 - “完整读完音轨/字幕”: only when transcript/audio coverage spans the full media timeline.
@@ -80,7 +100,7 @@ Allowed claims:
 Forbidden shortcut:
 - author article + description + partial transcript -> “完整看完原视频”.
 
-## 5. Distillation pipeline — 取其精华，去其糟粕
+## 6. Distillation pipeline — 取其精华，去其糟粕
 
 Do not copy external advice directly into the Agent.
 
@@ -94,7 +114,7 @@ For each candidate principle:
 7. Add regression tests or mechanical acceptance evidence when the change is executable.
 8. Record what was rejected or kept as heuristic so future agents do not repeatedly rediscover the same distinction.
 
-## 6. Context-recovery principles currently accepted
+## 7. Context-recovery principles currently accepted
 
 These are durable architectural principles, not copied wording:
 - Handoff should describe current execution truth, not reproduce chat history.
@@ -107,7 +127,7 @@ These are durable architectural principles, not copied wording:
 - Reversible internal work should proceed autonomously; irreversible/external actions keep their approval boundary.
 - Routing/instruction surfaces should primarily define goals, context, constraints, completion/decision boundaries and where to load deeper knowledge, rather than micromanaging every reasoning step.
 
-## 7. Explicit non-adoptions
+## 8. Explicit non-adoptions
 
 Do NOT turn these media-specific claims into Universal Continuity invariants without separate evidence:
 - a fixed “smart-zone” token threshold such as 150K;
@@ -121,7 +141,7 @@ Do NOT turn these media-specific claims into Universal Continuity invariants wit
 
 Those may be useful observations in their own domains, but they are outside Continuity's core authority, may change with products/models, or require separate verification.
 
-## 8. Current reference case
+## 9. Current reference case
 
 Reference media: Jason Efficiency Lab / “4 个必须学习的 GPT-6 核心技巧：让你把 Codex 发挥到极致”.
 
@@ -139,5 +159,7 @@ Reference-case disposition:
 - `VISUAL_FULL_STREAM_REVIEW = true`
 - `SAME_AUTHOR_COMPANION_FULL = true`
 - `EVIDENCE_LEVELS_KEPT_DISTINCT = true`
+
+Important: YouTube was an accelerator for this reference case, not a required dependency of the protocol. A future WeChat-only source must follow section 3 and can still reach L1 without any external mirror.
 
 This reference case exists to enforce evidence honesty, not to make the media itself an authority over the Agent.
