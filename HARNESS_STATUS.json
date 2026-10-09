@@ -1,13 +1,23 @@
 {
-  "schema_version": "3.2",
+  "schema_version": "3.3",
   "updated_at": "2026-10-09",
-  "status": "PASS_GITHUB_CUTOVER",
+  "status": "PASS_GITHUB_CUTOVER_V33",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37913601041,
-    "job_id": 113764342985,
+    "github_actions_run_id": 37916708551,
+    "job_id": 113774556132,
     "editable_install": "PASS",
-    "pytest": "PASS"
+    "pytest": "PASS",
+    "pytest_count": 20
+  },
+  "human_task_identity": {
+    "field": "display_name_zh",
+    "persisted_user_task_required": true,
+    "missing_behavior": "ASK_USER_ONCE_THEN_PERSIST_AND_CONTINUE",
+    "machine_identity": "task_id",
+    "rename_keeps_task_id": true,
+    "candidate_ui_prefers_display_name_zh": true,
+    "continuation_phrase_matching": true
   },
   "hardening": {
     "registry_cache_only": true,
