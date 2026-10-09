@@ -1,0 +1,38 @@
+{
+  "schema_version": "3.0",
+  "required_metadata": [
+    "task_id",
+    "task_class",
+    "domain",
+    "title",
+    "status",
+    "resume_eligible",
+    "resume_visibility",
+    "recovery_owner",
+    "updated_at",
+    "current_stage",
+    "next_action",
+    "checkpoint_ref",
+    "contract_version"
+  ],
+  "required_capabilities": [
+    "list_resumable_tasks_metadata_only",
+    "get_task_checkpoint_by_id",
+    "compatibility_check",
+    "resume_or_migrate_or_block"
+  ],
+  "bare_inherit_predicate": {
+    "task_class": ["USER"],
+    "resume_eligible": true,
+    "resume_visibility": ["DEFAULT"],
+    "status": ["ACTIVE", "WAITING", "BLOCKED"]
+  },
+  "fail_closed": {
+    "missing_task_class": "MIGRATION",
+    "missing_resume_eligible": false,
+    "missing_resume_visibility": "EXPLICIT_ONLY",
+    "missing_contract_version": "legacy-unclassified"
+  },
+  "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
+  "generic_fallback_owner": "GENERIC_HANDOFF"
+}
