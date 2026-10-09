@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.4",
+  "schema_version": "3.5",
   "role": "REBUILDABLE_CACHE_NOT_AUTHORITY",
   "authority": "per-task TASK_MANIFEST.json or stronger domain owner checkpoint",
   "tasks": [
@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_4_DETERMINISTIC_DISCOVERY_ACTIVE",
-      "next_action": "继续接入现有聊天/任务并维护 v3.4 完整 owner discovery、候选一致性与恢复验收；修改前读取 main 最新 HEAD。",
+      "current_stage": "V3_5_STARTUP_HOOK_REQUIRED",
+      "next_action": "配置账户级 Custom Instructions 启动钩子，并在真正新聊天中用裸‘继承’做端到端验收。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-      "contract_version": "CONTINUITY_V3_4",
+      "contract_version": "CONTINUITY_V3_5",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-09T13:05:00Z"
+      "updated_at": "2026-10-09T13:16:00Z"
     }
   ]
 }
