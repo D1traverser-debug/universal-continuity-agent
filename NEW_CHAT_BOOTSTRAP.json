@@ -1,10 +1,19 @@
 {
-  "schema_version": "1.3",
+  "schema_version": "1.4",
   "updated_at": "2026-10-09",
-  "applies": "first substantive user message of every new chat",
+  "applies": "first explicit continuation or first substantive user message after account-level routing",
+  "startup_hook": {
+    "required": true,
+    "canonical_ref": "STARTUP_HOOK.md",
+    "account_level_instruction_expected": true,
+    "github_or_library_files_auto_load": false,
+    "missing_hook_result": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "continue_intent_precedence": "Explicit 继承/继续/恢复 intent must route here before NEW_TASK learning-only inheritance is applied."
+  },
   "flow": [
+    "Require the account-level startup hook to route explicit continuation intent into Universal Continuity; file presence alone is not a trigger.",
     "Classify CONTINUE vs NEW_TASK before loading task state.",
-    "For bare CONTINUE such as 继承/继续 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json and query every required source before reporting a total candidate count.",
+    "For bare CONTINUE such as 继承/继续/恢复 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json and query every required source before reporting a total candidate count.",
     "If any required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
     "For semantic CONTINUE with an exact task/domain hint, route to the matching owner first and resolve the exact task without requiring a global scan.",
     "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
@@ -86,7 +95,8 @@
     "limitation": "GitHub per-file manifest updates use the previously read blob SHA as a compare-and-swap guard; stale writers fail closed."
   },
   "performance": {
-    "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_ONLY",
+    "startup_hook_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
+    "bootstrap_scope": "FIRST_EXPLICIT_CONTINUATION_OR_FIRST_SUBSTANTIVE_MESSAGE_AFTER_ROUTING",
     "steady_state": "After task/owner selection, do not repeat global discovery until task switch, explicit re-inherit, or detected lease/contract drift.",
     "discovery_payload": "Read manifest/index metadata only; load full business checkpoint after owner selection.",
     "checkpoint_coalescing": "Coalesce small related state changes within one completed work batch; checkpoint every material state transition.",
@@ -97,6 +107,7 @@
     "explicit_known_domain_task": "Use domain owner directly when exact task identity is available; do not let global router become a single point of failure.",
     "resume_unknown_state": "FAIL_CLOSED; never reconstruct executable state from chat guesswork.",
     "bare_inherit_partial_owner_failure": "INCOMPLETE_DISCOVERY; do not claim a total candidate count from partial owner results.",
+    "startup_hook_missing": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED; do not silently convert explicit continuation into learning-only inheritance.",
     "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds."
   }
 }
