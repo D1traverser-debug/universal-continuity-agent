@@ -62,18 +62,23 @@ If the user prohibits a retrieval tool, do not use it.
 
 ## 3. WeChat-only path
 
-WeChat/Weixin content is a first-class source. Do NOT require YouTube, Bilibili or another mirror.
+WeChat/Weixin content is a first-class source. Do NOT require YouTube, Bilibili, user login or a manual upload by default.
 
-For a WeChat Official Account article/video or Weixin video page:
+The detailed extraction ladder is authoritative in `WECHAT_MEDIA_EXTRACTION_PLAYBOOK.md`.
 
-1. Open and parse the original WeChat page first.
-2. Resolve page/media identity and inspect the page's embedded state for player metadata, media IDs, caption/transcript references and signed media/stream references.
-3. If the original page exposes transcript/captions, retrieve the complete timeline directly.
-4. If no transcript is exposed but an original media stream is accessible, retrieve that media, extract the audio, transcribe the full duration, and analyze the video timeline.
-5. If the stream URL is session-bound, use an authenticated/connected browser session to resolve and play the original media rather than immediately searching for a mirror.
-6. If the original media can be played but cannot be exported, perform browser-based visual review and capture time-addressable evidence where the available browser tooling permits it; do not claim audio/full-visual completion beyond what was actually reviewed.
-7. If WeChat blocks extraction behind login/session/anti-automation and no connected browser path can expose the media, the guaranteed fallback is the user-provided original video/audio file. This is the last resort, not the default request.
-8. Only after the original-platform path is attempted may an exact same-author mirror be used as an accelerator. If no mirror exists, the WeChat-only path remains valid.
+For a WeChat Official Account article/video or `weixin.qq.com/sph/...` page, the default order is:
+
+1. original public page and embedded player state;
+2. direct MP4/HLS/audio/caption/media request;
+3. public share-link resolution when appropriate;
+4. public browser playback/network media capture behind dynamic or `blob:` players;
+5. exact same-author mirror only as an accelerator after identity verification;
+6. authenticated playback only when the content is genuinely session-bound and all no-login paths have failed;
+7. user-provided original file only as the final guaranteed fallback.
+
+The system must not ask the user to log in simply because login would be easier than trying the no-login ladder.
+
+If the public/authorized playback response exposes all material required to reconstruct the playable media, local normalization is allowed for analysis. Do not bypass DRM, paywalls, private-account restrictions, regional blocks or other access controls.
 
 Completion labels for WeChat-only work remain identical to every other platform. There is no weaker standard merely because the source is WeChat.
 
@@ -160,6 +165,6 @@ Reference-case disposition:
 - `SAME_AUTHOR_COMPANION_FULL = true`
 - `EVIDENCE_LEVELS_KEPT_DISTINCT = true`
 
-Important: YouTube was an accelerator for this reference case, not a required dependency of the protocol. A future WeChat-only source must follow section 3 and can still reach L1 without any external mirror.
+Important: YouTube was an accelerator for this reference case, not a required dependency of the protocol. A future WeChat-only source follows `WECHAT_MEDIA_EXTRACTION_PLAYBOOK.md` and can reach L1 without any external mirror or user login when the public media chain is technically resolvable.
 
 This reference case exists to enforce evidence honesty, not to make the media itself an authority over the Agent.
