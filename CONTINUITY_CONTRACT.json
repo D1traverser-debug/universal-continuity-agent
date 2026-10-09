@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.3",
+  "schema_version": "3.4",
   "purpose": "Universal cross-chat task continuity contract",
   "default_candidate_predicate": {
     "task_class": ["USER"],
@@ -12,7 +12,7 @@
   "status": ["ACTIVE", "WAITING", "BLOCKED", "PAUSED", "COMPLETE", "ABANDONED", "ARCHIVED"],
   "compatibility_result": ["COMPATIBLE", "MIGRATABLE", "INCOMPATIBLE", "UNKNOWN"],
   "required_fields": ["task_id", "task_class", "domain", "title", "status", "resume_eligible", "resume_visibility", "recovery_owner", "updated_at", "manifest_ref", "manifest_version", "resume_epoch"],
-  "recommended_fields": ["current_stage", "next_action", "checkpoint_ref", "artifact_refs", "contract_version", "skill_version", "runtime_version", "created_at", "parent_task_id", "parallel_with", "keywords", "active_lease"],
+  "recommended_fields": ["display_name_zh", "current_stage", "next_action", "checkpoint_ref", "artifact_refs", "contract_version", "skill_version", "runtime_version", "created_at", "parent_task_id", "parallel_with", "keywords", "active_lease"],
   "user_task_human_identity": {
     "field": "display_name_zh",
     "required_for_persisted_user_tasks": true,
@@ -21,6 +21,14 @@
     "rename_behavior": "MUST_NOT_CREATE_NEW_TASK_ID",
     "candidate_ui": "PREFER_DISPLAY_NAME_ZH_FALLBACK_TITLE",
     "max_length": 80
+  },
+  "bare_inherit_discovery": {
+    "policy": "BARE_INHERIT_DISCOVERY.json",
+    "completion_rule": "ALL_REQUIRED_SOURCES_MUST_BE_QUERIED",
+    "source_failure_result": "INCOMPLETE_DISCOVERY",
+    "count_requires_complete_discovery": true,
+    "partial_results_must_be_labeled_incomplete": true,
+    "dedupe_key": "task_id"
   },
   "rules": {
     "chat_is_ephemeral_task_is_durable": true,
@@ -43,13 +51,15 @@
     "checkpoint_requires_current_writer_lease": true,
     "continuity_must_not_block_simple_one_shot_tasks": true,
     "known_domain_owner_can_bypass_global_router_when_router_unavailable": true,
-    "global_discovery_first_message_only": true
+    "global_discovery_first_message_only": true,
+    "bare_inherit_requires_complete_owner_discovery_before_reporting_count": true
   },
   "runtime_harness": {
     "module": "runtime/universal_continuity.py",
     "status": "HARNESS_STATUS.json",
     "owner_adapter_contract": "OWNER_ADAPTER_CONTRACT.json",
     "generic_task_registry": "GENERIC_TASK_REGISTRY.json",
+    "bare_inherit_discovery": "BARE_INHERIT_DISCOVERY.json",
     "task_manifest_home": "tasks/<task>/TASK_MANIFEST.json",
     "system_manifest_home": "systems/<system>/SYSTEM_MANIFEST.json",
     "new_chat_bootstrap": "NEW_CHAT_BOOTSTRAP.json"
