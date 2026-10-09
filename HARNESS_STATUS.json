@@ -1,13 +1,14 @@
 {
   "schema_version": "3.6",
   "updated_at": "2026-10-09",
-  "status": "PASS_V36_CORE_E2E_ACCEPTED_CI_REFRESH_PENDING",
+  "status": "PASS_V36_E2E_PROGRESSIVE_RECOVERY_AUDITED",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "last_known_green_run_id": 37935945901,
+    "github_actions_run_id": 37940370435,
+    "job_id": 113852904144,
     "editable_install": "PASS",
     "pytest": "PASS",
-    "note": "v3.6 CI must refresh this evidence after policy/test changes land"
+    "pytest_count": 40
   },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
