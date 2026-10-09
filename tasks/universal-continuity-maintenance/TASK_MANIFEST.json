@@ -1,6 +1,6 @@
 {
-  "schema_version": "3.3",
-  "manifest_version": 1,
+  "schema_version": "3.4",
+  "manifest_version": 2,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,17 +10,17 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-09T12:47:30Z",
-  "current_stage": "V3_3_GITHUB_CUTOVER_ACTIVE",
-  "next_action": "继续按用户指令接入现有聊天/任务，维护 v3.3 Continuity 兼容性、Owner 路由、恢复验收与回归；任何修改前先读取 GitHub main 最新 HEAD。",
+  "updated_at": "2026-10-09T13:05:00Z",
+  "current_stage": "V3_4_DETERMINISTIC_DISCOVERY_ACTIVE",
+  "next_action": "继续接入现有聊天/任务，并维护 v3.4 完整 owner discovery、候选一致性、Owner 路由、恢复验收与回归；任何修改前先读取 GitHub main 最新 HEAD。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-  "contract_version": "CONTINUITY_V3_3",
+  "contract_version": "CONTINUITY_V3_4",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 0,
   "active_lease": null,
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入"],
-  "artifact_refs": ["ENTRYPOINT.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json"]
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性"],
+  "artifact_refs": ["ENTRYPOINT.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json"]
 }
