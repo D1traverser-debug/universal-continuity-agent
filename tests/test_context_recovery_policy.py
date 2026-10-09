@@ -22,7 +22,7 @@ def test_progressive_resume_load_order_is_narrow_to_deep():
     ]
 
     assert policy["schema_version"] == "1.0"
-    assert contract["schema_version"] == "3.6"
+    assert contract["schema_version"] == "3.7"
     assert contract["context_recovery"]["resume_load_order"] == expected
     assert bootstrap["context_recovery"]["load_order"] == expected
     assert bootstrap["context_recovery"]["preload_entire_old_chat"] is False
