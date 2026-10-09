@@ -1,9 +1,10 @@
 {
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "updated_at": "2026-10-09",
   "resolver": {
     "owner": "UNIVERSAL_CONTINUITY_HARNESS",
-    "module": "runtime/universal_continuity.py"
+    "module": "runtime/universal_continuity.py",
+    "bare_inherit_policy": "BARE_INHERIT_DISCOVERY.json"
   },
   "default_owner": "GENERIC_HANDOFF",
   "owners": [
@@ -13,6 +14,8 @@
       "priority": 0,
       "adapter_status": "READY",
       "checkpoint_authority": "generic durable task manifest/checkpoint",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "GENERIC_TASK_REGISTRY.json",
       "bare_inherit": "USER_DEFAULT_ELIGIBLE_ONLY"
     },
     {
@@ -21,6 +24,8 @@
       "priority": 100,
       "adapter_status": "READY_MECHANICAL",
       "discovery": "domain runtime resumable-task API plus private domain continuity index",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "compatible domain Runtime checkpoint"
     },
     {
@@ -29,6 +34,7 @@
       "priority": 100,
       "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
       "discovery": "private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": false,
       "checkpoint_authority": "private domain engineering handoff"
     },
     {
@@ -36,6 +42,7 @@
       "domains": ["FINANCIAL_WRITING"],
       "priority": 90,
       "adapter_status": "CONTRACT_READY_PERSISTENCE_CONDITIONAL",
+      "bare_inherit_participant": false,
       "checkpoint_authority": "trusted persisted standalone ledger"
     },
     {
@@ -45,6 +52,8 @@
       "priority": 100,
       "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
       "discovery": "domain owner API plus private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "domain cutover-status-selected authority"
     },
     {
@@ -54,6 +63,8 @@
       "adapter_status": "READY_V3_3_DOMAIN_RECOVERY_CHAIN",
       "discovery": "NOVEL_OS /NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
       "adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
       "checkpoint_authority": "NOVEL_OS owner checkpoint and durable recovery chain",
       "business_state_authority": "/NOVEL_OS_小说系统/99_RECOVERY/START_HERE.md",
       "lease_authority": "Universal task manifest CAS"
@@ -64,11 +75,13 @@
       "priority": 100,
       "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
       "discovery": "private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "Video Growth Agent durable recovery chain"
     }
   ],
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",
-    "task_discovery": "owner adapters + private authoritative domain indexes/checkpoints; public registry caches only"
+    "task_discovery": "bare inherit requires complete discovery quorum across all bare_inherit_participant owners; explicit task hints may route directly to the named owner"
   }
 }
