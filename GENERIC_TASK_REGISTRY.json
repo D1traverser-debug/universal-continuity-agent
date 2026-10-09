@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.6",
+  "schema_version": "3.7",
   "role": "REBUILDABLE_CACHE_NOT_AUTHORITY",
   "authority": "per-task TASK_MANIFEST.json or stronger domain owner checkpoint",
   "tasks": [
@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_6_PROGRESSIVE_CONTEXT_RECOVERY_ACTIVE",
-      "next_action": "继续用真实跨聊天恢复案例审计 owner handoff 的简洁性、权威性和 artifact 引用质量；仅在出现经一手证据验证且属于 Continuity scope 的新改进点时升级协议。",
+      "current_stage": "V3_7_PROGRESS_OBSERVABILITY_ACTIVE_OWNER_CONFORMANCE_AND_FRESH_CHAT_E2E",
+      "next_action": "下一次真实新聊天继承时验收 v3.7 继承前进度与进度提交 UX；同时继续按 owner handoff audit 修复 Financial Writing、A股 authority ref 与 Video Growth checkpoint，并按 continuous-learning policy 主动学习可验证的 Continuity-scope 改进。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-      "contract_version": "CONTINUITY_V3_6",
+      "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-09T14:05:00Z"
+      "updated_at": "2026-10-09T16:22:00Z"
     }
   ]
 }
