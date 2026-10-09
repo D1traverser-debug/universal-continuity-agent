@@ -1,14 +1,22 @@
 {
-  "schema_version": "3.3",
+  "schema_version": "3.4",
   "updated_at": "2026-10-09",
-  "status": "PASS_GITHUB_CUTOVER_V33",
+  "status": "PASS_GITHUB_CUTOVER_V34_DETERMINISTIC_DISCOVERY",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37916708551,
-    "job_id": 113774556132,
+    "github_actions_run_id": 37934102169,
+    "job_id": 113831725187,
     "editable_install": "PASS",
     "pytest": "PASS",
-    "pytest_count": 20
+    "pytest_count": 27
+  },
+  "bare_inherit_discovery": {
+    "policy": "BARE_INHERIT_DISCOVERY.json",
+    "all_required_sources_must_be_queried": true,
+    "partial_failure_result": "INCOMPLETE_DISCOVERY",
+    "candidate_count_requires_complete_discovery": true,
+    "dedupe_key": "task_id",
+    "live_user_task_names_not_stored_in_public_harness": true
   },
   "human_task_identity": {
     "field": "display_name_zh",
