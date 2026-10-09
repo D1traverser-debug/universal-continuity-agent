@@ -1,0 +1,10 @@
+{
+  "schema_version": "3.2",
+  "updated_at": "2026-10-09",
+  "migration_id": "continuity-library-to-github-20261009",
+  "status": "ENGINEERING_CORE_MIGRATING",
+  "source": "ChatGPT Library continuity infrastructure",
+  "destination": "this repository main branch",
+  "live_user_state_policy": "live task state remains with private domain owners; public continuity repo does not expose user task checkpoints",
+  "library_cleanup": "PENDING_FINAL_GITHUB_VERIFICATION"
+}
