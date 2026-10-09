@@ -1,0 +1,6 @@
+{
+  "schema_version": "3.2",
+  "role": "REBUILDABLE_CACHE_NOT_AUTHORITY",
+  "authority": "per-task TASK_MANIFEST.json",
+  "tasks": []
+}
