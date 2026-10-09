@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "continuity_contract": "3.4",
+  "purpose": "Deterministic bare-inherit discovery quorum",
+  "required_sources": [
+    {
+      "owner": "GENERIC_HANDOFF",
+      "source": "GENERIC_TASK_REGISTRY.json",
+      "filter": "USER + DEFAULT + resume_eligible + ACTIVE/WAITING/BLOCKED"
+    },
+    {
+      "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
+      "filter": "Default USER candidates only"
+    },
+    {
+      "owner": "A_SHARE_MARKET_AGENT",
+      "source": "D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md",
+      "filter": "Default USER candidates only"
+    },
+    {
+      "owner": "NOVEL_OS",
+      "source": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
+      "filter": "USER + DEFAULT + resumable only"
+    },
+    {
+      "owner": "VIDEO_GROWTH_AGENT",
+      "source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
+      "filter": "Default USER candidates only"
+    }
+  ],
+  "completion_rule": "ALL_REQUIRED_SOURCES_MUST_BE_QUERIED",
+  "on_source_failure": "INCOMPLETE_DISCOVERY",
+  "count_rule": "DO_NOT_REPORT_TOTAL_CANDIDATE_COUNT_UNLESS_DISCOVERY_COMPLETE",
+  "partial_results_rule": "MAY_SHOW_PARTIAL_RESULTS_ONLY_IF_EXPLICITLY_LABELED_INCOMPLETE; NEVER_CALL_THEM_THE_FULL_LIST",
+  "dedupe_key": "task_id",
+  "candidate_label": "display_name_zh preferred; title fallback",
+  "max_presented_candidates": 5,
+  "non_default_exclusions": ["SYSTEM_INFRA", "TEST", "FIXTURE", "EVAL", "MIGRATION", "EXPLICIT_ONLY", "HIDDEN", "PAUSED", "COMPLETE", "ARCHIVED", "ABANDONED"]
+}
