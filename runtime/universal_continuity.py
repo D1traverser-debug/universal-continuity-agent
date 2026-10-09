@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Any, Iterable, Mapping, Protocol, Sequence
 from uuid import uuid4
 
-SCHEMA_VERSION = "3.3"
+SCHEMA_VERSION = "3.7"
 
 
 class TaskClass(str, Enum):
@@ -41,6 +41,14 @@ class Compatibility(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
+class CommitStatus(str, Enum):
+    COMMITTED = "COMMITTED"
+    NO_MATERIAL_CHANGE = "NO_MATERIAL_CHANGE"
+    COMMIT_FAILED = "COMMIT_FAILED"
+    STALE_WRITER = "STALE_WRITER"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+
+
 DEFAULT_STATUSES = {TaskStatus.ACTIVE, TaskStatus.WAITING, TaskStatus.BLOCKED}
 NON_USER_CLASSES = {
     TaskClass.SYSTEM_INFRA,
@@ -59,7 +67,12 @@ class ResumeLease:
     supersedes_lease_id: str | None = None
 
     @classmethod
-    def from_mapping(cls, raw: Mapping[str, Any] | None) -> "ResumeLease | None":
+    def from_mapping(
+        cls,
+        raw: Mapping[str, Any] | None,
+        *,
+        fallback_resume_epoch: int = 0,
+    ) -> "ResumeLease | None":
         if not raw:
             return None
         acquired = raw.get("acquired_at")
@@ -71,7 +84,7 @@ class ResumeLease:
             acquired = acquired.replace(tzinfo=timezone.utc)
         return cls(
             lease_id=str(raw["lease_id"]),
-            resume_epoch=int(raw["resume_epoch"]),
+            resume_epoch=int(raw.get("resume_epoch", fallback_resume_epoch)),
             acquired_at=acquired,
             supersedes_lease_id=raw.get("supersedes_lease_id"),
         )
@@ -117,6 +130,7 @@ class TaskMetadata:
         display_name_zh = raw.get("display_name_zh")
         if display_name_zh is not None:
             display_name_zh = " ".join(str(display_name_zh).split()) or None
+        resume_epoch = int(raw.get("resume_epoch", 0))
         return cls(
             task_id=str(raw["task_id"]),
             domain=str(raw["domain"]),
@@ -138,8 +152,8 @@ class TaskMetadata:
             artifact_refs=tuple(str(x) for x in raw.get("artifact_refs", ()) if str(x).strip()),
             manifest_ref=raw.get("manifest_ref"),
             manifest_version=int(raw.get("manifest_version", 1)),
-            resume_epoch=int(raw.get("resume_epoch", 0)),
-            active_lease=ResumeLease.from_mapping(raw.get("active_lease")),
+            resume_epoch=resume_epoch,
+            active_lease=ResumeLease.from_mapping(raw.get("active_lease"), fallback_resume_epoch=resume_epoch),
         )
 
 
@@ -156,6 +170,33 @@ class CompatibilityDecision:
     reason: str
     reusable_refs: tuple[str, ...] = ()
     invalidated_refs: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class ResumeProgressReceipt:
+    task_id: str
+    display_name: str
+    persisted_at: datetime
+    status: TaskStatus
+    current_stage: str | None
+    next_action: str | None
+    blockers_or_waiting_state: tuple[str, ...]
+    checkpoint_ref: str | None
+    manifest_version: int
+    resume_epoch_before_takeover: int
+
+
+@dataclass(frozen=True)
+class TurnCommitReceipt:
+    commit_status: CommitStatus
+    task_id: str | None
+    current_persisted_stage: str | None
+    current_persisted_next_action: str | None
+    checkpoint_ref: str | None
+    manifest_version: int | None
+    resume_epoch: int | None
+    verified_after_write: bool
+    detail: str = ""
 
 
 class OwnerAdapter(Protocol):
@@ -323,9 +364,16 @@ def classify_version_compatibility(
 
 
 def acquire_resume_lease(task: TaskMetadata, *, lease_id: str | None = None, now: datetime | None = None) -> TaskMetadata:
-    """Create a new single-writer epoch for a newly inherited chat."""
-    if task.task_class != TaskClass.USER:
-        raise ValueError("only USER tasks may acquire a normal resume lease")
+    """Create a new single-writer epoch for a newly inherited chat.
+
+    USER tasks may resume normally. SYSTEM_INFRA tasks may resume only through an
+    explicit-only route; they remain excluded from bare USER discovery.
+    """
+    if task.task_class == TaskClass.SYSTEM_INFRA:
+        if task.resume_visibility != ResumeVisibility.EXPLICIT_ONLY or not task.resume_eligible:
+            raise ValueError("SYSTEM_INFRA takeover requires resume_eligible + EXPLICIT_ONLY")
+    elif task.task_class != TaskClass.USER:
+        raise ValueError("only USER or explicit SYSTEM_INFRA tasks may acquire a resume lease")
     if not explicit_eligible(task):
         raise ValueError(f"task status is not resumable: {task.status.value}")
     now = now or datetime.now(timezone.utc)
@@ -360,6 +408,94 @@ def verify_resume_lease(task: TaskMetadata, lease_id: str, *, resume_epoch: int 
 def assert_checkpoint_writer(task: TaskMetadata, *, lease_id: str, resume_epoch: int) -> None:
     if not verify_resume_lease(task, lease_id, resume_epoch=resume_epoch):
         raise RuntimeError("STALE_WRITER_LEASE: this chat no longer owns the task; re-inherit from the latest checkpoint")
+
+
+def _receipt_state_items(raw: Any) -> tuple[str, ...]:
+    if raw is None:
+        return ()
+    if not isinstance(raw, (list, tuple)):
+        raw = [raw]
+    items: list[str] = []
+    for item in raw:
+        if isinstance(item, Mapping):
+            detail = item.get("detail") or item.get("reason") or item.get("type")
+            items.append(str(detail if detail is not None else dict(item)))
+        else:
+            items.append(str(item))
+    return tuple(x for x in items if x.strip())
+
+
+def build_resume_progress_receipt(
+    task: TaskMetadata,
+    checkpoint: Mapping[str, Any] | None = None,
+) -> ResumeProgressReceipt:
+    """Capture the persisted progress boundary before new-chat takeover mutation."""
+    checkpoint = checkpoint or {}
+    blockers = _receipt_state_items(checkpoint.get("blockers"))
+    waiting = _receipt_state_items(checkpoint.get("waiting_on"))
+    persisted_at = task.updated_at
+    raw_updated = checkpoint.get("updated_at")
+    if isinstance(raw_updated, str):
+        try:
+            persisted_at = datetime.fromisoformat(raw_updated.replace("Z", "+00:00"))
+        except ValueError:
+            persisted_at = task.updated_at
+    return ResumeProgressReceipt(
+        task_id=task.task_id,
+        display_name=candidate_display_name(task),
+        persisted_at=persisted_at,
+        status=TaskStatus(str(checkpoint.get("status", task.status.value))),
+        current_stage=checkpoint.get("current_stage") or task.current_stage,
+        next_action=checkpoint.get("next_action") or task.next_action,
+        blockers_or_waiting_state=blockers + waiting,
+        checkpoint_ref=task.checkpoint_ref,
+        manifest_version=task.manifest_version,
+        resume_epoch_before_takeover=task.resume_epoch,
+    )
+
+
+def build_turn_commit_receipt(
+    task: TaskMetadata | None,
+    *,
+    commit_required: bool,
+    write_succeeded: bool = False,
+    verified_after_write: bool = False,
+    lease_id: str | None = None,
+    resume_epoch: int | None = None,
+    detail: str = "",
+) -> TurnCommitReceipt:
+    """Classify what the user may truthfully be told about durable progress."""
+    if task is None:
+        return TurnCommitReceipt(
+            commit_status=CommitStatus.NOT_APPLICABLE,
+            task_id=None,
+            current_persisted_stage=None,
+            current_persisted_next_action=None,
+            checkpoint_ref=None,
+            manifest_version=None,
+            resume_epoch=None,
+            verified_after_write=False,
+            detail=detail or "no active durable task",
+        )
+    if lease_id is not None and not verify_resume_lease(task, lease_id, resume_epoch=resume_epoch):
+        status = CommitStatus.STALE_WRITER
+    elif not commit_required:
+        status = CommitStatus.NO_MATERIAL_CHANGE
+    elif write_succeeded and verified_after_write:
+        status = CommitStatus.COMMITTED
+    else:
+        status = CommitStatus.COMMIT_FAILED
+    return TurnCommitReceipt(
+        commit_status=status,
+        task_id=task.task_id,
+        current_persisted_stage=task.current_stage,
+        current_persisted_next_action=task.next_action,
+        checkpoint_ref=task.checkpoint_ref,
+        manifest_version=task.manifest_version,
+        resume_epoch=task.resume_epoch,
+        verified_after_write=bool(verified_after_write and status == CommitStatus.COMMITTED),
+        detail=detail,
+    )
 
 
 def registry_manifest_drift(index_rows: Iterable[Mapping[str, Any]], manifest_rows: Iterable[Mapping[str, Any]]) -> list[str]:
@@ -403,6 +539,6 @@ def validate_checkpoint_quality(raw: Mapping[str, Any]) -> list[str]:
     if active_lease:
         if not active_lease.get("lease_id"):
             problems.append("active-lease-missing-id")
-        if int(active_lease.get("resume_epoch", -1)) != int(raw.get("resume_epoch", 0)):
+        if "resume_epoch" in active_lease and int(active_lease.get("resume_epoch", -1)) != int(raw.get("resume_epoch", 0)):
             problems.append("active-lease-epoch-mismatch")
     return problems
