@@ -1,0 +1,71 @@
+{
+  "schema_version": "3.2",
+  "purpose": "Universal cross-chat task continuity contract",
+  "default_candidate_predicate": {
+    "task_class": ["USER"],
+    "resume_eligible": true,
+    "resume_visibility": ["DEFAULT"],
+    "status": ["ACTIVE", "WAITING", "BLOCKED"]
+  },
+  "task_class": ["USER", "SYSTEM_INFRA", "TEST", "FIXTURE", "EVAL", "MIGRATION"],
+  "resume_visibility": ["DEFAULT", "EXPLICIT_ONLY", "HIDDEN"],
+  "status": ["ACTIVE", "WAITING", "BLOCKED", "PAUSED", "COMPLETE", "ABANDONED", "ARCHIVED"],
+  "compatibility_result": ["COMPATIBLE", "MIGRATABLE", "INCOMPATIBLE", "UNKNOWN"],
+  "required_fields": ["task_id", "task_class", "domain", "title", "status", "resume_eligible", "resume_visibility", "recovery_owner", "updated_at", "manifest_ref", "manifest_version", "resume_epoch"],
+  "recommended_fields": ["current_stage", "next_action", "checkpoint_ref", "artifact_refs", "contract_version", "skill_version", "runtime_version", "created_at", "parent_task_id", "parallel_with", "keywords", "active_lease"],
+  "rules": {
+    "chat_is_ephemeral_task_is_durable": true,
+    "new_task_inherits_unfinished_state": false,
+    "explicit_continuation_required_for_task_state": true,
+    "non_user_tasks_excluded_from_bare_inherit": true,
+    "owner_state_beats_continuity_pointer": true,
+    "compatibility_check_required_before_resume": true,
+    "generic_layer_must_not_duplicate_domain_state_machine": true,
+    "unknown_future_domains_default_owner": "GENERIC_HANDOFF",
+    "resolver_is_executable_harness": true,
+    "business_repositories_implement_adapters_only": true,
+    "blank_new_chat_zero_input_autorun_claim_forbidden": true,
+    "natural_continuation_intent_is_sufficient": true,
+    "generic_long_running_tasks_register_early": true,
+    "per_task_manifest_is_authoritative": true,
+    "registry_is_rebuildable_cache": true,
+    "single_active_writer_per_task": true,
+    "new_chat_takeover_supersedes_old_chat": true,
+    "checkpoint_requires_current_writer_lease": true,
+    "continuity_must_not_block_simple_one_shot_tasks": true,
+    "known_domain_owner_can_bypass_global_router_when_router_unavailable": true,
+    "global_discovery_first_message_only": true
+  },
+  "runtime_harness": {
+    "module": "runtime/universal_continuity.py",
+    "status": "HARNESS_STATUS.json",
+    "owner_adapter_contract": "OWNER_ADAPTER_CONTRACT.json",
+    "generic_task_registry": "GENERIC_TASK_REGISTRY.json",
+    "task_manifest_home": "tasks/<task>/TASK_MANIFEST.json",
+    "system_manifest_home": "systems/<system>/SYSTEM_MANIFEST.json",
+    "new_chat_bootstrap": "NEW_CHAT_BOOTSTRAP.json"
+  },
+  "checkpoint_quality_rules": {
+    "resumable_user_requires_checkpoint_ref": true,
+    "terminal_tasks_must_not_be_default_visible": true,
+    "non_user_tasks_must_not_be_default_visible": true,
+    "legacy_missing_metadata_fails_closed": true
+  },
+  "writer_lease": {
+    "model": "single-active-chat",
+    "fields": ["resume_epoch", "active_lease.lease_id", "active_lease.acquired_at", "active_lease.supersedes_lease_id"],
+    "takeover": "new chat increments resume_epoch and replaces active_lease",
+    "prework_verification": "re-read TASK_MANIFEST and confirm own lease before substantive work",
+    "checkpoint_guard": "writer must re-read manifest and match lease_id + resume_epoch before checkpoint",
+    "old_chat_policy": "retired after successful takeover; stale writer must fail closed",
+    "atomicity_limit": "GitHub manifest writes use blob-SHA compare-and-swap semantics; stale writers must refetch and fail closed. Domain runtimes may provide stronger guards."
+  },
+  "performance": {
+    "new_chat_global_discovery": "first substantive message only",
+    "steady_state": "no repeated global scan after task/owner selected",
+    "candidate_metadata_only": true,
+    "full_checkpoint_load_after_selection": true,
+    "max_candidates": 5,
+    "checkpointing": "event-driven and coalesced by completed work batch"
+  }
+}
