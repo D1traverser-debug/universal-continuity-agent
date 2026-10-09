@@ -10,6 +10,9 @@ requires-python = ">=3.11"
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 
+[tool.setuptools]
+packages = ["runtime"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
