@@ -1,0 +1,61 @@
+{
+  "schema_version": "3.3",
+  "manifest_version": 1,
+  "task_id": "FQ001_MINGRI_ORDER",
+  "task_class": "USER",
+  "domain": "NOVEL",
+  "title": "FQ001_MINGRI_ORDER_SERIALIZATION",
+  "display_name_zh": "《凌晨零点，我接到明天的订单》",
+  "status": "WAITING",
+  "resume_eligible": true,
+  "resume_visibility": "DEFAULT",
+  "recovery_owner": "NOVEL_OS",
+  "updated_at": "2026-10-09T10:37:25Z",
+  "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
+  "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state and continue CH9 from the READY contract without redoing completed CH8 work.",
+  "checkpoint_ref": "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/CONTINUITY_TASK_CHECKPOINT.json",
+  "contract_version": "3.3",
+  "skill_version": "NOVEL_OS 1.9.0",
+  "runtime_version": "NOVEL_OS_RECOVERY_CHAIN 2.0",
+  "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
+  "resume_epoch": 1,
+  "active_lease": {
+    "lease_id": "41f8ef0a-9d9b-4288-b377-813d2488d32d",
+    "resume_epoch": 1,
+    "acquired_at": "2026-10-09T10:37:25Z",
+    "supersedes_lease_id": null
+  },
+  "writer_model": "SINGLE_ACTIVE_CHAT",
+  "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
+  "registry_role": "UNIVERSAL_ROUTING_AND_LEASE_MANIFEST",
+  "owner_adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
+  "owner_task_index_ref": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
+  "owner_entrypoint_ref": "/NOVEL_OS_小说系统/99_RECOVERY/START_HERE.md",
+  "business_state_authority": "NOVEL_OS",
+  "lease_authority": "THIS_GITHUB_MANIFEST",
+  "compatibility": {
+    "pre_migration": "MIGRATABLE",
+    "post_migration": "COMPATIBLE",
+    "checked_against": "Universal Continuity v3.3"
+  },
+  "waiting_on": [
+    "USER_EXTERNAL_ACTION_CONFIRMATION: Fanqie publication of CH8"
+  ],
+  "blockers": [],
+  "keywords": [
+    "小说",
+    "明日订单",
+    "凌晨零点",
+    "番茄小说",
+    "FQ001",
+    "NOVEL_OS"
+  ],
+  "artifact_refs": [
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/manuscript/CH0008_FINAL.md",
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/deliverables/CH0008_第8章_药盒上的名字.docx",
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/manuscript/reviews/CH0008_ACCEPTANCE.md",
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/NEXT_CHAPTER_CONTRACT.md",
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/CURRENT_STATE.md",
+    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/LATEST_RECOVERY.md"
+  ]
+}
