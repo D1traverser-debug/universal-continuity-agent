@@ -20,7 +20,16 @@
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
       "adapter_status": "READY_MECHANICAL",
+      "discovery": "domain runtime resumable-task API plus private domain continuity index",
       "checkpoint_authority": "compatible domain Runtime checkpoint"
+    },
+    {
+      "name": "FINANCIAL_WRITING_AGENT_ENGINEERING",
+      "domains": ["FINANCIAL_WRITING_SITE_RUNTIME"],
+      "priority": 100,
+      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "discovery": "private domain continuity/TASK_INDEX.md",
+      "checkpoint_authority": "private domain engineering handoff"
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_STANDALONE",
@@ -34,26 +43,29 @@
       "aliases": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW"],
       "domains": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW", "A_SHARE_MARKET"],
       "priority": 100,
-      "adapter_status": "READY_MECHANICAL_SHADOW_AUTHORITY",
+      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "discovery": "domain owner API plus private domain continuity/TASK_INDEX.md",
       "checkpoint_authority": "domain cutover-status-selected authority"
     },
     {
       "name": "NOVEL_OS",
       "domains": ["NOVEL"],
       "priority": 100,
-      "adapter_status": "READY_POINTER_V3",
+      "adapter_status": "READY_DOMAIN_RECOVERY_CHAIN",
+      "discovery": "NOVEL_OS durable recovery chain",
       "checkpoint_authority": "NOVEL_OS recovery chain"
     },
     {
       "name": "VIDEO_GROWTH_AGENT",
       "domains": ["VIDEO_GROWTH"],
       "priority": 100,
-      "adapter_status": "READY_POINTER_V3",
+      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "discovery": "private domain continuity/TASK_INDEX.md",
       "checkpoint_authority": "Video Growth Agent durable recovery chain"
     }
   ],
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",
-    "task_discovery": "owner adapters + private authoritative manifests; registry caches only"
+    "task_discovery": "owner adapters + private authoritative domain indexes/checkpoints; public registry caches only"
   }
 }
