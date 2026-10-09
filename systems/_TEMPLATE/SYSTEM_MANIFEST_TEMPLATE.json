@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.1",
+  "manifest_version": 1,
+  "system_id": "example-system",
+  "task_class": "USER",
+  "domain": "EXAMPLE",
+  "status": "ACTIVE",
+  "owner": "GENERIC_HANDOFF",
+  "system_home": "durable-system-home",
+  "persistence_mode": "GENERIC_BOOTSTRAP",
+  "manifest_ref": "system-manifest-ref",
+  "registry_role": "AUTHORITATIVE_SYSTEM_MANIFEST"
+}
