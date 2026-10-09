@@ -1,14 +1,30 @@
 # Universal Continuity — Entry Point
 
 Status: ACTIVE
-Contract: v3.4
+Contract: v3.5
 Engineering authority: this repository `main`
+
+## Critical startup boundary
+
+GitHub and ChatGPT Library are durable storage/discovery surfaces; they are **not automatic event listeners** for a new chat.
+
+Therefore bare commands such as `继承`, `继续`, or `恢复` require an account-level startup instruction that tells the new chat to invoke Universal Continuity. The canonical hook is documented in `STARTUP_HOOK.md`.
+
+Without that hook, a new chat may answer from generic Memory/past-chat context and never query this repository. Such a response is `CONTINUITY_BOOTSTRAP_NOT_TRIGGERED`, not a successful continuity resume.
+
+Do not claim bare-inherit end-to-end readiness merely because GitHub CI/discovery is healthy.
 
 ## Core model
 
 Chat is an ephemeral execution window. Task is the durable object.
 
 Universal Continuity owns only task discovery, routing, resume eligibility, compatibility, takeover lease semantics, human-readable task labeling, and recovery pointers. It does not duplicate domain business logic or domain state machines.
+
+## Intent precedence
+
+The durable principle `学习继承，任务不继承` applies to **NEW_TASK** only.
+
+When the user's primary intent is an explicit continuation command such as `继承`, `继续`, `恢复`, `接着上次`, `继承：<任务名>`, or `继续：<任务名>`, classify as `CONTINUE` first and invoke Universal Continuity. Do not answer with a learning-only inheritance acknowledgement before attempting bootstrap.
 
 ## Task identity
 
@@ -21,7 +37,7 @@ If a durable USER task has no `display_name_zh`, ask once: `这个任务你希�
 
 ## New chat bootstrap
 
-On the first substantive message of a new chat:
+Once the account-level startup hook has routed the message here:
 
 1. Classify `CONTINUE` vs `NEW_TASK`.
 2. `NEW_TASK`: inherit durable learning only. Never import another task's stage, draft, blocker, or next action.
@@ -81,30 +97,12 @@ Every resumed task must be classified as one of:
 - `INCOMPATIBLE`: do not replay obsolete execution semantics; preserve only still-valid requirements/evidence/artifacts.
 - `UNKNOWN`: fail closed until authority is resolved.
 
-## Checkpoint triggers
-
-Checkpoint on material execution changes, including:
-
-- goal/constraint/authorization changes;
-- stage or next-action changes;
-- important decisions;
-- `display_name_zh` assignment or rename;
-- completed material work batches;
-- key artifact changes;
-- blocker/waiting changes;
-- owner/contract/runtime changes;
-- task switch;
-- before/after long or high-risk tool chains;
-- pause/complete/archive/reopen;
-- interruption risk.
-
-Checkpoint the latest execution truth, not a transcript.
-
 ## Performance invariant
 
 Continuity must stay off the steady-state business hot path:
 
-- global discovery runs only on the first substantive message, explicit re-inherit, task switch, or detected authority drift;
+- account-level startup hook only routes explicit continuation intent; it does not scan tasks on ordinary new-chat messages;
+- global discovery runs only on bare continuation, explicit re-inherit, task switch, or detected authority drift;
 - bare discovery reads metadata/index surfaces only;
 - full domain checkpoint loads only after owner/task selection;
 - one-shot questions proceed without creating durable tasks or asking for a task name;
@@ -118,4 +116,4 @@ Continuity must stay off the steady-state business hot path:
 4. Mirrors/history only as recovery evidence.
 5. Chat memory is never execution authority.
 
-Read next: `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
+Read next: `STARTUP_HOOK.md`, `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
