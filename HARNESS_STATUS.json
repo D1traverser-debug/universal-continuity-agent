@@ -1,0 +1,16 @@
+{
+  "schema_version": "3.2",
+  "updated_at": "2026-10-09",
+  "status": "GITHUB_MIGRATION_IN_PROGRESS",
+  "hardening": {
+    "per_task_manifests": true,
+    "per_system_manifests": true,
+    "registry_cache_only": true,
+    "single_active_writer": true,
+    "resume_epoch_and_lease": true,
+    "old_chat_retired_after_takeover": true,
+    "global_discovery_first_message_only": true,
+    "continuity_not_business_single_point_of_failure": true
+  },
+  "engineering_authority": "this repository main branch"
+}
