@@ -1,14 +1,23 @@
 {
-  "schema_version": "3.4",
+  "schema_version": "3.5",
   "updated_at": "2026-10-09",
-  "status": "PASS_GITHUB_CUTOVER_V34_DETERMINISTIC_DISCOVERY",
+  "status": "PASS_CORE_V35_STARTUP_HOOK_REQUIRED",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37934102169,
-    "job_id": 113831725187,
+    "last_known_green_run_id": 37934390253,
     "editable_install": "PASS",
     "pytest": "PASS",
     "pytest_count": 27
+  },
+  "startup_trigger": {
+    "canonical_ref": "STARTUP_HOOK.md",
+    "account_level_hook_required": true,
+    "github_presence_alone_is_not_trigger": true,
+    "library_presence_alone_is_not_trigger": true,
+    "observed_failure_mode": "Bare 继承 answered from generic learning-only memory without invoking Continuity.",
+    "failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "end_to_end_bare_inherit_claim": false,
+    "end_to_end_acceptance_pending": "Configure account-level Custom Instructions hook, then test in a truly new chat with exactly 继承."
   },
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
@@ -36,5 +45,5 @@
     "continuity_not_business_single_point_of_failure": true,
     "live_user_state_not_exposed_in_public_universal_repo": true
   },
-  "chatgpt_library": "thin bootstrap pointer only"
+  "chatgpt_library": "thin bootstrap pointer only; not an automatic trigger"
 }
