@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "updated_at": "2026-10-09",
   "applies": "first substantive user message of every new chat",
   "flow": [
@@ -7,6 +7,7 @@
     "For CONTINUE, resolve through Universal Continuity and owner checkpoint.",
     "For NEW_TASK, inherit long-term learning only; never reuse another task stage/draft/next_action.",
     "If the task is likely to span chats or has meaningful external/artifact state, persist before deep work.",
+    "For any durable USER task, establish stable task_id and display_name_zh before substantive work; if display_name_zh is missing, ask the user once, persist the answer, then continue the original work without another confirmation.",
     "If it belongs to an existing system, create/register a task under that system owner.",
     "If it is a new domain/system, bootstrap it under GENERIC_HANDOFF, then create the first task.",
     "Checkpoint on meaningful state changes throughout execution; do not wait for context exhaustion."
@@ -24,8 +25,22 @@
     "simple factual Q&A",
     "one-shot explanation with no continuing state"
   ],
+  "display_name_zh": {
+    "scope": "persisted USER tasks only",
+    "prompt_if_missing": true,
+    "prompt_text": "这个任务你希望用什么中文名？",
+    "prompt_frequency": "ONCE_PER_TASK_UNTIL_SET",
+    "persist_answer_before_continuing": true,
+    "resume_original_work_after_answer": true,
+    "machine_identity": "task_id",
+    "rename_keeps_task_id": true,
+    "candidate_display": "display_name_zh first, title fallback",
+    "max_length": 80
+  },
   "write_order": [
     "SYSTEM_MANIFEST authority if new system",
+    "stable task_id and owner",
+    "display_name_zh; ask user once if missing",
     "TASK_MANIFEST authority",
     "best-effort rebuildable registry cache update",
     "initial checkpoint",
@@ -40,6 +55,7 @@
     "key artifact created/replaced",
     "blocker/waiting change",
     "owner/skill/runtime/contract change",
+    "display_name_zh assigned or renamed",
     "before switching tasks",
     "before/after long or high-risk tool chain",
     "pause/complete/archive/reopen",

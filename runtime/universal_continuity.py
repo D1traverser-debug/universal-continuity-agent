@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Any, Iterable, Mapping, Protocol, Sequence
 from uuid import uuid4
 
-SCHEMA_VERSION = "3.2"
+SCHEMA_VERSION = "3.3"
 
 
 class TaskClass(str, Enum):
@@ -84,6 +84,7 @@ class TaskMetadata:
     title: str
     recovery_owner: str
     status: TaskStatus
+    display_name_zh: str | None = None
     task_class: TaskClass = TaskClass.MIGRATION
     resume_eligible: bool = False
     resume_visibility: ResumeVisibility = ResumeVisibility.EXPLICIT_ONLY
@@ -113,12 +114,16 @@ class TaskMetadata:
             dt = datetime.now(timezone.utc)
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
+        display_name_zh = raw.get("display_name_zh")
+        if display_name_zh is not None:
+            display_name_zh = " ".join(str(display_name_zh).split()) or None
         return cls(
             task_id=str(raw["task_id"]),
             domain=str(raw["domain"]),
             title=str(raw["title"]),
             recovery_owner=str(raw["recovery_owner"]),
             status=TaskStatus(str(raw["status"])),
+            display_name_zh=display_name_zh,
             task_class=TaskClass(str(raw.get("task_class", TaskClass.MIGRATION.value))),
             resume_eligible=bool(raw.get("resume_eligible", False)),
             resume_visibility=ResumeVisibility(str(raw.get("resume_visibility", ResumeVisibility.EXPLICIT_ONLY.value))),
@@ -174,6 +179,37 @@ def explicit_eligible(task: TaskMetadata) -> bool:
     return task.status not in {TaskStatus.ABANDONED}
 
 
+def needs_display_name_zh(task: TaskMetadata) -> bool:
+    return task.task_class == TaskClass.USER and not bool(task.display_name_zh)
+
+
+def candidate_display_name(task: TaskMetadata) -> str:
+    return task.display_name_zh or task.title
+
+
+def assign_display_name_zh(
+    task: TaskMetadata,
+    display_name_zh: str,
+    *,
+    now: datetime | None = None,
+) -> TaskMetadata:
+    """Persist a human-readable Chinese task label without changing task identity."""
+    name = " ".join(str(display_name_zh).split())
+    if not name:
+        raise ValueError("display_name_zh must not be blank")
+    if len(name) > 80:
+        raise ValueError("display_name_zh must be 80 characters or fewer")
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return replace(
+        task,
+        display_name_zh=name,
+        manifest_version=task.manifest_version + 1,
+        updated_at=now,
+    )
+
+
 def validate_owner_adapter_payload(rows: Iterable[Mapping[str, Any]]) -> list[TaskMetadata]:
     tasks: list[TaskMetadata] = []
     seen: set[str] = set()
@@ -206,8 +242,8 @@ def _score_hint(task: TaskMetadata, hint: str | None, owner_hint: str | None, do
         reasons.append("domain")
     if hint:
         h = hint.strip().lower()
-        title = task.title.lower()
-        if h and h in title:
+        display_text = " ".join(x for x in (task.display_name_zh, task.title) if x).lower()
+        if h and h in display_text:
             score += 8.0
             reasons.append("title-substring")
         if _contains_cjk(h):
@@ -219,7 +255,9 @@ def _score_hint(task: TaskMetadata, hint: str | None, owner_hint: str | None, do
                 score += 2.0
                 reasons.append("domain-text")
         else:
-            overlap = _tokens(h) & (_tokens(title) | set().union(*(_tokens(k) for k in task.keywords)) if task.keywords else _tokens(title))
+            label_tokens = _tokens(display_text)
+            keyword_tokens = set().union(*(_tokens(k) for k in task.keywords)) if task.keywords else set()
+            overlap = _tokens(h) & (label_tokens | keyword_tokens)
             if overlap:
                 score += min(5.0, float(len(overlap) * 2))
                 reasons.append("token-overlap")
@@ -284,12 +322,7 @@ def classify_version_compatibility(
 
 
 def acquire_resume_lease(task: TaskMetadata, *, lease_id: str | None = None, now: datetime | None = None) -> TaskMetadata:
-    """Create a new single-writer epoch for a newly inherited chat.
-
-    Acquiring a lease intentionally supersedes the previous chat. The caller must
-    persist the returned task manifest, re-read it, and verify the lease before
-    doing substantive work. This is a fail-closed guard, not a transactional DB lock.
-    """
+    """Create a new single-writer epoch for a newly inherited chat."""
     if task.task_class != TaskClass.USER:
         raise ValueError("only USER tasks may acquire a normal resume lease")
     if not explicit_eligible(task):
@@ -340,7 +373,7 @@ def registry_manifest_drift(index_rows: Iterable[Mapping[str, Any]], manifest_ro
     for task_id in sorted(index.keys() & manifests.keys()):
         idx = index[task_id]
         man = manifests[task_id]
-        for field_name in ("status", "current_stage", "next_action", "recovery_owner", "checkpoint_ref"):
+        for field_name in ("display_name_zh", "status", "current_stage", "next_action", "recovery_owner", "checkpoint_ref"):
             if idx.get(field_name) != man.get(field_name):
                 problems.append(f"registry-stale:{task_id}:{field_name}")
     return problems
@@ -355,6 +388,8 @@ def validate_checkpoint_quality(raw: Mapping[str, Any]) -> list[str]:
     ):
         if field_name not in raw:
             problems.append(f"missing:{field_name}")
+    if raw.get("task_class") == "USER" and not str(raw.get("display_name_zh") or "").strip():
+        problems.append("user-task-missing-display-name-zh")
     if raw.get("task_class") == "USER" and raw.get("resume_eligible") is True and not raw.get("checkpoint_ref"):
         problems.append("resumable-user-without-checkpoint-ref")
     if raw.get("status") in {"COMPLETE", "ARCHIVED", "ABANDONED"} and raw.get("resume_visibility") == "DEFAULT":

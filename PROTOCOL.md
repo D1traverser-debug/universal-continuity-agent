@@ -1,13 +1,15 @@
-# Universal Continuity Protocol v3.2
+# Universal Continuity Protocol v3.3
 
 ## Scope
-Universal Continuity handles cross-chat task discovery, routing, resume eligibility, compatibility and checkpoint pointers. Domain agents retain their own business logic and state machines.
+Universal Continuity handles cross-chat task discovery, routing, resume eligibility, compatibility, user-facing task naming and checkpoint pointers. Domain agents retain their own business logic and state machines.
 
 ## Task identity
-A durable task has a stable task ID independent from any chat ID. A task can span multiple chats. After successful takeover, the prior chat is retired for that task.
+A durable task has a stable `task_id` independent from any chat ID and a user-facing `display_name_zh`. The task ID is the machine identity; the Chinese display name is for the user. Renaming must never create a new task or break checkpoint history. A task can span multiple chats. After successful takeover, the prior chat is retired for that task.
+
+If a durable USER task lacks `display_name_zh`, ask the user once which Chinese name they want, persist it, and immediately continue the original work. One-shot work does not need a task name.
 
 ## New work
-New work inherits durable learning, not another task's unfinished stage, draft, blocker or next action. Multi-step work expected to span chats should persist identity/checkpoint before deep execution.
+New work inherits durable learning, not another task's unfinished stage, draft, blocker or next action. Multi-step work expected to span chats should establish task ID, owner and Chinese display name, then persist identity/checkpoint before deep execution.
 
 ## Resume discovery
 Plain continuation considers only USER tasks that are resumable, default-visible and ACTIVE/WAITING/BLOCKED. Infrastructure, test, fixture, eval and migration tasks require explicit targeting.
@@ -18,10 +20,10 @@ Discovery order:
 3. legacy persistent evidence only when the first two layers cannot resolve the task.
 
 ## Semantic routing
-When the user names a task/domain/topic, query that owner first. One strong match resumes directly. Multiple strong matches return a compact metadata list; checkpoints are never merged.
+When the user names a task/domain/topic, query that owner first. Candidate lists prefer `display_name_zh` and fall back to `title`. One strong match resumes directly. Multiple strong matches return a compact metadata list; checkpoints are never merged.
 
 ## Owner adapter contract
-Each owner must provide equivalent capabilities for resumable metadata discovery, exact task checkpoint read, class/status/visibility metadata, compatibility check and legal resume/migrate/block behavior. Legacy missing metadata fails closed.
+Each owner must provide equivalent capabilities for resumable metadata discovery, exact task checkpoint read, class/status/visibility metadata, compatibility check and legal resume/migrate/block behavior. Persisted USER tasks should expose `display_name_zh`; missing names trigger the one-time naming handshake rather than a guessed permanent label. Legacy missing execution metadata still fails closed.
 
 ## Compatibility
 Before resume, classify persisted execution state:
@@ -34,10 +36,10 @@ Before resume, classify persisted execution state:
 New-chat takeover creates a new resume epoch and writer lease. Prior lease holders become stale. Checkpoint writes must validate the current lease/epoch and use the storage owner's version guard when available. Different tasks may proceed independently in different chats.
 
 ## Registries
-Global task/system registries are rebuildable caches, not execution authority. A stale cache never overrides a fresher owner checkpoint.
+Global task/system registries are rebuildable caches, not execution authority. A stale cache never overrides a fresher owner checkpoint. Cache entries may include `display_name_zh` for fast user-facing candidate rendering.
 
 ## Checkpoint discipline
-Checkpoint material state changes rather than every message. A useful checkpoint carries current stage, exact next action, blockers, authority/version context and key artifact references.
+Checkpoint material state changes rather than every message. A useful checkpoint carries current stage, exact next action, blockers, authority/version context, `display_name_zh` and key artifact references.
 
 ## New system bootstrap
 Unknown recurring domains begin under GENERIC_HANDOFF only as a bootstrap. Once a domain becomes recurring, rule-heavy or executable, create a dedicated domain owner/home and leave Universal Continuity as routing infrastructure.
@@ -46,7 +48,7 @@ Unknown recurring domains begin under GENERIC_HANDOFF only as a bootstrap. Once 
 One-shot work proceeds even if continuity storage is unavailable. Exact known-domain tasks may recover directly from their owner. Unknown old-state recovery fails closed rather than guessing. Cross-chat durability is only claimed after persistence succeeds.
 
 ## Performance
-Global discovery runs only at new-chat bootstrap, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path.
+Global discovery runs only at new-chat bootstrap, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path. The naming handshake occurs only for durable USER tasks missing a Chinese display name and therefore does not burden ordinary one-shot work.
 
 ## Engineering authority
 The universal resolver, contract, tests, templates and CI live in this repository. Business agents implement adapters/checkpoints and do not fork the universal resolver.

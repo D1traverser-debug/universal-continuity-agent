@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "required_metadata": [
     "task_id",
     "task_class",
@@ -15,6 +15,11 @@
     "checkpoint_ref",
     "contract_version"
   ],
+  "user_task_metadata": {
+    "display_name_zh": "required after first naming handshake",
+    "missing_behavior": "PROMPT_ONCE_THEN_PERSIST_AND_CONTINUE",
+    "identity_rule": "changing display_name_zh never changes task_id"
+  },
   "required_capabilities": [
     "list_resumable_tasks_metadata_only",
     "get_task_checkpoint_by_id",
@@ -31,7 +36,8 @@
     "missing_task_class": "MIGRATION",
     "missing_resume_eligible": false,
     "missing_resume_visibility": "EXPLICIT_ONLY",
-    "missing_contract_version": "legacy-unclassified"
+    "missing_contract_version": "legacy-unclassified",
+    "missing_display_name_zh": "ASK_USER_ONCE; do not invent a permanent user-facing name"
   },
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"

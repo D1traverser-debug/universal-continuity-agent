@@ -1,10 +1,11 @@
 {
-  "schema_version": "3.2",
+  "schema_version": "3.3",
   "manifest_version": 1,
   "task_id": "STABLE_TASK_ID",
   "task_class": "USER",
   "domain": "DOMAIN",
-  "title": "TASK_TITLE",
+  "title": "MACHINE_OR_DESCRIPTIVE_TITLE",
+  "display_name_zh": "用户确认的中文任务名",
   "status": "ACTIVE",
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
