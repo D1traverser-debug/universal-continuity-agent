@@ -1,6 +1,6 @@
 {
-  "schema_version": "3.5",
-  "manifest_version": 3,
+  "schema_version": "3.6",
+  "manifest_version": 4,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,17 +10,17 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-09T13:16:00Z",
-  "current_stage": "V3_5_STARTUP_HOOK_REQUIRED",
-  "next_action": "等待账户级 Custom Instructions 启动钩子配置并在真正新聊天中用裸‘继承’做端到端验收；随后继续维护 owner discovery、候选一致性和恢复链。",
+  "updated_at": "2026-10-09T13:40:00Z",
+  "current_stage": "V3_6_PROGRESSIVE_CONTEXT_RECOVERY_ACTIVE",
+  "next_action": "继续验证并推广 v3.6 渐进式上下文恢复与媒体蒸馏协议；若可获得原视频流/场景访问，补齐当前参考视频的完整视觉层校验。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
-  "contract_version": "CONTINUITY_V3_5",
+  "contract_version": "CONTINUITY_V3_6",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 0,
   "active_lease": null,
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions"],
-  "artifact_refs": ["ENTRYPOINT.md", "STARTUP_HOOK.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json"]
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏"],
+  "artifact_refs": ["ENTRYPOINT.md", "STARTUP_HOOK.md", "PROTOCOL.md", "CONTINUITY_CONTRACT.json", "BARE_INHERIT_DISCOVERY.json", "CONTEXT_RECOVERY_POLICY.json", "MEDIA_DISTILLATION_PROTOCOL.md", "NEW_CHAT_BOOTSTRAP.json", "OWNER_REGISTRY.json", "HARNESS_STATUS.json"]
 }
