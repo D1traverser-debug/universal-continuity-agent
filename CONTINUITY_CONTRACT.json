@@ -1,6 +1,14 @@
 {
-  "schema_version": "3.4",
+  "schema_version": "3.5",
   "purpose": "Universal cross-chat task continuity contract",
+  "startup_trigger": {
+    "required_for_bare_inherit": true,
+    "canonical_instruction": "STARTUP_HOOK.md",
+    "automatic_library_event_listener_claim": false,
+    "automatic_github_event_listener_claim": false,
+    "explicit_continue_intent_precedes_new_task_learning_rule": true,
+    "missing_trigger_result": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED"
+  },
   "default_candidate_predicate": {
     "task_class": ["USER"],
     "resume_eligible": true,
@@ -34,6 +42,7 @@
     "chat_is_ephemeral_task_is_durable": true,
     "new_task_inherits_unfinished_state": false,
     "explicit_continuation_required_for_task_state": true,
+    "explicit_continue_command_must_trigger_continuity_before_learning_only_reply": true,
     "non_user_tasks_excluded_from_bare_inherit": true,
     "owner_state_beats_continuity_pointer": true,
     "compatibility_check_required_before_resume": true,
@@ -52,11 +61,13 @@
     "continuity_must_not_block_simple_one_shot_tasks": true,
     "known_domain_owner_can_bypass_global_router_when_router_unavailable": true,
     "global_discovery_first_message_only": true,
-    "bare_inherit_requires_complete_owner_discovery_before_reporting_count": true
+    "bare_inherit_requires_complete_owner_discovery_before_reporting_count": true,
+    "github_or_library_presence_alone_does_not_imply_bootstrap_triggered": true
   },
   "runtime_harness": {
     "module": "runtime/universal_continuity.py",
     "status": "HARNESS_STATUS.json",
+    "startup_hook": "STARTUP_HOOK.md",
     "owner_adapter_contract": "OWNER_ADAPTER_CONTRACT.json",
     "generic_task_registry": "GENERIC_TASK_REGISTRY.json",
     "bare_inherit_discovery": "BARE_INHERIT_DISCOVERY.json",
@@ -81,7 +92,8 @@
     "atomicity_limit": "GitHub manifest writes use blob-SHA compare-and-swap semantics; stale writers must refetch and fail closed. Domain runtimes may provide stronger guards."
   },
   "performance": {
-    "new_chat_global_discovery": "first substantive message only",
+    "startup_hook": "intent-gated; no scan for ordinary messages",
+    "new_chat_global_discovery": "first explicit continuation message only",
     "steady_state": "no repeated global scan after task/owner selected",
     "candidate_metadata_only": true,
     "full_checkpoint_load_after_selection": true,
