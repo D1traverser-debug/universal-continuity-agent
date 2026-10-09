@@ -51,9 +51,12 @@
       "name": "NOVEL_OS",
       "domains": ["NOVEL"],
       "priority": 100,
-      "adapter_status": "READY_DOMAIN_RECOVERY_CHAIN",
-      "discovery": "NOVEL_OS durable recovery chain",
-      "checkpoint_authority": "NOVEL_OS recovery chain"
+      "adapter_status": "READY_V3_3_DOMAIN_RECOVERY_CHAIN",
+      "discovery": "NOVEL_OS /NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
+      "adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
+      "checkpoint_authority": "NOVEL_OS owner checkpoint and durable recovery chain",
+      "business_state_authority": "/NOVEL_OS_小说系统/99_RECOVERY/START_HERE.md",
+      "lease_authority": "Universal task manifest CAS"
     },
     {
       "name": "VIDEO_GROWTH_AGENT",
