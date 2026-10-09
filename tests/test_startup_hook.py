@@ -12,13 +12,13 @@ def test_startup_hook_is_required_for_bare_inherit():
     contract = load("CONTINUITY_CONTRACT.json")
     bootstrap = load("NEW_CHAT_BOOTSTRAP.json")
 
-    assert contract["schema_version"] == "3.6"
+    assert contract["schema_version"] == "3.7"
     assert contract["startup_trigger"]["required_for_bare_inherit"] is True
     assert contract["startup_trigger"]["automatic_library_event_listener_claim"] is False
     assert contract["startup_trigger"]["automatic_github_event_listener_claim"] is False
     assert contract["startup_trigger"]["missing_trigger_result"] == "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED"
 
-    assert bootstrap["schema_version"] == "1.5"
+    assert bootstrap["schema_version"] == "1.6"
     assert bootstrap["startup_hook"]["required"] is True
     assert bootstrap["startup_hook"]["github_or_library_files_auto_load"] is False
     assert bootstrap["degraded_mode"]["startup_hook_missing"].startswith("CONTINUITY_BOOTSTRAP_NOT_TRIGGERED")
@@ -38,7 +38,7 @@ def test_harness_records_real_account_hook_end_to_end_acceptance():
     trigger = status["startup_trigger"]
     evidence = trigger["acceptance_evidence"]
 
-    assert status["schema_version"] == "3.6"
+    assert status["schema_version"] == "3.7"
     assert trigger["account_level_hook_required"] is True
     assert trigger["end_to_end_bare_inherit_claim"] is True
     assert evidence["bare_command"] == "继承"
@@ -53,4 +53,6 @@ def test_startup_hook_document_contains_acceptance_command_and_failure_mode():
     assert "继承" in text
     assert "Custom Instructions" in text
     assert "CONTINUITY_BOOTSTRAP_UNAVAILABLE" in text
+    assert "继承前进度" in text
+    assert "进度提交" in text
     assert "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED" not in text or "not a Continuity success" in text
