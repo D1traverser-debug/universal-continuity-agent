@@ -1,7 +1,14 @@
-# Universal Continuity Protocol v3.4
+# Universal Continuity Protocol v3.5
 
 ## Scope
 Universal Continuity handles cross-chat task discovery, routing, resume eligibility, compatibility, user-facing task naming and checkpoint pointers. Domain agents retain their own business logic and state machines.
+
+## Startup trigger
+Universal Continuity is not automatically invoked merely because its files exist in GitHub or ChatGPT Library. A new chat needs an account-level startup instruction that maps explicit continuation intent (`继承`, `继续`, `恢复`, `接着上次`, or a named continuation command) to this bootstrap. Canonical wording and acceptance criteria live in `STARTUP_HOOK.md`.
+
+If that trigger is absent, a generic memory-based response is not a Continuity success. Record it as `CONTINUITY_BOOTSTRAP_NOT_TRIGGERED`.
+
+The principle `学习继承，任务不继承` applies to NEW_TASK classification. It must not suppress an explicit continuation command. Continuation intent has routing precedence.
 
 ## Task identity
 A durable task has a stable `task_id` independent from any chat ID and a user-facing `display_name_zh`. The task ID is the machine identity; the Chinese display name is for the user. Renaming must never create a new task or break checkpoint history. A task can span multiple chats. After successful takeover, the prior chat is retired for that task.
@@ -12,13 +19,11 @@ If a durable USER task lacks `display_name_zh`, ask the user once which Chinese 
 New work inherits durable learning, not another task's unfinished stage, draft, blocker or next action. Multi-step work expected to span chats should establish task ID, owner and Chinese display name, then persist identity/checkpoint before deep execution.
 
 ## Bare inherit discovery quorum
-Plain `继承/继续` without an exact task hint is a global discovery operation. It MUST follow `BARE_INHERIT_DISCOVERY.json`.
+Plain `继承/继续/恢复` without an exact task hint is a global discovery operation after the startup trigger fires. It MUST follow `BARE_INHERIT_DISCOVERY.json`.
 
 Before reporting a total number of recoverable tasks, the resolver must query every required bare-inherit source listed in that policy, deduplicate by `task_id`, and apply the default USER predicate.
 
 If any required source is unavailable or was not queried, the result is `INCOMPLETE_DISCOVERY`. Partial candidates may be shown only when clearly labeled incomplete. A partial list must never be described as “全部任务”, “一共 N 个”, or otherwise presented as the authoritative total.
-
-This rule exists specifically to prevent different chats from returning different task counts because one chat skipped an owner such as NOVEL_OS or A-share.
 
 ## Resume discovery
 Plain continuation considers only USER tasks that are resumable, default-visible and ACTIVE/WAITING/BLOCKED. Infrastructure, test, fixture, eval, migration, paused, hidden and archived tasks are excluded.
@@ -47,14 +52,11 @@ Global task/system registries are rebuildable caches, not execution authority. A
 ## Checkpoint discipline
 Checkpoint material state changes rather than every message. A useful checkpoint carries current stage, exact next action, blockers, authority/version context, `display_name_zh` and key artifact references.
 
-## New system bootstrap
-Unknown recurring domains begin under GENERIC_HANDOFF only as a bootstrap. Once a domain becomes recurring, rule-heavy or executable, create a dedicated domain owner/home and leave Universal Continuity as routing infrastructure.
-
 ## Degraded mode
-One-shot work proceeds even if continuity storage is unavailable. Exact known-domain tasks may recover directly from their owner. Unknown old-state recovery fails closed rather than guessing. A bare inherit with an unavailable required owner returns `INCOMPLETE_DISCOVERY` instead of inventing a total count. Cross-chat durability is only claimed after persistence succeeds.
+One-shot work proceeds even if continuity storage is unavailable. Exact known-domain tasks may recover directly from their owner. Unknown old-state recovery fails closed rather than guessing. A bare inherit with an unavailable required owner returns `INCOMPLETE_DISCOVERY` instead of inventing a total count. A continuation command that never reaches the bootstrap must be reported as `CONTINUITY_BOOTSTRAP_NOT_TRIGGERED`, not silently converted into learning-only inheritance.
 
 ## Performance
-Global discovery runs only at new-chat bootstrap, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path. Bare inherit reads metadata/index surfaces only. The naming handshake occurs only for durable USER tasks missing a Chinese display name and therefore does not burden ordinary one-shot work.
+The account-level startup hook is intent-gated: ordinary new-chat messages do not cause a task scan. Global discovery runs only after explicit continuation intent, explicit re-inherit, task switch or detected authority drift. After owner selection, work stays on the domain path. Bare inherit reads metadata/index surfaces only.
 
 ## Engineering authority
-The universal resolver, contract, discovery policy, tests, templates and CI live in this repository. Business agents implement adapters/checkpoints and do not fork the universal resolver.
+The universal resolver, contract, startup-hook contract, discovery policy, tests, templates and CI live in this repository. Business agents implement adapters/checkpoints and do not fork the universal resolver.
