@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_FULL_SYSTEM_REGRESSION_PASS__PRODUCT_E2E_AND_LAZY_OWNER_RECONCILIATION_PENDING",
-      "next_action": "完成真实 fresh-chat 产品级验收；其他活跃 owner 在各自合法 writer 的下一次 durable turn 执行 v3.7 lazy reconciliation，不由维护任务抢 lease。",
+      "current_stage": "V3_7_UNIVERSAL_EXECUTION_CONTROL_PLANE_ACTIVE__PRODUCT_E2E_AND_OWNER_RUNTIME_HANDSHAKES_PENDING",
+      "next_action": "GitHub-backed business Agent 的 material next_action 统一走 capability manifest + targeted session handshake + readiness evaluator + owner executor/gateway + receipt；继续 owner runtime E2E 与 Continuity fresh-chat 产品验收。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T01:58:00Z"
+      "updated_at": "2026-10-10T02:18:00Z"
     }
   ]
 }
