@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "architecture_contract_version": "1.0",
+  "owner": "UNIVERSAL_CONTINUITY_HARNESS",
+  "owner_kind": "SYSTEM_INFRA",
+  "skill": {
+    "role": "ROUTER",
+    "entrypoint": "skills/universal-continuity/SKILL.md"
+  },
+  "runtime": {
+    "runtime_type": "DETERMINISTIC_WORKFLOW",
+    "entrypoints": [
+      "runtime/universal_continuity.py",
+      "runtime/owner_topology.py",
+      "runtime/execution_readiness.py",
+      "runtime/methodology_conformance.py",
+      "runtime/meta_maintenance.py"
+    ],
+    "judgment_execution": "NOT_APPLICABLE",
+    "note": "Universal routes, validates and recovers; domain judgment remains owner-local."
+  },
+  "workflow": {
+    "state_authority_refs": [
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "OWNER_REGISTRY.json",
+      "GENERIC_TASK_REGISTRY.json"
+    ],
+    "transition_guard_refs": [
+      "runtime/universal_continuity.py",
+      "runtime/protocol_reconciliation.py",
+      "runtime/execution_readiness.py",
+      "runtime/methodology_conformance.py"
+    ]
+  },
+  "harness": {
+    "ci_workflow_ref": ".github/workflows/ci.yml",
+    "commands": [
+      "python -m runtime.system_audit --repo-root . --trigger routine_change",
+      "python -m runtime.agent_architecture_audit --repo-root .",
+      "python -m pytest -q"
+    ],
+    "suites": ["architecture", "contract", "trajectory", "fault_injection", "meta_governance"]
+  },
+  "references": {
+    "canonical_roots": ["skills/universal-continuity", "tasks", "audits"],
+    "mirror_policy": "NONE"
+  },
+  "continuity": {
+    "task_manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+    "owner_registry_ref": "OWNER_REGISTRY.json",
+    "current_protocol_ref": "CURRENT_PROTOCOL.json"
+  }
+}
