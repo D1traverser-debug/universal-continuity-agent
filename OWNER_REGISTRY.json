@@ -27,7 +27,7 @@
       "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
-      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_DECLARATION_BOUND__OWNER_HARNESS_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING",
+      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_ALL_PROFILES_BOUND__OWNER_REGRESSION_PASS__ACTION_LEVEL_OPERATIONAL_EVIDENCE_REQUIRED__LIVE_QUALITY_EVIDENCE_PENDING",
       "discovery": "domain continuity index and compatible persisted domain runtime when available",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
@@ -96,6 +96,6 @@
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",
     "task_discovery": "bare inherit requires complete discovery quorum across all bare_inherit_participant owners; explicit task hints may route directly to the named owner",
-    "github_owner_execution": "after exact owner/task routing, consult OWNER_EXECUTION_REGISTRY.json and the owner execution_capability_ref before claiming an agent capability is executable"
+    "github_owner_execution": "after exact owner/task routing, consult OWNER_EXECUTION_REGISTRY.json and the owner execution_capability_ref before claiming an agent capability is executable; activated methodology profiles additionally require action-level operational conformance evidence before a profile-dependent gate or COMMITTED claim"
   }
 }
