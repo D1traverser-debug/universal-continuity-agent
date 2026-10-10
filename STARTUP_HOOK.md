@@ -25,7 +25,7 @@ Use the following meaning in ChatGPT Custom Instructions / Personalization, or a
 >
 > 若无法访问 Continuity 必需资源，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得从 Memory/旧聊天猜恢复状态。
 
-该路由/兼容规则也覆盖**包括升级前已经打开/继承的旧对话**；已有合法 writer 先做 in-place reconciliation，不因为协议升级伪造新聊天 takeover。
+该路由/兼容规则也覆盖**包括升级前已经打开/继承的旧对话**；已有合法 writer 先做 in-place reconciliation，不因为协议升级伪造新聊天 takeover，**不要求我手动迁移旧对话**。
 
 This repository cannot prove that account-level Custom Instructions were changed merely because this file changed. Product-surface propagation needs real product evidence when relevant.
 
