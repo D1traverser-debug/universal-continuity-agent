@@ -1,100 +1,55 @@
 # Universal Continuity — Account Startup Hook
 
-Status: REQUIRED_FOR_BARE_INHERIT_ACCOUNT_LEVEL_PROGRESS_AND_EXECUTION_READINESS_UX
+Status: REQUIRED_FOR_BARE_INHERIT_ACCOUNT_LEVEL_ROUTING  
 Updated: 2026-10-11
 
-## Why this exists
+## Purpose
 
-GitHub and ChatGPT Library are durable storage/discovery surfaces; they are **not automatic event listeners** for a new or already-open chat. A bare `继承 / 继续 / 恢复` therefore needs an account-level instruction that routes the turn into Universal Continuity.
+GitHub and ChatGPT Library are durable storage/discovery surfaces, **not automatic event listeners**. This hook only routes explicit continuation intent into Universal Continuity; it is not business authority, task storage, execution proof, or a copy of the full control plane.
 
-The account hook is only a routing/UX backstop. It is not task storage, business authority, capability proof, or a substitute for owner persistence.
+## Account-level semantic rule
 
-## Required account-level instruction
+Use the following meaning in ChatGPT Custom Instructions / Personalization, or an equivalent account-level instruction surface:
 
-Use this semantic rule in ChatGPT Custom Instructions / Personalization, or an equivalent account-level instruction surface:
+> 当我明确发送“继承”“继续”“恢复”“接着上次”，或明确指定“继承/继续/恢复：<任务名>”时，优先判定为 CONTINUE，并启动 `D1traverser-debug/universal-continuity-agent@main`。
+>
+> **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，随后按 `ENTRYPOINT.md` 的 Event-driven authority loading 只加载当前动作真正需要的 authority。`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天历史都是 cold-path。
+>
+> 裸 CONTINUE 必须从当前 `OWNER_REGISTRY.json` 动态推导完整 discovery quorum，不能使用记忆、复制名单或 historical owner count。明确任务名则直接读取该任务权威 manifest/checkpoint，先报告“继承前进度”，再做必要 compatibility / takeover，并从真实 `current_stage / next_action` 继续。
+>
+> 对 material GitHub-backed owner action，刷新该 owner 当前 Skill/入口与 `continuity/EXECUTION_CAPABILITIES.json`，只握手当前动作需要的 capability。Prompt、Skill、配置、角色名或代码 stub 都不等于执行证据；缺 hard capability 时只阻塞对应 gate。
+>
+> 对系统维护、重复故障、架构/authority 漂移或用户对维护完整性的实质纠正，进入当前 maintenance/evolution authority，不等待我继续列举内部问题。用户提出的目标和建议机制要分开，非平凡修复必须比较替代方案并攻击自己的修复。
+>
+> 对持久任务最终答复必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。COMMITTED 只表示权威状态已写入并回读，不表示质量、审核或执行保证已通过。
+>
+> 若无法访问 Continuity 必需资源，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得从 Memory/旧聊天猜恢复状态。
 
-> 当我明确发送“继承”“继续”“恢复”“接着上次”，或“继承：<任务名> / 继续：<任务名> / 恢复：<任务名>”时，优先判定为 CONTINUE，不要回复“学习继承、任务不继承”。立即启动 Universal Continuity，工程权威为 `D1traverser-debug/universal-continuity-agent@main`。
->
-> **启动时不要机械预读整个仓库。** 先读取当前 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后严格按 `ENTRYPOINT.md` 的事件驱动加载矩阵只读取本次动作真正需要的 authority。裸“继承/继续/恢复”才加载 discovery/owner metadata；明确任务名则直接路由对应 owner；只有出现协议不匹配才加载 version/reconciliation authority；只有进入 material GitHub-backed business action 才加载 execution-readiness authority 与该 owner 当前 Skill/入口及 `continuity/EXECUTION_CAPABILITIES.json`；只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时才加载对应 methodology profile/semantics owner。不要把 `SYSTEM_BLUEPRINT.md`、全部 policy、全部 owner、研究资料或旧聊天历史作为每次启动的固定前置上下文。
->
-> 裸“继承/继续/恢复”必须从**当前 `OWNER_REGISTRY.json`** 动态推导所有 `bare_inherit_participant=true` 的 owner/source，再按 `BARE_INHERIT_DISCOVERY.json` 完成当前时刻的完整发现；不得使用记忆、旧 owner 数量、复制出来的 owner 名单或历史 quorum。新增 Agent/owner 后，只要已进入 canonical registry，就必须自动进入相应 derived discovery/audit scope；若其派生 execution/adaptation metadata 尚未收敛，fail closed，而不是静默漏掉。明确指定任务名时，读取权威 checkpoint，先报告“继承前进度”，再执行 compatibility check、必要协议适配和合法 takeover，然后从真实 `current_stage / next_action` 继续。
->
-> 对任何已进入 Continuity 管理的持久任务，**包括升级前已经打开/继承的旧对话**，每次最终答复末尾必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
->
-> 对任何 GitHub-backed durable business Agent，在执行 material stage / next_action / work order 前，刷新该 owner 当前 GitHub `main` 的 Skill/执行入口与 `continuity/EXECUTION_CAPABILITIES.json`，只对当前动作需要的能力做 session capability handshake。Agent 名称、Prompt、Skill、配置或代码 stub 不等于当前聊天已经执行。只有 owner contract 明确允许时才可 CHAT_BRIDGED；需要真实隔离的 gate 必须有 ATTESTED_ISOLATED execution/context/trace 证据。缺少 hard capability 时只阻塞对应 stage/gate，不得绕过，也不得把整个 Agent 判死。
->
-> Universal Continuity 升级、owner 适配和支持的旧 checkpoint 迁移由系统处理，不要求我手动迁移旧对话。相同旧聊天原地升级不得无故更换 lease 或增加 `resume_epoch`；只有真正的新聊天 takeover 才这样做。
->
-> 对系统维护、升级、回归、传播、版本/authority/artifact/cache 漂移、执行真实性或重复 owner 故障，只要属于当前 maintenance writer 权限，默认按 `SYSTEM_MAINTENANCE_POLICY.json` 完成诊断、最小修复、回归/CI、记录、状态更新和回读验证，不等待我逐项指出。用户提出的目标/约束与用户提出的解决机制要分开；用户方案、助手第一方案、其他 Agent/框架方案都只是 candidate，非平凡架构必须独立比较替代方案和失败模式后才能晋升。
->
-> 对任何“已经 E2E / 已完成 / 已闭环”的声明，必须写清证据范围。历史 fresh-chat PASS 只证明当时被测试的 owner topology；它**不能自动证明未来新增任意 Agent 后的冷启动接入**。synthetic regression 只能提升到 regression-verified；真实 `new owner + genuinely fresh chat` product E2E 必须有新的产品轨迹，当前聊天不得通过角色扮演或同会话模拟制造该证据。
->
-> 若无法实际访问 Continuity 所需资源，明确回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不要假装已经恢复、迁移、执行或提交成功。若只缺 owner 的某项 execution capability，则报告精确缺口并按 owner contract 阻塞对应 gate。
+This repository cannot prove that account-level Custom Instructions were changed merely because this file changed. Product-surface propagation needs real product evidence when relevant.
 
 ## Event-driven authority loading
 
-The account hook must route, not preload. After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`, load only what the event requires:
+After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`:
 
-- **bare CONTINUE** -> `BARE_INHERIT_DISCOVERY.json`, then derive the current participant/source quorum from `OWNER_REGISTRY.json`; never reuse a copied owner list or historical count;
-- **named CONTINUE** -> exact owner/task manifest and short checkpoint first;
-- **new owner admission / owner-topology change** -> `OWNER_REGISTRY.json` as the sole membership authority plus only the derived adaptation/execution/discovery conformance surfaces needed to prove convergence;
-- **protocol mismatch** -> version lifecycle + live reconciliation authority;
-- **material business execution** -> exact owner capability manifest and Skill/entrypoint plus execution-readiness contract; execution registries are pointer/status caches, not membership authority;
-- **artifact/file mutation or storage question** -> `artifact_io` methodology profile and `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only as needed;
-- **maintenance/repeated failure/drift/cleanup** -> `operational_hygiene` profile and `SYSTEM_MAINTENANCE_POLICY.json`;
-- **durable learning/evolution claim** -> `evolution` profile and `CONTINUOUS_LEARNING_POLICY.md`;
-- **media evidence work** -> media distillation authority;
-- **recovery gap** -> context recovery authority and only then selective history.
+- bare CONTINUE → current `OWNER_REGISTRY.json` + `BARE_INHERIT_DISCOVERY.json`;
+- named CONTINUE → exact owner/task manifest + short checkpoint;
+- protocol mismatch → version/reconciliation authority;
+- material owner execution → exact owner Skill/capability + execution-readiness authority;
+- owner admission / architecture drift → `OWNER_REGISTRY.json` + `AGENT_ARCHITECTURE_CONTRACT.json` + architecture observations;
+- artifact/file work → `artifact_io@1.0` only when activated;
+- maintenance/drift/repeated failure → `operational_hygiene@1.0` + `SYSTEM_MAINTENANCE_POLICY.json`;
+- durable learning/evolution → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`;
+- media evidence → media distillation authority;
+- recovery gap → recovery authority, then selective history only if still needed.
 
-`SYSTEM_BLUEPRINT.md`, research/audits, unrelated owner repositories and old chat transcripts are **cold-path references**, not mandatory bootstrap input.
+只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才加载对应 profile/semantics owner；不要把它们复制成固定启动 prompt。
 
-## Product-surface boundary
+## Cold-start evidence boundary
 
-This repository cannot edit the user's account Custom Instructions. Repository changes are therefore not proof that an already-open chat received a new hook. Product behavior must be verified with real existing-chat/fresh-chat evidence when materially relevant.
+Historical fresh-chat evidence proves only the owner topology actually observed at that time. It is not open-world proof for a future owner.
 
-Known-topology product evidence is **closed-world evidence**. A prior fresh-chat trajectory remains valid for the topology it actually observed, but it is not evidence that an owner added later will route correctly in a genuinely fresh product chat. New-owner cold-start product support requires a new real trajectory after admission.
+A real **new-owner cold-start** claim requires, after admission, a genuinely fresh product chat that routes/discovers that owner from current authority. Synthetic regression can prove registry/discovery mechanics but cannot impersonate that product trajectory.
 
-## System-maintenance autonomy
+## Single-writer boundary
 
-A systemic defect inside current maintenance authority must proceed through diagnosis -> smallest safe patch -> regression/eval -> validation/CI -> durable record -> authoritative reread. Do not stop at explanation and do not make the user maintain the internal defect backlog.
-
-This does not authorize stealing another active owner lease, rewriting domain business truth, bypassing permissions/account boundaries, or claiming product E2E from repository CI.
-
-## Continuation order
-
-1. explicit continuation intent -> bootstrap;
-2. resolve exact or bare candidate(s); for bare discovery, derive the current owner/source quorum from `OWNER_REGISTRY.json`;
-3. read authoritative manifest/checkpoint and show `继承前进度`;
-4. reconcile supported older protocol state if needed;
-5. perform legal takeover only for a genuine new chat;
-6. refresh only the exact owner execution/methodology surfaces needed by the current action;
-7. execute from authoritative `current_stage / next_action`;
-8. end with verified `进度提交`.
-
-An already-open valid writer reconciles/refreshes in place; protocol or methodology refresh alone must not change lease/resume_epoch.
-
-## Acceptance tests
-
-### Fresh chat — current admitted topology
-
-Send exactly `继承` in a truly new chat. PASS requires deriving the current owner/source quorum from `OWNER_REGISTRY.json`, then complete candidate discovery or `INCOMPLETE_DISCOVERY` when any derived required source is unavailable. If bootstrap resources cannot actually be accessed, return `CONTINUITY_BOOTSTRAP_UNAVAILABLE`.
-
-After a task is selected, PASS additionally requires `继承前进度`, legal compatibility/takeover behavior, targeted owner execution/methodology refresh before material work, continuation from the real checkpoint, and a final verified `进度提交`.
-
-### Fresh chat — newly admitted owner
-
-A real new-owner cold-start PASS requires all of the following after the owner is admitted:
-
-1. the new owner is declared once in `OWNER_REGISTRY.json` with the required BUSINESS pointers;
-2. bare discovery/audit scope includes it without editing another owner-name allowlist;
-3. execution/adaptation derived caches converge or the control plane fails closed;
-4. a genuinely fresh ChatGPT product chat routes/discovers the newly admitted owner from current authority;
-5. if material work is attempted, the new owner passes the exact capability/methodology handshakes required for that action.
-
-Synthetic fixtures/CI may prove steps 1-3 only. They cannot certify step 4 or 5.
-
-### Existing chat after contract/methodology upgrade
-
-PASS requires current protocol/profile discovery without user migration; supported in-place reconciliation; exact current owner Skill/capability/profile refresh before the affected material action; preservation of the existing lease/resume_epoch; no replay of business state merely to refresh control metadata; and no use of repository declarations as execution evidence.
-
-FAIL includes guessing from memory, partial discovery presented as complete, using a historical owner count as the current discovery quorum, requiring a maintainer to edit multiple owner-name lists for one admission, broad repo preload as a fixed bootstrap ritual, stale owner execution, role-switching as fake isolation, write-call success treated as persistence proof, over-generalizing known-topology E2E into new-owner support, or waiting for the user to enumerate repairable internal follow-ups.
+An active writer refreshes compatible control metadata in place. A legal takeover supersedes the old lease according to the task contract; stale writers stop authoritative mutation. Maintenance authority does not permit stealing another business task lease or rewriting owner business truth.
