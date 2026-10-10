@@ -1,5 +1,6 @@
 {
   "schema_version": "1.0",
+  "execution_receipt_binding_contract_version": "1.0",
   "name": "UNIVERSAL_EXECUTION_READINESS",
   "scope": "All GitHub-backed domain agents orchestrated from ChatGPT",
   "purpose": "Separate declared capability from actually executable capability. A role, prompt, Skill, config row, or workflow stage is not counted as operational unless it has an invocation path, executor binding, evidence contract, and current-session capability handshake.",
@@ -58,6 +59,29 @@
     "observed_assurance",
     "execution_mode"
   ],
+  "execution_receipt_binding": {
+    "validator": "runtime/execution_receipt.py",
+    "required_receipt_fields": [
+      "receipt_id",
+      "action_id",
+      "task_id",
+      "stage",
+      "capability_id",
+      "executor_identity",
+      "execution_ref",
+      "subject_bindings",
+      "input_bindings",
+      "output_refs",
+      "result"
+    ],
+    "required_identity_match": ["task_id", "stage", "capability_id", "action_id"],
+    "owner_specific_claim_binding_field": "subject_bindings",
+    "immutable_input_binding_field": "input_bindings",
+    "default_anti_replay_fields": ["receipt_id"],
+    "owner_may_require_additional_single_use_fields": ["execution_ref", "provider_run_id", "review_receipt_id", "work_order_id"],
+    "binding_expectation": "The caller must supply the exact task/stage/capability/action plus the owner-specific subject and input identities required by the gate being advanced. A receipt that exists but belongs to another subject, artifact version, candidate, brief, replay corpus, review packet or action does not satisfy the gate.",
+    "assurance_boundary": "This validator proves binding and configured anti-replay constraints only. It does not by itself prove executor trust, provider issuance, reviewer independence, chronology, or semantic quality. Those require the owner-specific assurance/evidence verifier appropriate to the claim."
+  },
   "hard_invariants": [
     "A declared agent without an invocation path is DECLARED_ONLY and must not be reported as having executed.",
     "A prompt, markdown policy, Skill, or config row is not execution evidence.",
@@ -69,6 +93,9 @@
     "Optional missing capabilities may degrade the route only when the owner explicitly declares a safe degraded path.",
     "The dispatcher never fabricates an executor or silently lowers an assurance requirement to obtain PASS.",
     "Every material execution must leave a durable receipt bound to task/stage/capability, executor identity, input artifact digests or references, output references, and result/status.",
+    "Receipt existence is not enough: the receipt must match the exact task/stage/capability/action plus the claim/input identities required by the gate being advanced.",
+    "A real but stale, foreign or differently bound execution receipt may not be replayed as proof for another action; configured anti-replay identities must be checked against previously accepted receipts.",
+    "Configured execution obligations must be enforced from the owner's canonical plan/capability declaration rather than from a separately maintained shadow allowlist whenever the owner exposes such a canonical machine-readable plan.",
     "Business state remains authoritative in the domain owner; the universal execution registry never rewrites business stage or artifacts."
   ],
   "routing_algorithm": [
@@ -80,6 +107,7 @@
     "Select OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL, ISOLATED_EXTERNAL, safe DEGRADED, or BLOCKED.",
     "Dispatch only through the selected owner path; do not bypass the owner with an ad-hoc conversational tool call when side-channel use is forbidden.",
     "Require the configured execution receipt/evidence before advancing the business gate.",
+    "Validate the receipt against the exact action and owner-required claim/input bindings; apply anti-replay fields required by the owner for independent or single-use executions.",
     "Persist material owner state through the owner's writer/version guard, then re-read before reporting COMMITTED."
   ],
   "anti_bloat": {
