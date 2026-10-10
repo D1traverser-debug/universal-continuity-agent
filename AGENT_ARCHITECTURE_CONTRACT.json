@@ -36,8 +36,9 @@
       "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill."
     },
     "continuity": {
-      "required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"],
-      "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state."
+      "business_required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"],
+      "system_infra_required_fields": ["task_manifest_ref", "owner_registry_ref", "current_protocol_ref"],
+      "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state, and SYSTEM_INFRA must not invent business-only adapter fields."
     }
   },
   "freshness": {
