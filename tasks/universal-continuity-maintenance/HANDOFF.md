@@ -13,6 +13,7 @@
 - Universal v3.7 existing-chat / fresh-chat Continuity product E2E: PASS。
 - Methodology profile applicability negative-space guard: PASS；current-contract profile 不能静默漏绑。
 - **Second-order evolution method 已蒸馏进 `evolution@1.0` semantics**：非平凡修复在首次 regression PASS 后，还必须挑战“修复本身”和闭环声明的证据强度。
+- Operational methodology receipt contract 当前已进到 **1.2**：不仅 evidence ref 要独立验证，还必须由独立 assessment verifier 判断这些证据是否真的支持具体 hook 的 `INVOKED / NOT_APPLICABLE_FOR_ACTION` claim；“真实但无关的证据”不能洗白 hook claim。
 - Novel release-evidence binding 已二次加固；真实 CH9 production proof / true independent execution attestation 仍 OPEN。
 - Financial 三 profile 已绑定并 owner regression PASS；真实 article action-level methodology conformance / prose-quality promotion 仍 OPEN。
 - Universal operator-dependence incident 仍 OPEN；代码/CI/本轮自我进化不能替代 independently graded live product trajectories。
@@ -84,10 +85,15 @@ Commits:
 - regression: `0b05e5ac66f545768a7ca7bfa75f5c4b3985202a`
 - distillation audit: `5801459a877dece2fa12a54e613b0fc3c48121c8`
 
-Validation:
+Initial validation:
 - Universal Actions run `38065950440` / job `114253506018`: `runtime.system_audit` PASS + full pytest PASS。
 
-`evolution@1.0` profile version **未 bump**：hook/invariant contract 未变，属于 semantics owner 的兼容加强；当前绑定 evolution@1.0 的 owner 自动获得新方法，无需复制规则。
+Final-integration challenge:
+- 在写 maintenance checkpoint 期间，mainline 同时推进 operational receipt contract 到 1.2：runtime/contract 先到位而旧 methodology tests 尚未同步，导致 integration run `38066058541` 出现 `system_audit PASS / pytest FAIL`；没有把中间绿灯当最终 closure。
+- 1.2 目标经复核成立：verified evidence ref 仍可能与 hook claim 无关，所以需要独立 semantic `assessment_verifier`；这是“evidence exists ≠ evidence supports claim”的更强约束，不应回滚。
+- 对应 tests 随后同步到 1.2；head `ccf80e81499bbb5913955e5d739664c7f3bc2d7b`，Actions run `38066100238` / job `114253942541`: `runtime.system_audit` PASS + full pytest PASS。
+
+`evolution@1.0` profile version **未 bump**：本轮二阶挑刺属于 semantics owner 的兼容加强，hook/invariant contract 未因该方法论改动而变化；当前绑定 evolution@1.0 的 owner 自动获得新方法，无需复制规则。Operational receipt 1.2 是独立的 action-receipt contract hardening，不应与 profile semantics version 混为一谈。
 
 ## 之前已收口的重要维护事实
 
@@ -109,6 +115,7 @@ Validation:
 ## Next action
 
 - 任何后续 non-trivial owner evolution：使用 `evolution@1.0` 二阶挑刺与 evidence ladder，不允许首次 CI 绿后直接扩大 closure claim。
+- 任何 operational methodology claim：按 receipt contract 1.2 同时验证 evidence ref 与 evidence 对具体 hook claim 的语义支持。
 - Novel：等 CH8 外部发布确认后由业务 owner 执行 CH9；真实 CH9 evidence trajectory 才能提升 live proof。
 - Financial：下一次真实 article material action 做 action-level methodology conformance；有独立 pairwise judge/verifier 后做质量 promotion。
 - Universal：有真实 product-run/grader path 后跑 maintenance-decision held-out suite；operator-dependence incident 未闭环前保持 OPEN。
@@ -121,6 +128,8 @@ Validation:
 - `SYSTEM_MAINTENANCE_POLICY.json`
 - `OWNER_ADAPTER_CONTRACT.json`
 - `ENTRYPOINT.md`
+- `runtime/methodology_conformance.py`
+- `tests/test_methodology_conformance.py`
 - `tests/test_system_maintenance_policy.py`
 - `audits/SECOND_ORDER_EVOLUTION_METHOD_DISTILLATION_2026-10-10.md`
 - `OWNER_REGISTRY.json`
