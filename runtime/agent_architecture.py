@@ -83,10 +83,10 @@ def validate_agent_manifest(
 
     harness = manifest.get("harness", {}) if isinstance(manifest.get("harness"), Mapping) else {}
     suites = set(harness.get("suites", ())) if isinstance(harness.get("suites"), list) else set()
-    minimum_suites = set(required_layers.get("harness", {}).get("minimum_suites", ()))
+    minimum_suites = set(required_layers.get("harness", {}).get("minimum_owner_local_suites", ()))
     missing_suites = sorted(minimum_suites - suites)
     if missing_suites:
-        errors.append(f"harness missing minimum suites: {missing_suites}")
+        errors.append(f"harness missing minimum owner-local suites: {missing_suites}")
 
     refs = manifest.get("references", {}) if isinstance(manifest.get("references"), Mapping) else {}
     mirror_policy = refs.get("mirror_policy")
