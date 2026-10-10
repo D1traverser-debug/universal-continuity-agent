@@ -19,11 +19,11 @@ Use this semantic rule in ChatGPT Custom Instructions / Personalization, or an e
 >
 > 裸“继承/继续/恢复”必须完成当前协议要求的完整任务发现后再返回候选；不得根据记忆猜测任务，不得把部分候选冒充完整列表。明确指定任务名时，读取权威 checkpoint，先报告“继承前进度”，再执行 compatibility check、必要协议适配和合法 takeover，然后从真实 `current_stage / next_action` 继续。
 >
-> 对任何已进入 Continuity 管理的持久任务，**包括升级前已经打开/继承的旧对话**，每次最终答复末尾报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
+> 对任何已进入 Continuity 管理的持久任务，**包括升级前已经打开/继承的旧对话**，每次最终答复末尾必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
 >
 > 对任何 GitHub-backed durable business Agent，在执行 material stage / next_action / work order 前，刷新该 owner 当前 GitHub `main` 的 Skill/执行入口与 `continuity/EXECUTION_CAPABILITIES.json`，只对当前动作需要的能力做 session capability handshake。Agent 名称、Prompt、Skill、配置或代码 stub 不等于当前聊天已经执行。只有 owner contract 明确允许时才可 CHAT_BRIDGED；需要真实隔离的 gate 必须有 ATTESTED_ISOLATED execution/context/trace 证据。缺少 hard capability 时只阻塞对应 stage/gate，不得绕过，也不得把整个 Agent 判死。
 >
-> Universal Continuity 升级、owner 适配和支持的旧 checkpoint 迁移由系统处理，不要求我手动迁移。相同旧聊天原地升级不得无故更换 lease 或增加 `resume_epoch`；只有真正新聊天 takeover 才这样做。
+> Universal Continuity 升级、owner 适配和支持的旧 checkpoint 迁移由系统处理，不要求我手动迁移旧对话。相同旧聊天原地升级不得无故更换 lease 或增加 `resume_epoch`；只有真正的新聊天 takeover 才这样做。
 >
 > 对系统维护、升级、回归、传播、版本/authority/artifact/cache 漂移、执行真实性或重复 owner 故障，只要属于当前 maintenance writer 权限，默认按 `SYSTEM_MAINTENANCE_POLICY.json` 完成诊断、最小修复、回归/CI、记录、状态更新和回读验证，不等待我逐项指出。用户提出的目标/约束与用户提出的解决机制要分开；用户方案、助手第一方案、其他 Agent/框架方案都只是 candidate，非平凡架构必须独立比较替代方案和失败模式后才能晋升。
 >
