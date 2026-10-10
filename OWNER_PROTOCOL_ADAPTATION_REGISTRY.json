@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.4",
+  "schema_version": "1.5",
   "current_continuity_protocol": "3.7",
   "role": "MIGRATION_AND_CONFORMANCE_PLAN_NOT_BUSINESS_STATE_AUTHORITY",
   "user_action_required": false,
@@ -16,7 +16,7 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/financial-writing-agent@main:continuity/tasks/financial-writing-main/HANDOFF.md",
-      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_ALL_PROFILES_BOUND__OWNER_REGRESSION_PASS__ACTION_LEVEL_OPERATIONAL_EVIDENCE_REQUIRED__LIVE_QUALITY_EVIDENCE_PENDING",
+      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_ALL_PROFILES_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__ACTION_LEVEL_OPERATIONAL_EVIDENCE_REQUIRED__LIVE_QUALITY_EVIDENCE_PENDING",
       "methodology_regression_evidence": {
         "behavioral_head": "07a05bf2dc93db25b9514f3c66807bc967a3d3bf",
         "run_id": 38062102017,
@@ -24,6 +24,8 @@
       },
       "methodology_adapter_metadata_head": "91724371b7281024ff52bfac2c28b914104d06b2",
       "methodology_adapter_metadata_run_id": 38062215617,
+      "profile_applicability_metadata_head": "8f7710b64c330e0770154e65a40b4abc9a4e932d",
+      "profile_applicability_ci_run_id": 38063063135,
       "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_INDEPENDENT_EVIDENCE_RECEIPT_REQUIRED"
     },
     {
@@ -37,12 +39,14 @@
       "business_state_rewrite": false,
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
-      "status": "ACTIVE_ENTRY_RECONCILED_V37__METHODOLOGY_BOUND__OWNER_REGRESSION_PASS__HISTORICAL_TASKS_LAZY",
+      "status": "ACTIVE_ENTRY_RECONCILED_V37__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__HISTORICAL_TASKS_LAZY",
       "methodology_regression_evidence": {
         "behavioral_head": "fb43eb80d4926d211767c01d272f788ba44b22a2",
         "run_id": 38056263701,
         "job_id": 114225317385
       },
+      "profile_applicability_metadata_head": "d001a857d94eaa2a103798d7186589a4931b2af1",
+      "profile_applicability_ci_run_id": 38063084164,
       "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_INDEPENDENT_EVIDENCE_RECEIPT_REQUIRED"
     },
     {
@@ -57,12 +61,14 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/video-growth-agent@main:continuity/CHECKPOINT_COMPACTION_PLAN.json",
-      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_BOUND__OWNER_REGRESSION_PASS__CHECKPOINT_COMPACTION_READY_FOR_VALID_WRITER",
+      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__CHECKPOINT_COMPACTION_READY_FOR_VALID_WRITER",
       "methodology_regression_evidence": {
         "behavioral_head": "fe44157c1b162aa2a8ff5f8028920dbb199303a3",
         "run_id": 38056303743,
         "job_id": 114225426230
       },
+      "profile_applicability_metadata_head": "e3b60458ef858e963acd3417d4f188a2d0518f6b",
+      "profile_applicability_ci_run_id": 38063131876,
       "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_EVIDENCE_OR_ATTESTATION_REQUIRED"
     },
     {
@@ -77,14 +83,16 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/novel-writing-agent@main:continuity/ARTIFACT_CONTEXT_GOVERNANCE.json",
-      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_BOUND__OWNER_REGRESSION_PASS",
+      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS",
       "methodology_regression_evidence": {
         "behavioral_head": "92dcb86f01046e830f39605bace48cda4eb5f270",
         "run_id": 38056280903,
         "job_id": 114225364359
       },
+      "profile_applicability_metadata_head": "94d3626fa6695fdcb41b9139f42cd28853d3106a",
+      "profile_applicability_ci_run_id": 38063108153,
       "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_INDEPENDENT_EVIDENCE_RECEIPT_REQUIRED"
     }
   ],
-  "rule": "A maintenance task may update rebuildable migration/conformance metadata after authoritative owner evidence is re-read, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol or recovery-state mutations remain the valid task writer's responsibility. Methodology declaration binding plus owner CI is not action-level operational proof; an activated profile requires an operational profile run with independently verified evidence before a profile-dependent gate or COMMITTED claim."
+  "rule": "A maintenance task may update rebuildable migration/conformance metadata after authoritative owner evidence is re-read, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol or recovery-state mutations remain the valid task writer's responsibility. Every methodology profile in the current contract must be explicitly assessed as APPLIES or NOT_APPLICABLE with owner-local reason/evidence; APPLIES requires exact-version binding and silence is not non-applicability. Declaration binding, applicability evidence and owner CI are still not action-level operational proof; an activated profile requires an operational profile run with independently verified evidence before a profile-dependent gate or COMMITTED claim."
 }
