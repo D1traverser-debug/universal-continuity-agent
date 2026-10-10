@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_PRODUCT_E2E_PASS__OPERATIONAL_CONFORMANCE_CI_ENFORCED__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
-      "next_action": "Keep declaration-vs-operational methodology separation as a CORE_ALWAYS CI invariant; close the operator-dependence incident only with real live-agent trajectory/product eval, then continue owner operational-conformance rollout without stealing business leases.",
+      "current_stage": "V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED_AND_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+      "next_action": "Keep Financial Writing first: run independently verifiable blind pairwise candidate-vs-baseline quality evidence when a live judge/owner execution path is available; do not claim prose-quality improvement from CI alone. Keep the Universal operator-dependence incident open until a real maintenance-decision/escalation product trajectory eval exists, while preserving owner authority and declaration-vs-operational separation.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T09:44:00Z"
+      "updated_at": "2026-10-10T10:31:00Z"
     }
   ]
 }
