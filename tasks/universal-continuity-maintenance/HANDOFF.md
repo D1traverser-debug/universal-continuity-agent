@@ -92,6 +92,9 @@ Final-integration challenge:
 - 在写 maintenance checkpoint 期间，mainline 同时推进 operational receipt contract 到 1.2：runtime/contract 先到位而旧 methodology tests 尚未同步，导致 integration run `38066058541` 出现 `system_audit PASS / pytest FAIL`；没有把中间绿灯当最终 closure。
 - 1.2 目标经复核成立：verified evidence ref 仍可能与 hook claim 无关，所以需要独立 semantic `assessment_verifier`；这是“evidence exists ≠ evidence supports claim”的更强约束，不应回滚。
 - 对应 tests 随后同步到 1.2；head `ccf80e81499bbb5913955e5d739664c7f3bc2d7b`，Actions run `38066100238` / job `114253942541`: `runtime.system_audit` PASS + full pytest PASS。
+- 随后的 Handoff integration head `55faf61f71872995e767895bdd0771c34fd921ff` 再次触发 1 个 pytest failure：`ENTRYPOINT.md` 已有双层验证语义，但使用了 `evidence-ref verifier` 表述，没有稳定写成“independent evidence verifier + independent hook-assessment verifier”的入口合同用语。没有把上一 head 的绿灯替代最终 head 验证。
+- `ENTRYPOINT.md` 已在 commit `76001ffaf20a5f850db581573be334d85359515c` 收敛为 receipt-contract-1.2 双 verifier：独立 evidence verifier 先验证 referenced evidence，独立 hook-assessment verifier 再判断 verified evidence + reason 是否支持具体 hook assessment；real-but-irrelevant ref 明确不是 proof。
+- 最终 integration Actions run `38066316557` / job `114254572485`: `runtime.system_audit` PASS + full pytest PASS。
 
 `evolution@1.0` profile version **未 bump**：本轮二阶挑刺属于 semantics owner 的兼容加强，hook/invariant contract 未因该方法论改动而变化；当前绑定 evolution@1.0 的 owner 自动获得新方法，无需复制规则。Operational receipt 1.2 是独立的 action-receipt contract hardening，不应与 profile semantics version 混为一谈。
 
