@@ -8,6 +8,7 @@ from typing import Any, Iterable
 
 from runtime.execution_readiness import Assurance, CapabilityRequirement, RouteStatus, evaluate_execution
 from runtime.execution_receipt import ReceiptBindingStatus, validate_execution_receipt_binding
+from runtime.meta_maintenance import evaluate_meta_maintenance_run
 from runtime.methodology_conformance import evaluate_methodology_conformance, evaluate_operational_methodology_conformance
 from runtime.owner_topology import bare_inherit_sources, business_owner_names, validate_owner_registry
 from runtime.protocol_reconciliation import apply_protocol_patch, plan_in_place_protocol_reconciliation
@@ -29,6 +30,7 @@ CORE_CHECKS = (
     "local_authority_reference_reachability",
     "registry_owner_set_consistency",
     "maintenance_task_cache_alignment",
+    "maintenance_meta_governance_alignment",
     "product_e2e_status_alignment",
     "owner_protocol_registry_state_consistency",
     "methodology_declaration_operational_separation",
@@ -62,6 +64,8 @@ FAULT_INJECTION_SCENARIOS = (
     "destructive_mutation_has_unknown_identity_or_dependency",
     "external_reference_is_promoted_to_authority_by_presence",
     "declared_executor_is_treated_as_session_execution_proof",
+    "meta_maintenance_outline_omitted_after_systemic_correction",
+    "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade",
 )
 
 HIGH_RISK_PATHS = {
@@ -74,18 +78,20 @@ HIGH_RISK_PATHS = {
     "CONTINUOUS_LEARNING_POLICY.md", "HARNESS_STATUS.json", ".github/workflows/ci.yml",
     "runtime/system_audit.py", "runtime/execution_receipt.py", "runtime/execution_readiness.py",
     "runtime/methodology_conformance.py", "runtime/universal_continuity.py", "runtime/owner_topology.py",
-    "runtime/protocol_reconciliation.py",
+    "runtime/protocol_reconciliation.py", "runtime/meta_maintenance.py", "runtime/maintenance_decision_eval.py",
 }
 FULL_SWEEP_TRIGGERS = {
     "explicit_global_audit", "protocol_change", "authority_model_change",
     "storage_or_artifact_authority_change", "startup_or_discovery_change",
     "methodology_contract_change", "execution_contract_change", "cross_owner_migration",
-    "systemic_incident", "release_boundary",
+    "systemic_incident", "systemic_reliability_incident", "repeated_material_failure",
+    "user_challenges_maintenance_method_or_global_completeness", "release_boundary",
 }
 FAULT_INJECTION_TRIGGERS = {
-    "explicit_global_audit", "systemic_incident", "protocol_change", "authority_model_change",
-    "storage_or_artifact_authority_change", "methodology_contract_change",
-    "execution_contract_change", "release_boundary",
+    "explicit_global_audit", "systemic_incident", "systemic_reliability_incident",
+    "repeated_material_failure", "user_challenges_maintenance_method_or_global_completeness",
+    "protocol_change", "authority_model_change", "storage_or_artifact_authority_change",
+    "methodology_contract_change", "execution_contract_change", "release_boundary",
 }
 
 
@@ -113,7 +119,7 @@ def plan_audit(
     owner_registry: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     paths = _normalize_paths(changed_paths)
-    trigger = (trigger or "routine_change").strip()
+    trigger = (trigger or "routine_change").strip().lower()
     modes = ["CORE_ALWAYS", "IMPACT_SCOPED"]
     checks = set(CORE_CHECKS)
     owner_scope: set[str] = set()
@@ -140,6 +146,7 @@ def plan_audit(
             "all_owner_metadata_surfaces",
             "dangling_remote_pointer_check",
             "stale_derived_state_check",
+            "maintenance_meta_governance_alignment",
         })
         risk = "HIGH"
     if trigger in FAULT_INJECTION_TRIGGERS or high_risk_change:
@@ -174,6 +181,57 @@ def _local_ref_candidates(manifest: dict[str, Any]) -> list[str]:
         ref for ref in manifest.get("artifact_refs", [])
         if isinstance(ref, str) and "@" not in ref and not ref.startswith(("http://", "https://"))
     ]
+
+
+def _entrypoint_receipt_semantic_errors(adapter: dict[str, Any], entrypoint_text: str) -> list[str]:
+    errors: list[str] = []
+    current = str(adapter.get("methodology_composition", {}).get("operational_profile_run_contract_version", "")).strip()
+    if not current:
+        return ["OWNER_ADAPTER_CONTRACT missing operational profile run contract version"]
+    if f"receipt-contract-{current}" not in entrypoint_text or f"Under receipt contract {current}" not in entrypoint_text:
+        errors.append("ENTRYPOINT methodology receipt semantics are stale relative to OWNER_ADAPTER_CONTRACT")
+    if current != "1.2" and ("receipt-contract-1.2" in entrypoint_text or "Under receipt contract 1.2" in entrypoint_text):
+        errors.append("ENTRYPOINT retains superseded receipt-contract-1.2 semantics")
+    return errors
+
+
+def _meta_governance_alignment_errors(
+    root: Path,
+    maintenance: dict[str, Any],
+    task_manifest: dict[str, Any],
+    harness: dict[str, Any],
+    adapter: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    runtime_ref = root / "runtime/meta_maintenance.py"
+    if not runtime_ref.exists():
+        errors.append("meta-maintenance runtime missing")
+    meta = harness.get("meta_governance", {})
+    manifest_version = str(task_manifest.get("meta_maintenance_harness_version", "")).strip()
+    harness_version = str(meta.get("runtime_version", "")).strip()
+    if manifest_version and harness_version and manifest_version != harness_version:
+        errors.append("maintenance TASK_MANIFEST meta harness version differs from HARNESS_STATUS")
+    if meta.get("authority") != "SYSTEM_MAINTENANCE_POLICY.json":
+        errors.append("HARNESS_STATUS meta governance authority drift")
+    if meta.get("assurance_ceiling") != "STRUCTURED_PROCESS_CONFORMANCE_ONLY":
+        errors.append("HARNESS_STATUS meta governance assurance ceiling drift")
+    if meta.get("independent_semantic_review_proven") is not False:
+        errors.append("HARNESS_STATUS falsely claims independent meta semantic review")
+    run_ref = task_manifest.get("latest_meta_maintenance_run_ref")
+    if isinstance(run_ref, str) and run_ref:
+        run_path = root / run_ref
+        if not run_path.exists():
+            errors.append("maintenance latest_meta_maintenance_run_ref is missing")
+        else:
+            result = evaluate_meta_maintenance_run(
+                _load_json(root, run_ref), maintenance, owner_registry=_load_json(root, "OWNER_REGISTRY.json")
+            )
+            if result.status != "PASS":
+                errors.append("latest meta-maintenance run is not structurally conformant")
+    else:
+        errors.append("maintenance latest_meta_maintenance_run_ref missing")
+    errors.extend(_entrypoint_receipt_semantic_errors(adapter, (root / "ENTRYPOINT.md").read_text(encoding="utf-8")))
+    return errors
 
 
 def _methodology_fixture(contract: dict[str, Any], active_profile: str) -> tuple[dict[str, Any], dict[str, Any], list[str]]:
@@ -266,6 +324,7 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
     ):
         errors.append("maintenance TASK_MANIFEST methodology owner declaration contract is stale")
 
+    errors.extend(_meta_governance_alignment_errors(root, maintenance, task_manifest, harness, adapter))
     errors.extend(_methodology_separation_errors(adapter))
     errors.extend(validate_owner_registry(owner_registry))
 
@@ -619,6 +678,28 @@ def run_synthetic_fault_injection(root: str | Path, scenarios: Iterable[str]) ->
                 }]}
                 decision = evaluate_execution(profile, [CapabilityRequirement("c")], [])
                 passed = decision.status == RouteStatus.BLOCKED and decision.blockers == ("session_capability_unobserved:c",)
+            elif scenario == "meta_maintenance_outline_omitted_after_systemic_correction":
+                policy = _load_json(root, "SYSTEM_MAINTENANCE_POLICY.json")
+                incomplete = {
+                    "schema_version": "1.1",
+                    "run_id": "synthetic-meta-omission",
+                    "scope": "FULL_CONTROL_PLANE",
+                    "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
+                    "user_signal": {
+                        "classifications": ["GOAL_OR_CONSTRAINT"],
+                        "goal_or_constraint": "systemic maintenance must close completely",
+                    },
+                    "authority_inspection": {"refs": ["SYSTEM_MAINTENANCE_POLICY.json"]},
+                }
+                result = evaluate_meta_maintenance_run(
+                    incomplete, policy, owner_registry=_load_json(root, "OWNER_REGISTRY.json")
+                )
+                passed = result.status == "FAIL" and "systemic_change_requires_learning_scout" in result.errors and "at_least_two_alternatives_required" in result.errors
+            elif scenario == "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade":
+                adapter = copy.deepcopy(_load_json(root, "OWNER_ADAPTER_CONTRACT.json"))
+                adapter["methodology_composition"]["operational_profile_run_contract_version"] = "9.9"
+                entrypoint = (root / "ENTRYPOINT.md").read_text(encoding="utf-8")
+                passed = bool(_entrypoint_receipt_semantic_errors(adapter, entrypoint))
         except Exception:
             passed = False
         results[scenario] = "PASS" if passed else "FAIL"
