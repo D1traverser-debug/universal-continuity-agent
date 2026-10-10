@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "run_id": "meta-maintenance-governance-2026-10-11",
+  "scope": "FULL_CONTROL_PLANE",
+  "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
+  "target_manifest_version": 38,
+  "user_signal": {
+    "classifications": [
+      "GOAL_OR_CONSTRAINT",
+      "COUNTEREXAMPLE_OR_FAILURE_REPORT",
+      "PROPOSED_MECHANISM"
+    ],
+    "goal_or_constraint": "System maintenance must not merely obey the latest user example or patch the latest symptom. It needs a default full reflection path that explicitly learns when warranted, assimilates user corrections without blindly canonizing proposed mechanisms, decides whether GPT/account/startup instructions must change, checks cross-subsystem inheritance, attacks bloat and efficiency cost, and calibrates closure so the user does not have to repeatedly enumerate missing dimensions.",
+    "proposed_mechanism": "Consider a higher-level system/agent and stronger distillation/learning tooling rather than continuing to extend the old maintenance path by habit.",
+    "counterexample": "Previous maintenance passes repeatedly became green and were described as internally complete, after which the user exposed another omitted review dimension such as artifact applicability, true execution proof, new-owner cold start, full-system audit, or meta-level learning/instruction/inheritance/efficiency review."
+  },
+  "authority_inspection": {
+    "refs": [
+      "ENTRYPOINT.md",
+      "CURRENT_PROTOCOL.json",
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "CONTINUOUS_LEARNING_POLICY.md",
+      "STARTUP_HOOK.md",
+      "OWNER_ADAPTER_CONTRACT.json",
+      "runtime/system_audit.py",
+      "runtime/maintenance_decision_eval.py",
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json"
+    ]
+  },
+  "failure_model": {
+    "root_cause_layers": [
+      "REPOSITORY_POLICY",
+      "STARTUP_OR_ROUTING_INSTRUCTION",
+      "TEST_OR_EVAL",
+      "EVIDENCE_OR_PROPAGATION"
+    ],
+    "failure_classes": [
+      "repair-first governance: the default maintenance loop emphasized diagnose/patch/validate before explicitly requiring full-system impact, learning, instruction-surface, inheritance and efficiency review",
+      "self-review without a process verifier: the same maintenance actor could decide which review dimensions mattered and then declare closure",
+      "user-correction assimilation gap: user corrections were treated as triggers but the system did not force first-occurrence classification into goal/counterexample/proposed mechanism and a broader impact review",
+      "instruction-surface omission: there was no mandatory decision explaining whether account/startup instructions should change or why they should not",
+      "cross-subsystem inheritance blind spot: compatible semantics-owner changes could be assumed to propagate without a mandatory registry-derived owner/override scan",
+      "complexity-efficiency blindness: reliability additions were not required to account for startup context, tool/remote reads, steady-state latency, duplicate rules or migration burden",
+      "premature global closure language: a scoped green maintenance pass could be rhetorically generalized beyond its evidence ceiling"
+    ],
+    "system_impact_map": [
+      "SYSTEM_MAINTENANCE_POLICY semantics and maintenance closure",
+      "ENTRYPOINT maintenance routing and methodology receipt-version wording",
+      "CONTINUOUS_LEARNING_POLICY reusable failure-pattern distillation",
+      "maintenance tests/evals and CI closure gating",
+      "all current BUSINESS owners through operational_hygiene/evolution semantics-owner composition",
+      "future owner admission because shared semantics must propagate without copied owner prose",
+      "ChatGPT account/startup instruction boundary because repository writes cannot mutate account instructions"
+    ]
+  },
+  "learning_scout": {
+    "disposition": "SCOUT_DONE",
+    "sources": [
+      {
+        "ref": "https://platform.openai.com/docs/guides/agents-sdk/tracing",
+        "observation": "Agent execution should expose traces/observability so evaluation can inspect what actually happened rather than infer execution from declarations.",
+        "disposition": "ADOPT",
+        "rationale": "Directly addresses this system's recurring declaration/receipt/self-report gaps; supports keeping execution traces and evaluators distinct."
+      },
+      {
+        "ref": "https://platform.openai.com/docs/guides/agent-evals",
+        "observation": "Workflow evaluation uses graders/datasets and trace-level evidence to detect workflow failures across iterations.",
+        "disposition": "ADOPT",
+        "rationale": "Supports regression/held-out evaluation as a maintenance closure input rather than relying on self-review."
+      },
+      {
+        "ref": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+        "observation": "Agent teams should build evals early and use them to replace reactive production issue loops with measurable development feedback.",
+        "disposition": "ADOPT",
+        "rationale": "Matches the observed operator-dependence failure where the user repeatedly supplied the next missing counterexample."
+      },
+      {
+        "ref": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+        "observation": "Long-running agents need harness-level durable state, explicit progress artifacts and incremental validation across context windows.",
+        "disposition": "ADOPT",
+        "rationale": "Supports making the meta-maintenance run a durable machine-readable object instead of a chat-only reflection."
+      },
+      {
+        "ref": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+        "observation": "Reusable procedures benefit from progressive disclosure and on-demand loading rather than permanently expanding the base prompt.",
+        "disposition": "ADOPT",
+        "rationale": "Supports keeping meta-maintenance cold-path and avoiding a giant Custom Instructions or owner-prompt copy."
+      },
+      {
+        "ref": "https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py",
+        "observation": "A small harness can serialize the full trajectory, enforce step/cost/time limits and keep action/observation flow explicit without a large orchestration hierarchy.",
+        "disposition": "ADOPT",
+        "rationale": "Supports a narrow deterministic Meta-Governance Harness rather than another personality-style supervisory Agent."
+      },
+      {
+        "ref": "https://github.com/gepa-ai/gepa",
+        "observation": "GEPA evolves prompts/code/agent architectures by executing candidates against an evaluator, reading traces, reflecting, mutating and selecting on train/validation evidence.",
+        "disposition": "NARROW",
+        "rationale": "Useful later for prompt/skill optimization when a trustworthy metric and held-out dataset exist; not admitted as meta-architecture authority because the current governance-quality metric is not mature enough and automated optimization would risk Goodhart/overfit."
+      },
+      {
+        "ref": "https://platform.openai.com/docs/guides/prompt-optimizer",
+        "observation": "Prompt optimization is evaluation-driven and optimized prompts must be re-evaluated/manual-reviewed because optimization can regress some inputs.",
+        "disposition": "NARROW",
+        "rationale": "Adopt the eval-before/after discipline, but do not make a prompt optimizer a core dependency or use prompt growth to mask runtime/governance defects."
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "id": "extend-policy-only",
+      "decision": "REJECTED",
+      "rationale": "Necessary as normative semantics but insufficient alone: the maintenance actor could still skip dimensions and self-report completion without a separate structural closure check."
+    },
+    {
+      "id": "new-llm-meta-agent",
+      "decision": "REJECTED",
+      "rationale": "A new supervisory Agent without a distinct executor identity, trace and measurable independent lift would add coordination/context cost and could become another role-played self-review layer. Reconsider only if a genuinely separate executor/verifier path exists and held-out evaluation shows benefit."
+    },
+    {
+      "id": "normative-policy-plus-deterministic-meta-governance-harness",
+      "decision": "ACCEPTED",
+      "rationale": "Keep SYSTEM_MAINTENANCE_POLICY as the normative owner, add a narrow deterministic harness that rejects missing learning/user-signal/instruction/propagation/complexity/second-order/closure evidence, and retain independent trajectory graders for semantic assurance. This creates a real upper verification layer without creating a parallel business authority or fake independent Agent."
+    }
+  ],
+  "instruction_surface": {
+    "decision": "CHANGE",
+    "reason": "Internal ENTRYPOINT maintenance routing needs one minimal trigger sentence and its stale receipt-contract 1.2 wording must align to 1.3. The external ChatGPT account/Custom Instructions do not currently need a larger doctrine block: STARTUP_HOOK already routes system maintenance to current repository authority, and this live conversation demonstrates the maintenance route can be entered. Adding the full meta-governance method to account instructions would duplicate authority and increase prompt bloat. Repository writes are not treated as proof of account-instruction propagation; request an external account edit only if future product evidence shows this class of signal fails to route."
+  },
+  "propagation": {
+    "classification": "COMPOSABLE_PROFILE_METHOD",
+    "scope": "ALL_BUSINESS_OWNERS",
+    "impacted_business_owners": [
+      "A_SHARE_MARKET_AGENT",
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ],
+    "mechanism": "SYSTEM_MAINTENANCE_POLICY remains the operational_hygiene semantics owner and is referenced by current owner adapters; evolution semantics remain in CONTINUOUS_LEARNING_POLICY. Compatible semantics hardening propagates through existing exact-version profile bindings and event-driven loading rather than copied owner prose or a profile-version bump.",
+    "stale_override_scan": "PASS",
+    "override_scan_evidence": [
+      "Financial/A-share/Novel/Video adapters all bind artifact_io@1.0 + operational_hygiene@1.0 + evolution@1.0",
+      "owner overrides inspected are evaluator/artifact specializations and do not replace the shared maintenance evidence/reliability/authority invariants",
+      "OWNER_ADAPTER_CONTRACT versioning rule explicitly permits compatible semantics-owner improvements without forcing profile-version changes"
+    ]
+  },
+  "complexity_efficiency": {
+    "new_authority_surfaces": 0,
+    "mandatory_startup_context_delta": 0,
+    "tool_or_remote_read_delta": "Additional learning/owner-impact reads only on systemic or architecture maintenance; local deterministic fixes may record NOT_REQUIRED_WITH_REASON; ordinary business turns unchanged.",
+    "steady_state_latency_effect": "NONE_ON_BUSINESS_HOT_PATH",
+    "duplicate_rule_effect": "CONSOLIDATE: keep SYSTEM_MAINTENANCE_POLICY as one semantics owner; Meta-Governance Harness is an executable verifier, not a second root policy; do not copy the method into owner prompts or account instructions.",
+    "cross_owner_touch_count": 4,
+    "migration_compatibility_effect": "NO_CONTINUITY_PROTOCOL_BUMP_AND_NO_METHODOLOGY_PROFILE_VERSION_BUMP; compatible semantics-owner hardening only.",
+    "test_observability_effect": "Adds deterministic meta-maintenance process-conformance tests and a machine-readable run record; semantic independence still uses existing trajectory/evidence-verifier gates.",
+    "decision": "ACCEPTABLE"
+  },
+  "authority_surface_admission": "PASS",
+  "implementation": {
+    "changed_paths": [
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "runtime/meta_maintenance.py",
+      "tests/test_meta_maintenance.py",
+      "tests/test_system_maintenance_policy.py",
+      "tests/test_system_audit.py",
+      "ENTRYPOINT.md",
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "GENERIC_TASK_REGISTRY.json",
+      "audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json"
+    ],
+    "superseded_or_demoted_surfaces": [
+      "The previous repair-first maintenance-loop interpretation is superseded by the explicit meta-maintenance outline for systemic/non-trivial work.",
+      "The assumption that a green self-audit process can itself establish semantic independence is rejected; deterministic harness assurance is structurally bounded."
+    ]
+  },
+  "validation": {
+    "regression_or_eval_refs": [
+      "GitHub Actions run 38077001860 at head 7e902847427a624bbc60fcbfb25f732b70781f78: risk-tiered control-plane audit PASS and full pytest PASS",
+      "tests/test_meta_maintenance.py",
+      "tests/test_system_maintenance_policy.py",
+      "tests/test_system_audit.py"
+    ],
+    "second_order_challenge": "PASS",
+    "second_order_findings": [
+      "The same maintenance actor can still fill a structurally valid run record after the fact; the harness cannot prove chronology or semantic truth.",
+      "Therefore a Meta-Governance Harness PASS is STRUCTURED_PROCESS_CONFORMANCE_ONLY and must not be called independent evaluation.",
+      "Full-depth review on every business/local fix would be bureaucratic and slow; full learning/impact/inheritance/complexity review is limited to systemic/non-trivial maintenance while local deterministic fixes may use explicit NOT_REQUIRED_WITH_REASON.",
+      "A new LLM meta-agent is not admitted without a distinct executor/trace and held-out measured lift; role names alone would recreate self-attestation inflation.",
+      "Prompt/skill optimizers such as GEPA are not architecture authority; they require trustworthy metrics/train-heldout data and remain optional until such an eval surface exists.",
+      "The current design adds no root authority and no steady-state business preload; it adds a cold-path runtime verifier and tests."
+    ],
+    "cross_surface_or_fault_audit": "PASS"
+  },
+  "closure": {
+    "assurance_ceiling": "REGRESSION_VERIFIED",
+    "independent_semantic_assurance": "OPEN",
+    "open_gates": [
+      "Universal operator-dependence heldout/live trajectory requires a distinct grader and evidence verifier",
+      "A truly fresh product chat with a newly admitted real BUSINESS owner remains unproven",
+      "Future real owner actions still require receipt 1.3 exact-action independent methodology verification where applicable",
+      "Financial live prose-quality promotion and Personalized Writing DNA outcome evidence remain open",
+      "Video strict isolated review/generation gateway remains open",
+      "Arbitrary ChatGPT GitHub mutation still lacks universal pre-write WRITE_PATH_ENFORCED semantics"
+    ],
+    "unknown_or_open_world_boundary": "This pass cannot prove that every future failure class, model/tool behavior, new owner, product change or architecture defect has already been anticipated. It proves only the covered governance process and regressions; future unknowns must enter the same evidence/eval loop.",
+    "global_flawlessness_claimed": false
+  }
+}
