@@ -38,12 +38,14 @@
     }
   },
   "freshness": {
-    "owner_head_field": "observed_owner_head",
-    "harness_receipt_head_field": "harness_receipt_head",
-    "rule": "An architecture conformance receipt is stale when it is not bound to the owner HEAD it claims to validate."
+    "manifest_is_static_architecture_description": true,
+    "manifest_must_not_self_record_current_repo_head": true,
+    "observation_surface": "rebuildable Universal owner-observation/adaptation status",
+    "required_observation_fields": ["observed_owner_head", "architecture_validation_head", "architecture_validation_result", "architecture_validation_ref"],
+    "rule": "Architecture validation is stale when the externally observed owner HEAD differs from the HEAD validated by the latest architecture receipt."
   },
   "assurance": {
-    "architecture_pass_proves": ["declared layer separation", "required refs structurally present", "configured harness surface", "receipt freshness when supplied"],
+    "architecture_pass_proves": ["declared layer separation", "required refs structurally present", "configured harness surface", "external observation freshness when evaluated"],
     "architecture_pass_does_not_prove": ["live model quality", "provider isolation", "tool credentials", "current-session execution", "global correctness"]
   },
   "admission": {
