@@ -1,17 +1,48 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_CI_PROGRESS_OBSERVABILITY_FRESH_CHAT_E2E_PENDING",
+  "status": "PASS_V37_CI_LIFECYCLE_LIVE_CHAT_RECONCILIATION__FRESH_CHAT_RECEIPT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 37958400862,
-    "job_id": 113914688192,
-    "validated_head_sha": "4f60a49772f4dca5d096b14a12f1f47193424d9b",
+    "github_actions_run_id": 38013131965,
+    "job_id": 114097414804,
+    "validated_head_sha": "7488a366d97abf76011595765e5c88176326379c",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 51,
-    "note": "The subsequent HARNESS_STATUS metadata checkpoint does not change executable/runtime/contract behavior."
+    "pytest_count": 57
+  },
+  "system_blueprint": {
+    "canonical_ref": "SYSTEM_BLUEPRINT.md",
+    "current_protocol_marker": "CURRENT_PROTOCOL.json",
+    "version_lifecycle_policy": "VERSION_LIFECYCLE_POLICY.json",
+    "live_chat_reconciliation_policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
+    "user_is_migration_operator": false,
+    "chat_protocol_pinned_at_creation": false,
+    "same_chat_protocol_upgrade_preserves_lease": true,
+    "new_chat_takeover_changes_lease": true
+  },
+  "version_lifecycle": {
+    "active_protocol": "3.7",
+    "active_protocol_count": 1,
+    "superseded_implementation_archive": "GIT_HISTORY_ONLY",
+    "completed_library_to_github_migration_archive": "archive/migrations/2026-10-09-library-to-github.md",
+    "removed_from_active_root": [
+      "MIGRATION_MANIFEST.json",
+      "MIGRATION_STATUS.json",
+      "MIGRATION_CHECKPOINT.md",
+      "ENGINEERING_HOME_STATUS.json"
+    ],
+    "task_manifest_template_aligned_to_v37": true
+  },
+  "owner_protocol_adaptation": {
+    "registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json",
+    "financial_writing": "ADAPTER_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
+    "a_share": "ACTIVE_ENTRY_RECONCILED_V37__HISTORICAL_TASKS_LAZY",
+    "video_growth": "OWNER_ADAPTER_V37__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
+    "novel_os": "ROUTING_ADAPTER_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
+    "maintenance_may_steal_active_task_lease": false,
+    "business_state_rewrite_for_protocol_overlay": false
   },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
@@ -53,6 +84,7 @@
     "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
     "resume_progress_receipt": "IMPLEMENTED_CI_PASS_FRESH_CHAT_E2E_PENDING",
     "turn_commit_receipt": "IMPLEMENTED_CI_PASS",
+    "existing_chat_receipt_scope": "ACCOUNT_HOOK_PLUS_LIVE_CHAT_RECONCILIATION",
     "committed_requires_reread": true,
     "no_material_change_avoids_heartbeat": true,
     "fresh_chat_e2e_pending_reason": "The pre-resume receipt must be observed in a genuinely new chat after exact task selection; CI cannot substitute for that product-level acceptance."
@@ -74,31 +106,17 @@
   },
   "media_distillation": {
     "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
-    "reference_case": "Jason Efficiency Lab GPT-6 Codex core tips",
-    "same_media_identity_resolved": true,
-    "audio_transcript_full": true,
-    "same_author_companion_article_full": true,
-    "visual_full_stream_review": true,
     "evidence_levels_kept_distinct": true,
     "current_learning_pass_video_evidence": "OpenAI DevDay Cursor session original identity confirmed; third-party transcript partial review; visual review not claimed"
-  },
-  "human_task_identity": {
-    "field": "display_name_zh",
-    "persisted_user_task_required": true,
-    "missing_behavior": "ASK_USER_ONCE_THEN_PERSIST_AND_CONTINUE",
-    "machine_identity": "task_id",
-    "rename_keeps_task_id": true,
-    "candidate_ui_prefers_display_name_zh": true,
-    "continuation_phrase_matching": true
   },
   "hardening": {
     "registry_cache_only": true,
     "single_active_writer": true,
     "resume_epoch_and_lease": true,
-    "old_chat_retired_after_takeover": true,
+    "old_chat_retired_after_true_new_chat_takeover": true,
+    "same_chat_not_retired_for_protocol_upgrade": true,
     "global_discovery_first_message_only": true,
     "continuity_not_business_single_point_of_failure": true,
     "live_user_state_not_exposed_in_public_universal_repo": true
-  },
-  "chatgpt_library": "thin bootstrap pointer only; not an automatic trigger"
+  }
 }
