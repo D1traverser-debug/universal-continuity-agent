@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6",
   "continuity_protocol_version": "3.7",
-  "updated_at": "2026-10-10",
+  "updated_at": "2026-10-11",
   "applies": "first explicit continuation or first substantive user message after account-level routing",
   "startup_hook": {
     "required": true,
@@ -14,8 +14,8 @@
   "flow": [
     "Require the account-level startup hook to route explicit continuation intent into Universal Continuity; file presence alone is not a trigger.",
     "Classify CONTINUE vs NEW_TASK before loading task state.",
-    "For bare CONTINUE such as 继承/继续/恢复 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json and query every required source before reporting a total candidate count.",
-    "If any required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
+    "For bare CONTINUE such as 继承/继续/恢复 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json, derive the current participant/source quorum from OWNER_REGISTRY.json, and query every derived required source before reporting a total candidate count. Never reuse a historical owner count or copied owner-name list.",
+    "If any derived required bare-inherit source cannot be queried, return INCOMPLETE_DISCOVERY; partial candidates may be shown only when explicitly labeled incomplete, and must never be described as the full list.",
     "For semantic CONTINUE with an exact task/domain hint, route to the matching owner first and resolve the exact task without requiring a global scan.",
     "Classify task topology using CONTEXT_RECOVERY_POLICY.json: same-goal continue, fresh-handoff same-goal, side query, fork child task, or new task.",
     "For resumed work, read authoritative metadata plus the short handoff/checkpoint and capture the pre-takeover Resume Progress Receipt before mutating resume_epoch or active_lease.",
@@ -29,8 +29,20 @@
     "Checkpoint material state changes throughout execution; do not wait for context exhaustion.",
     "Before every final response while a durable task is active, persist any material state change, re-read authoritative state, and surface 进度提交 according to PROGRESS_OBSERVABILITY_POLICY.json."
   ],
+  "owner_membership": {
+    "authority": "OWNER_REGISTRY.json",
+    "runtime_derivation": "runtime/owner_topology.py",
+    "business_selector": "owners[*].owner_kind == BUSINESS",
+    "bare_inherit_selector": "owners[*].bare_inherit_participant == true",
+    "parallel_hard_coded_owner_lists_allowed": false,
+    "new_business_owner_rule": "One canonical membership declaration; derived discovery/audit scopes update automatically. Protocol-adaptation and execution registries are rebuildable conformance caches and must converge or fail closed.",
+    "known_topology_e2e_proves_future_owner_admission": false
+  },
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
+    "participant_authority": "OWNER_REGISTRY.json",
+    "derive_current_required_sources": true,
+    "hard_coded_owner_list_allowed": false,
     "must_query_all_required_sources": true,
     "dedupe_key": "task_id",
     "report_count_only_when_complete": true,
@@ -143,7 +155,9 @@
   "verification": {
     "policy": "CONTEXT_RECOVERY_POLICY.json",
     "principle": "risk-matched verification",
-    "broad_unrelated_tests_by_default": false
+    "broad_unrelated_tests_by_default": false,
+    "known_topology_fresh_chat_e2e_is_open_world_owner_admission_proof": false,
+    "real_new_owner_fresh_chat_product_trace_required_for_open_world_claim": true
   },
   "degraded_mode": {
     "simple_one_shot": "Proceed normally if Continuity storage is unavailable.",
@@ -151,6 +165,7 @@
     "resume_unknown_state": "FAIL_CLOSED; never reconstruct executable state from chat guesswork.",
     "bare_inherit_partial_owner_failure": "INCOMPLETE_DISCOVERY; do not claim a total candidate count from partial owner results.",
     "startup_hook_missing": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED; do not silently convert explicit continuation into learning-only inheritance.",
+    "new_owner_derived_cache_incomplete": "FAIL_CLOSED_FOR_OWNER_ADMISSION_CONFORMANCE; do not silently omit the owner from a supposedly complete control-plane audit.",
     "new_durable_task_storage_failure": "Continue only with in-chat temporary ledger and retry persistence before irreversible/high-risk actions; cross-chat recovery is not guaranteed until persistence succeeds.",
     "turn_checkpoint_failure": "Report COMMIT_FAILED; explicitly state that material progress from this turn may not survive the next chat."
   }
