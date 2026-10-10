@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "current_continuity_protocol": "3.7",
   "role": "MIGRATION_AND_CONFORMANCE_PLAN_NOT_BUSINESS_STATE_AUTHORITY",
   "user_action_required": false,
@@ -7,23 +7,25 @@
     {
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "repository": "D1traverser-debug/financial-writing-agent",
-      "observed_protocol": "3.3",
+      "historical_from_protocol": "3.3",
+      "observed_protocol": "3.7",
       "target_protocol": "3.7",
-      "classification": "MIGRATABLE",
-      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "classification": "COMPATIBLE",
+      "strategy": "ACTIVE_TASK_RECONCILED_V37__NO_BUSINESS_STATE_REWRITE",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
-      "conformance_ref": "D1traverser-debug/financial-writing-agent@main:continuity/HANDOFF_COMPACTION_PLAN.json",
-      "status": "ADAPTER_AND_HANDOFF_COMPACTION_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION"
+      "conformance_ref": "D1traverser-debug/financial-writing-agent@main:continuity/tasks/financial-writing-main/HANDOFF.md",
+      "status": "ACTIVE_TASK_RECONCILED_V37__HANDOFF_CONFORMANT"
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
       "repository": "D1traverser-debug/a-share-event-driven-agent",
-      "observed_protocol": "3.3",
+      "historical_from_protocol": "3.3",
+      "observed_protocol": "3.7",
       "target_protocol": "3.7",
-      "classification": "MIGRATABLE",
-      "strategy": "ADDITIVE_PROTOCOL_OVERLAY",
+      "classification": "COMPATIBLE",
+      "strategy": "ACTIVE_ENTRY_RECONCILED_V37__HISTORICAL_TASKS_LAZY",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
@@ -32,19 +34,21 @@
     {
       "owner": "VIDEO_GROWTH_AGENT",
       "repository": "D1traverser-debug/video-growth-agent",
-      "observed_protocol": "3.5",
+      "historical_from_protocol": "3.5",
+      "observed_protocol": "3.7",
       "target_protocol": "3.7",
-      "classification": "MIGRATABLE",
-      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "classification": "COMPATIBLE",
+      "strategy": "ACTIVE_TASK_RECONCILED_V37__CHECKPOINT_COMPACTION_DEFERRED_TO_VALID_WRITER_SCOPE",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/video-growth-agent@main:continuity/CHECKPOINT_COMPACTION_PLAN.json",
-      "status": "OWNER_ADAPTER_AND_CHECKPOINT_COMPACTION_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION"
+      "status": "ACTIVE_TASK_RECONCILED_V37__CHECKPOINT_COMPACTION_READY_FOR_VALID_WRITER"
     },
     {
       "owner": "NOVEL_WRITING_AGENT",
       "repository": "D1traverser-debug/novel-writing-agent",
+      "historical_from_protocol": "3.3",
       "observed_protocol": "3.7",
       "target_protocol": "3.7",
       "classification": "COMPATIBLE",
@@ -56,5 +60,5 @@
       "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE"
     }
   ],
-  "rule": "A maintenance task may stage owner protocol adapters and conformance plans, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol metadata and compacted recovery state are applied by the valid task writer on its next durable turn or by a genuine new-chat takeover."
+  "rule": "A maintenance task may update rebuildable migration/conformance metadata after authoritative owner evidence is re-read, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol or recovery-state mutations remain the valid task writer's responsibility."
 }
