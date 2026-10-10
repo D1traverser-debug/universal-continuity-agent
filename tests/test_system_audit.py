@@ -92,7 +92,7 @@ def test_synthetic_new_business_owner_is_automatically_in_audit_scope():
     assert "SYNTHETIC_NEW_AGENT" in plan["owner_metadata_scope"]
 
 
-def test_new_business_owner_fails_closed_until_derived_caches_converge(tmp_path):
+def test_new_business_owner_fails_closed_until_all_derived_control_plane_evidence_converges(tmp_path):
     repo = tmp_path / "repo"
     shutil.copytree(ROOT, repo)
 
@@ -151,6 +151,17 @@ def test_new_business_owner_fails_closed_until_derived_caches_converge(tmp_path)
         }
     )
     execution_path.write_text(json.dumps(execution, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    still_incomplete = audit_local_control_plane(repo)
+    assert still_incomplete["status"] == "FAIL"
+    assert "latest meta-maintenance run is not structurally conformant" in still_incomplete["errors"]
+
+    manifest = json.loads((repo / "tasks/universal-continuity-maintenance/TASK_MANIFEST.json").read_text(encoding="utf-8"))
+    run_path = repo / manifest["latest_meta_maintenance_run_ref"]
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    impacted = run["propagation"]["impacted_business_owners"]
+    impacted.append("SYNTHETIC_NEW_AGENT")
+    run_path.write_text(json.dumps(run, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     converged = audit_local_control_plane(repo)
     assert converged["status"] == "PASS", converged["errors"]
