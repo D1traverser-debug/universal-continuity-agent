@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
+from runtime.methodology_conformance import (
+    evaluate_methodology_conformance,
+    evaluate_operational_methodology_conformance,
+)
+
 
 CORE_CHECKS = (
     "protocol_version_alignment",
@@ -13,6 +18,7 @@ CORE_CHECKS = (
     "maintenance_task_cache_alignment",
     "product_e2e_status_alignment",
     "owner_protocol_registry_state_consistency",
+    "methodology_declaration_operational_separation",
 )
 
 FAULT_INJECTION_SCENARIOS = (
@@ -23,6 +29,8 @@ FAULT_INJECTION_SCENARIOS = (
     "methodology_profile_floats_latest",
     "methodology_profile_missing_required_hook",
     "methodology_profile_overrides_kernel_invariant",
+    "declared_methodology_is_treated_as_operational_proof",
+    "self_reported_methodology_receipt_lacks_independent_evidence_verification",
     "material_write_reports_committed_without_authoritative_reread",
     "destructive_mutation_has_unknown_identity_or_dependency",
     "external_reference_is_promoted_to_authority_by_presence",
@@ -158,6 +166,64 @@ def _local_ref_candidates(manifest: dict[str, Any]) -> list[str]:
     return refs
 
 
+def _methodology_separation_errors(contract: dict[str, Any]) -> list[str]:
+    """Prove declaration PASS cannot silently collapse into operational PASS."""
+
+    errors: list[str] = []
+    composition = contract.get("methodology_composition", {})
+    profiles = composition.get("profiles", {}) if isinstance(composition, dict) else {}
+    hygiene = profiles.get("operational_hygiene") if isinstance(profiles, dict) else None
+    hook_sets = composition.get("hook_sets", {}) if isinstance(composition, dict) else {}
+    hooks = hook_sets.get("operational_hygiene") if isinstance(hook_sets, dict) else None
+    if not isinstance(hygiene, dict) or not isinstance(hooks, list):
+        return ["methodology separation preflight cannot resolve operational_hygiene profile"]
+
+    owner = {
+        "methodology": {
+            "profile_refs": {"operational_hygiene": hygiene.get("version")},
+            "hook_bindings": {str(hook): f"owner://hooks/{hook}" for hook in hooks},
+            "overrides": {},
+        }
+    }
+    declared = evaluate_methodology_conformance(owner, contract)
+    if declared.status != "PASS":
+        errors.append("synthetic declaration-conformant owner did not pass declaration validation")
+        return errors
+
+    operational_without_run = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        None,
+        required_profiles=["operational_hygiene"],
+        evidence_verifier=lambda ref: True,
+    )
+    if operational_without_run.status != "FAIL" or "missing_operational_execution_evidence" not in operational_without_run.errors:
+        errors.append("declaration-only methodology state was accepted as operational proof")
+
+    fake_receipt = {
+        "profile_runs": [
+            {
+                "profile_id": "operational_hygiene",
+                "profile_version": hygiene.get("version"),
+                "activation_id": "synthetic-audit-activation",
+                "trigger": "system-audit-negative-fixture",
+                "invoked_hooks": list(hooks),
+                "evidence_refs": ["synthetic://self-reported-only"],
+            }
+        ]
+    }
+    operational_without_verifier = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        fake_receipt,
+        required_profiles=["operational_hygiene"],
+    )
+    if operational_without_verifier.status != "FAIL" or "independent_evidence_verifier_required" not in operational_without_verifier.errors:
+        errors.append("self-reported methodology receipt was accepted without independent evidence verifier")
+
+    return errors
+
+
 def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
     """Audit local Universal coherence without touching owner business state."""
 
@@ -189,6 +255,8 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         errors.append("maintenance TASK_MANIFEST protocol != current protocol")
     if task_manifest.get("system_maintenance_policy_version") != maintenance.get("schema_version"):
         errors.append("maintenance TASK_MANIFEST system_maintenance_policy_version is stale")
+
+    errors.extend(_methodology_separation_errors(adapter))
 
     owner_entries = {entry["name"]: entry for entry in owner_registry.get("owners", [])}
     adaptation_entries = {entry["owner"]: entry for entry in adaptation.get("owners", [])}
