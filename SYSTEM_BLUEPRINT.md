@@ -28,7 +28,13 @@ Stable cross-agent invariants:
 - authoritative reread before `COMMITTED`;
 - lower-authority cache/chat context never silently overriding durable truth.
 
-The detailed persistence/discovery rules live in the current Continuity contract/runtime; the blueprint does not duplicate them.
+Responsibility pointers remain explicit even though they are not fixed bootstrap input:
+- protocol lifecycle/version compatibility -> `VERSION_LIFECYCLE_POLICY.json`;
+- same-chat reconciliation / lease-preserving upgrades -> `LIVE_CHAT_RECONCILIATION_POLICY.json`;
+- durable progress receipts / verified commit semantics -> `PROGRESS_OBSERVABILITY_POLICY.json`;
+- progressive recovery / selective history -> `CONTEXT_RECOVERY_POLICY.json`.
+
+The blueprint points to those authorities; it does not duplicate their detailed rules and does not require loading all of them on every turn.
 
 ### 3. Execution kernel
 
@@ -116,13 +122,14 @@ Do **not** use this architecture document as a command to preload all referenced
 
 Conditional loads:
 - bare discovery -> discovery/owner metadata only;
-- protocol mismatch -> lifecycle/reconciliation authority;
+- protocol mismatch -> `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`;
+- durable progress receipt/commit verification -> `PROGRESS_OBSERVABILITY_POLICY.json` when not already satisfied by current runtime contract;
 - business execution -> execution contract + exact owner capability/Skill;
 - artifact/file action -> `artifact_io` profile;
 - maintenance/drift/reliability incident -> `operational_hygiene` profile;
 - durable learning/evolution -> `evolution` profile;
 - media evidence -> media distillation authority;
-- recovery gap -> recovery policy + selective history.
+- recovery gap -> `CONTEXT_RECOVERY_POLICY.json` + selective history.
 
 Audits, research, unrelated owners, old conversations and inactive methodology profiles are cold-path evidence.
 
