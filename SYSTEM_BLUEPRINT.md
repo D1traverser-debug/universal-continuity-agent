@@ -18,6 +18,8 @@ Universal is intentionally a **small control kernel plus composable methodology 
 
 `STARTUP_HOOK.md` routes explicit continuation intent. `ENTRYPOINT.md + CURRENT_PROTOCOL.json` are the minimal repository bootstrap. Bare discovery, named routing and deeper authorities are loaded only when their event occurs.
 
+Both bootstrap surfaces have explicit byte budgets. A thin `SKILL.md` does not count as a thin product if the mandatory bootstrap immediately reloads a giant duplicated prompt.
+
 ### 2. Continuity kernel
 
 Stable cross-agent invariants:
@@ -36,13 +38,31 @@ Responsibility pointers remain explicit even though they are not fixed bootstrap
 
 The blueprint points to those authorities; it does not duplicate their detailed rules and does not require loading all of them on every turn.
 
-### 3. Execution kernel
+### 3. Agent product architecture
+
+`AGENT_ARCHITECTURE_CONTRACT.json` defines the product boundary shared by BUSINESS owners and the Universal SYSTEM_INFRA control plane:
+
+`Skill/router -> Runtime/executor -> Workflow/state -> Harness/eval -> References -> Continuity`.
+
+The layers are responsibilities, not mandatory framework brands:
+- **Skill/router**: trigger, authority pointer, progressive loading map and hard boundaries; not the executable business system.
+- **Runtime/executor**: real executable code/tool/judgment surface. OpenAI Agents SDK, deterministic, hybrid and external runtimes are all valid when declared truthfully.
+- **Workflow/state**: durable stage/state authority and transition guards outside chat prose.
+- **Harness/eval**: contract/trajectory/domain evals locally; shared architecture validation centrally in Universal.
+- **References**: canonical progressive domain knowledge; large rules are not duplicated into the hot-path Skill.
+- **Continuity**: task/recovery/capability pointers, not a replacement for domain runtime state.
+
+Every BUSINESS owner declares `continuity/AGENT_MANIFEST.json` through its `OWNER_REGISTRY.json.agent_manifest_ref`. Universal declares root `AGENT_MANIFEST.json` for itself. Static manifests describe architecture; they do not self-certify the repository HEAD or live quality.
+
+`runtime/agent_architecture_audit.py` is the shared architecture harness. It validates Universal locally, requires all current BUSINESS owners to have architecture pointers, and checks the recorded observation topology. An oversized Skill/bootstrap is `PASS_WITH_DRIFT`, while a missing runtime/workflow/harness layer is a structural failure.
+
+### 4. Execution kernel
 
 `ORCHESTRATION_BLUEPRINT.md`, `EXECUTION_READINESS_CONTRACT.json`, `OWNER_EXECUTION_REGISTRY.json` and `runtime/execution_readiness.py` determine whether a required owner capability is merely declared, wired, executable in this session, or independently attested.
 
 Repository declarations are an assurance ceiling, not current execution proof. A missing hard capability blocks the exact affected gate rather than every unrelated owner capability.
 
-### 4. Methodology composition
+### 5. Methodology composition
 
 `OWNER_ADAPTER_CONTRACT.json` is the composition interface. Shared cross-agent methods are referenced as narrow versioned profiles and implemented through owner-local hook bindings:
 
@@ -56,7 +76,7 @@ Owners may specialize implementation, domain taxonomy, thresholds, artifact loca
 
 This is composition/extension, not an OO inheritance tree. A profile version changes when its hook/invariant contract changes; compatible improvements inside its semantics owner do not require every domain owner to copy new prose.
 
-### 5. Domain owner boundary
+### 6. Domain owner boundary
 
 Each business owner owns:
 - business state machine and stage semantics;
@@ -67,13 +87,38 @@ Each business owner owns:
 
 Universal may validate conformance and route execution. It may not steal another active owner lease or rewrite domain business truth from a system-maintenance task.
 
-### 6. Artifact/context boundary
+### 7. State Plane vs Signal Plane
+
+Authoritative mutation and observation transport are separate systems.
+
+**State Plane**:
+- task manifests, leases, business runtime/checkpoints and accepted business truth;
+- only the current valid writer may mutate the relevant authority;
+- a stale chat/CI/monitor cannot bypass the lease.
+
+**Signal Plane**:
+- `CONTROL_SIGNAL_CONTRACT.json`, `SIGNAL_PLANE.md`, GitHub Issue transport and remote-monitor observations;
+- may be emitted by a stale chat, owner CI, remote monitor or active writer;
+- signals are non-authoritative and only report evidence requiring re-observation;
+- the active Universal maintenance writer consumes/rejects a signal before any authoritative mutation.
+
+This prevents discoveries made by a stale writer or unattended CI from disappearing while preserving single-writer authority.
+
+### 8. Remote architecture monitoring
+
+`OWNER_ARCHITECTURE_OBSERVATIONS.json` is a rebuildable observation cache containing externally observed owner HEADs and architecture-validation receipts. It is not owner membership or business-state authority.
+
+Local Universal CI can validate that this cache is structurally complete and internally consistent, but it cannot discover a newer private owner HEAD without a connected remote execution surface. A remote architecture watch therefore reads every current BUSINESS owner from `OWNER_REGISTRY.json`, compares current HEAD / Agent manifest / Skill shape / CI with the recorded observation, and emits a non-authoritative control signal when meaningful drift appears.
+
+Remote monitoring never takes a business lease or writes business state.
+
+### 9. Artifact/context boundary
 
 Cross-agent artifact authority classes, stable identity, freshness/conflict handling, verified mutation, cache/reference treatment and cleanup safety are owned by `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`.
 
 Library/Drive/Notion/connected apps are reference/evidence by default unless an owner explicitly designates a role. Rebuildable cache is never checkpoint authority. Google Drive may be an explicit artifact vault but not an implicit runtime checkpoint or engineering rule source.
 
-### 7. Maintenance, learning and meta-governance boundary
+### 10. Maintenance, learning and meta-governance boundary
 
 `SYSTEM_MAINTENANCE_POLICY.json` owns autonomous maintenance semantics and the default meta-maintenance outline. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution. `runtime/meta_maintenance.py` is a **narrow deterministic verifier**, not a second root authority and not an independent LLM reviewer.
 
@@ -92,7 +137,7 @@ A new supervisory LLM Agent is not implied by meta-governance. Add one only if i
 2. authoritative task/system manifest for routing, lease and protocol metadata;
 3. current GitHub `main` engineering authority;
 4. explicit owner-referenced business evidence required by the current action;
-5. rebuildable registries/indexes/caches;
+5. rebuildable registries/observations/indexes/caches;
 6. external references unless explicitly designated by owner contract;
 7. past chat/history as recovery evidence only.
 
@@ -100,13 +145,13 @@ Instruction precedence is separate from data authority. Custom Instructions/Proj
 
 ## Live-chat upgrade invariant
 
-A valid active writer may reconcile a supported protocol/profile change in place. Same-chat control-plane refresh preserves the current lease and `resume_epoch`; only a genuine new-chat takeover changes them.
+A valid active writer may reconcile a supported protocol/profile change in place. Same-chat control-plane refresh preserves the current lease and `resume_epoch`; only a legal takeover changes them.
 
 Before the next affected material action, refresh the exact current owner Skill/capability/profile surfaces required by that action. Do not replay business state merely because the control plane changed.
 
 ## Autonomous maintenance invariant
 
-A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem, execution-evidence defect, or material challenge to the maintenance method itself must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
+A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem, execution-evidence defect, architecture signal, or material challenge to the maintenance method itself must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
 
 A material correction is classified into the user goal/constraint, counterexample/failure evidence and any proposed mechanism before implementation. Autonomous maintenance does not mean blindly executing the user's suggested fix; it means owning the full evidence-backed repair/evolution process.
 
@@ -128,26 +173,27 @@ Do **not** use this architecture document as a command to preload all referenced
 
 Conditional loads:
 - bare discovery -> discovery/owner metadata only;
-- protocol mismatch -> `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`;
-- durable progress receipt/commit verification -> `PROGRESS_OBSERVABILITY_POLICY.json` when not already satisfied by current runtime contract;
+- protocol mismatch -> version/reconciliation authority;
+- durable progress receipt/commit verification -> progress authority when needed;
 - business execution -> execution contract + exact owner capability/Skill;
+- owner admission/architecture drift -> Agent architecture contract + observations;
 - artifact/file action -> `artifact_io` profile;
 - local maintenance/drift/reliability incident -> `operational_hygiene` profile and scope-appropriate maintenance path;
 - systemic/non-trivial maintenance or a challenge to maintenance completeness -> full meta-maintenance path, learning/impact review and `runtime/meta_maintenance.py` closure verification;
 - durable learning/evolution -> `evolution` profile;
 - media evidence -> media distillation authority;
-- recovery gap -> `CONTEXT_RECOVERY_POLICY.json` + selective history.
+- recovery gap -> recovery authority + selective history.
 
 Audits, external research, Meta-Governance Harness records, unrelated owners, old conversations and inactive methodology profiles are cold-path evidence. Full global research/audit is not a business-turn primitive.
 
 ## Version model
 
-Continuity protocol and methodology profile contracts are separate version axes. Compatible internal hardening does not require a Continuity protocol bump. A profile version bumps only when its hook/invariant contract changes; owners pin exact supported profile versions rather than floating `latest`.
+Continuity protocol, methodology profiles and Agent architecture contracts are separate version axes. Compatible internal hardening does not require a Continuity protocol bump. A profile/architecture contract version bumps only when its interface/invariant contract changes; owners pin exact supported versions rather than floating `latest`.
 
-A semantics-owner improvement such as maintenance governance hardening may remain compatible with the existing profile version when its owner hook/invariant contract is unchanged. New verifier/runtime versions are recorded separately and must not silently imply owner business-state migration.
+A semantics-owner improvement may remain compatible with the existing profile version when its owner hook/invariant contract is unchanged. New verifier/runtime versions are recorded separately and must not silently imply owner business-state migration.
 
 ## Required final-response behavior
 
-Every active durable task follows `PROGRESS_OBSERVABILITY_POLICY.json`: `COMMITTED` is valid only after authoritative reread verification. A chat-only insight, cache write, tool-success response or unpromoted learning candidate cannot justify durable `COMMITTED`.
+Every active durable task follows `PROGRESS_OBSERVABILITY_POLICY.json`: `COMMITTED` is valid only after authoritative reread verification. A chat-only insight, cache write, tool-success response, control signal or unpromoted learning candidate cannot justify durable `COMMITTED`.
 
 No maintenance pass may claim that the entire evolving system is globally error-free, that every future failure class has already been anticipated, or that all child systems/outcomes are proven merely because the scoped meta-governance/regression checks passed. Report the actual assurance ceiling and open-world boundary.
