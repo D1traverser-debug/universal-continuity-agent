@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "current_continuity_protocol": "3.7",
+  "role": "MIGRATION_PLAN_NOT_BUSINESS_STATE_AUTHORITY",
+  "user_action_required": false,
+  "owners": [
+    {
+      "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "repository": "D1traverser-debug/financial-writing-agent",
+      "observed_protocol": "3.3",
+      "target_protocol": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "business_state_rewrite": false,
+      "force_lease_takeover": false,
+      "status": "ADAPTER_RECORD_REQUIRED"
+    },
+    {
+      "owner": "A_SHARE_MARKET_AGENT",
+      "repository": "D1traverser-debug/a-share-event-driven-agent",
+      "observed_protocol": "3.3",
+      "target_protocol": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "business_state_rewrite": false,
+      "force_lease_takeover": false,
+      "status": "ADAPTER_RECORD_REQUIRED"
+    },
+    {
+      "owner": "VIDEO_GROWTH_AGENT",
+      "repository": "D1traverser-debug/video-growth-agent",
+      "observed_protocol": "3.5",
+      "target_protocol": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "business_state_rewrite": false,
+      "force_lease_takeover": false,
+      "status": "ADAPTER_RECORD_REQUIRED"
+    },
+    {
+      "owner": "NOVEL_OS",
+      "repository": null,
+      "observed_protocol": "3.3",
+      "target_protocol": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "UNIVERSAL_ROUTING_OVERLAY_NOW__OWNER_BUSINESS_CHECKPOINT_LAZY_RECONCILIATION",
+      "business_state_rewrite": false,
+      "force_lease_takeover": false,
+      "status": "UNIVERSAL_ADAPTER_RECORD_REQUIRED"
+    }
+  ],
+  "rule": "A maintenance task may stage owner protocol adapters and migration plans, but it must not overwrite an active task manifest owned by another writer lease. Task-level protocol metadata is reconciled by the valid task writer on its next durable turn or by a genuine new-chat takeover."
+}
