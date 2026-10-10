@@ -101,6 +101,8 @@ def test_learning_policy_requires_second_order_challenge_before_nontrivial_closu
     assert "**Negative space:**" in learning
     assert "**Self-reference:**" in learning
     assert "**Post-hoc provenance:**" in learning
+    assert "**Exact proof binding:**" in learning
+    assert "**Obligation derivation:**" in learning
     assert "**Test realism:**" in learning
     assert "**Closure boundary:**" in learning
     assert "### Evidence assurance ladder" in learning
@@ -112,6 +114,7 @@ def test_learning_policy_requires_second_order_challenge_before_nontrivial_closu
     assert "**LIVE_OUTCOME_VERIFIED**" in learning
     assert "A CI PASS cannot be promoted directly to action-level execution proof" in learning
     assert "structured same-session receipt cannot be promoted to independent attestation" in learning
+    assert "not bound to the exact claim/action" in learning
 
 
 def test_learning_policy_distills_reusable_failure_patterns_not_owner_business_rules():
@@ -123,6 +126,8 @@ def test_learning_policy_distills_reusable_failure_patterns_not_owner_business_r
     assert "CI-to-product overclaim" in learning
     assert "single-example overfit" in learning
     assert "post-hoc receipt illusion" in learning
+    assert "unbound-proof replay / wrong-subject evidence" in learning
+    assert "shadow obligation list / configured-obligation drift" in learning
     assert "cache/authority circularity" in learning
     assert "patch-without-distillation" in learning
     assert "Do not copy the triggering owner's business rule into Universal" in learning
