@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 9,
+  "manifest_version": 10,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -53,7 +53,11 @@
     "new_chat_recovery": "PASS",
     "takeover_simulation": "PASS",
     "github_owner_cutover": "PASS",
-    "full_front_arc_rebase_recovery": "PENDING_FINAL_OWNER_CI"
+    "full_front_arc_rebase_recovery": "PASS",
+    "owner_final_head": "adc7f4c446f053e362c3df5326358fd51d89cc2e",
+    "owner_final_ci_run_id": 38084046169,
+    "owner_final_ci_job_id": 114306685058,
+    "owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_ALL_OWNER_TESTS"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
