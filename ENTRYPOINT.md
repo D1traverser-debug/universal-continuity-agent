@@ -151,7 +151,7 @@ For every final response on an active durable task, emit exactly one `进度提�
 - `COMMIT_FAILED` when an intended durable write could not be persisted or verified;
 - `STALE_WRITER` when this chat lost its lease.
 
-`COMMITTED` is a **durable-persistence receipt**, not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable. Missing action-level operational methodology evidence therefore keeps the corresponding profile-dependent gate/action claim OPEN; it does not forbid persisting that blocker and reporting the persistence as COMMITTED. Report assurance/gate state separately from commit status.
+`COMMITTED` is a **durable-persistence receipt**, not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable. Missing action-level operational conformance evidence therefore keeps the corresponding profile-dependent gate/action claim OPEN; it does not forbid persisting that blocker and reporting the persistence as COMMITTED. Report assurance/gate state separately from commit status.
 
 A tool-success response, cache write or model memory is never commit proof. Conversely, a verified commit does not raise the assurance level of the content merely because it was persisted.
 
