@@ -143,11 +143,17 @@ def test_registry_manifest_drift_detects_stale_cache():
 
 def test_owner_registry_is_machine_readable_unique_and_topology_authoritative():
     data=json.loads((ROOT/"OWNER_REGISTRY.json").read_text(encoding="utf-8"))
-    assert data["schema_version"] == "3.1"
+    assert data["schema_version"] == "3.2"
     assert data["default_owner"] == "GENERIC_HANDOFF"
     assert data["membership_authority"]["role"] == "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY"
     assert validate_owner_registry(data) == ()
-    assert business_owner_names(data)
+    names = business_owner_names(data)
+    assert names
+    business = [item for item in data["owners"] if item.get("owner_kind") == "BUSINESS"]
+    assert {item["name"] for item in business} == set(names)
+    assert all(item.get("agent_manifest_ref") for item in business)
+    assert data["resolver"]["agent_architecture_contract"] == "AGENT_ARCHITECTURE_CONTRACT.json"
+    assert data["resolver"]["agent_architecture_validator"] == "runtime/agent_architecture.py"
 
 
 def test_system_and_task_registries_are_rebuildable_not_authority():
