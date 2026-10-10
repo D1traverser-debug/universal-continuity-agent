@@ -1,7 +1,7 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_FULL_REGRESSION__OWNER_LAZY_RECONCILIATION__FRESH_CHAT_E2E_PENDING",
+  "status": "PASS_V37_FULL_REGRESSION__EXECUTION_CONTROL_PLANE_CI_RERUN_PENDING__FRESH_CHAT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
   "source_validation": {
@@ -12,7 +12,7 @@
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
     "pytest_count": 66,
-    "note": "Subsequent audit/status/privacy-boundary writes are metadata/conformance documentation and do not alter the validated executable reconciliation behavior."
+    "note": "This remains the last fully passing Continuity regression until the new execution-control-plane CI rerun succeeds. Run 38016204633 failed because this status artifact had accidentally dropped historical startup acceptance_evidence; the field is restored here."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -24,6 +24,25 @@
     "chat_protocol_pinned_at_creation": false,
     "same_chat_protocol_upgrade_preserves_lease": true,
     "new_chat_takeover_changes_lease": true
+  },
+  "execution_control_plane": {
+    "contract": "EXECUTION_READINESS_CONTRACT.json",
+    "blueprint": "ORCHESTRATION_BLUEPRINT.md",
+    "owner_registry": "OWNER_EXECUTION_REGISTRY.json",
+    "evaluator": "runtime/execution_readiness.py",
+    "contract_version": "1.0",
+    "continuity_protocol_bump_required": false,
+    "github_owner_capability_surface": "continuity/EXECUTION_CAPABILITIES.json",
+    "owners_declared": [
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "A_SHARE_MARKET_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ],
+    "repository_configuration_is_execution_proof": false,
+    "current_session_handshake_required": true,
+    "declared_only_counts_as_execution": false,
+    "isolated_execution_may_be_simulated_by_role_switching": false,
+    "ci_status": "RERUN_PENDING_AFTER_RESTORED_STARTUP_EVIDENCE"
   },
   "version_lifecycle": {
     "active_protocol": "3.7",
@@ -65,7 +84,17 @@
     "account_level_hook_required": true,
     "github_presence_alone_is_not_trigger": true,
     "library_presence_alone_is_not_trigger": true,
-    "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED"
+    "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "end_to_end_bare_inherit_claim": true,
+    "acceptance_evidence": {
+      "date": "2026-10-09",
+      "source": "user-supplied fresh-chat acceptance screenshot",
+      "bare_command": "继承",
+      "required_owner_quorum": 5,
+      "required_owner_quorum_succeeded": true,
+      "authoritative_default_candidate_count": 4,
+      "live_candidate_names_persisted_in_public_harness": false
+    }
   },
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
