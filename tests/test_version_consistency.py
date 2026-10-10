@@ -49,13 +49,20 @@ def test_owner_registry_points_to_current_protocol_adaptation_surfaces():
     assert statuses["GENERIC_HANDOFF"] == "READY_V37_NATIVE"
     assert "V37" in statuses["FINANCIAL_WRITING_AGENT_RUNTIME"]
     assert "V37" in statuses["A_SHARE_MARKET_AGENT"]
-    assert "V37" in statuses["NOVEL_OS"]
+    assert "V37" in statuses["NOVEL_WRITING_AGENT"]
     assert "V37" in statuses["VIDEO_GROWTH_AGENT"]
 
     adaptation_owners = {row["owner"] for row in adaptation["owners"]}
     assert {
         "FINANCIAL_WRITING_AGENT_RUNTIME",
         "A_SHARE_MARKET_AGENT",
-        "NOVEL_OS",
+        "NOVEL_WRITING_AGENT",
         "VIDEO_GROWTH_AGENT",
     }.issubset(adaptation_owners)
+
+
+def test_novel_os_remains_alias_only_after_canonical_owner_cutover():
+    registry = load_json("OWNER_REGISTRY.json")
+    novel = next(row for row in registry["owners"] if row["name"] == "NOVEL_WRITING_AGENT")
+    assert "NOVEL_OS" in novel.get("aliases", [])
+    assert not any(row["name"] == "NOVEL_OS" for row in registry["owners"])
