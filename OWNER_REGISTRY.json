@@ -6,7 +6,10 @@
     "owner": "UNIVERSAL_CONTINUITY_HARNESS",
     "module": "runtime/universal_continuity.py",
     "bare_inherit_policy": "BARE_INHERIT_DISCOVERY.json",
-    "protocol_adaptation_registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json"
+    "protocol_adaptation_registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json",
+    "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
+    "execution_registry": "OWNER_EXECUTION_REGISTRY.json",
+    "execution_evaluator": "runtime/execution_readiness.py"
   },
   "default_owner": "GENERIC_HANDOFF",
   "owners": [
@@ -29,7 +32,8 @@
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "GitHub task manifest/handoff for continuity plus compatible persisted domain runtime checkpoint when available",
-      "protocol_adapter": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json"
+      "protocol_adapter": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/financial-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json"
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_ENGINEERING",
@@ -58,7 +62,8 @@
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "domain cutover-status-selected authority",
-      "protocol_adapter": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json"
+      "protocol_adapter": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/EXECUTION_CAPABILITIES.json"
     },
     {
       "name": "NOVEL_OS",
@@ -83,11 +88,13 @@
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
       "checkpoint_authority": "Video Growth Agent durable recovery chain",
-      "protocol_adapter": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json"
+      "protocol_adapter": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/video-growth-agent@main:continuity/EXECUTION_CAPABILITIES.json"
     }
   ],
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",
-    "task_discovery": "bare inherit requires complete discovery quorum across all bare_inherit_participant owners; explicit task hints may route directly to the named owner"
+    "task_discovery": "bare inherit requires complete discovery quorum across all bare_inherit_participant owners; explicit task hints may route directly to the named owner",
+    "github_owner_execution": "after exact owner/task routing, consult OWNER_EXECUTION_REGISTRY.json and the owner execution_capability_ref before claiming an agent capability is executable"
   }
 }
