@@ -1,24 +1,24 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 7,
+  "manifest_version": 8,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
   "title": "FQ001_MINGRI_ORDER_SERIALIZATION",
   "display_name_zh": "《凌晨零点，我接到明天的订单》",
-  "status": "WAITING",
+  "status": "ACTIVE",
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T15:33:35Z",
-  "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
-  "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state in the GitHub owner and continue CH9 from the existing READY contract without replaying completed CH8 work.",
+  "updated_at": "2026-10-10T18:17:00Z",
+  "current_stage": "FRONT_ARC_SIGNING_REPAIR_ACTIVE__CH8_PUBLISH_READY_NOT_CONFIRMED__CH9_READY",
+  "next_action": "Execute the targeted CH1-CH8 signing-repair matrix and prepare only high-value candidate revisions before the 50k second signing application; if the user confirms CH8 publication, record that external fact separately; keep CH9 READY and continue it under the evidence contract without consuming the second signing attempt until a signing-readiness audit passes.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
   "domain_contract_version": "2.1-github",
-  "skill_version": "Novel Writing Agent 2.1.0-github",
-  "runtime_version": "github-owner-2.2",
+  "skill_version": "Novel Writing Agent 2.2.0-github",
+  "runtime_version": "github-owner-2.3",
   "release_evidence_contract_version": "1.0",
   "release_evidence_strict_from_chapter": 9,
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
@@ -41,7 +41,7 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner 2.1 / runtime 2.2 is compatible additive evidence enforcement; no task replay or lease change."
+    "owner_internal_hardening": "Novel owner 2.2 / runtime 2.3 adds platform-signing feedback recovery and controlled front-arc unfreeze; Canon, CH8 body/publication truth, CH9 READY contract, resume_epoch and lease are preserved."
   },
   "continuity_acceptance": {
     "result": "PASS",
@@ -54,6 +54,19 @@
     "takeover_simulation": "PASS",
     "github_owner_cutover": "PASS"
   },
+  "platform_signing": {
+    "attempt_1": "REJECTED_QUALITY_EVALUATION",
+    "next_application_threshold": 50000,
+    "third_application_threshold_if_needed": 80000,
+    "second_application_gate": "SECOND_SIGNING_APPLICATION_REQUIRES_SIGNING_READINESS_AUDIT_PASS",
+    "owner_quality_diagnosis_ref": "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
+    "owner_front_arc_repair_matrix_ref": "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
+  },
+  "strategic_constraints": [
+    "DO_NOT_BLINDLY_CONTINUE_TO_50K_WITHOUT_FRONT_ARC_REPAIR",
+    "SECOND_SIGNING_APPLICATION_REQUIRES_SIGNING_READINESS_AUDIT_PASS",
+    "PUBLISHED_CHAPTER_PLATFORM_REPLACEMENT_REMAINS_USER_CONTROLLED"
+  ],
   "waiting_on": [
     "USER_EXTERNAL_ACTION_CONFIRMATION: Fanqie publication of CH8"
   ],
@@ -65,15 +78,19 @@
     "番茄小说",
     "FQ001",
     "NOVEL_WRITING_AGENT",
-    "NOVEL_OS"
+    "NOVEL_OS",
+    "签约修复",
+    "二签"
   ],
   "artifact_refs": [
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/manuscript/CH0008_FINAL.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/reviews/CH0008_ACCEPTANCE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/NEXT_CHAPTER_CONTRACT.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/CURRENT_STATE.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/PLATFORM_PUBLICATION_LOG.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
-    "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json"
+    "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
   ],
   "derived_artifact_refs": [
     "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
