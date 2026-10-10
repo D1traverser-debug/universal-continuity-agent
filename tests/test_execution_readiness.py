@@ -204,6 +204,7 @@ def test_cross_agent_registry_covers_current_github_business_agents():
     assert set(owners) == {
         "FINANCIAL_WRITING_AGENT_RUNTIME",
         "A_SHARE_MARKET_AGENT",
+        "NOVEL_WRITING_AGENT",
         "VIDEO_GROWTH_AGENT",
     }
     for item in owners.values():
@@ -223,6 +224,7 @@ def test_continuity_owner_router_points_to_execution_control_plane():
         if item["name"] in {
             "FINANCIAL_WRITING_AGENT_RUNTIME",
             "A_SHARE_MARKET_AGENT",
+            "NOVEL_WRITING_AGENT",
             "VIDEO_GROWTH_AGENT",
         }
     }
