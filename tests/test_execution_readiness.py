@@ -195,3 +195,35 @@ def test_partial_capability_requires_explicit_safe_degraded_mode():
     )
     assert decision.status == RouteStatus.DEGRADED
     assert decision.degraded_capabilities == ("safe_degraded:research:CHAT_BRIDGED",)
+
+
+def test_cross_agent_registry_covers_current_github_business_agents():
+    registry = json.loads((ROOT / "OWNER_EXECUTION_REGISTRY.json").read_text(encoding="utf-8"))
+    owners = {item["owner"]: item for item in registry["owners"]}
+    assert registry["execution_readiness_contract"] == "EXECUTION_READINESS_CONTRACT.json"
+    assert set(owners) == {
+        "FINANCIAL_WRITING_AGENT_RUNTIME",
+        "A_SHARE_MARKET_AGENT",
+        "VIDEO_GROWTH_AGENT",
+    }
+    for item in owners.values():
+        assert item["capability_ref"] == "continuity/EXECUTION_CAPABILITIES.json"
+        assert "@main" in item["repository"]
+
+
+def test_continuity_owner_router_points_to_execution_control_plane():
+    registry = json.loads((ROOT / "OWNER_REGISTRY.json").read_text(encoding="utf-8"))
+    resolver = registry["resolver"]
+    assert resolver["execution_readiness_contract"] == "EXECUTION_READINESS_CONTRACT.json"
+    assert resolver["execution_registry"] == "OWNER_EXECUTION_REGISTRY.json"
+    assert resolver["execution_evaluator"] == "runtime/execution_readiness.py"
+    github_owners = {
+        item["name"]: item
+        for item in registry["owners"]
+        if item["name"] in {
+            "FINANCIAL_WRITING_AGENT_RUNTIME",
+            "A_SHARE_MARKET_AGENT",
+            "VIDEO_GROWTH_AGENT",
+        }
+    }
+    assert all(item.get("execution_capability_ref", "").endswith("continuity/EXECUTION_CAPABILITIES.json") for item in github_owners.values())
