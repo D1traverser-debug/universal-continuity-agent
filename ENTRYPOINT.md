@@ -113,12 +113,15 @@ Before a material owner action:
 7. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
 8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.2 `profile_runs` evidence with profile version, activation id/trigger, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
 9. require an independent evidence verifier for referenced evidence **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
-10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
+10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate or action is operationally complete;
 11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
 12. block only the exact hard capability/profile-dependent gate that is unavailable;
-13. require execution/artifact/review receipts for gates that claim completion.
+13. require execution/artifact/review receipts for gates that claim completion;
+14. when an execution receipt is used as proof, validate its exact task/stage/capability/action plus owner-required subject/input bindings through `runtime/execution_receipt.py`; apply owner-required anti-replay identities for distinct/single-use executions.
 
 `DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat. A methodology declaration marked `BOUND_EXACT_VERSION` or an owner CI PASS proves wiring/regression only; it does not prove the current material action activated and satisfied the profile. Conversely, an omitted profile is not assumed non-applicable: the owner must make that exclusion explicit and evidence-bearing.
+
+A real receipt is still not proof for the wrong claim. Exact-action receipt binding prevents stale/foreign execution evidence from being reused across another task, stage, capability, candidate, brief, replay corpus, artifact version or action. The generic binding validator proves identity/binding and configured anti-replay constraints; it does **not** upgrade executor trust, provider issuance, chronology, reviewer independence or semantic quality by itself.
 
 ## Artifact and methodology invariants
 
@@ -130,7 +133,7 @@ Shared cross-agent methodology is composed rather than inherited as a giant pare
 
 Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Every current contract profile also has a mandatory applicability assessment. `APPLIES` requires binding; `NOT_APPLICABLE` requires a concrete reason and owner-local evidence refs. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
 
-Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete or durably committed. Under receipt contract 1.2, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
+Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete. Under receipt contract 1.2, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
 
 ## Learning and maintenance
 
@@ -138,19 +141,19 @@ External advice, user analogies, assistant first ideas and other Agent/framework
 
 When a systemic defect or repeated owner failure is inside the current maintenance writer's authority, follow the maintenance closure instead of stopping at explanation. The user does not maintain the internal defect backlog.
 
-Before declaring a nontrivial repair "done", apply `evolution@1.0` second-order challenge / closure calibration to the **accepted fix itself**. In particular, distinguish closed-world evidence (known owners/cases at test time) from open-world claims (future owner admission/generalization). A green CI on a synthetic new owner is not a real fresh-product-chat trajectory.
+Before declaring a nontrivial repair "done", apply `evolution@1.0` second-order challenge / closure calibration to the **accepted fix itself**. In particular, distinguish closed-world evidence (known owners/cases at test time) from open-world claims (future owner admission/generalization), and distinguish a real proof object from proof bound to the exact current claim. A green CI on a synthetic new owner is not a real fresh-product-chat trajectory; a real receipt for another action is not current-action proof.
 
 ## Progress observability
 
 For every final response on an active durable task, emit exactly one `进度提交` state:
 - `COMMITTED` only after material write + authoritative reread verification;
 - `NO_MATERIAL_CHANGE` when the durable resume point did not change;
-- `COMMIT_FAILED` when intended durable progress could not be verified;
+- `COMMIT_FAILED` when an intended durable write could not be persisted or verified;
 - `STALE_WRITER` when this chat lost its lease.
 
-If the current material write/action activated a methodology profile, `COMMITTED` also requires operational conformance for that activated profile when the profile governs the write/action. Missing action-level profile evidence is not a reason to fabricate PASS; it is an exact gate blocker.
+`COMMITTED` is a **durable-persistence receipt**, not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable. Missing action-level operational methodology evidence therefore keeps the corresponding profile-dependent gate/action claim OPEN; it does not forbid persisting that blocker and reporting the persistence as COMMITTED. Report assurance/gate state separately from commit status.
 
-A tool-success response, cache write or model memory is never commit proof.
+A tool-success response, cache write or model memory is never commit proof. Conversely, a verified commit does not raise the assurance level of the content merely because it was persisted.
 
 ## Performance invariant
 
@@ -163,6 +166,7 @@ Continuity stays off the steady-state business hot path:
 - methodology declaration/applicability validation at owner-entry boundaries, not as broad repository preload;
 - methodology profiles loaded only when their activation event occurs;
 - operational methodology validation only for the profiles activated by the current material action;
+- exact receipt-binding validation only when an execution receipt is being used to satisfy a gate/claim;
 - maintenance/research/audits are cold path;
 - old chat history is last resort;
 - no material change means no heartbeat write.
