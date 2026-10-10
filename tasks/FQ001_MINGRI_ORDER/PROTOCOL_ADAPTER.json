@@ -1,13 +1,14 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "task_id": "FQ001_MINGRI_ORDER",
   "owner": "NOVEL_WRITING_AGENT",
   "owner_repository": "D1traverser-debug/novel-writing-agent@main",
   "current_universal_protocol": "3.7",
-  "observed_task_protocol": "3.3",
+  "historical_observed_task_protocol": "3.3",
   "current_task_protocol": "3.7",
-  "classification": "MIGRATABLE",
-  "reconciliation_status": "COMPATIBLE_AFTER_ADDITIVE_RECONCILIATION",
+  "pre_reconciliation_classification": "MIGRATABLE",
+  "classification": "COMPATIBLE",
+  "reconciliation_status": "RECONCILED_V37",
   "strategy": "GITHUB_OWNER_CUTOVER_PLUS_V37_PROTOCOL_RECONCILIATION",
   "user_migration_required": false,
   "business_state_authority": "D1traverser-debug/novel-writing-agent@main",
@@ -19,12 +20,21 @@
   "required_current_behaviors": [
     "use v3.7 progress observability in every final reply while this durable task is active",
     "do not change CH8 publication fact or CH9 readiness merely because storage/protocol authority changed",
-    "recover business state from GitHub owner main and use Library only for backup/derived artifacts",
-    "do not acquire a new lease during this same-chat reconciliation",
+    "recover business state only from D1traverser-debug/novel-writing-agent@main",
+    "use Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档 only for explicitly needed derived artifacts or historical migration evidence; it is never business or recovery authority",
+    "do not use ChatGPT Library, Notion, legacy Google Drive materials, or chat memory to reconstruct executable novel state",
+    "do not acquire a new lease during same-chat metadata reconciliation",
     "perform execution-readiness handshake only for capabilities required by the current next_action"
   ],
+  "artifact_vault": {
+    "provider": "Google Drive",
+    "path": "/Google Drive/ChatGPT/NOVEL_OS_小说系统_交付归档",
+    "business_authority": false,
+    "recovery_state_source": false
+  },
   "owner_refs": [
     "D1traverser-debug/novel-writing-agent@main:ENTRYPOINT.md",
+    "D1traverser-debug/novel-writing-agent@main:CONTINUITY_ADAPTER.json",
     "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
     "D1traverser-debug/novel-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json"
