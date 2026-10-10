@@ -1,19 +1,22 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__ACCOUNT_HOOK_CONFIRMED__PRODUCT_E2E_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+  "status": "PASS_V37_PRODUCT_E2E__RISK_TIERED_GLOBAL_AUDIT_ACTIVE_CI_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
+  "latest_global_system_audit": "audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38037292656,
-    "job_id": 114170279513,
-    "validated_head_sha": "3f30376360f965301d4d1e7a79e83c058ad4cc68",
+    "github_actions_run_id": 38039769573,
+    "job_id": 114177507423,
+    "validated_head_sha": "fc6de3b4d43b81b68a3df43974fd7c3ba4019204",
+    "validation_scope": "LAST_BEHAVIORAL_AUDIT_RUNTIME_AND_TEST_HEAD_BEFORE_METADATA_ONLY_AUDIT_CLOSURE",
     "installed_package_version": "3.7.0",
+    "system_audit_preflight": "PASS",
     "pytest": "PASS",
-    "pytest_count": 102,
-    "note": "Last recorded engineering validation passed at 102 tests. Product-E2E status synchronization is metadata work performed afterward; final current-main CI is required before this maintenance turn reports COMMITTED."
+    "pytest_count": 110,
+    "note": "Risk-tiered audit runtime and regressions passed at this behavioral head. Audit/status/handoff closure commits are metadata/evidence changes and still require a final current-main CI before the active maintenance turn may report COMMITTED."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -29,9 +32,9 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE_CI_PASS",
+    "status": "ACTIVE_CI_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.4",
+    "policy_version": "1.5",
     "self_detected_systemic_gap_is_trigger": true,
     "repeated_owner_failure_or_regression_is_trigger": true,
     "premature_solution_canonicalization_is_trigger": true,
@@ -44,7 +47,23 @@
     "wait_for_user_to_enumerate_internal_followups": false,
     "material_change_requires_durable_record": true,
     "may_steal_other_owner_lease": false,
-    "may_rewrite_domain_business_truth": false
+    "may_rewrite_domain_business_truth": false,
+    "risk_tiered_system_audit_active": true,
+    "system_audit_runtime": "runtime/system_audit.py",
+    "ci_preflight_before_pytest": true,
+    "audit_layers": ["CORE_ALWAYS","IMPACT_SCOPED","OWNER_SENTINEL_ROTATION","FULL_CONTROL_PLANE","SYNTHETIC_FAULT_INJECTION"],
+    "full_business_pipeline_every_audit": false,
+    "synthetic_fault_injection_production_mutation_by_default": false,
+    "explicit_global_audit_owner_metadata_sweep": "PASS_4_DURABLE_BUSINESS_OWNERS",
+    "global_audit_findings_reconciled": [
+      "STALE_OWNER_PROTOCOL_ADAPTATION_REGISTRY",
+      "DANGLING_FINANCIAL_CONFORMANCE_REF",
+      "STALE_OWNER_REGISTRY_RECONCILIATION_STATUS",
+      "README_BOOTSTRAP_AUTHORITY_DRIFT",
+      "SYSTEM_MAINTENANCE_POLICY_MANIFEST_VERSION_DRIFT",
+      "CIRCULAR_CACHE_VALIDATION_GAP"
+    ],
+    "intermediate_global_audit_failures_used_as_counterevidence": 2
   },
   "epistemic_independence": {
     "status": "ACTIVE_CI_PASS",
