@@ -64,8 +64,6 @@ def test_historical_fresh_chat_acceptance_is_real_but_not_an_open_world_owner_co
     assert new_owner["synthetic_fixture_is_product_e2e"] is False
     assert status["execution_propagation"]["new_owner_cold_start_product_e2e"] == "PENDING_REAL_CHAT_EVIDENCE"
 
-    # Historical observed counts are evidence about that trajectory, not the current
-    # membership contract. The current quorum must be re-derived from OWNER_REGISTRY.
     membership = bootstrap["owner_membership"]
     discovery = bootstrap["bare_inherit_discovery"]
     verification = bootstrap["verification"]
@@ -91,5 +89,5 @@ def test_startup_hook_document_contains_dynamic_owner_and_cold_start_boundaries(
     assert "historical owner count" in text
     assert "new-owner cold-start" in text
     assert "sole control-plane owner-membership authority" in entrypoint
-    assert "open-world new-owner product support" in entrypoint
+    assert "future owner" in text
     assert "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED" not in text or "not a Continuity success" in text
