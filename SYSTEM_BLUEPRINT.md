@@ -8,11 +8,11 @@ Engineering authority: `D1traverser-debug/universal-continuity-agent@main`
 
 This is the architecture map, not a second copy of every policy. Lower contracts, runtime code and owner adapters implement the map; they must not contradict it. Domain owners retain business truth.
 
-The user is not the migration operator, internal maintenance operator, cache janitor, regression manager, or cross-agent methodology integrator.
+The user is not the migration operator, internal maintenance operator, cache janitor, regression manager, cross-agent methodology integrator, or the person responsible for enumerating every missing review dimension after each repair.
 
 ## Architecture shape
 
-Universal is intentionally a **small control kernel plus composable methodology profiles**, not a giant parent Agent and not a repository that owns every domain method.
+Universal is intentionally a **small control kernel plus composable methodology profiles plus narrow verification harnesses**, not a giant parent Agent and not a repository that owns every domain method.
 
 ### 1. Bootstrap / routing edge
 
@@ -73,14 +73,18 @@ Cross-agent artifact authority classes, stable identity, freshness/conflict hand
 
 Library/Drive/Notion/connected apps are reference/evidence by default unless an owner explicitly designates a role. Rebuildable cache is never checkpoint authority. Google Drive may be an explicit artifact vault but not an implicit runtime checkpoint or engineering rule source.
 
-### 7. Maintenance and evolution boundary
+### 7. Maintenance, learning and meta-governance boundary
 
-`SYSTEM_MAINTENANCE_POLICY.json` owns autonomous maintenance closure and scoped reliability guards. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution.
+`SYSTEM_MAINTENANCE_POLICY.json` owns autonomous maintenance semantics and the default meta-maintenance outline. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution. `runtime/meta_maintenance.py` is a **narrow deterministic verifier**, not a second root authority and not an independent LLM reviewer.
 
-A detected systemic defect may trigger:
-`DETECT -> READ AUTHORITY -> ROOT CAUSE -> CHALLENGE CANDIDATES -> MINIMUM PATCH -> REGRESSION/EVAL -> CLEAN SUPERSEDED MECHANISM -> VALIDATE -> RECORD -> REREAD`
+For systemic/non-trivial maintenance, the normative path includes:
+`SIGNAL CLASSIFICATION -> FAILURE/IMPACT MODEL -> LEARNING DECISION -> ALTERNATIVES/FALSIFICATION -> INSTRUCTION-SURFACE DECISION -> COMPLEXITY/EFFICIENCY BUDGET -> MINIMUM IMPLEMENTATION -> MULTI-LAYER VALIDATION -> CROSS-SUBSYSTEM PROPAGATION -> SECOND-ORDER CHALLENGE -> DURABLE LEARNING/CHECKPOINT`.
 
-User goals/constraints are requirements when explicit; user-proposed mechanisms, assistant first ideas, other Agents and popular frameworks are candidates. Nontrivial architecture adoption requires independent alternative comparison and failure-mode search.
+The Meta-Governance Harness may reject a closure record that omits required process evidence. A harness PASS proves only **structured process conformance**. It does not prove the diagnosis, external learning, architecture decision, chronology or result is semantically correct; those claims require appropriate independent trajectory/evidence/outcome verification.
+
+User goals/constraints and material corrections are first-class inputs. A user-proposed mechanism, assistant first idea, another Agent/framework or optimizer output is a candidate rather than architecture authority. Nontrivial architecture adoption requires alternative comparison, failure-mode search and evidence proportional to the promoted claim.
+
+A new supervisory LLM Agent is not implied by meta-governance. Add one only if it has a distinct execution/trace boundary and held-out evidence that the added coordination cost produces a measurable verification benefit. Otherwise prefer deterministic harnesses and existing independent graders.
 
 ## Authority order
 
@@ -102,9 +106,11 @@ Before the next affected material action, refresh the exact current owner Skill/
 
 ## Autonomous maintenance invariant
 
-A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem or execution-evidence defect inside the active maintenance writer's authority must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
+A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem, execution-evidence defect, or material challenge to the maintenance method itself must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
 
-A material maintenance change requires durable problem/root-cause/change/validation/remaining-risk evidence and an authoritative reread before `COMMITTED`.
+A material correction is classified into the user goal/constraint, counterexample/failure evidence and any proposed mechanism before implementation. Autonomous maintenance does not mean blindly executing the user's suggested fix; it means owning the full evidence-backed repair/evolution process.
+
+A material maintenance change requires durable problem/root-cause/impact/learning/instruction/propagation/complexity/validation/remaining-risk evidence appropriate to its scope and an authoritative reread before `COMMITTED`.
 
 ## Lifecycle / cleanup invariant
 
@@ -126,17 +132,22 @@ Conditional loads:
 - durable progress receipt/commit verification -> `PROGRESS_OBSERVABILITY_POLICY.json` when not already satisfied by current runtime contract;
 - business execution -> execution contract + exact owner capability/Skill;
 - artifact/file action -> `artifact_io` profile;
-- maintenance/drift/reliability incident -> `operational_hygiene` profile;
+- local maintenance/drift/reliability incident -> `operational_hygiene` profile and scope-appropriate maintenance path;
+- systemic/non-trivial maintenance or a challenge to maintenance completeness -> full meta-maintenance path, learning/impact review and `runtime/meta_maintenance.py` closure verification;
 - durable learning/evolution -> `evolution` profile;
 - media evidence -> media distillation authority;
 - recovery gap -> `CONTEXT_RECOVERY_POLICY.json` + selective history.
 
-Audits, research, unrelated owners, old conversations and inactive methodology profiles are cold-path evidence.
+Audits, external research, Meta-Governance Harness records, unrelated owners, old conversations and inactive methodology profiles are cold-path evidence. Full global research/audit is not a business-turn primitive.
 
 ## Version model
 
 Continuity protocol and methodology profile contracts are separate version axes. Compatible internal hardening does not require a Continuity protocol bump. A profile version bumps only when its hook/invariant contract changes; owners pin exact supported profile versions rather than floating `latest`.
 
+A semantics-owner improvement such as maintenance governance hardening may remain compatible with the existing profile version when its owner hook/invariant contract is unchanged. New verifier/runtime versions are recorded separately and must not silently imply owner business-state migration.
+
 ## Required final-response behavior
 
 Every active durable task follows `PROGRESS_OBSERVABILITY_POLICY.json`: `COMMITTED` is valid only after authoritative reread verification. A chat-only insight, cache write, tool-success response or unpromoted learning candidate cannot justify durable `COMMITTED`.
+
+No maintenance pass may claim that the entire evolving system is globally error-free, that every future failure class has already been anticipated, or that all child systems/outcomes are proven merely because the scoped meta-governance/regression checks passed. Report the actual assurance ceiling and open-world boundary.
