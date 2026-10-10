@@ -104,7 +104,7 @@ Every final response on an active durable task emits exactly one:
 - `进度提交：COMMIT_FAILED` — intended persistence failed or could not be verified;
 - `进度提交：STALE_WRITER` — this chat lost its lease.
 
-`COMMITTED` means durable persistence only. It does not imply execution, methodology, review, quality or outcome PASS.
+`COMMITTED` is a **durable-persistence receipt**. It means durable persistence only and does not imply execution, methodology, review, quality or outcome PASS.
 
 ## Performance invariant
 
