@@ -1,19 +1,19 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
+  "status": "PASS_V37_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__ACCOUNT_HOOK_CONFIRMED__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38036023965,
-    "job_id": 114166494334,
-    "validated_head_sha": "f07c3b5a6a746f0adb70ed1878093d659c60b7c9",
+    "github_actions_run_id": 38036340774,
+    "job_id": 114167444776,
+    "validated_head_sha": "8e913eb091eb2592fdd2488fd3e1d08db25ab4e6",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
     "pytest_count": 102,
-    "note": "Validated composable methodology profiles, executable conformance, minimal bootstrap/event-driven loading, and the slim architecture blueprint. Three intermediate CI failures protected real invariants: existing-chat coverage, mandatory progress receipts, and lifecycle ownership pointers. Later audit/checkpoint/status/cache writes are metadata-only."
+    "note": "Validated the final composable-methodology/minimal-bootstrap main after audit/checkpoint/status/cache synchronization: 102 passed. The later account-hook confirmation writes only product-propagation metadata and do not change runtime code or methodology semantics; a final current-main CI is still required before this maintenance turn reports COMMITTED."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -191,9 +191,14 @@
     "account_level_broadcast_required_for_existing_chats_that_do_not_refresh_github": true,
     "account_instruction_canonical_ref": "STARTUP_HOOK.md",
     "account_continuity_instruction_confirmed_by_user": true,
-    "account_execution_readiness_extension_confirmed": false,
-    "account_autonomous_maintenance_extension_confirmed": false,
-    "account_minimal_bootstrap_extension_confirmed": false,
+    "account_execution_readiness_extension_confirmed": true,
+    "account_autonomous_maintenance_extension_confirmed": true,
+    "account_minimal_bootstrap_extension_confirmed": true,
+    "account_latest_hook_replaced_legacy_continuity_block": true,
+    "account_confirmation_date": "2026-10-10",
+    "account_confirmation_source": "USER_EXPLICIT_CONFIRMATION_IN_ACTIVE_MAINTENANCE_CHAT",
+    "existing_chat_product_e2e": "PENDING_REAL_CHAT_EVIDENCE",
+    "fresh_chat_product_e2e": "PENDING_REAL_CHAT_EVIDENCE",
     "owner_entrypoint_refresh_rule": "Before material execution, refresh only the current owner entrypoint/Skill plus continuity/EXECUTION_CAPABILITIES.json and methodology profile(s) activated by the current action; handshake only required capabilities."
   },
   "version_lifecycle": {
@@ -214,15 +219,17 @@
     "library_presence_alone_is_not_trigger": true,
     "bootstrap_unavailable_marker": "CONTINUITY_BOOTSTRAP_UNAVAILABLE",
     "end_to_end_bare_inherit_claim": true,
+    "latest_account_hook_confirmed": true,
     "acceptance_evidence": {
       "date": "2026-10-09",
-      "source": "user-supplied fresh-chat acceptance screenshot",
+      "source": "user-supplied fresh-chat acceptance screenshot for prior hook",
       "bare_command": "继承",
       "required_owner_quorum": 5,
       "required_owner_quorum_succeeded": true,
       "authoritative_default_candidate_count": 4,
       "live_candidate_names_persisted_in_public_harness": false
-    }
+    },
+    "latest_hook_product_revalidation": "PENDING"
   },
   "context_recovery": {
     "policy": "CONTEXT_RECOVERY_POLICY.json",
@@ -234,6 +241,7 @@
     "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
     "committed_requires_authoritative_reread": true,
     "no_change_avoids_heartbeat": true,
+    "existing_chat_product_e2e_pending": true,
     "fresh_chat_product_e2e_pending": true
   },
   "continuous_learning": {
