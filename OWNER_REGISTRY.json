@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "continuity_protocol_version": "3.7",
   "updated_at": "2026-10-10",
   "resolver": {
@@ -27,7 +27,7 @@
       "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
-      "adapter_status": "READY_V37_PROTOCOL_ADAPTER__ACTIVE_TASK_LAZY_RECONCILIATION",
+      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED",
       "discovery": "domain continuity index and compatible persisted domain runtime when available",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
@@ -84,7 +84,7 @@
       "name": "VIDEO_GROWTH_AGENT",
       "domains": ["VIDEO_GROWTH"],
       "priority": 100,
-      "adapter_status": "READY_V37_PROTOCOL_ADAPTER__ACTIVE_TASK_LAZY_RECONCILIATION",
+      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_BINDING_PARTIAL",
       "discovery": "private domain continuity/TASK_INDEX.md",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
