@@ -1,6 +1,7 @@
 {
   "schema_version": "1.0",
-  "continuity_contract": "3.4",
+  "continuity_contract": "3.7",
+  "continuity_protocol_version": "3.7",
   "purpose": "Deterministic bare-inherit discovery quorum",
   "required_sources": [
     {
