@@ -1,19 +1,20 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_ACCOUNT_CONTINUITY_HOOK_CONFIRMED__EXECUTION_EXTENSION_AND_PRODUCT_E2E_PENDING",
+  "status": "PASS_V37_AUTONOMOUS_SYSTEM_MAINTENANCE_ACTIVE__ACCOUNT_EXTENSION_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
   "latest_execution_audit": "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
+  "latest_maintenance_audit": "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md",
   "source_validation": {
-    "github_actions_run_id": 38016256163,
-    "job_id": 114107069402,
-    "validated_head_sha": "ca865a831120d61039ffc347ede50aabd8899741",
+    "github_actions_run_id": 38018225600,
+    "job_id": 114113204158,
+    "validated_head_sha": "afa7bac8ad0cbe3b02a35955cb60f28dd3f2d6ee",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 77,
-    "note": "Execution-readiness evaluator, cross-agent registry wiring, prior Continuity regressions and restored startup acceptance evidence all passed. Later owner-entrypoint propagation and checkpoint/status writes do not change the validated Universal evaluator code."
+    "pytest_count": 81,
+    "note": "Autonomous-maintenance policy, blueprint/learning/startup wiring, execution-readiness regressions and prior Continuity invariants passed. Initial run 38018174945 exposed pre-existing STARTUP_HOOK drift (missing CONTINUITY_BOOTSTRAP_UNAVAILABLE); authority was repaired without weakening the old test, then run 38018225600 passed. Later audit/status/checkpoint writes are metadata-only."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -21,10 +22,44 @@
     "version_lifecycle_policy": "VERSION_LIFECYCLE_POLICY.json",
     "live_chat_reconciliation_policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
     "protocol_reconciliation_runtime": "runtime/protocol_reconciliation.py",
+    "system_maintenance_policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "user_is_migration_operator": false,
+    "user_is_system_maintenance_operator": false,
     "chat_protocol_pinned_at_creation": false,
     "same_chat_protocol_upgrade_preserves_lease": true,
     "new_chat_takeover_changes_lease": true
+  },
+  "system_maintenance": {
+    "status": "ACTIVE_CI_PASS",
+    "policy": "SYSTEM_MAINTENANCE_POLICY.json",
+    "policy_version": "1.0",
+    "audit": "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md",
+    "assistant_detected_systemic_gap_is_trigger": true,
+    "user_report_revealing_systemic_gap_is_trigger": true,
+    "default_loop": [
+      "DETECT",
+      "CLASSIFY_SCOPE_AND_AUTHORITY",
+      "READ_CURRENT_AUTHORITY",
+      "DIAGNOSE_ROOT_CAUSE",
+      "PATCH_MINIMUM_AUTHORITY_SURFACE",
+      "ADD_OR_UPDATE_GUARD",
+      "RUN_OR_OBSERVE_VALIDATION",
+      "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
+      "REREAD_AUTHORITATIVE_STATE",
+      "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
+    ],
+    "wait_for_user_to_enumerate_internal_followups": false,
+    "ask_user_to_manage_internal_upgrade_records": false,
+    "material_change_requires_durable_record": true,
+    "external_boundary_only_for_user_interruption": true,
+    "may_steal_other_owner_lease": false,
+    "may_rewrite_domain_business_truth": false,
+    "ci_initial_run": 38018174945,
+    "ci_initial_result": "FAIL_PREEXISTING_STARTUP_HOOK_DRIFT",
+    "ci_repair_run": 38018225600,
+    "ci_repair_job": 114113204158,
+    "ci_result": "PASS",
+    "ci_pytest_count": 81
   },
   "execution_control_plane": {
     "status": "ACTIVE_CI_PASS",
@@ -47,10 +82,7 @@
     "isolated_execution_may_be_simulated_by_role_switching": false,
     "targeted_handshake_only_for_current_next_action": true,
     "chat_bridged_execution_allowed_only_when_owner_contract_permits": true,
-    "hard_missing_capability_blocks_exact_gate_not_entire_owner": true,
-    "ci_run": 38016256163,
-    "ci_job": 114107069402,
-    "ci_pytest_count": 77
+    "hard_missing_capability_blocks_exact_gate_not_entire_owner": true
   },
   "execution_propagation": {
     "github_is_push_channel": false,
@@ -68,7 +100,8 @@
       "same_chat_lease_epoch_preservation"
     ],
     "account_execution_readiness_extension_confirmed": false,
-    "account_instruction_required_delta": "Append only the execution-readiness refresh semantics; do not reinstall or duplicate the existing Continuity instruction.",
+    "account_autonomous_maintenance_extension_confirmed": false,
+    "account_instruction_required_delta": "Append/replace with the latest STARTUP_HOOK semantics so existing chats also receive execution-readiness refresh and autonomous-maintenance closure; do not require per-chat migration.",
     "owner_entrypoint_refresh_rule": "Before any material stage/next_action/work order, refresh current owner Skill/entrypoint plus continuity/EXECUTION_CAPABILITIES.json and handshake only required current-session capabilities.",
     "financial_writing_skill_and_task_index_wired": true,
     "a_share_skill_and_task_index_wired": true,
@@ -129,6 +162,7 @@
     "github_presence_alone_is_not_trigger": true,
     "library_presence_alone_is_not_trigger": true,
     "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "bootstrap_unavailable_marker": "CONTINUITY_BOOTSTRAP_UNAVAILABLE",
     "end_to_end_bare_inherit_claim": true,
     "acceptance_evidence": {
       "date": "2026-10-09",
@@ -194,6 +228,7 @@
     "skill_map": "skills/universal-continuity/SKILL.md",
     "latest_learning_pass": "research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md",
     "proactive_maintenance_scouting": true,
+    "self_detected_gap_feeds_maintenance_loop": true,
     "ordinary_business_hot_path_scouting": false
   },
   "hardening": {
