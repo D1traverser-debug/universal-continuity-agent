@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_META_GOVERNANCE_HARNESS_REGRESSION_VERIFIED__SYSTEMIC_MAINTENANCE_OUTLINE_ACTIVE__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
-      "next_action": "On the next genuine systemic/non-trivial maintenance signal, run the current meta-maintenance path and machine-readable closure gate. Do not invent internal work solely to keep maintenance active. Independent/live evidence gates remain OPEN exactly as recorded in the authoritative manifest and Handoff.",
+      "current_stage": "V3_7_META_GOVERNANCE_HARNESS_REGRESSION_VERIFIED__SYSTEMIC_MAINTENANCE_SELF_AUDIT_IN_PROGRESS__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
+      "next_action": "Run the explicit global self-audit through the current meta-maintenance path; challenge the control plane, learning/evolution verifier, audit planner, propagation and claim boundaries; preserve real evidence gates as OPEN unless independently satisfied.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T18:58:00Z"
+      "updated_at": "2026-10-10T20:16:00Z"
     }
   ]
 }
