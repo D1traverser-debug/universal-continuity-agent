@@ -13,10 +13,11 @@
       "principle": "Skill should route, load progressive references and state hard boundaries; executable business logic belongs in runtime/workflow/guards rather than duplicated prose."
     },
     "runtime": {
-      "required_fields": ["runtime_type", "entrypoints", "tool_surface_refs", "judgment_execution"],
+      "required_fields": ["runtime_type", "entrypoints", "judgment_execution"],
+      "optional_fields": ["tool_surface_refs"],
       "allowed_runtime_type": ["AGENTS_SDK", "DETERMINISTIC_WORKFLOW", "HYBRID", "EXTERNAL_RUNTIME"],
       "judgment_execution_status": ["EXECUTABLE", "CHAT_BRIDGED", "DECLARED_ONLY", "NOT_APPLICABLE"],
-      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime."
+      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime. A formal tool surface is optional when the owner is repository-native or otherwise has no callable API."
     },
     "workflow": {
       "required_fields": ["state_authority_refs", "transition_guard_refs"],
