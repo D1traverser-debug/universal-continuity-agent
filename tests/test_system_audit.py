@@ -116,6 +116,7 @@ def test_fault_injection_suite_targets_unknown_unknown_boundaries():
 
     assert "required_discovery_source_unavailable" in scenarios
     assert "stale_registry_attempts_to_override_owner_authority" in scenarios
+    assert "methodology_applicable_profile_is_silently_omitted" in scenarios
     assert "material_write_reports_committed_without_authoritative_reread" in scenarios
     assert "destructive_mutation_has_unknown_identity_or_dependency" in scenarios
     assert "external_reference_is_promoted_to_authority_by_presence" in scenarios
