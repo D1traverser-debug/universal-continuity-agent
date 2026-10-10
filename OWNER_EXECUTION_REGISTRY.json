@@ -8,9 +8,13 @@
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "repository": "D1traverser-debug/financial-writing-agent@main",
       "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
-      "summary": "State machine + OpenAI Agents SDK high-judgment executors + deterministic checks. Current-session runtime/tool binding still requires handshake.",
+      "summary": "State machine + OpenAI Agents SDK high-judgment executors + deterministic checks + HARNESS_WIRED quality-regression promotion gate. Current-session runtime/tool binding and independent pairwise judge evidence still require handshake/evidence verification; current quality corpus is not promotion-ready.",
       "known_ceiling": "SESSION_EXECUTABLE",
-      "strict_isolated_execution_claimed": false
+      "strict_isolated_execution_claimed": false,
+      "current_known_limitations": [
+        "quality_regression_promotion_gate is HARNESS_WIRED, not current-session execution proof",
+        "owner-local quality corpus is NOT_READY for promotion because complete rejection artifact, positive anchor/performance evidence and held-out coverage are incomplete"
+      ]
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
