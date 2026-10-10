@@ -1,101 +1,27 @@
 {
   "schema_version": "3.7",
   "continuity_contract": "3.7",
-  "required_metadata": [
-    "task_id",
-    "task_class",
-    "domain",
-    "title",
-    "status",
-    "resume_eligible",
-    "resume_visibility",
-    "recovery_owner",
-    "updated_at",
-    "current_stage",
-    "next_action",
-    "checkpoint_ref",
-    "contract_version"
-  ],
-  "recommended_protocol_metadata": [
-    "continuity_protocol_version",
-    "domain_contract_version",
-    "last_protocol_reconciled_at",
-    "protocol_migration"
-  ],
-  "user_task_metadata": {
-    "display_name_zh": "required after first naming handshake",
-    "missing_behavior": "PROMPT_ONCE_THEN_PERSIST_AND_CONTINUE",
-    "identity_rule": "changing display_name_zh never changes task_id"
+  "required_metadata": ["task_id","task_class","domain","title","status","resume_eligible","resume_visibility","recovery_owner","updated_at","current_stage","next_action","checkpoint_ref","contract_version"],
+  "recommended_protocol_metadata": ["continuity_protocol_version","domain_contract_version","last_protocol_reconciled_at","protocol_migration"],
+  "user_task_metadata": {"display_name_zh":"required after first naming handshake","missing_behavior":"PROMPT_ONCE_THEN_PERSIST_AND_CONTINUE","identity_rule":"changing display_name_zh never changes task_id"},
+  "required_capabilities": ["list_resumable_tasks_metadata_only","get_task_checkpoint_by_id","compatibility_check","resume_or_migrate_or_block","provide_short_handoff_or_equivalent_checkpoint","provide_stable_artifact_refs_for_next_action","provide_pre_takeover_progress_state","persist_material_progress_with_owner_version_guard","reread_authoritative_state_after_write","reconcile_supported_older_continuity_protocol_without_user_migration"],
+  "artifact_context_governance": {
+    "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+    "owner_must_expose": ["durable_task_state_location","authoritative_business_evidence_classes","cache_or_reference_only_stores","upstream_to_downstream_invalidation_rule","superseded_artifact_cleanup_rule"],
+    "cache_may_be_checkpoint_authority": false,
+    "chat_memory_may_be_checkpoint_authority": false,
+    "external_reference_is_authority_by_presence": false,
+    "chat_only_material_change_requires_persistence_before_future_resume": true,
+    "superseded_active_implementation_should_be_removed_or_demoted": true,
+    "domain_specific_retention_stays_owner_controlled": true
   },
-  "required_capabilities": [
-    "list_resumable_tasks_metadata_only",
-    "get_task_checkpoint_by_id",
-    "compatibility_check",
-    "resume_or_migrate_or_block",
-    "provide_short_handoff_or_equivalent_checkpoint",
-    "provide_stable_artifact_refs_for_next_action",
-    "provide_pre_takeover_progress_state",
-    "persist_material_progress_with_owner_version_guard",
-    "reread_authoritative_state_after_write",
-    "reconcile_supported_older_continuity_protocol_without_user_migration"
-  ],
-  "live_chat_reconciliation": {
-    "policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
-    "user_migration_required": false,
-    "same_chat_protocol_upgrade_preserves_resume_epoch": true,
-    "same_chat_protocol_upgrade_preserves_active_lease": true,
-    "new_chat_takeover_changes_lease": true,
-    "maintenance_task_must_not_overwrite_another_active_task_writer_manifest": true,
-    "supported_additive_edges": ["3.3->3.7", "3.5->3.7", "3.6->3.7"]
-  },
-  "progress_observability": {
-    "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
-    "resume_progress_source": "authoritative task manifest plus short owner checkpoint",
-    "owner_should_expose": [
-      "status",
-      "current_stage",
-      "next_action",
-      "blockers_or_waiting_state",
-      "updated_at",
-      "checkpoint_ref",
-      "owner_version_or_manifest_version"
-    ],
-    "commit_verification": "A material owner-state update is COMMITTED only after the owner authority is re-read and matches the intended durable state.",
-    "cache_write_is_not_commit_proof": true,
-    "no_change_behavior": "NO_MATERIAL_CHANGE; do not force an owner heartbeat write"
-  },
-  "context_recovery": {
-    "policy": "CONTEXT_RECOVERY_POLICY.json",
-    "owner_should_not_require_full_history_preload": true,
-    "handoff_role": "current execution truth",
-    "artifact_reference_preferred_over_duplicate_content": true,
-    "old_chat_history": "last resort only"
-  },
-  "bare_inherit_predicate": {
-    "task_class": ["USER"],
-    "resume_eligible": true,
-    "resume_visibility": ["DEFAULT"],
-    "status": ["ACTIVE", "WAITING", "BLOCKED"]
-  },
-  "explicit_system_infra": {
-    "bare_inherit_eligible": false,
-    "explicit_resume_allowed_when": "task_class=SYSTEM_INFRA + resume_eligible=true + resume_visibility=EXPLICIT_ONLY + explicit user selection"
-  },
-  "lease_epoch": {
-    "canonical": "top-level resume_epoch",
-    "nested_active_lease_resume_epoch_required": false,
-    "rule": "When nested active_lease.resume_epoch is absent, use top-level resume_epoch. When both exist and conflict, fail closed."
-  },
-  "fail_closed": {
-    "missing_task_class": "MIGRATION",
-    "missing_resume_eligible": false,
-    "missing_resume_visibility": "EXPLICIT_ONLY",
-    "missing_contract_version": "legacy-unclassified",
-    "missing_display_name_zh": "ASK_USER_ONCE; do not invent a permanent user-facing name",
-    "missing_checkpoint_or_next_action": "UNKNOWN; do not reconstruct executable state from chat memory",
-    "material_write_not_verified": "COMMIT_FAILED; do not claim the next chat can recover the new state",
-    "unsupported_old_protocol": "UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state"
-  },
+  "live_chat_reconciliation": {"policy":"LIVE_CHAT_RECONCILIATION_POLICY.json","user_migration_required":false,"same_chat_protocol_upgrade_preserves_resume_epoch":true,"same_chat_protocol_upgrade_preserves_active_lease":true,"new_chat_takeover_changes_lease":true,"maintenance_task_must_not_overwrite_another_active_task_writer_manifest":true,"supported_additive_edges":["3.3->3.7","3.5->3.7","3.6->3.7"]},
+  "progress_observability": {"policy":"PROGRESS_OBSERVABILITY_POLICY.json","resume_progress_source":"authoritative task manifest plus short owner checkpoint","owner_should_expose":["status","current_stage","next_action","blockers_or_waiting_state","updated_at","checkpoint_ref","owner_version_or_manifest_version"],"commit_verification":"A material owner-state update is COMMITTED only after the owner authority is re-read and matches the intended durable state.","cache_write_is_not_commit_proof":true,"no_change_behavior":"NO_MATERIAL_CHANGE; do not force an owner heartbeat write"},
+  "context_recovery": {"policy":"CONTEXT_RECOVERY_POLICY.json","owner_should_not_require_full_history_preload":true,"handoff_role":"current execution truth","artifact_reference_preferred_over_duplicate_content":true,"old_chat_history":"last resort only"},
+  "bare_inherit_predicate": {"task_class":["USER"],"resume_eligible":true,"resume_visibility":["DEFAULT"],"status":["ACTIVE","WAITING","BLOCKED"]},
+  "explicit_system_infra": {"bare_inherit_eligible":false,"explicit_resume_allowed_when":"task_class=SYSTEM_INFRA + resume_eligible=true + resume_visibility=EXPLICIT_ONLY + explicit user selection"},
+  "lease_epoch": {"canonical":"top-level resume_epoch","nested_active_lease_resume_epoch_required":false,"rule":"When nested active_lease.resume_epoch is absent, use top-level resume_epoch. When both exist and conflict, fail closed."},
+  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context"},
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
 }
