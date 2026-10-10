@@ -16,17 +16,18 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/financial-writing-agent@main:continuity/tasks/financial-writing-main/HANDOFF.md",
-      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_ALL_PROFILES_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__ACTION_LEVEL_OPERATIONAL_EVIDENCE_REQUIRED__LIVE_QUALITY_EVIDENCE_PENDING",
+      "status": "ACTIVE_TASK_RECONCILED_V37__METHODOLOGY_ALL_PROFILES_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__ACTION_RECEIPT_EMISSION_WIRED__INDEPENDENT_OPERATIONAL_VERIFICATION_PENDING__FINANCE_DEEP_LIVE_QUALITY_EVIDENCE_PENDING",
       "methodology_regression_evidence": {
-        "behavioral_head": "07a05bf2dc93db25b9514f3c66807bc967a3d3bf",
-        "run_id": 38062102017,
-        "job_id": 114242271276
+        "behavioral_head": "cd2124df1c38ff18377c40aadf8c8b1d1d850100",
+        "run_id": 38065224392,
+        "job_id": 114251394009
       },
-      "methodology_adapter_metadata_head": "91724371b7281024ff52bfac2c28b914104d06b2",
-      "methodology_adapter_metadata_run_id": 38062215617,
+      "methodology_adapter_metadata_head": "2c0e453a68c30eb43ce035836b6bc4608103b2a2",
+      "methodology_action_receipt_contract_version": "1.1",
+      "methodology_action_receipt_emitter": "D1traverser-debug/financial-writing-agent@main:financial_writing_agent/methodology_receipts.py",
       "profile_applicability_metadata_head": "8f7710b64c330e0770154e65a40b4abc9a4e932d",
       "profile_applicability_ci_run_id": 38063063135,
-      "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_INDEPENDENT_EVIDENCE_RECEIPT_REQUIRED"
+      "methodology_operational_boundary": "OWNER_ACTION_RECEIPT_EMISSION_WIRED__UNIVERSAL_INDEPENDENT_EVIDENCE_VERIFICATION_REQUIRED__OPERATIONAL_HYGIENE_LIVE_ACTION_RECEIPT_UNPROVEN"
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
