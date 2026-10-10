@@ -1,20 +1,21 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_AUTONOMOUS_SYSTEM_MAINTENANCE_ACTIVE__ACCOUNT_EXTENSION_AND_PRODUCT_E2E_PENDING",
+  "status": "PASS_V37_ARTIFACT_CONTEXT_GOVERNANCE_ACTIVE__OWNER_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
   "latest_execution_audit": "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
   "latest_maintenance_audit": "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md",
+  "latest_artifact_context_audit": "audits/CROSS_AGENT_ARTIFACT_CONTEXT_GOVERNANCE_2026-10-10.md",
   "source_validation": {
-    "github_actions_run_id": 38018225600,
-    "job_id": 114113204158,
-    "validated_head_sha": "afa7bac8ad0cbe3b02a35955cb60f28dd3f2d6ee",
+    "github_actions_run_id": 38019817158,
+    "job_id": 114118106198,
+    "validated_head_sha": "8c02cea278a4009c848d6d3430ea411d25bc9e85",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 81,
-    "note": "Autonomous-maintenance policy, blueprint/learning/startup wiring, execution-readiness regressions and prior Continuity invariants passed. Initial run 38018174945 exposed pre-existing STARTUP_HOOK drift (missing CONTINUITY_BOOTSTRAP_UNAVAILABLE); authority was repaired without weakening the old test, then run 38018225600 passed. Later audit/status/checkpoint writes are metadata-only."
+    "pytest_count": 84,
+    "note": "Artifact/context governance, owner lifecycle contract, chat-only learning persistence boundaries, autonomous maintenance and prior Continuity/execution-readiness regressions passed. Later audit/status/checkpoint writes are metadata-only."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -23,6 +24,7 @@
     "live_chat_reconciliation_policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
     "protocol_reconciliation_runtime": "runtime/protocol_reconciliation.py",
     "system_maintenance_policy": "SYSTEM_MAINTENANCE_POLICY.json",
+    "artifact_context_governance_policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "user_is_migration_operator": false,
     "user_is_system_maintenance_operator": false,
     "chat_protocol_pinned_at_creation": false,
@@ -32,34 +34,44 @@
   "system_maintenance": {
     "status": "ACTIVE_CI_PASS",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.0",
+    "policy_version": "1.1",
     "audit": "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md",
     "assistant_detected_systemic_gap_is_trigger": true,
     "user_report_revealing_systemic_gap_is_trigger": true,
-    "default_loop": [
-      "DETECT",
-      "CLASSIFY_SCOPE_AND_AUTHORITY",
-      "READ_CURRENT_AUTHORITY",
-      "DIAGNOSE_ROOT_CAUSE",
-      "PATCH_MINIMUM_AUTHORITY_SURFACE",
-      "ADD_OR_UPDATE_GUARD",
-      "RUN_OR_OBSERVE_VALIDATION",
-      "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
-      "REREAD_AUTHORITATIVE_STATE",
-      "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
-    ],
+    "artifact_context_or_cache_drift_is_trigger": true,
+    "chat_only_material_change_not_persisted_is_trigger": true,
+    "default_loop": ["DETECT","CLASSIFY_SCOPE_AND_AUTHORITY","READ_CURRENT_AUTHORITY","DIAGNOSE_ROOT_CAUSE","PATCH_MINIMUM_AUTHORITY_SURFACE","ADD_OR_UPDATE_GUARD","RUN_OR_OBSERVE_VALIDATION","UPDATE_CHANGE_RECORD_AND_TASK_STATE","REREAD_AUTHORITATIVE_STATE","REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"],
     "wait_for_user_to_enumerate_internal_followups": false,
     "ask_user_to_manage_internal_upgrade_records": false,
     "material_change_requires_durable_record": true,
     "external_boundary_only_for_user_interruption": true,
     "may_steal_other_owner_lease": false,
     "may_rewrite_domain_business_truth": false,
-    "ci_initial_run": 38018174945,
-    "ci_initial_result": "FAIL_PREEXISTING_STARTUP_HOOK_DRIFT",
-    "ci_repair_run": 38018225600,
-    "ci_repair_job": 114113204158,
+    "may_delete_owner_business_evidence_without_retention_authority": false,
     "ci_result": "PASS",
-    "ci_pytest_count": 81
+    "ci_run": 38019817158,
+    "ci_job": 114118106198,
+    "ci_pytest_count": 84
+  },
+  "artifact_context_governance": {
+    "status": "ACTIVE_CI_PASS",
+    "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+    "policy_version": "1.0",
+    "audit": "audits/CROSS_AGENT_ARTIFACT_CONTEXT_GOVERNANCE_2026-10-10.md",
+    "storage_classes": ["ENGINEERING_AUTHORITY","DURABLE_TASK_STATE","BUSINESS_EVIDENCE","LEARNING_EVIDENCE","REBUILDABLE_CACHE","SESSION_SCRATCH","EXTERNAL_REFERENCE","CHAT_PERSONALIZATION_CONTEXT"],
+    "cache_is_checkpoint_authority": false,
+    "chat_only_material_change_is_durable": false,
+    "learning_evidence_auto_promotes_to_rule": false,
+    "external_reference_presence_implies_authority": false,
+    "custom_instructions_are_business_checkpoint": false,
+    "project_instructions_are_business_checkpoint": false,
+    "memory_or_past_chat_is_business_checkpoint": false,
+    "superseded_engineering_implementation_archive": "GIT_HISTORY_UNLESS_MIGRATION_EDGE_REQUIRES_ACTIVE_COPY",
+    "owner_business_retention_is_domain_owned": true,
+    "owner_conformance_required_fields": ["durable_task_state_location","authoritative_business_evidence_classes","cache_or_reference_only_stores","upstream_to_downstream_invalidation_rule","superseded_artifact_cleanup_rule"],
+    "owner_conformance_rollout": "INCREMENTAL_ON_VALID_OWNER_WRITER_OR_MAINTENANCE_TURN",
+    "project_instruction_precedence_risk": "KNOWN_PRODUCT_BOUNDARY__HANDLE_IF_REAL_CONFLICT_OBSERVED",
+    "broader_self_evolution": "DEFERRED_BY_USER_FOR_SEPARATE_DISCUSSION"
   },
   "execution_control_plane": {
     "status": "ACTIVE_CI_PASS",
@@ -71,11 +83,7 @@
     "contract_version": "1.0",
     "continuity_protocol_bump_required": false,
     "github_owner_capability_surface": "continuity/EXECUTION_CAPABILITIES.json",
-    "owners_declared": [
-      "FINANCIAL_WRITING_AGENT_RUNTIME",
-      "A_SHARE_MARKET_AGENT",
-      "VIDEO_GROWTH_AGENT"
-    ],
+    "owners_declared": ["FINANCIAL_WRITING_AGENT_RUNTIME","A_SHARE_MARKET_AGENT","VIDEO_GROWTH_AGENT"],
     "repository_configuration_is_execution_proof": false,
     "current_session_handshake_required": true,
     "declared_only_counts_as_execution": false,
@@ -89,16 +97,7 @@
     "account_level_broadcast_required_for_existing_chats_that_do_not_refresh_github": true,
     "account_instruction_canonical_ref": "STARTUP_HOOK.md",
     "account_continuity_instruction_confirmed_by_user": true,
-    "account_continuity_instruction_scope_confirmed": [
-      "explicit_continue_routing",
-      "universal_repo_bootstrap",
-      "complete_discovery",
-      "exact_task_owner_routing",
-      "compatibility_and_takeover",
-      "progress_receipt",
-      "automatic_protocol_owner_checkpoint_migration",
-      "same_chat_lease_epoch_preservation"
-    ],
+    "account_continuity_instruction_scope_confirmed": ["explicit_continue_routing","universal_repo_bootstrap","complete_discovery","exact_task_owner_routing","compatibility_and_takeover","progress_receipt","automatic_protocol_owner_checkpoint_migration","same_chat_lease_epoch_preservation"],
     "account_execution_readiness_extension_confirmed": false,
     "account_autonomous_maintenance_extension_confirmed": false,
     "account_instruction_required_delta": "Append/replace with the latest STARTUP_HOOK semantics so existing chats also receive execution-readiness refresh and autonomous-maintenance closure; do not require per-chat migration.",
@@ -106,20 +105,9 @@
     "financial_writing_skill_and_task_index_wired": true,
     "a_share_skill_and_task_index_wired": true,
     "video_growth_skill_and_task_index_wired": true,
-    "a_share_wiring_ci": {
-      "status": "PASS",
-      "run_id": 38016854800,
-      "head_sha": "650cba169c46246d431b0176d219867e92ebd051"
-    },
-    "video_growth_wiring_ci": {
-      "status": "PASS",
-      "run_id": 38017210573,
-      "head_sha": "61713e1655115036f3194f6eec369f1975b8e5b8"
-    },
-    "financial_writing_wiring": {
-      "status": "ENTRYPOINTS_READBACK_PASS__FULL_OWNER_CI_BLOCKED_BY_UNRELATED_MCP_STREAMABLE_HTTP_SMOKE",
-      "full_ci_pass_claimed": false
-    }
+    "a_share_wiring_ci": {"status":"PASS","run_id":38016854800,"head_sha":"650cba169c46246d431b0176d219867e92ebd051"},
+    "video_growth_wiring_ci": {"status":"PASS","run_id":38017210573,"head_sha":"61713e1655115036f3194f6eec369f1975b8e5b8"},
+    "financial_writing_latest_v06_ci": {"status":"PASS","run_id":38018238323,"head_sha":"5d5e2493de1ff6b940366b133611cd3cd929244d"}
   },
   "version_lifecycle": {
     "active_protocol": "3.7",
@@ -127,18 +115,13 @@
     "core_policy_version_drift_regression_guard": true,
     "superseded_implementation_archive": "GIT_HISTORY_ONLY",
     "completed_library_to_github_migration_archive": "archive/migrations/2026-10-09-library-to-github.md",
-    "removed_from_active_root": [
-      "MIGRATION_MANIFEST.json",
-      "MIGRATION_STATUS.json",
-      "MIGRATION_CHECKPOINT.md",
-      "ENGINEERING_HOME_STATUS.json"
-    ],
+    "removed_from_active_root": ["MIGRATION_MANIFEST.json","MIGRATION_STATUS.json","MIGRATION_CHECKPOINT.md","ENGINEERING_HOME_STATUS.json"],
     "task_manifest_template_aligned_to_v37": true
   },
   "same_chat_protocol_reconciliation": {
     "policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
     "executable_planner": "runtime/protocol_reconciliation.py",
-    "supported_from": ["3.3", "3.5", "3.6"],
+    "supported_from": ["3.3","3.5","3.6"],
     "current_writer_lease_verification_required": true,
     "same_chat_resume_epoch_change": false,
     "same_chat_active_lease_change": false,
@@ -164,81 +147,13 @@
     "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
     "bootstrap_unavailable_marker": "CONTINUITY_BOOTSTRAP_UNAVAILABLE",
     "end_to_end_bare_inherit_claim": true,
-    "acceptance_evidence": {
-      "date": "2026-10-09",
-      "source": "user-supplied fresh-chat acceptance screenshot",
-      "bare_command": "继承",
-      "required_owner_quorum": 5,
-      "required_owner_quorum_succeeded": true,
-      "authoritative_default_candidate_count": 4,
-      "live_candidate_names_persisted_in_public_harness": false
-    }
+    "acceptance_evidence": {"date":"2026-10-09","source":"user-supplied fresh-chat acceptance screenshot","bare_command":"继承","required_owner_quorum":5,"required_owner_quorum_succeeded":true,"authoritative_default_user_candidate_count":4,"live_candidate_names_persisted_in_public_harness":false}
   },
-  "bare_inherit_discovery": {
-    "policy": "BARE_INHERIT_DISCOVERY.json",
-    "regression_date": "2026-10-10",
-    "required_source_quorum": 5,
-    "required_sources_succeeded": 5,
-    "authoritative_default_user_candidate_count": 4,
-    "specific_live_task_labels_stored_in_public_harness": false,
-    "all_required_sources_must_be_queried": true,
-    "partial_failure_result": "INCOMPLETE_DISCOVERY",
-    "candidate_count_requires_complete_discovery": true,
-    "dedupe_key": "task_id"
-  },
-  "context_recovery": {
-    "policy": "CONTEXT_RECOVERY_POLICY.json",
-    "protocol_aligned_v37": true,
-    "progressive_disclosure": true,
-    "load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
-    "handoff_is_execution_truth_not_transcript": true,
-    "artifact_reference_preferred_over_duplication": true,
-    "fixed_token_threshold_as_invariant": false,
-    "side_query_mutates_stage_by_default": false,
-    "major_goal_branch_uses_child_task": true,
-    "risk_matched_verification": true
-  },
-  "progress_observability": {
-    "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
-    "resume_progress_receipt": "IMPLEMENTED_CI_PASS_FRESH_CHAT_PRODUCT_E2E_PENDING",
-    "turn_commit_receipt": "IMPLEMENTED_CI_PASS",
-    "existing_chat_receipt_scope": "ACCOUNT_HOOK_PLUS_LIVE_CHAT_RECONCILIATION",
-    "committed_requires_reread": true,
-    "no_material_change_avoids_heartbeat": true,
-    "fresh_chat_e2e_pending_reason": "A repository harness cannot prove that a genuinely new ChatGPT chat received the account-level startup instruction and surfaced the takeover-boundary receipt."
-  },
-  "runtime_hardening_v37": {
-    "runtime_schema_aligned": true,
-    "package_version_aligned": true,
-    "top_level_resume_epoch_canonical": true,
-    "nested_lease_epoch_optional": true,
-    "explicit_system_infra_takeover_supported": true,
-    "core_policy_version_consistency_test_expanded": true,
-    "same_chat_protocol_reconciliation_tested": true,
-    "stale_writer_protocol_reconciliation_rejected": true
-  },
-  "privacy_and_authority_boundaries": {
-    "public_universal_audit_stores_live_candidate_names": false,
-    "owner_specific_live_state_stays_with_owner_authority": true,
-    "unverified_cross_domain_preferences_must_not_be_promoted_as_domain_rules": true,
-    "maintenance_force_rewrites_other_active_task_state": false
-  },
-  "continuous_learning": {
-    "policy": "CONTINUOUS_LEARNING_POLICY.md",
-    "skill_map": "skills/universal-continuity/SKILL.md",
-    "latest_learning_pass": "research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md",
-    "proactive_maintenance_scouting": true,
-    "self_detected_gap_feeds_maintenance_loop": true,
-    "ordinary_business_hot_path_scouting": false
-  },
-  "hardening": {
-    "registry_cache_only": true,
-    "single_active_writer": true,
-    "resume_epoch_and_lease": true,
-    "old_chat_retired_after_true_new_chat_takeover": true,
-    "same_chat_not_retired_for_protocol_upgrade": true,
-    "global_discovery_first_message_only": true,
-    "continuity_not_business_single_point_of_failure": true,
-    "live_user_state_not_exposed_in_public_universal_audit": true
-  }
+  "bare_inherit_discovery": {"policy":"BARE_INHERIT_DISCOVERY.json","regression_date":"2026-10-10","required_source_quorum":5,"required_sources_succeeded":5,"authoritative_default_user_candidate_count":4,"specific_live_task_labels_stored_in_public_harness":false,"all_required_sources_must_be_queried":true,"partial_failure_result":"INCOMPLETE_DISCOVERY","candidate_count_requires_complete_discovery":true,"dedupe_key":"task_id"},
+  "context_recovery": {"policy":"CONTEXT_RECOVERY_POLICY.json","protocol_aligned_v37":true,"progressive_disclosure":true,"load_order":["metadata","short_handoff","exact_artifact_refs","selective_search","old_chat_history_last_resort"],"handoff_is_execution_truth_not_transcript":true,"artifact_reference_preferred_over_duplication":true,"fixed_token_threshold_as_invariant":false,"side_query_mutates_stage_by_default":false,"major_goal_branch_uses_child_task":true,"risk_matched_verification":true},
+  "progress_observability": {"policy":"PROGRESS_OBSERVABILITY_POLICY.json","resume_progress_receipt":"IMPLEMENTED_CI_PASS_FRESH_CHAT_PRODUCT_E2E_PENDING","turn_commit_receipt":"IMPLEMENTED_CI_PASS","existing_chat_receipt_scope":"ACCOUNT_HOOK_PLUS_LIVE_CHAT_RECONCILIATION","committed_requires_reread":true,"no_material_change_avoids_heartbeat":true,"fresh_chat_e2e_pending_reason":"A repository harness cannot prove that a genuinely new ChatGPT chat received the account-level startup instruction and surfaced the takeover-boundary receipt."},
+  "runtime_hardening_v37": {"runtime_schema_aligned":true,"package_version_aligned":true,"top_level_resume_epoch_canonical":true,"nested_lease_epoch_optional":true,"explicit_system_infra_takeover_supported":true,"core_policy_version_consistency_test_expanded":true,"same_chat_protocol_reconciliation_tested":true,"stale_writer_protocol_reconciliation_rejected":true},
+  "privacy_and_authority_boundaries": {"public_universal_audit_stores_live_candidate_names":false,"owner_specific_live_state_stays_with_owner_authority":true,"unverified_cross_domain_preferences_must_not_be_promoted_as_domain_rules":true,"maintenance_force_rewrites_other_active_task_state":false},
+  "continuous_learning": {"policy":"CONTINUOUS_LEARNING_POLICY.md","skill_map":"skills/universal-continuity/SKILL.md","latest_learning_pass":"research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md","proactive_maintenance_scouting":true,"self_detected_gap_feeds_maintenance_loop":true,"chat_only_idea_counts_as_durable_evolution":false,"raw_learning_evidence_auto_promotes":false,"ordinary_business_hot_path_scouting":false},
+  "hardening": {"registry_cache_only":true,"single_active_writer":true,"resume_epoch_and_lease":true,"old_chat_retired_after_true_new_chat_takeover":true,"same_chat_not_retired_for_protocol_upgrade":true,"global_discovery_first_message_only":true,"continuity_not_business_single_point_of_failure":true,"live_user_state_not_exposed_in_public_universal_audit":true}
 }
