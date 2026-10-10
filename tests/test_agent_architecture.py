@@ -1,7 +1,12 @@
 import json
 from pathlib import Path
 
-from runtime.agent_architecture import ArchitectureStatus, validate_agent_manifest, validate_registry_architecture_pointers
+from runtime.agent_architecture import (
+    ArchitectureStatus,
+    validate_agent_manifest,
+    validate_architecture_observation,
+    validate_registry_architecture_pointers,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = json.loads((ROOT / "AGENT_ARCHITECTURE_CONTRACT.json").read_text(encoding="utf-8"))
@@ -35,12 +40,11 @@ def valid_manifest() -> dict:
             "protocol_adapter_ref": "continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
             "execution_capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
         },
-        "harness_receipt_head": "abc",
     }
 
 
 def test_valid_agent_architecture_passes():
-    result = validate_agent_manifest(valid_manifest(), CONTRACT, observed_owner_head="abc")
+    result = validate_agent_manifest(valid_manifest(), CONTRACT)
     assert result.status == ArchitectureStatus.PASS
 
 
@@ -50,7 +54,6 @@ def test_big_skill_is_drift_not_silent_pass():
         manifest,
         CONTRACT,
         file_sizes={manifest["skill"]["entrypoint"]: 20000},
-        observed_owner_head="abc",
     )
     assert result.status == ArchitectureStatus.PASS_WITH_DRIFT
     assert any("skill router exceeds" in warning for warning in result.warnings)
@@ -60,17 +63,31 @@ def test_skill_only_owner_fails():
     manifest = valid_manifest()
     del manifest["runtime"]
     del manifest["harness"]
-    result = validate_agent_manifest(manifest, CONTRACT, observed_owner_head="abc")
+    result = validate_agent_manifest(manifest, CONTRACT)
     assert result.status == ArchitectureStatus.FAIL
     assert "missing layer: runtime" in result.errors
     assert "missing layer: harness" in result.errors
 
 
-def test_stale_harness_receipt_fails_against_external_head():
-    manifest = valid_manifest()
-    result = validate_agent_manifest(manifest, CONTRACT, observed_owner_head="new")
+def test_stale_architecture_observation_fails_against_external_head():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "ci://123",
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
     assert result.status == ArchitectureStatus.FAIL
     assert any("stale" in error for error in result.errors)
+
+
+def test_matching_architecture_observation_passes():
+    observation = {
+        "architecture_validation_head": "abc",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "ci://123",
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="abc")
+    assert result.status == ArchitectureStatus.PASS
 
 
 def test_missing_repository_ref_fails():
@@ -86,7 +103,7 @@ def test_missing_repository_ref_fails():
         "continuity/TASK_INDEX.json",
         "continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
     }
-    result = validate_agent_manifest(manifest, CONTRACT, repository_paths=paths, observed_owner_head="abc")
+    result = validate_agent_manifest(manifest, CONTRACT, repository_paths=paths)
     assert result.status == ArchitectureStatus.FAIL
     assert any("EXECUTION_CAPABILITIES" in error for error in result.errors)
 
