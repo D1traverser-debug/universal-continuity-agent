@@ -5,6 +5,7 @@ from runtime.meta_maintenance import evaluate_meta_maintenance_run
 
 
 ROOT = Path(__file__).resolve().parents[1]
+META_RUN_REF = "audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json"
 
 
 def load_json(name: str):
@@ -175,3 +176,42 @@ def test_local_mechanical_bug_can_skip_external_scout_with_reason():
     run["validation"]["cross_surface_or_fault_audit"] = "NOT_REQUIRED"
     result = evaluate(run)
     assert result.status == "PASS", result.errors
+
+
+def test_recorded_meta_maintenance_run_is_structurally_conformant_and_registry_complete():
+    run = load_json(META_RUN_REF)
+    result = evaluate(run)
+    assert result.status == "PASS", result.errors
+    assert result.assurance_ceiling == "STRUCTURED_PROCESS_CONFORMANCE_ONLY"
+    expected_owners = {
+        item["name"]
+        for item in load_json("OWNER_REGISTRY.json")["owners"]
+        if item.get("owner_kind") == "BUSINESS"
+    }
+    assert set(run["propagation"]["impacted_business_owners"]) == expected_owners
+
+
+def test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record():
+    manifest = load_json("tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
+    stage = str(manifest.get("current_stage", ""))
+    if "META_MAINTENANCE_GOVERNANCE_HARDENING_IN_PROGRESS" in stage:
+        assert manifest.get("meta_maintenance_harness_version") == "1.0-candidate"
+        return
+
+    assert manifest.get("meta_maintenance_harness_version") == "1.0"
+    assert manifest.get("latest_meta_maintenance_run_ref") == META_RUN_REF
+    run = load_json(META_RUN_REF)
+    assert run.get("target_manifest_version") == manifest.get("manifest_version")
+    result = evaluate(run)
+    assert result.status == "PASS", result.errors
+
+
+def test_entrypoint_tracks_current_methodology_receipt_contract_and_does_not_retain_1_2():
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+    adapter = load_json("OWNER_ADAPTER_CONTRACT.json")
+    current = adapter["methodology_composition"]["operational_profile_run_contract_version"]
+    assert f"receipt-contract-{current}" in entrypoint
+    assert f"Under receipt contract {current}" in entrypoint
+    if current != "1.2":
+        assert "receipt-contract-1.2" not in entrypoint
+        assert "Under receipt contract 1.2" not in entrypoint
