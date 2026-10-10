@@ -13,7 +13,8 @@
       "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
-      "status": "ADAPTER_RECORD_REQUIRED"
+      "adapter_ref": "D1traverser-debug/financial-writing-agent@main/continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "status": "ADAPTER_STAGED__TASK_MANIFEST_PENDING_VALID_WRITER_RECONCILIATION"
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
@@ -21,10 +22,11 @@
       "observed_protocol": "3.3",
       "target_protocol": "3.7",
       "classification": "MIGRATABLE",
-      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
-      "status": "ADAPTER_RECORD_REQUIRED"
+      "adapter_ref": "D1traverser-debug/a-share-event-driven-agent@main/continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "status": "ACTIVE_ENTRY_RECONCILED_V37__HISTORICAL_TASKS_LAZY"
     },
     {
       "owner": "VIDEO_GROWTH_AGENT",
@@ -35,7 +37,8 @@
       "strategy": "ADDITIVE_PROTOCOL_OVERLAY_ON_NEXT_VALID_WRITER_TURN",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
-      "status": "ADAPTER_RECORD_REQUIRED"
+      "adapter_ref": "D1traverser-debug/video-growth-agent@main/continuity/OWNER_ADAPTER.json",
+      "status": "OWNER_ADAPTER_V37__ACTIVE_TASK_MANIFEST_PENDING_VALID_WRITER_RECONCILIATION"
     },
     {
       "owner": "NOVEL_OS",
@@ -46,7 +49,8 @@
       "strategy": "UNIVERSAL_ROUTING_OVERLAY_NOW__OWNER_BUSINESS_CHECKPOINT_LAZY_RECONCILIATION",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
-      "status": "UNIVERSAL_ADAPTER_RECORD_REQUIRED"
+      "adapter_ref": "tasks/FQ001_MINGRI_ORDER/PROTOCOL_ADAPTER.json",
+      "status": "ROUTING_ADAPTER_STAGED__TASK_AND_OWNER_CHECKPOINT_PENDING_VALID_WRITER_RECONCILIATION"
     }
   ],
   "rule": "A maintenance task may stage owner protocol adapters and migration plans, but it must not overwrite an active task manifest owned by another writer lease. Task-level protocol metadata is reconciled by the valid task writer on its next durable turn or by a genuine new-chat takeover."
