@@ -32,8 +32,13 @@
     "repeated_user_restating_same_durable_requirement_is_reliability_signal": true,
     "chat_only_fix_counts_as_learning": false,
     "declared_learning_role_without_invocation_and_receipt_is_operational": false,
+    "solution_proposal_from_user_assistant_or_other_agent_is_candidate_not_authority": true,
+    "user_goal_and_constraint_must_be_separated_from_user_proposed_mechanism": true,
+    "nontrivial_evolution_candidate_requires_alternative_comparison_and_failure_mode_search": true,
     "promotion_requires_eval_or_regression_evidence": true,
     "accepted_evolution_should_remove_or_demote_superseded_mechanism_when_safe": true,
+    "domain_specific_evolution_may_specialize_method_but_must_preserve_cross_agent_evidence_reliability_and_authority_invariants": true,
+    "owner_override_may_replace_method_but_not_bypass_required_evidence_or_owner_boundaries": true,
     "core_reliability_failure_should_freeze_unrelated_feature_expansion_within_affected_owner": true,
     "freeze_must_not_spread_to_unrelated_healthy_owners": true,
     "universal_may_validate_conformance_without_business_state_rewrite": true,
@@ -45,7 +50,7 @@
   "bare_inherit_predicate": {"task_class":["USER"],"resume_eligible":true,"resume_visibility":["DEFAULT"],"status":["ACTIVE","WAITING","BLOCKED"]},
   "explicit_system_infra": {"bare_inherit_eligible":false,"explicit_resume_allowed_when":"task_class=SYSTEM_INFRA + resume_eligible=true + resume_visibility=EXPLICIT_ONLY + explicit user selection"},
   "lease_epoch": {"canonical":"top-level resume_epoch","nested_active_lease_resume_epoch_required":false,"rule":"When nested active_lease.resume_epoch is absent, use top-level resume_epoch. When both exist and conflict, fail closed."},
-  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context","file_identity_or_dependency_unknown_for_destructive_mutation":"BLOCK_MUTATION_OR_DELETE","declared_learning_without_invocation_or_receipt":"DECLARED_ONLY_NOT_OPERATIONAL","repeated_material_failure_without_durable_evidence":"OWNER_RELIABILITY_UNKNOWN_OR_UNHEALTHY"},
+  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context","file_identity_or_dependency_unknown_for_destructive_mutation":"BLOCK_MUTATION_OR_DELETE","declared_learning_without_invocation_or_receipt":"DECLARED_ONLY_NOT_OPERATIONAL","repeated_material_failure_without_durable_evidence":"OWNER_RELIABILITY_UNKNOWN_OR_UNHEALTHY","nontrivial_evolution_candidate_without_independent_comparison_or_failure_mode_search":"EVOLUTION_CANDIDATE_NOT_ADMISSIBLE"},
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
 }
