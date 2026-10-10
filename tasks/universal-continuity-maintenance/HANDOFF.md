@@ -15,24 +15,26 @@
 - Universal composable methodology self-pilot 已完成：`artifact_io@1.0`、`operational_hygiene@1.0`、`evolution@1.0` 通过 exact-version profile + owner-local hooks 复用公共不变量；`runtime/methodology_conformance.py` 机械拒绝 floating version、missing hook 和 forbidden override。
 - canonical bootstrap 仍为 `ENTRYPOINT.md -> CURRENT_PROTOCOL.json -> event-specific authority -> exact owner state`；无关 policy、audits、owners、旧聊天历史默认 cold path。
 - 用户已确认旧 Continuity Custom Instructions 段直接删除，并完整保存当前最新版账户指令；minimal-bootstrap、execution-readiness、autonomous-maintenance 均为账户层 confirmed。
-- 第一类真实产品验证 existing-chat E2E 现已通过；fresh-chat bare inherit 仍待验证。
+- 两类真实产品验证均已通过：existing-chat refresh PASS；fresh-chat bare-inherit discovery PASS。
 
 ## Existing-chat product E2E — PASS
 - 被测 owner/task：`VIDEO_GROWTH_AGENT` / `video-growth:main`，使用升级前已经存在的旧对话，不是新建测试聊天。
-- 测试指令明确限定：只做 Continuity/owner contract refresh，不推进业务、不修改业务内容。
+- 测试指令只做 Continuity/owner contract refresh，不推进业务、不修改业务内容。
 - 旧聊天从当前 GitHub authority 重新读取 manifest/checkpoint、Skill 与 execution capabilities，而不是根据聊天记忆猜测。
 - task 原 persisted legacy marker 为 `contract_version=3.5`；通过支持的 additive edge 原地补 `continuity_protocol_version=3.7`，没有 replay business state。
 - `resume_epoch` 刷新前后均为 `2`；active lease 刷新前后均为 `8e1bc149-5371-4476-ad94-66c8bee07d94`，没有制造 new-chat takeover。
 - `current_stage` 刷新前后均为 `VISUAL_PREVIEW_PROCESS_REENTRY`；业务 `next_action` 保持原值；checkpoint compaction 因 contract-only scope 被显式 defer。
-- 从测试前 head `81f3f96e168128de42b9d1661f25f8189c93dc3a` 到 final `a6c1894667088f533771f3b0972aa1ae00ac0a1b` 共 4 个 commit，只改：`continuity/OWNER_ADAPTER.json`、`continuity/TASK_INDEX.md`、`continuity/tasks/video-growth-main/TASK_MANIFEST.json`、`continuity/tasks/video-growth-main/CHECKPOINT.json`；没有修改业务 runtime、项目素材、generation brief 或视频业务规则。
+- 从测试前 head `81f3f96e168128de42b9d1661f25f8189c93dc3a` 到 final `a6c1894667088f533771f3b0972aa1ae00ac0a1b` 共 4 个 commit，只改 `continuity/OWNER_ADAPTER.json`、`continuity/TASK_INDEX.md`、`continuity/tasks/video-growth-main/TASK_MANIFEST.json`、`continuity/tasks/video-growth-main/CHECKPOINT.json`；没有修改业务 runtime、项目素材、generation brief 或视频业务规则。
 - Video final CI：run `38037773281` / job `114171705917` / head `a6c1894667088f533771f3b0972aa1ae00ac0a1b`，`84 passed in 1.84s` + installed AgenticStudio CLI smoke PASS。
-- 结论：账户级最新版 hook 已在一个真实旧聊天上生效，same-chat protocol reconciliation、targeted owner refresh、lease/epoch preservation 和 verified progress receipt 均得到真实产品证据。
 
-## Video methodology rollout result
-- 这次恰好也是 Video Growth 的合法 owner turn，因此 owner adapter 已真实绑定 `artifact_io@1.0` + `operational_hygiene@1.0`，`overrides={}`；没有为了 contract-only refresh 激活 `evolution@1.0`。
-- owner regression/CI 已 PASS，证明 thin profile binding 至少没有破坏现有 Video runtime/tests。
-- 但 Video CI 当前没有执行 Universal `runtime/methodology_conformance.py`；因此准确状态是 `BOUND_ON_VALID_OWNER_TURN + OWNER_REGRESSION_PASS + CENTRAL_EXECUTABLE_CONFORMANCE_PENDING`，不能宣称 central conformance 已完成。
-- Video 自己的 domain evolution pipeline 仍保持 `Production Methodologist -> Evolution Engineer candidate -> Red Team -> Showrunner`，Universal 没有接管或替换领域算法。
+## Fresh-chat product E2E — PASS
+- 被测环境：真正全新的普通聊天；首轮只发送裸 `继承`，未附加任务名、测试说明或业务指令。
+- `BARE_INHERIT_DISCOVERY.json` 规定 5 个 required sources，验收时逐一重新核对：Universal generic registry、Financial Writing task index、A-share task index、Novel task index、Video Growth task index。
+- 5/5 来源均可读取且候选集合一致；因此允许报告完整总数。
+- 完整 DEFAULT USER resumable 候选共 4 个：`financial-writing:main`、`ashare:recommendation`、`FQ001_MINGRI_ORDER`、`video-growth:main`。
+- `continuity:universal-continuity-maintenance` 是 `SYSTEM_INFRA + EXPLICIT_ONLY`，被正确排除；A股历史 `ashare:2026-10-09` 是 `PAUSED + EXPLICIT_ONLY`，也未进入裸继承列表。
+- fresh chat 首轮只列候选并要求用户选择；没有对任何业务 task 做 lease takeover，最终为 `NO_MATERIAL_CHANGE`。
+- 结果与 `ENTRYPOINT.md` 的 bare-CONTINUE 规则一致：minimal bootstrap 后进入 discovery；只有选择具体任务后才读 exact task state 并执行 genuine new-chat takeover。
 
 ## Product/account boundary
 - `account_continuity_instruction_confirmed_by_user = true`
@@ -40,8 +42,14 @@
 - `account_autonomous_maintenance_extension_confirmed = true`
 - `account_minimal_bootstrap_extension_confirmed = true`
 - existing-chat product E2E：`PASS_REAL_CHAT_EVIDENCE`
-- fresh-chat bare-inherit E2E：`PENDING_REAL_CHAT_EVIDENCE`
-- repo CI 仍不能替代 fresh-chat product E2E。
+- fresh-chat bare-inherit E2E：`PASS_REAL_CHAT_EVIDENCE`
+- 账户传播/产品启动链已完成真实双路径 E2E；后续 repo CI 仍只证明工程状态，不替代未来其他产品行为的实际证据。
+
+## Video methodology rollout result
+- Video Growth 在 existing-chat 合法 owner turn 已真实绑定 `artifact_io@1.0` + `operational_hygiene@1.0`，`overrides={}`；没有为了 contract-only refresh 激活 `evolution@1.0`。
+- owner regression/CI 已 PASS，证明 thin profile binding 至少没有破坏现有 Video runtime/tests。
+- 但 Video CI 当前没有执行 Universal `runtime/methodology_conformance.py`；因此准确状态是 `BOUND_ON_VALID_OWNER_TURN + OWNER_REGRESSION_PASS + CENTRAL_EXECUTABLE_CONFORMANCE_PENDING`。
+- Video 自己的 domain evolution pipeline 仍保持 `Production Methodologist -> Evolution Engineer candidate -> Red Team -> Showrunner`，Universal 没有接管或替换领域算法。
 
 ## Remaining owner rollout
 - Financial Writing：durable feedback capture 已 wired；methodology profile binding 待合法 owner turn。
@@ -50,13 +58,13 @@
 - legacy `owner_must_expose` compatibility mirrors 暂保留，直到支持的 owners 全迁移且 regression 证明无旧 reader。
 
 ## Current stage
-`V3_7_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__ACCOUNT_HOOK_CONFIRMED__EXISTING_CHAT_E2E_PASS__FRESH_CHAT_E2E_PENDING__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
+`V3_7_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__ACCOUNT_HOOK_CONFIRMED__PRODUCT_E2E_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
 
 ## Next action
-1. 真实 fresh-chat E2E：新建一个普通聊天，只发送裸 `继承`。首轮不要附加任务名、解释或测试说明，也不要选择候选任务。
-2. PASS 条件：先走 minimal bootstrap；完成当前协议要求的完整 discovery，或明确报告 `INCOMPLETE_DISCOVERY` / `CONTINUITY_BOOTSTRAP_UNAVAILABLE`；不得根据记忆猜测；首轮不得对任何业务 task 做 takeover。
-3. 用户只需把 fresh-chat 首轮完整回复贴回本 maintenance chat；Universal 负责核验，不要求用户自己判断。
-4. 后续补 Video central methodology conformance，并在 Financial Writing / A股 / Novel 合法 owner turn 做 thin profile binding + owner-specific regression/eval；如果 profile 只是新增重复配置而没有减少复制/漂移，则拒绝推广或回退。
+1. 补 Video central `runtime/methodology_conformance.py` executable conformance，并保持 owner regression 继续 PASS。
+2. 在 Financial Writing / A股 / Novel 的合法 owner turn 做 thin exact-version profile binding + owner-specific regression/eval。
+3. 如果 profile rollout 只是增加重复配置、没有减少复制/漂移/上下文负担，则拒绝推广或回退，而不是为了统一形式继续扩散。
+4. legacy `owner_must_expose` mirrors 只有在所有支持 owner 迁移且 regression 证明无旧 reader 后才能删除。
 5. 无 scheduler/event-watch infrastructure 时，不声称聊天关闭后的离线持续自维护。
 
 ## Recovery rule
