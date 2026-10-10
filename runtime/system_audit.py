@@ -84,12 +84,7 @@ def _normalize_paths(paths: Iterable[str]) -> tuple[str, ...]:
 
 
 def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) -> dict[str, Any]:
-    """Return a deterministic risk-tiered audit plan.
-
-    The planner deliberately does not default to running every owner business pipeline.
-    It escalates to metadata-wide or fault-injection checks only when the change surface
-    or maintenance trigger justifies the additional cost and blast radius.
-    """
+    """Build a deterministic risk-tiered audit plan without defaulting to all business pipelines."""
 
     paths = _normalize_paths(changed_paths)
     trigger = (trigger or "routine_change").strip()
@@ -136,7 +131,8 @@ def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) ->
     if trigger == "owner_rotation":
         modes.append("OWNER_SENTINEL_ROTATION")
         checks.add("rotating_owner_metadata_sample")
-        risk = max(risk, "MEDIUM", key=("LOW", "MEDIUM", "HIGH").index)
+        if risk == "LOW":
+            risk = "MEDIUM"
 
     return {
         "trigger": trigger,
@@ -163,7 +159,7 @@ def _local_ref_candidates(manifest: dict[str, Any]) -> list[str]:
 
 
 def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
-    """Audit local Universal control-plane coherence without touching owner business state."""
+    """Audit local Universal coherence without touching owner business state."""
 
     root = Path(root)
     errors: list[str] = []
@@ -191,15 +187,14 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         errors.append("OWNER_PROTOCOL_ADAPTATION_REGISTRY.current_continuity_protocol != current protocol")
     if task_manifest.get("continuity_protocol_version") != protocol:
         errors.append("maintenance TASK_MANIFEST protocol != current protocol")
-
     if task_manifest.get("system_maintenance_policy_version") != maintenance.get("schema_version"):
         errors.append("maintenance TASK_MANIFEST system_maintenance_policy_version is stale")
 
     owner_entries = {entry["name"]: entry for entry in owner_registry.get("owners", [])}
     adaptation_entries = {entry["owner"]: entry for entry in adaptation.get("owners", [])}
     execution_entries = {entry["owner"]: entry for entry in execution.get("owners", [])}
-
     expected_business = set(BUSINESS_OWNERS)
+
     if not expected_business.issubset(owner_entries):
         errors.append("OWNER_REGISTRY is missing one or more durable business owners")
     if set(adaptation_entries) != expected_business:
@@ -213,13 +208,15 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         target = entry.get("target_protocol")
         classification = entry.get("classification")
         status = str(entry.get("status", ""))
+        registry_status = str(owner_entries.get(owner, {}).get("adapter_status", ""))
         if observed == target and classification != "COMPATIBLE":
             errors.append(f"{owner}: observed protocol equals target but classification is not COMPATIBLE")
         if observed == target and "PENDING_VALID_WRITER_RECONCILIATION" in status:
             errors.append(f"{owner}: stale pending-reconciliation status after reaching target protocol")
-        registry_status = str(owner_entries.get(owner, {}).get("adapter_status", ""))
         if observed == target and "LAZY_RECONCILIATION" in registry_status:
             errors.append(f"{owner}: OWNER_REGISTRY still claims lazy reconciliation after target protocol reached")
+        if "RECONCILED" in registry_status and observed != target:
+            errors.append(f"{owner}: OWNER_REGISTRY claims reconciled while adaptation registry has not reached target protocol")
 
     generic_tasks = {task["task_id"]: task for task in generic_registry.get("tasks", [])}
     maintenance_cache = generic_tasks.get(task_manifest.get("task_id"))
@@ -233,19 +230,40 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
 
     stage = str(task_manifest.get("current_stage", ""))
     product_e2e = harness.get("product_e2e", {})
-    existing = product_e2e.get("existing_chat", {}).get("status")
-    fresh = product_e2e.get("fresh_chat", {}).get("status")
+    existing_e2e = product_e2e.get("existing_chat", {})
+    fresh_e2e = product_e2e.get("fresh_chat", {})
+    existing = existing_e2e.get("status")
+    fresh = fresh_e2e.get("status")
     if "PRODUCT_E2E_PASS" in stage and (existing != "PASS" or fresh != "PASS"):
         errors.append("maintenance stage claims PRODUCT_E2E_PASS but HARNESS_STATUS product_e2e is not fully PASS")
     if harness.get("execution_propagation", {}).get("fresh_chat_product_e2e") == "PENDING_REAL_CHAT_EVIDENCE" and fresh == "PASS":
         errors.append("HARNESS_STATUS execution_propagation fresh-chat state contradicts product_e2e")
+
+    # Product E2E is independent live evidence, so it can detect two stale cache surfaces
+    # agreeing with each other. This avoids circular cache-vs-cache validation.
+    evidence_owner = existing_e2e.get("owner")
+    evidence_protocol = existing_e2e.get("to_protocol")
+    if evidence_owner in adaptation_entries and evidence_protocol:
+        adaptation_entry = adaptation_entries[evidence_owner]
+        if adaptation_entry.get("observed_protocol") != evidence_protocol:
+            errors.append(f"{evidence_owner}: adaptation registry contradicts verified existing-chat protocol evidence")
+        registry_status = str(owner_entries.get(evidence_owner, {}).get("adapter_status", ""))
+        if evidence_protocol == adaptation_entry.get("target_protocol") and "RECONCILED" not in registry_status:
+            errors.append(f"{evidence_owner}: OWNER_REGISTRY does not reflect verified existing-chat reconciliation evidence")
 
     for relative in _local_ref_candidates(task_manifest):
         if not (root / relative).exists():
             errors.append(f"maintenance TASK_MANIFEST local artifact_ref missing: {relative}")
 
     resolver = owner_registry.get("resolver", {})
-    for key in ("module", "bare_inherit_policy", "protocol_adaptation_registry", "execution_readiness_contract", "execution_registry", "execution_evaluator"):
+    for key in (
+        "module",
+        "bare_inherit_policy",
+        "protocol_adaptation_registry",
+        "execution_readiness_contract",
+        "execution_registry",
+        "execution_evaluator",
+    ):
         relative = resolver.get(key)
         if relative and not (root / relative).exists():
             errors.append(f"OWNER_REGISTRY resolver ref missing: {key}={relative}")
@@ -272,12 +290,7 @@ def evaluate_owner_protocol_observation(
     authoritative_protocol: str,
     missing_remote_refs: Iterable[str] = (),
 ) -> list[str]:
-    """Evaluate live owner evidence supplied by a maintenance runner.
-
-    Remote refs are intentionally observations supplied by the caller; this module does
-    not reach across repositories by itself and therefore cannot steal an owner lease or
-    turn CI into a network-dependent business execution path.
-    """
+    """Evaluate live owner evidence supplied by a maintenance runner without network mutation."""
 
     errors: list[str] = []
     owner = adaptation_entry.get("owner", "UNKNOWN_OWNER")
