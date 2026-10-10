@@ -29,6 +29,7 @@ FAULT_INJECTION_SCENARIOS = (
     "methodology_profile_floats_latest",
     "methodology_profile_missing_required_hook",
     "methodology_profile_overrides_kernel_invariant",
+    "methodology_applicable_profile_is_silently_omitted",
     "declared_methodology_is_treated_as_operational_proof",
     "self_reported_methodology_receipt_lacks_independent_evidence_verification",
     "material_write_reports_committed_without_authoritative_reread",
@@ -94,7 +95,7 @@ def _normalize_paths(paths: Iterable[str]) -> tuple[str, ...]:
 def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) -> dict[str, Any]:
     """Build a deterministic risk-tiered audit plan without defaulting to all business pipelines."""
 
-    paths = _normalize_paths(changed_paths)
+    paths = _normalize_paths(paths=changed_paths)
     trigger = (trigger or "routine_change").strip()
     modes = ["CORE_ALWAYS", "IMPACT_SCOPED"]
     checks = set(CORE_CHECKS)
@@ -167,20 +168,35 @@ def _local_ref_candidates(manifest: dict[str, Any]) -> list[str]:
 
 
 def _methodology_separation_errors(contract: dict[str, Any]) -> list[str]:
-    """Prove declaration PASS cannot silently collapse into operational PASS."""
+    """Prove omission, declaration and operational methodology boundaries fail closed."""
 
     errors: list[str] = []
     composition = contract.get("methodology_composition", {})
     profiles = composition.get("profiles", {}) if isinstance(composition, dict) else {}
     hygiene = profiles.get("operational_hygiene") if isinstance(profiles, dict) else None
+    artifact_io = profiles.get("artifact_io") if isinstance(profiles, dict) else None
     hook_sets = composition.get("hook_sets", {}) if isinstance(composition, dict) else {}
     hooks = hook_sets.get("operational_hygiene") if isinstance(hook_sets, dict) else None
-    if not isinstance(hygiene, dict) or not isinstance(hooks, list):
-        return ["methodology separation preflight cannot resolve operational_hygiene profile"]
+    if not isinstance(hygiene, dict) or not isinstance(artifact_io, dict) or not isinstance(hooks, list):
+        return ["methodology separation preflight cannot resolve required profiles"]
+
+    profile_applicability: dict[str, dict[str, Any]] = {}
+    for profile_id in profiles:
+        applies = profile_id == "operational_hygiene"
+        profile_applicability[str(profile_id)] = {
+            "status": "APPLIES" if applies else "NOT_APPLICABLE",
+            "reason": (
+                "synthetic audit owner exposes durable maintenance behavior"
+                if applies
+                else f"synthetic audit owner intentionally omits {profile_id} activation surface"
+            ),
+            "evidence_refs": [f"synthetic://owner-surface/{profile_id}"],
+        }
 
     owner = {
         "methodology": {
             "profile_refs": {"operational_hygiene": hygiene.get("version")},
+            "profile_applicability": profile_applicability,
             "hook_bindings": {str(hook): f"owner://hooks/{hook}" for hook in hooks},
             "overrides": {},
         }
@@ -189,6 +205,28 @@ def _methodology_separation_errors(contract: dict[str, Any]) -> list[str]:
     if declared.status != "PASS":
         errors.append("synthetic declaration-conformant owner did not pass declaration validation")
         return errors
+
+    # Regression for the Financial false-negative class: an owner surface says artifact_io
+    # applies, but profile_refs silently omits it. This must never declaration-PASS again.
+    omission_applicability = {
+        key: dict(value) for key, value in profile_applicability.items()
+    }
+    omission_applicability["artifact_io"] = {
+        "status": "APPLIES",
+        "reason": "synthetic owner persists and renders publication artifacts",
+        "evidence_refs": ["synthetic://owner-surface/artifact-io"],
+    }
+    omitted_applicable_profile_owner = {
+        "methodology": {
+            "profile_refs": {"operational_hygiene": hygiene.get("version")},
+            "profile_applicability": omission_applicability,
+            "hook_bindings": {str(hook): f"owner://hooks/{hook}" for hook in hooks},
+            "overrides": {},
+        }
+    }
+    omitted = evaluate_methodology_conformance(omitted_applicable_profile_owner, contract)
+    if omitted.status != "FAIL" or "applicable_profile_not_declared:artifact_io" not in omitted.errors:
+        errors.append("applicable methodology profile omission was accepted by declaration validation")
 
     operational_without_run = evaluate_operational_methodology_conformance(
         owner,
