@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_CONTROL_PLANE_GOVERNANCE_CONSOLIDATED__OWNER_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
-      "next_action": "Architecture-first maintenance is active: new authority surfaces require admission; file/artifact operations are consolidated under ARTIFACT_CONTEXT_GOVERNANCE_POLICY v1.1. Continue owner conformance and product-layer E2E without stealing owner leases.",
+      "current_stage": "V3_7_OPERATIONAL_HYGIENE_BASELINE_ACTIVE__OWNER_EVOLUTION_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
+      "next_action": "Operational-hygiene baseline is active: repeated owner failures become scoped reliability incidents; Financial durable feedback capture and Video scheduled learning evidence are wired and CI-pass. Continue A-share/Novel owner conformance and product-layer existing/fresh-chat E2E without stealing owner leases.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T03:45:00Z"
+      "updated_at": "2026-10-10T06:58:00Z"
     }
   ]
 }
