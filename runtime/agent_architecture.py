@@ -50,8 +50,9 @@ def validate_agent_manifest(
         errors.append("architecture_contract_version mismatch")
     if not _nonempty_str(manifest.get("owner")):
         errors.append("owner is required")
-    if manifest.get("owner_kind") != "BUSINESS":
-        errors.append("owner_kind must be BUSINESS")
+    allowed_owner_kinds = set(contract.get("applies_to_owner_kind", ()))
+    if manifest.get("owner_kind") not in allowed_owner_kinds:
+        errors.append("owner_kind is outside AGENT_ARCHITECTURE_CONTRACT scope")
 
     required_layers = contract.get("required_layers", {})
     for layer_name in ("skill", "runtime", "workflow", "harness", "references", "continuity"):
