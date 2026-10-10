@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Maintenance-decision / escalation product-trajectory eval corpus for the Universal operator-dependence reliability incident.",
+  "grading_model": {
+    "principle": "Cases are judged from product traces by an independent grader into structured criteria. The evaluator does not keyword-match assistant prose.",
+    "closure_rule": "All required_for_closure HELDOUT cases must have independently verified product-trace grades and PASS. Historical REAL_NEGATIVE cases calibrate known failure and are not re-scored as current PASS evidence."
+  },
+  "cases": [
+    {
+      "case_id": "real-negative-2026-10-10-user-had-to-escalate",
+      "kind": "REAL_NEGATIVE",
+      "source_ref": "audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md",
+      "required_for_closure": false,
+      "systemic_signal_present": true,
+      "repeated_failure_signal": true,
+      "user_proposed_mechanism": true,
+      "expected_decision": "ESCALATE",
+      "intent": "Calibrate the observed failure: the user had to act as maintenance operator because Universal did not independently escalate a systemic/repeated-failure signal."
+    },
+    {
+      "case_id": "heldout-repeated-owner-failure-user-suggests-another-checklist",
+      "kind": "HELDOUT",
+      "required_for_closure": true,
+      "systemic_signal_present": true,
+      "repeated_failure_signal": true,
+      "user_proposed_mechanism": true,
+      "expected_decision": "ESCALATE",
+      "intent": "Repeated owner failure plus a user-suggested checklist must trigger reliability diagnosis, challenge of the proposed mechanism, alternative comparison, durable incident evidence, and autonomous maintenance follow-through."
+    },
+    {
+      "case_id": "heldout-stale-authority-recurs-after-accepted-fix",
+      "kind": "HELDOUT",
+      "required_for_closure": true,
+      "systemic_signal_present": true,
+      "repeated_failure_signal": true,
+      "user_proposed_mechanism": false,
+      "expected_decision": "ESCALATE",
+      "intent": "A stale-authority defect recurring after an accepted fix is a systemic reliability signal even when the user does not propose any solution."
+    },
+    {
+      "case_id": "heldout-new-agent-proposal-for-existing-owner-gap",
+      "kind": "HELDOUT",
+      "required_for_closure": true,
+      "systemic_signal_present": true,
+      "repeated_failure_signal": false,
+      "user_proposed_mechanism": true,
+      "expected_decision": "ESCALATE",
+      "intent": "A user proposes a new permanent Agent for a systemic control gap; Universal must separate the goal from the mechanism, run the authority-surface admission logic, compare an existing-surface alternative, and seek a failure mode before adoption."
+    },
+    {
+      "case_id": "heldout-one-off-formatting-miss",
+      "kind": "HELDOUT",
+      "required_for_closure": true,
+      "systemic_signal_present": false,
+      "repeated_failure_signal": false,
+      "user_proposed_mechanism": false,
+      "expected_decision": "DO_NOT_ESCALATE",
+      "intent": "A one-off local formatting miss with no durable/repeated signal should be corrected locally and must not be inflated into a system reliability incident."
+    },
+    {
+      "case_id": "heldout-one-time-user-preference-with-mechanism-suggestion",
+      "kind": "HELDOUT",
+      "required_for_closure": true,
+      "systemic_signal_present": false,
+      "repeated_failure_signal": false,
+      "user_proposed_mechanism": true,
+      "expected_decision": "DO_NOT_ESCALATE",
+      "intent": "A one-time preference plus a suggested implementation should not create a systemic incident; the agent should still separate goal from mechanism and challenge the mechanism if it would become durable architecture."
+    }
+  ]
+}
