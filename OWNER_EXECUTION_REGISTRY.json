@@ -8,12 +8,13 @@
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "repository": "D1traverser-debug/financial-writing-agent@main",
       "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
-      "summary": "State machine + OpenAI Agents SDK high-judgment executors + deterministic checks + HARNESS_WIRED quality-regression promotion gate. Current-session runtime/tool binding and independent pairwise judge evidence still require handshake/evidence verification; current quality corpus is not promotion-ready.",
+      "summary": "State machine, OpenAI Agents SDK stage executors, deterministic checks, learning capture, and a HARNESS_WIRED quality-regression promotion gate. Owner regression passed for the current harness/runtime change. Live prose-quality improvement is not yet proven.",
       "known_ceiling": "SESSION_EXECUTABLE",
       "strict_isolated_execution_claimed": false,
       "current_known_limitations": [
-        "quality_regression_promotion_gate is HARNESS_WIRED, not current-session execution proof",
-        "owner-local quality corpus is NOT_READY for promotion because complete rejection artifact, positive anchor/performance evidence and held-out coverage are incomplete"
+        "GENERAL_EDITORIAL_QUALITY corpus is PROMOTION_READY_CORPUS_ONLY; a concrete quality-improvement claim still requires independently verified blind pairwise candidate-vs-baseline evidence",
+        "PERSONALIZED_WRITING_DNA remains NOT_READY until real user acceptance/edit or post-publication performance evidence exists",
+        "repository and CI evidence do not prove the current chat has an independent judge executor"
       ]
     },
     {
