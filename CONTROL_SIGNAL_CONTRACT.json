@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Separate non-authoritative detection/monitoring signals from single-writer authoritative task state.",
+  "transport": {
+    "preferred": "GITHUB_ISSUE",
+    "title_prefix": "[CONTROL_SIGNAL]",
+    "repository": "D1traverser-debug/universal-continuity-agent",
+    "issue_is_authority": false
+  },
+  "required_fields": [
+    "signal_id",
+    "signal_type",
+    "source",
+    "observed_at",
+    "subject",
+    "summary",
+    "evidence_refs",
+    "severity"
+  ],
+  "signal_types": [
+    "AGENT_ARCHITECTURE_DRIFT",
+    "OWNER_HEAD_FRESHNESS_DRIFT",
+    "OWNER_CI_FAILURE",
+    "CAPABILITY_OR_CONTRACT_DRIFT",
+    "CONTINUITY_RECOVERY_DRIFT",
+    "USER_REPORTED_SYSTEMIC_FAILURE",
+    "OTHER_CONTROL_PLANE_SIGNAL"
+  ],
+  "severity": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+  "writers": {
+    "stale_chat_may_emit_signal": true,
+    "owner_ci_may_emit_signal": true,
+    "remote_monitor_may_emit_signal": true,
+    "signal_emitter_may_mutate_authoritative_task_state_without_lease": false
+  },
+  "consumption": {
+    "consumer": "CURRENT_VALID_UNIVERSAL_MAINTENANCE_WRITER",
+    "required_action": "Re-observe evidence, classify the signal, then either open/continue maintenance or close as not actionable with reason.",
+    "issue_closure_does_not_rewrite_business_truth": true
+  },
+  "anti_duplication": {
+    "dedupe_key": "signal_type + subject + latest_observed_head_or_evidence_identity",
+    "prefer_update_existing_open_signal": true
+  },
+  "assurance_boundary": "A signal proves only that an observation was reported. It is neither a lease, a state transition, nor proof that the reported diagnosis is correct."
+}
