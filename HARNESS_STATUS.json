@@ -4,13 +4,14 @@
   "status": "PASS_V37_CI_LIFECYCLE_LIVE_CHAT_RECONCILIATION__FRESH_CHAT_RECEIPT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "github_actions_run_id": 38013131965,
-    "job_id": 114097414804,
-    "validated_head_sha": "7488a366d97abf76011595765e5c88176326379c",
+    "github_actions_run_id": 38013299898,
+    "job_id": 114097964032,
+    "validated_head_sha": "81976ef10de07a45656aaa18a70ed8933399c916",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 57
+    "pytest_count": 59,
+    "note": "This HARNESS_STATUS write is metadata-only; the validated executable/policy head is the SHA above."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
