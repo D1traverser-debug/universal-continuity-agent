@@ -83,16 +83,23 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/novel-writing-agent@main:continuity/ARTIFACT_CONTEXT_GOVERNANCE.json",
-      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS",
+      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_BINDING_HARDENED__CHAT_BRIDGED_SELF_ATTESTED__CH9_PRODUCTION_PROOF_PENDING",
       "methodology_regression_evidence": {
-        "behavioral_head": "92dcb86f01046e830f39605bace48cda4eb5f270",
-        "run_id": 38056280903,
-        "job_id": 114225364359
+        "behavioral_head": "ced06cec1a2201135d32c7f9d8c8c32c43b83507",
+        "run_id": 38065144178,
+        "job_id": 114251164978
       },
       "profile_applicability_metadata_head": "94d3626fa6695fdcb41b9139f42cd28853d3106a",
       "profile_applicability_ci_run_id": 38063108153,
+      "owner_metadata_head": "2ebc4dea8c5b6c083ad1db5d0c88b8839b6a6f95",
+      "owner_metadata_ci_run_id": 38065230141,
+      "skill_version": "2.1.1-github",
+      "runtime_version": "github-owner-2.2.1",
+      "release_evidence_contract_version": "1.0",
+      "release_evidence_strength": "STRUCTURED_SELF_ATTESTED_CHAT_BRIDGED_UNLESS_EXTERNAL_TRACE_PRESENT",
+      "release_evidence_boundary": "Deterministic guard verifies local Context Pack refs/hashes, receipt ids, context/source bindings, result summaries, reviewer blind-input binding and internal consistency. CHAT_BRIDGED receipts are not independent attestation of model cognition or non-post-hoc chronology; true attestation requires distinct execution identity/provider trace.",
       "methodology_operational_boundary": "ACTION_LEVEL_PROFILE_RUN_AND_INDEPENDENT_EVIDENCE_RECEIPT_REQUIRED"
     }
   ],
-  "rule": "A maintenance task may update rebuildable migration/conformance metadata after authoritative owner evidence is re-read, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol or recovery-state mutations remain the valid task writer's responsibility. Every methodology profile in the current contract must be explicitly assessed as APPLIES or NOT_APPLICABLE with owner-local reason/evidence; APPLIES requires exact-version binding and silence is not non-applicability. Declaration binding, applicability evidence and owner CI are still not action-level operational proof; an activated profile requires an operational profile run with independently verified evidence before a profile-dependent gate or COMMITTED claim."
+  "rule": "A maintenance task may update rebuildable migration/conformance metadata after authoritative owner evidence is re-read, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol or recovery-state mutations remain the valid task writer's responsibility. Every methodology profile in the current contract must be explicitly assessed as APPLIES or NOT_APPLICABLE with owner-local reason/evidence; APPLIES requires exact-version binding and silence is not non-applicability. Declaration binding, applicability evidence and owner CI are still not action-level operational proof; an activated profile requires an operational profile run with independently verified evidence before a profile-dependent gate or COMMITTED claim. Owner-local structured CHAT_BRIDGED receipts may support domain release gates when their domain contract allows, but they must not be promoted into Universal independent-execution attestation without a distinct verifier/trace."
 }
