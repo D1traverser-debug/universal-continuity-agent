@@ -45,15 +45,15 @@
     {
       "owner": "NOVEL_WRITING_AGENT",
       "repository": "D1traverser-debug/novel-writing-agent",
-      "observed_protocol": "3.3",
+      "observed_protocol": "3.7",
       "target_protocol": "3.7",
-      "classification": "MIGRATABLE",
-      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_DURING_GITHUB_OWNER_CUTOVER",
+      "classification": "COMPATIBLE",
+      "strategy": "GITHUB_DOMAIN_OWNER_CUTOVER_COMPLETE",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/novel-writing-agent@main:continuity/ARTIFACT_CONTEXT_GOVERNANCE.json",
-      "status": "ACTIVE_ENTRY_RECONCILED_V37"
+      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE"
     }
   ],
   "rule": "A maintenance task may stage owner protocol adapters and conformance plans, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol metadata and compacted recovery state are applied by the valid task writer on its next durable turn or by a genuine new-chat takeover."
