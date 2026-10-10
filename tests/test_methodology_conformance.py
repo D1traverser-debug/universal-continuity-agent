@@ -212,3 +212,13 @@ def test_methodology_composition_does_not_create_parallel_root_policy():
     assert composition["executable_validator"] == "runtime/methodology_conformance.py"
     assert not (ROOT / "METHODOLOGY_POLICY.json").exists()
     assert not (ROOT / "METHODOLOGY_PROFILE_POLICY.json").exists()
+
+
+def test_entrypoint_requires_action_level_operational_methodology_evidence():
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+
+    assert "evaluate_operational_methodology_conformance" in entrypoint
+    assert "profile_runs" in entrypoint
+    assert "independent" in entrypoint.lower() and "evidence verifier" in entrypoint.lower()
+    assert "declaration conformance, owner regression or CI must not substitute" in entrypoint
+    assert "COMMITTED" in entrypoint and "operational conformance" in entrypoint
