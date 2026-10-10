@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 10,
+  "manifest_version": 11,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,15 +10,15 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T20:04:00Z",
-  "current_stage": "FULL_FRONT_ARC_REBASE_ACTIVE__SIGNING_PACKET_REARCHITECTURE",
-  "next_action": "Freeze CH1-CH8 old FINALs as immutable historical baseline evidence; finalize and validate the new front-arc signing-packet architecture, then rewrite candidate CH1-CH8 as a coherent unit under rebase and execution-evidence gates. Keep platform withdrawal/replacement and any CH8 publication fact user-controlled; hold old CH9 execution; do not consume the 50k second-signing attempt until the replacement packet passes signing-readiness audit.",
+  "updated_at": "2026-10-10T21:27:00Z",
+  "current_stage": "FULL_FRONT_ARC_REBASE_ACTIVE__ARCHITECTURE_FROZEN__CANDIDATE_DRAFT_READY",
+  "next_action": "Draft replacement candidate CH1-CH8 coherently from outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md, preserving old FINALs as immutable historical baseline. For the new bodies, create the applicable frozen contracts/context packs and prove the deferred prose competencies (scene/chapter execution, dialogue/subtext, POV/immersion, domain reality, revision) through role-separated reviews and whole-packet gates before any replacement promotion. Keep old CH9 held and do not consume the 50k second-signing attempt before SIGNING_READINESS_AUDIT_PASS.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
   "domain_contract_version": "2.1-github",
-  "skill_version": "Novel Writing Agent 2.3.0-github",
-  "runtime_version": "github-owner-2.4",
+  "skill_version": "Novel Writing Agent 2.4.0-github",
+  "runtime_version": "github-owner-2.5",
   "release_evidence_contract_version": "1.0",
   "release_evidence_strict_from_chapter": 9,
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
@@ -41,7 +41,7 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner 2.3 / runtime 2.4 applies the Universal candidate-adoption and M0-M11 evolution loop to the signing failure plus changed user impact boundary. The old targeted patch plan and old CH9 READY path are superseded; historical FINAL hashes, Canon v12, publication facts, resume_epoch and active lease are preserved."
+    "owner_internal_hardening": "Novel owner 2.4 / runtime 2.5 adds a complete 20-competency craft mastery model, L0-L4 evidence boundaries, current-evidence learning hierarchy, a series master outline from terminal choice through volume/front-arc architecture, project-level mastery benchmarks, old ARC_001 supersession and a frozen CH1-CH8 candidate architecture. The user no longer has to enumerate missing craft disciplines. Historical FINAL hashes, Canon v12, publication facts, resume_epoch and active lease are preserved."
   },
   "continuity_acceptance": {
     "result": "PASS",
@@ -54,10 +54,14 @@
     "takeover_simulation": "PASS",
     "github_owner_cutover": "PASS",
     "full_front_arc_rebase_recovery": "PASS",
-    "owner_final_head": "adc7f4c446f053e362c3df5326358fd51d89cc2e",
-    "owner_final_ci_run_id": 38084046169,
-    "owner_final_ci_job_id": 114306685058,
-    "owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_ALL_OWNER_TESTS"
+    "novel_mastery_model_recovery": "PASS",
+    "series_master_outline_recovery": "PASS",
+    "legacy_arc_supersession_recovery": "PASS",
+    "architecture_freeze_recovery": "PASS",
+    "owner_final_head": "2feb3430ae6e5a2beb2b5690bd315658aa655ec9",
+    "owner_final_ci_run_id": 38087664469,
+    "owner_final_ci_job_id": 114317447585,
+    "owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_ALL_OWNER_TESTS_NOVEL_MASTERY_SERIES_OUTLINE"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
@@ -67,13 +71,31 @@
     "owner_quality_diagnosis_ref": "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
     "owner_active_rebase_plan_ref": "D1traverser-debug/novel-writing-agent@main:audits/FULL_FRONT_ARC_REBASE_PLAN_2026-10-11.md",
     "owner_learning_evidence_ref": "D1traverser-debug/novel-writing-agent@main:audits/FULL_REBASE_LEARNING_EVIDENCE_2026-10-11.md",
+    "owner_mastery_evolution_ref": "D1traverser-debug/novel-writing-agent@main:audits/NOVEL_MASTERY_EVOLUTION_2026-10-11.md",
+    "owner_architecture_mastery_benchmark_ref": "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
     "owner_superseded_targeted_matrix_ref": "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
+  },
+  "mastery": {
+    "system_model_ref": "D1traverser-debug/novel-writing-agent@main:protocols/NOVEL_MASTERY_MODEL.md",
+    "series_master_outline_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/SERIES_MASTER_OUTLINE.md",
+    "front_arc_frozen_architecture_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
+    "project_benchmark_ref": "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
+    "competency_count": 20,
+    "mastery_levels": ["L0_UNMAPPED","L1_CONCEPTUAL","L2_OPERATIONAL_WITH_SCAFFOLD","L3_PROJECT_READY","L4_TRANSFER_VERIFIED"],
+    "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS",
+    "architecture_project_ready_scope": ["C01","C02","C03","C04","C05","C06","C07","C08_FRONT_ARC","C11_ACQUISITION_VOL1","C14_ARCHITECTURE","C15","C17","C18","C19","C20"],
+    "deferred_to_candidate_prose": ["C09","C10","C12","C13","C16"],
+    "partial_long_range": ["C08_LATE_SENDER_ONTOLOGY"],
+    "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
+    "legacy_outline_status": "SUPERSEDED_BY_SERIES_MASTER_OUTLINE_FOR_ACTIVE_REBASE"
   },
   "rebase": {
     "mode": "CONTROLLED_FULL_FRONT_ARC_REBASE",
     "scope": "CH1-CH8_FRONT_ARC",
     "old_finals_role": "IMMUTABLE_HISTORICAL_BASELINE",
     "old_chapter_boundaries_binding": false,
+    "series_master_outline_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/SERIES_MASTER_OUTLINE.md",
+    "frozen_architecture_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
     "old_ch9_contract_status": "SUPERSEDED_BY_FULL_FRONT_ARC_REBASE",
     "candidate_promotion_gate": "WHOLE_PACKET_GATES_BEFORE_AUTHORITATIVE_REPLACEMENT",
     "platform_replacement_user_controlled": true,
@@ -85,7 +107,9 @@
     "OLD_FINALS_NOT_ACTIVE_REPLACEMENT_UNTIL_PACKET_ACCEPTED",
     "CH9_EXECUTION_HELD_DURING_FULL_REBASE",
     "PUBLISHED_CHAPTER_PLATFORM_REPLACEMENT_REMAINS_USER_CONTROLLED",
-    "CI_OR_SELF_REVIEW_MUST_NOT_BE_CLAIMED_AS_LIVE_QUALITY_OUTCOME"
+    "CI_OR_SELF_REVIEW_MUST_NOT_BE_CLAIMED_AS_LIVE_QUALITY_OUTCOME",
+    "MASTERY_FILES_OR_RESEARCH_DO_NOT_PROVE_L3_L4_WITHOUT_APPLIED_BENCHMARK",
+    "SUPERSEDED_ARC_001_NOT_EXECUTABLE"
   ],
   "waiting_on": [],
   "external_fact_pending": [
@@ -94,6 +118,13 @@
   "blockers": [],
   "keywords": [
     "小说",
+    "小说系统",
+    "小说技能",
+    "能力掌握",
+    "系列总纲",
+    "世界观",
+    "人物弧",
+    "审核规则",
     "明日订单",
     "凌晨零点",
     "番茄小说",
@@ -106,6 +137,10 @@
     "二签"
   ],
   "artifact_refs": [
+    "D1traverser-debug/novel-writing-agent@main:protocols/NOVEL_MASTERY_MODEL.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/SERIES_MASTER_OUTLINE.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/ARC_001.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/manuscript/CH0008_FINAL.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/reviews/CH0008_ACCEPTANCE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/NEXT_CHAPTER_CONTRACT.md",
@@ -114,6 +149,8 @@
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/PLATFORM_PUBLICATION_LOG.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
     "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:audits/NOVEL_MASTERY_EVOLUTION_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
     "D1traverser-debug/novel-writing-agent@main:audits/FULL_REBASE_LEARNING_EVIDENCE_2026-10-11.md",
     "D1traverser-debug/novel-writing-agent@main:audits/FULL_FRONT_ARC_REBASE_PLAN_2026-10-11.md",
     "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
