@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 27,
+  "manifest_version": 28,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T10:31:00Z",
+  "updated_at": "2026-10-10T12:14:00Z",
   "current_stage": "V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED_AND_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
   "next_action": "Keep Financial Writing first. Run a real candidate-vs-baseline writing-quality evaluation when an independently verifiable judge/live owner execution path is available: known offshore-wind rejection must improve and cross-topic rutile held-out must not regress. Do not require new user-positive labels for GENERAL_EDITORIAL_QUALITY and do not claim prose-quality improvement from CI alone. Personalized Writing DNA still requires real user acceptance/edit or post-publication performance evidence. In parallel, keep the Universal operator-dependence incident open until a real maintenance-decision/escalation product trajectory eval exists; do not regress declaration-vs-operational separation or steal owner business leases.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
@@ -22,11 +22,11 @@
   "artifact_context_governance_policy_version": "1.1",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-  "resume_epoch": 1,
+  "resume_epoch": 2,
   "active_lease": {
-    "lease_id": "lease-f266a907-aaf1-4b6a-a283-0e64b979d652",
-    "acquired_at": "2026-10-09T15:50:40Z",
-    "supersedes_lease_id": null
+    "lease_id": "lease-4b4bc507-0949-4b2e-aed4-c0186dd07566",
+    "acquired_at": "2026-10-10T12:14:00Z",
+    "supersedes_lease_id": "lease-f266a907-aaf1-4b6a-a283-0e64b979d652"
   },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
