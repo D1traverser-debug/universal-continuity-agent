@@ -6,195 +6,144 @@ Engineering authority: this repository `main`
 
 ## Critical startup boundary
 
-GitHub and ChatGPT Library are durable storage/discovery surfaces; they are **not automatic event listeners** for a new chat.
+Chat is an ephemeral execution window; the durable object is the task. GitHub/Library are storage and discovery surfaces, not automatic event listeners. Bare `继承 / 继续 / 恢复` therefore requires the account startup hook in `STARTUP_HOOK.md`.
 
-Therefore bare commands such as `继承`, `继续`, or `恢复` require an account-level startup instruction that tells the new chat to invoke Universal Continuity. The canonical hook is documented in `STARTUP_HOOK.md`.
+If required Continuity resources cannot actually be accessed, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; do not reconstruct execution truth from Memory or old chat text.
 
-Without that hook, a new chat may answer from generic Memory/past-chat context and never query this repository. Such a response is `CONTINUITY_BOOTSTRAP_NOT_TRIGGERED`, not a successful continuity resume.
+## Core ownership
 
-## Core model
-
-Chat is an ephemeral execution window. Task is the durable object.
-
-Universal Continuity owns task discovery, routing, resume eligibility, compatibility, takeover lease semantics, human-readable task labels, progress observability and recovery pointers. It does not duplicate domain business logic or domain state machines.
-
-For GitHub-backed business agents, task routing is followed by the sibling Universal Execution Harness. That execution layer owns capability handshake and routing evidence, not business state. See `ORCHESTRATION_BLUEPRINT.md` and `EXECUTION_READINESS_CONTRACT.json`.
+Universal Continuity owns discovery, routing, compatibility, takeover lease semantics, progress observability, recovery pointers and cross-agent control-plane invariants. Domain owners retain business rules, business state machines, evidence and business artifacts. The sibling execution plane owns capability handshake/routing evidence, not business state.
 
 ## Intent precedence
 
-The durable principle `学习继承，任务不继承` applies to **NEW_TASK** only.
+`学习继承，任务不继承` applies to **NEW_TASK**. Explicit continuation intent (`继承`, `继续`, `恢复`, `接着上次`, or a named continuation) is `CONTINUE` first.
 
-When the user's primary intent is an explicit continuation command such as `继承`, `继续`, `恢复`, `接着上次`, `继承：<任务名>`, or `继续：<任务名>`, classify as `CONTINUE` first and invoke Universal Continuity.
+## Minimal bootstrap invariant
 
-## Task identity
+Do **not** preload the whole repository.
 
-Every durable USER task has two distinct identities:
+Every Continuity bootstrap begins with only:
 
-- `task_id`: stable machine identity. It never changes because the user renames the task.
-- `display_name_zh`: user-facing Chinese display name used in candidate lists and status reports.
+1. `ENTRYPOINT.md`;
+2. `CURRENT_PROTOCOL.json`.
 
-If a durable USER task has no `display_name_zh`, ask once: `这个任务你希望用什么中文名？` Persist the answer, then continue the original work immediately.
+Everything else is event-driven. Load an authority only when the current action activates it. `SYSTEM_BLUEPRINT.md`, audits/research, unrelated owner repositories and old transcripts are cold-path references, not mandatory startup context.
 
-## New chat bootstrap
+## Event-driven authority loading matrix
 
-Once the account-level startup hook has routed the message here:
+- **Bare CONTINUE** -> `BARE_INHERIT_DISCOVERY.json` + owner metadata/index sources required for complete discovery.
+- **Named CONTINUE** -> exact owner/task manifest + short owner checkpoint first; skip global discovery unless resolution is ambiguous.
+- **Protocol mismatch** -> `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
+- **Recovery gap** -> `CONTEXT_RECOVERY_POLICY.json`, then exact artifact refs, then selective history only if still needed.
+- **Material GitHub-backed business execution** -> `OWNER_EXECUTION_REGISTRY.json`, `EXECUTION_READINESS_CONTRACT.json`, exact owner Skill/entrypoint, exact owner `continuity/EXECUTION_CAPABILITIES.json`, then current-session handshake only for required capabilities.
+- **Artifact/file/storage operation** -> `artifact_io@1.0` profile from `OWNER_ADAPTER_CONTRACT.json`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when its semantics are needed.
+- **Maintenance/repeated failure/drift/cleanup** -> `operational_hygiene@1.0`; load `SYSTEM_MAINTENANCE_POLICY.json`.
+- **Durable learning/evolution claim** -> `evolution@1.0`; load `CONTINUOUS_LEARNING_POLICY.md`.
+- **Media evidence/distillation** -> `MEDIA_DISTILLATION_PROTOCOL.md`.
+- **Architecture/control-plane review** -> `SYSTEM_BLUEPRINT.md` plus only the implicated contracts/policies.
 
-1. Classify `CONTINUE` vs `NEW_TASK`.
-2. Bare `CONTINUE`: execute `BARE_INHERIT_DISCOVERY.json`; query every required owner source before reporting a total count.
-3. Named `CONTINUE`: route directly to the matching owner/task first.
-4. Read the exact authoritative task manifest plus short owner handoff/checkpoint.
-5. Capture the **pre-takeover persisted state** and surface a `继承前进度` receipt according to `PROGRESS_OBSERVABILITY_POLICY.json`.
-6. Resolve compatibility.
-7. Acquire/verify the new writer lease for same-task takeover.
-8. Load only the exact referenced artifacts needed for the current `next_action`.
-9. Continue from the real `current_stage / next_action`.
+Methodology profiles are composable interface contracts, not copied parent-agent prose. Owners bind domain-local hooks and may specialize local methods, but cannot override kernel authority/evidence/reliability/destructive-mutation invariants. Profile conformance is mechanically evaluated by `runtime/methodology_conformance.py`.
 
-The pre-resume receipt must be captured before `resume_epoch` / `active_lease` is mutated. It should tell the user where the previous durable checkpoint actually stopped, including stage, next action and any blocker/waiting state.
+## Task identity and topology
 
-If any required bare-inherit source fails, return `INCOMPLETE_DISCOVERY`; never present partial results as the authoritative total.
+Every durable USER task has:
+- stable machine `task_id`;
+- user-facing `display_name_zh`.
 
-## Progressive recovery
+A rename never changes `task_id`. Same goal/same work keeps the same task. A materially different major branch that must coexist may become a child task. A one-shot side question should not mutate durable progress by default.
 
-Follow `CONTEXT_RECOVERY_POLICY.json`.
+## New-chat continuation
 
-Default context load order:
+After routing to Continuity:
 
-1. metadata/index/manifest;
-2. short authoritative HANDOFF/checkpoint;
-3. exact artifact refs needed for the next action;
-4. selective owner search/history only for a concrete gap;
-5. old conversation transcript as last-resort recovery evidence.
+1. classify CONTINUE vs NEW_TASK;
+2. resolve exact task or complete bare candidates;
+3. read authoritative manifest + short checkpoint;
+4. capture and show **继承前进度** before takeover mutation;
+5. reconcile compatibility only if needed;
+6. for a genuine new-chat takeover, increment `resume_epoch` and acquire/verify a new lease with owner version/CAS guard where available;
+7. load only artifacts/capabilities/profiles needed by the real `next_action`;
+8. continue from authoritative `current_stage / next_action`.
 
-Do not preload the entire old conversation simply because a large context window exists.
+Same-chat protocol/control-plane refresh preserves the current lease and `resume_epoch`. Only a genuine new-chat takeover changes them.
 
-A HANDOFF is current execution truth, not a transcript summary. If a spec, plan, issue, commit, diff, artifact or domain rule already exists elsewhere, reference it instead of copying it into the handoff.
-
-## Progress observability
-
-Follow `PROGRESS_OBSERVABILITY_POLICY.json`.
-
-### Resume Progress Receipt
-
-Once an exact task has been selected and its authoritative checkpoint is known, show **继承前进度** before substantive resumed work. The receipt is a snapshot of the durable state that existed before this chat took over; do not rewrite history with the new lease epoch.
-
-### Turn Commit Receipt
-
-For every final user-facing response while a durable task is active, report **进度提交** with one of:
-
-- `COMMITTED`: material progress was persisted and authoritative state was re-read/verified;
-- `NO_MATERIAL_CHANGE`: this turn did not change the durable resume point, so no meaningless heartbeat write was created;
-- `COMMIT_FAILED`: material progress should have been persisted but the write or verification failed; explicitly warn that the new progress may not survive the next chat;
-- `STALE_WRITER`: this chat no longer owns the writer lease and must not checkpoint;
-- `NOT_APPLICABLE`: no durable task is active.
-
-A successful tool call is not enough to claim `COMMITTED`; authoritative re-read verification is required.
-
-## Task topology
-
-- Same goal, same work: keep the same task identity.
-- Same goal, fresh context preferred: handoff and take over the same task in the new chat.
-- Temporary side question: do not mutate durable stage by default.
-- Materially different major branch that must coexist: create a child task with `parent_task_id`.
-- Independent work: create a new task and inherit durable learning only.
-
-Opening a new chat does not itself create a new task.
+If a required bare-discovery source fails, return `INCOMPLETE_DISCOVERY`; never present a partial list as authoritative total.
 
 ## Bare inherit eligibility
 
-A task may appear for plain `继承/继续` only if all are true:
+Plain `继承/继续` candidates must have:
+- `task_class == USER`;
+- `resume_eligible == true`;
+- `resume_visibility == DEFAULT`;
+- status in `ACTIVE / WAITING / BLOCKED`.
 
-- `task_class == USER`
-- `resume_eligible == true`
-- `resume_visibility == DEFAULT`
-- status is `ACTIVE`, `WAITING`, or `BLOCKED`
+SYSTEM_INFRA/TEST/FIXTURE/EVAL/MIGRATION/terminal/hidden tasks are not bare candidates. An explicit SYSTEM_INFRA task may resume only when its own visibility/eligibility permits it.
 
-`SYSTEM_INFRA`, `TEST`, `FIXTURE`, `EVAL`, `MIGRATION`, `PAUSED`, hidden, archived and explicit-only tasks are excluded.
+## Compatibility
 
-An explicitly named `SYSTEM_INFRA` task may be resumed only when it is `resume_eligible == true` and `resume_visibility == EXPLICIT_ONLY`; this never makes it a bare-inherit candidate.
-
-## Candidate behavior
-
-- Candidate UI prefers `display_name_zh`; falls back to `title` only for legacy unnamed tasks.
-- One strong eligible candidate: resume directly.
-- Multiple candidates: show at most five metadata-only choices; do not merge them.
-- Explicit semantic hint routes to the matching domain owner first.
-- No trustworthy state: fail closed rather than reconstruct executable state from chat guesswork.
-
-## Single-writer takeover
-
-When a task is inherited into a new chat:
-
-1. Read the authoritative task manifest/checkpoint.
-2. Capture the pre-takeover progress receipt.
-3. Increment `resume_epoch` and acquire a new `active_lease`.
-4. Persist using the storage owner's compare-and-swap/version guard when available.
-5. Re-read and verify the new lease before substantive work.
-6. The old chat is retired. A stale lease must not checkpoint.
-
-The canonical epoch lives at top-level `resume_epoch`. Older/current owner manifests may omit a duplicate nested `active_lease.resume_epoch`; the harness must tolerate that and use the top-level epoch.
-
-Different tasks may proceed independently in different chats.
-
-## Compatibility before resume
-
-Every resumed task must be classified as one of:
-
-- `COMPATIBLE`: resume normally.
-- `MIGRATABLE`: migrate to the current contract, then resume.
-- `INCOMPATIBLE`: do not replay obsolete execution semantics; preserve only still-valid requirements/evidence/artifacts.
-- `UNKNOWN`: fail closed until authority is resolved.
+A resumed task is `COMPATIBLE`, `MIGRATABLE`, `INCOMPATIBLE`, or `UNKNOWN`. Supported additive migrations are system work, not user work. Unknown or incompatible execution truth fails closed rather than being guessed from chat memory.
 
 ## GitHub-backed owner execution
 
-After the exact task/owner and valid writer state are known, do **not** assume the owner is executable merely because its repository contains Skills, agents, roles, workflow JSON or code.
+Repository declarations establish at most a capability ceiling, not current execution proof.
 
-For a GitHub-backed business owner:
-
-1. read `OWNER_EXECUTION_REGISTRY.json` and the owner's `continuity/EXECUTION_CAPABILITIES.json`;
-2. identify only the capabilities needed by the authoritative `next_action`;
-3. perform a current-session capability handshake;
+Before a material owner action:
+1. refresh the exact owner Skill/entrypoint and capability manifest;
+2. identify only capabilities needed by the current next action;
+3. perform current-session observations/handshake;
 4. evaluate with `runtime/execution_readiness.py`;
-5. route through the owner-native runtime, a permitted `CHAT_BRIDGED` path, deterministic tools, or an attested isolated executor;
-6. if a hard requirement is unavailable or below required assurance, block that exact capability rather than pretending the specialist executed;
-7. never bypass an owner-declared `side_channel_allowed=false` path with an ad-hoc conversational tool call;
-8. require execution/artifact/review receipts before the corresponding owner gate can count as complete.
+5. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
+6. block only the exact hard capability that is unavailable;
+7. require execution/artifact/review receipts for gates that claim completion.
 
-`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not proof that the current session can run it. `SESSION_EXECUTABLE` requires observed current-session capability. `ATTESTED_ISOLATED` requires distinct execution identity/context/proof when the domain gate demands real independence.
+`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat.
 
-This execution-readiness system is a sibling control plane with contract version `1.0`; it does not change the Continuity protocol version by itself.
+## Artifact and methodology invariants
 
-## Continuous learning
+Shared cross-agent methodology is composed rather than inherited as a giant parent behavior bundle:
 
-Follow `CONTINUOUS_LEARNING_POLICY.md` and `MEDIA_DISTILLATION_PROTOCOL.md`.
+- `artifact_io@1.0` -> stable identity, freshness/conflict handling, verified mutation, invalidation, retention/cleanup and artifact-vault bindings;
+- `operational_hygiene@1.0` -> incident evidence, self-maintenance trigger, owner-aware GC and scoped reliability freeze;
+- `evolution@1.0` -> learning evidence, independent candidate critique, eval/regression promotion and superseded-mechanism cleanup.
 
-Continuity should proactively study relevant agent systems, Skills, harnesses, durable-execution patterns, official product documentation and media when maintaining the system or when a real failure exposes a gap. Do not put broad research on the ordinary business hot path.
+Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
 
-External advice is input, not authority. Important product claims require current first-party verification; media evidence levels remain distinct. Accepted learning must be encoded in the smallest appropriate policy/Skill/runtime surface and mechanically tested when testable.
+## Learning and maintenance
+
+External advice, user analogies, assistant first ideas and other Agent/framework proposals are candidates, not architecture authority. For nontrivial adoption: inspect current authority, separate goal from proposed mechanism, compare a credible alternative, actively seek a failure mode/counterexample, then require relevant eval/regression evidence before production promotion.
+
+When a systemic defect or repeated owner failure is inside the current maintenance writer's authority, follow the maintenance closure instead of stopping at explanation. The user does not maintain the internal defect backlog.
+
+## Progress observability
+
+For every final response on an active durable task, emit exactly one `进度提交` state:
+- `COMMITTED` only after material write + authoritative reread verification;
+- `NO_MATERIAL_CHANGE` when the durable resume point did not change;
+- `COMMIT_FAILED` when intended durable progress could not be verified;
+- `STALE_WRITER` when this chat lost its lease.
+
+A tool-success response, cache write or model memory is never commit proof.
 
 ## Performance invariant
 
-Continuity must stay off the steady-state business hot path:
-
-- the startup hook only reacts to explicit continuation intent;
-- global discovery runs only when needed;
-- discovery reads metadata only;
-- recovery reads a short handoff before deeper artifacts;
-- progress receipts do not trigger new global scans;
-- no material state change means no heartbeat checkpoint write;
-- proactive research runs during maintenance/gap resolution, not every business turn;
-- old chat history is a last resort;
-- one-shot questions do not create durable tasks or trigger task-name prompts.
-
-Execution readiness also stays targeted: handshake only the capabilities required by the current owner `next_action`, not every tool/agent in every repository.
+Continuity stays off the steady-state business hot path:
+- global discovery only for bare continuation or unresolved routing;
+- metadata before content;
+- short checkpoint before deep artifacts;
+- targeted execution handshake only for current action;
+- methodology profiles loaded only when their activation event occurs;
+- maintenance/research/audits are cold path;
+- old chat history is last resort;
+- no material change means no heartbeat write.
 
 ## Authority order
 
-1. Compatible authoritative domain runtime/checkpoint.
-2. Authoritative per-task/per-system manifest when generic durable storage is used.
-3. Universal Continuity pointer/cache.
-4. Mirrors/history only as recovery evidence.
-5. Chat memory is never execution authority.
+1. compatible authoritative domain runtime/checkpoint;
+2. authoritative task/system manifest for routing/lease/protocol metadata;
+3. current GitHub `main` engineering authority for code/contracts/profiles;
+4. explicitly owner-referenced business evidence required now;
+5. rebuildable registries/caches;
+6. external references unless explicitly designated by owner contract;
+7. chat history only as recovery evidence.
 
-Read next: `STARTUP_HOOK.md`, `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `CONTEXT_RECOVERY_POLICY.json`, `PROGRESS_OBSERVABILITY_POLICY.json`, `CONTINUOUS_LEARNING_POLICY.md`, `MEDIA_DISTILLATION_PROTOCOL.md`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
-
-For GitHub-backed business execution after owner resolution, read: `ORCHESTRATION_BLUEPRINT.md`, `EXECUTION_READINESS_CONTRACT.json`, `OWNER_EXECUTION_REGISTRY.json`, then the exact owner `continuity/EXECUTION_CAPABILITIES.json`.
+A lower authority may not silently overwrite fresher higher-authority truth.
