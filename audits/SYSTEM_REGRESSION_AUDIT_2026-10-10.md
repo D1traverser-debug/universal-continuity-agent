@@ -58,20 +58,7 @@ Disposition: **FIXED + EXECUTABLE + REGRESSION-GUARDED**.
 
 ## 3. Bare `继承` quorum regression
 
-All five required sources were queried successfully:
-
-1. `GENERIC_HANDOFF` — `GENERIC_TASK_REGISTRY.json`;
-2. `FINANCIAL_WRITING_AGENT_RUNTIME` — Financial Writing `continuity/TASK_INDEX.md`;
-3. `A_SHARE_MARKET_AGENT` — A-share `continuity/TASK_INDEX.md`;
-4. `NOVEL_OS` — Library `/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json`;
-5. `VIDEO_GROWTH_AGENT` — Video Growth `continuity/TASK_INDEX.md`.
-
-Current default USER candidates remain exactly four:
-
-- 金融文章写作;
-- A股荐股;
-- 《凌晨零点，我接到明天的订单》;
-- AI视频涨粉与商业化.
+All five required owner sources were queried successfully. The authoritative default USER candidate count is **4**. Specific live task labels and live owner state are intentionally not copied into this public harness audit; they remain in their owner/discovery authorities.
 
 The Universal Continuity maintenance task remains SYSTEM_INFRA + EXPLICIT_ONLY and is correctly excluded from bare discovery.
 
@@ -80,11 +67,11 @@ Disposition: **PASS — 5/5 required sources, 4 default USER candidates**.
 ## 4. Financial Writing owner conformance
 
 ### Finding
-`financial-writing:main` still has an active writer lease under a v3.3 task-level marker. Its `HANDOFF.md` is too large and duplicates business rules already owned by the current Skill/reference modules. It also contains stale rule wording, including a 12-item Natural Authorial Prose audit while the current style authority uses the consolidated 9-dimension contract.
+The active Financial Writing recovery handoff duplicates business rules already owned by the current Skill/reference modules and contains stale protocol/rubric wording.
 
 ### Repair staged without stealing the task lease
 
-Created `D1traverser-debug/financial-writing-agent@main:continuity/HANDOFF_COMPACTION_PLAN.json` and wired it into `continuity/UNIVERSAL_PROTOCOL_ADAPTER.json`.
+Created the Financial Writing owner-side handoff compaction plan and wired it into its Universal protocol adapter.
 
 The plan verifies stronger authorities and requires the current valid task writer (or a genuine new-chat takeover) to:
 
@@ -99,35 +86,28 @@ Disposition: **REPAIR STAGED — PENDING VALID WRITER TURN**.
 
 ## 5. A-share owner conformance
 
-The long-lived `ashare:recommendation` entry has no active lease and was safely reconciled to v3.7 without replaying market-day business state. Stable cutover/authority refs are present. Historical market-day tasks remain lazy/explicit-only and do not contaminate new trading days.
+The long-lived recommendation entry had no active writer lease and was safely reconciled to v3.7 without replaying market-day business state. Stable cutover/authority refs are present. Historical market-day tasks remain lazy/explicit-only and do not contaminate new trading days.
 
 Disposition: **PASS**.
 
 ## 6. NOVEL_OS owner conformance
 
-The Library owner index remains on its domain-era schema/version and correctly exposes the current WAITING story state. Universal protocol adaptation is a routing overlay; maintenance does not rewrite NOVEL_OS canon, publication facts or owner checkpoint merely for protocol hygiene.
+The Library owner index is available and structurally sufficient for routing/recovery. Universal protocol adaptation remains a routing overlay; maintenance does not copy or rewrite live novel canon, publication facts or owner checkpoint merely for protocol hygiene.
 
 Disposition: **PASS WITH LAZY PROTOCOL RECONCILIATION**.
 
 ## 7. Video Growth owner conformance
 
 ### Finding
-The active video checkpoint is executable but oversized: it mixes current state with duplicated H3 failure details, Sample V3 repair rules, reviewer-governance rules and preserved user-requirement prose.
+The active video checkpoint is executable but oversized: it mixes current execution state with duplicated project audit detail, repair-contract detail, reviewer-governance rules and preserved user-requirement prose.
 
-A cross-domain contamination risk was also found: the checkpoint preserved a `TinyFish`-avoidance rule, but no Video Growth rule authority contains that requirement. That preference originated outside the current Video Growth authority surface and must not silently become a durable video rule.
+A cross-domain contamination risk was also detected: one preserved tool-routing preference has no matching Video Growth durable rule authority. The user-specific prose is not repeated in this public audit and must not silently become a durable Video Growth rule.
 
 ### Repair staged without stealing the task lease
 
-Created `D1traverser-debug/video-growth-agent@main:continuity/CHECKPOINT_COMPACTION_PLAN.json` and wired it into `continuity/OWNER_ADAPTER.json`.
+Created the Video Growth owner-side checkpoint compaction plan and wired it into its owner adapter.
 
-The plan maps duplicated material to stronger authorities:
-
-- H3 diagnostic detail -> `projects/pilot-002/H3_TRANSITION_V1_AUDIT.md`;
-- Sample V3 shot/routing detail -> `projects/pilot-002/SAMPLE_V3_SHOT_REPAIR_MATRIX.md`;
-- reviewer isolation/receipt rules -> `skills/video-growth-agent/references/agent-studio.md`;
-- general production rules -> `skills/video-growth-agent/SKILL.md`.
-
-The TinyFish requirement is marked `DO_NOT_PROMOTE_AS_VIDEO_DURABLE_RULE` unless the valid video writer finds video-specific durable provenance.
+The plan maps duplicated material to stronger project/Skill authorities, keeps only execution-critical state in the checkpoint, and requires any unverified cross-domain preference to be removed or reclassified unless video-specific durable provenance exists.
 
 Disposition: **REPAIR STAGED — PENDING VALID WRITER TURN**.
 
@@ -149,10 +129,10 @@ One product-level boundary cannot be proven by repository CI: a genuinely fresh 
 Low-risk acceptance sequence:
 
 1. ensure the account-level Personalization/Custom Instructions contains the current Continuity startup/backstop rule;
-2. open a genuinely new chat and send exactly `继承` — expected: complete 5-source discovery and the four default USER candidates, without taking over any task yet;
-3. for the full takeover receipt test without disturbing a business chat, explicitly resume `跨对话继承系统建设与维护` in that fresh chat. Because this is the dedicated EXPLICIT_ONLY infrastructure task, it is the safest task for validating `继承前进度 -> compatibility -> takeover -> 进度提交`.
+2. open a genuinely new chat and send exactly `继承` — expected: complete 5-source discovery and four default USER candidates, without taking over any task yet;
+3. for the full takeover receipt test without disturbing a business chat, explicitly resume the dedicated Continuity maintenance task in that fresh chat. Because this is an EXPLICIT_ONLY infrastructure task, it is the safest task for validating `继承前进度 -> compatibility -> takeover -> 进度提交`.
 
-Do not select Financial Writing, Video Growth or NOVEL_OS merely as a test if the user wants their existing task chat to remain the active writer; a genuine new-chat takeover would correctly retire the prior writer.
+Do not select a live business task merely as a test if its existing chat should remain the active writer; a genuine new-chat takeover would correctly retire the prior writer.
 
 ## Overall conclusion
 
@@ -160,7 +140,5 @@ The v3.7 architecture is internally coherent after this regression. The most imp
 
 Remaining work is intentionally event-driven rather than maintenance-force-written:
 
-- Financial Writing handoff compaction + task-level v3.7 reconcile on its next valid writer turn;
-- Video Growth checkpoint compaction + task-level v3.7 reconcile on its next valid writer turn;
-- NOVEL_OS protocol metadata reconcile on the next legal owner/task write;
+- owner handoff/checkpoint compaction and task-level v3.7 reconciliation on each valid writer's next durable turn where staged;
 - one fresh-chat product-level acceptance test by the user after the account instruction is present.
