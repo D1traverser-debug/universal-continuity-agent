@@ -15,9 +15,11 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     assert policy["status"] == "ACTIVE"
     assert "ASSISTANT_DETECTS_SYSTEMIC_GAP" in policy["triggers"]
     assert "USER_REPORT_REVEALS_SYSTEMIC_GAP" in policy["triggers"]
+    assert "REPEATED_OWNER_FAILURE_OR_REGRESSION" in policy["triggers"]
 
     autonomy = policy["default_autonomy"]
     assert autonomy["diagnose_root_cause"] is True
+    assert autonomy["assess_reliability_guard_before_feature_expansion"] is True
     assert autonomy["apply_smallest_safe_fix"] is True
     assert autonomy["prefer_modify_existing_authority_over_new_parallel_surface"] is True
     assert autonomy["add_or_update_regression_guard_when_testable"] is True
@@ -39,6 +41,22 @@ def test_new_authority_surface_requires_architecture_admission_gate():
     assert gate["default_decision"] == "REJECT_NEW_SURFACE_IF_EXISTING_AUTHORITY_CAN_OWN_IT"
     assert "Consolidate into the existing authority" in gate["failed_admission_behavior"]
     assert policy["failure_semantics"]["new_authority_surface_without_admission"] == "REJECT_AND_CONSOLIDATE"
+
+
+def test_repeated_owner_failure_activates_scoped_reliability_guard():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    guard = policy["reliability_guard"]
+
+    assert "same defect class materially recurs after an accepted fix" in guard["incident_triggers"]
+    assert "the user repeatedly has to restate the same durable requirement" in guard["incident_triggers"]
+    assert "PERSIST_INCIDENT_OR_FAILURE_EVIDENCE" in guard["required_response"]
+    assert "ADD_OR_UPDATE_REGRESSION_OR_EVAL" in guard["required_response"]
+    assert guard["affected_owner_non_reliability_expansion"] == "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY"
+    assert guard["freeze_scope"] == "AFFECTED_OWNER_OR_CAPABILITY_ONLY"
+    assert guard["unrelated_healthy_owners_are_frozen"] is False
+    assert guard["user_manages_incident_backlog"] is False
+    assert guard["chat_only_apology_or_reminder_counts_as_fix"] is False
+    assert "ASSESS_RELIABILITY_GUARD" in policy["maintenance_loop"]
 
 
 def test_system_maintenance_policy_preserves_owner_boundaries():
