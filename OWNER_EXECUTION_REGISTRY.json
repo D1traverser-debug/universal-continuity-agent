@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "role": "REBUILDABLE_POINTER_CACHE_NOT_BUSINESS_AUTHORITY",
+  "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
+  "orchestration_blueprint": "ORCHESTRATION_BLUEPRINT.md",
+  "owners": [
+    {
+      "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "repository": "D1traverser-debug/financial-writing-agent@main",
+      "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
+      "summary": "State machine + OpenAI Agents SDK high-judgment executors + deterministic checks. Current-session runtime/tool binding still requires handshake.",
+      "known_ceiling": "SESSION_EXECUTABLE",
+      "strict_isolated_execution_claimed": false
+    },
+    {
+      "owner": "A_SHARE_MARKET_AGENT",
+      "repository": "D1traverser-debug/a-share-event-driven-agent@main",
+      "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
+      "summary": "Market-day state machine + runtime service/plugin contracts. Live data/source and current-session owner runtime bindings remain handshake-dependent.",
+      "known_ceiling": "SESSION_EXECUTABLE",
+      "strict_isolated_execution_claimed": false
+    },
+    {
+      "owner": "VIDEO_GROWTH_AGENT",
+      "repository": "D1traverser-debug/video-growth-agent@main",
+      "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
+      "summary": "Work-order/gate governance is strong, but critical isolated multimodal review is currently runtime-blocked and a single enforced generation gateway is not yet implemented.",
+      "known_ceiling": "ATTESTED_ISOLATED_WHEN_TRUSTED_EXECUTOR_EXISTS",
+      "strict_isolated_execution_claimed": true,
+      "current_known_blockers": [
+        "production trusted executor registry empty",
+        "quality-critical generation gateway declared but not implemented as unique enforced path"
+      ]
+    }
+  ],
+  "excluded_from_this_registry": [
+    {
+      "owner": "NOVEL_OS",
+      "reason": "Current owner authority is Library/domain-native rather than a GitHub-backed executable agent; Continuity routing remains separate."
+    },
+    {
+      "owner": "UNIVERSAL_CONTINUITY_HARNESS",
+      "reason": "Infrastructure control plane, not a business domain executor."
+    }
+  ],
+  "dispatcher_rule": "Never infer executable readiness from this cache alone. Read the owner capability_ref and perform current-session capability handshake for the exact next action."
+}
