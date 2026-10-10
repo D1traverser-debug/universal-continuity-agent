@@ -8,97 +8,108 @@
 - current writer: `lease-4b4bc507-0949-4b2e-aed4-c0186dd07566`
 - resume_epoch: `2`
 
-## 当前结论
+## 当前总状态
 
-Universal v3.7 existing-chat / fresh-chat Continuity 产品传播 E2E 已 PASS。四个业务 owner 的 methodology declaration 现在不仅有 exact-version profile binding，还必须覆盖**所有当前 contract profiles 的 applicability**；但 declaration/applicability/owner CI 仍不是 action-level operational proof。
+- Universal v3.7 existing-chat / fresh-chat Continuity 产品传播 E2E：PASS。
+- Methodology profile applicability negative-space guard：PASS。任何 current-contract profile 都必须显式 `APPLIES / NOT_APPLICABLE + reason + evidence_refs`；适用 profile 静默漏绑会 FAIL。
+- Financial：`artifact_io + operational_hygiene + evolution` 已绑定并 owner regression PASS；真实文章 action-level methodology conformance 与 prose-quality blind pairwise evidence仍 OPEN。
+- Novel：Release Execution Evidence 已完成二次挑刺/加固；domain business stage/Canon/lease 未改。
+- Universal operator-dependence incident：仍 OPEN，需真实 independently graded maintenance-decision trajectories 才能关闭。
 
-本轮由用户再次质疑触发 reliability/evolution maintenance。上一轮 Financial Writing 漏绑 `artifact_io@1.0` 的根因不是单一粗心，而是两层同时失效：
+## Novel owner 独立核验与二次挑刺
 
-1. **判断错误**：维护者先入为主地把 Financial 归类成只需要 `operational_hygiene + evolution`；
-2. **验收结构缺口**：旧 `evaluate_methodology_conformance()` 只验证 `profile_refs` 中已经声明的 profile，不检查“未声明 profile 是否其实适用”，因此错误的 omission assumption 可以穿过 CI。
+用户提供 Novel owner 自审回复后，本 maintenance writer 独立读取了 Novel `SKILL.md`、`continuity/EXECUTION_CAPABILITIES.json`、`runtime/release_evidence_guard.py`、tests、checkpoint、evolution audit 与 CI。
 
-这类缺口命名为 **methodology negative-space blind spot / silent applicable-profile omission**。
+原回复的核心事实成立：
+- Skill 已进入 2.1 系列；
+- CH9+ 有 release-evidence hard gate；
+- CH8 明确 `LEGACY_AGGREGATE_MIGRATED`，不补造历史 receipts；
+- normal review = `CHAT_BRIDGED / ROLE_SEPARATED_NOT_ATTESTED_ISOLATED`；
+- `strict_attested_isolated_reviewer` 仍 `DECLARED_ONLY`；
+- CH8/CH9 business stage、Canon v12、external publication fact、resume_epoch/lease 未被系统进化改写；
+- owner CI 的 Recovery Guard / Release Evidence Guard / owner contract tests 均可执行。
 
-## 进化方案与取舍
+但原自审还有第二阶证据强度缺口：一个最终聚合 `CHxxxx_EXECUTION_EVIDENCE.json` 仍可能由同一 CHAT_BRIDGED session 事后一次性补写。更多角色名、timestamp 或文件数量不能把这种 self-attested receipt 变成独立 execution attestation。
 
-比较过三种方案：
+同时原 guard 还存在可机械修复的绑定弱点：
+- Project Profile / Canon refs / recent FINAL refs 没有逐项验证文件存在与 hash；
+- CHAT_BRIDGED receipts 没有统一强制 Context Pack binding 与非空 result summary；
+- final-body pipeline roles 没有统一绑定 FINAL source hash；
+- blind reviewer receipt 的自身 source/context binding 不够严格。
 
-- 所有 owner 强制绑定全部 profile：拒绝，会破坏 composability / event-driven loading，并给真实不适用 owner 增加虚假义务；
-- 依赖维护者每次人工阅读 Skill/代码决定：拒绝，仍然依赖同一判断者，无法机械防复发；
-- **显式 profile applicability contract**：采用。每个 current-contract profile 都必须是 `APPLIES` 或 `NOT_APPLICABLE`，并带 owner-local `reason + evidence_refs`；`APPLIES` 必须 exact-version 绑定，`NOT_APPLICABLE` 不能同时声明 profile，省略不再代表“不适用”。
+## Novel 二次加固
 
-## 已落地的中央修复
+采用最小修法：强化能机械验证的 binding，同时明确降级不能证明的 assurance；不新增更多假 Agent，也不伪造 isolated executor。
 
-- `runtime/methodology_conformance.py`：加入 negative-space declaration validation；`APPLIES` 但漏绑直接 `applicable_profile_not_declared:<profile>`。
-- `OWNER_ADAPTER_CONTRACT.json`：profile contract 仍为 `1.0`；新增 `owner_declaration_contract_version=1.1`，因为 hook/invariant contract 未变化，但 declaration shape 被强化。
-- `ENTRYPOINT.md`：material owner action 在执行前先验证完整 profile applicability，再进入 event-activated operational conformance。
-- `tests/test_methodology_conformance.py`：覆盖 missing applicability、APPLIES-but-omitted、NOT_APPLICABLE 缺 reason/evidence、声明/不适用矛盾。
-- `runtime/system_audit.py`：加入真实失败类负例 `methodology_applicable_profile_is_silently_omitted`；synthetic owner 明确模拟“会持久化/render artifact，但漏绑 artifact_io”，必须 FAIL。
-- `tests/test_system_audit.py`：固定该 fault scenario，防后续静默删除。
+Novel owner 现在要求：
+- 所有本地 Project Profile / Canon / recent FINAL Context Pack ref 必须存在并 SHA-256 匹配；
+- 每个 receipt 必须有唯一 id；
+- CHAT_BRIDGED receipt 必须绑定 frozen Context Pack；
+- 每个 receipt 必须有非空 role result summary；
+- `COPYEDITOR_PROOFREADER / ARTIFACT_RELEASE_ENGINEER / CANON_COMMITTER` 必须绑定 FINAL source hash；
+- blinded reviewer evidence 本身必须有有效 source hash + Context Pack binding；
+- deterministic guard 输出 evidence strength：`STRUCTURED_SELF_ATTESTED_CHAT_BRIDGED_UNLESS_EXTERNAL_TRACE_PRESENT`；
+- Skill / execution capabilities 明确：CHAT_BRIDGED receipt 是结构化自证，不是 independent proof of cognition or chronology；真正 attestation 需要 distinct execution identity/provider trace。
 
-关键 commits：
-- validator `a7c94124a57b24e9d646bf5755ccd409c620c792`
-- methodology tests `547ed96aba63cf0ca74762f1ebbeee4d0f680b0d`
-- owner declaration contract `ba4fe98b6afda19cf6eadae5095ffce356a0287d`
-- ENTRYPOINT `2517ffd86436abf2130a5999b04ba84a0300e210`
-- system-audit regression `c42cc58dadf53625bb48255ecaa59dc44208ef54`
-- fault-scenario test `31bf410cba1303ab0f36b7de8d723ea8f381a4f3`
+Novel versions after hardening:
+- Skill: `2.1.1-github`
+- runtime metadata: `github-owner-2.2.1`
+- execution-capability profile_version: `3`
+- release_evidence_contract: `1.0`（兼容加固，首次真实 CH9 尚未发生）
 
-第一次 Universal CI run `38063164287` **FAIL**，原因是 `system_audit` 旧 synthetic declaration fixture 没有新 `profile_applicability`；没有绕过失败。升级 fixture 并加入 omission negative case 后，run `38063287004` **PASS**，其中 `runtime.system_audit` 与完整 pytest 均 PASS。
+Key owner evidence:
+- hardened behavioral/test head: `ced06cec1a2201135d32c7f9d8c8c32c43b83507`
+- CI run `38065144178` / job `114251164978`: Recovery Guard PASS, Release Evidence Guard PASS, full owner tests PASS
+- owner metadata/audit head: `2ebc4dea8c5b6c083ad1db5d0c88b8839b6a6f95`
+- CI run `38065230141`: PASS
 
-## 四个 owner applicability evidence
+第一次 hardened CI `38065104562` 曾 FAIL，因为旧 recovery-contract test 对 pre-hardening evidence-contract 字符串做了精确断言；guards 本身均 PASS。旧断言随后被更新，没有绕过失败。
 
-未接管任何业务 task lease/state，只更新 owner 工程 adapter：
+Novel current business truth remains owner-owned:
+- current_stage: `CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION`
+- Canon v12
+- last FINAL = CH8
+- CH8 external publication = not confirmed
+- CH9 = READY
+- 新 evidence contract 从 CH9 首次生产正式接受 action-level 验证
 
-- Financial: `8f7710b64c330e0770154e65a40b4abc9a4e932d` / CI `38063063135` PASS。
-- A-share: `d001a857d94eaa2a103798d7186589a4931b2af1` / CI `38063084164` PASS。
-- Novel: `94d3626fa6695fdcb41b9139f42cd28853d3106a` / CI `38063108153` PASS；Canon/正文/发布事实/stage/lease 未改。
-- Video: `e3b60458ef858e963acd3417d4f188a2d0518f6b` / CI `38063131876` PASS。
+## Central cache reconciliation
 
-四者当前三个 profile 都是 APPLIES，但新 contract 不要求未来 owner 必须“三件套”；真实不适用 profile 可声明 NOT_APPLICABLE，只是必须可审计，不能静默省略。
+Novel owner 自审指出 Universal `OWNER_PROTOCOL_ADAPTATION_REGISTRY` 仍缓存旧 regression head。当前 SYSTEM_INFRA chat 持有合法 Universal maintenance lease，因此本轮已同步：
+- `OWNER_REGISTRY.json` Novel status -> release-evidence binding hardened + CHAT_BRIDGED self-attested + CH9 production proof pending；
+- `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json` -> novel behavioral head / owner metadata head / CI refs / skill/runtime version / evidence-strength boundary。
 
-## Financial 当前边界
-
-Financial 已绑定：
-- `artifact_io@1.0`
-- `operational_hygiene@1.0`
-- `evolution@1.0`
-
-且 artifact_io binding 与 applicability evidence 已 owner CI 验证。Financial 业务 durable task `financial-writing:main` 的 active lease、manifest/Handoff、文章 stage/内容未被本 maintenance writer 修改。
-
-仍不能声称：
-- 一篇新的真实 Financial article 已通过 action-level methodology receipt；
-- prose quality 已客观提升；
-- Personalized Writing DNA 已成熟。
+这些是 rebuildable conformance metadata；没有修改 Novel business task manifest/checkpoint/Canon/正文/发布事实/lease。
 
 ## 仍未闭环
 
-1. **Financial action-level operational proof**：下一次真实 material article action 必须留下 event-activated `profile_runs`、observed hooks、stable evidence refs，并由 independent verifier 验证后跑 operational methodology conformance。
-2. **Financial prose-quality promotion**：仍需 independently verifiable blind pairwise evidence；offshore-wind rejection 必须改善，rutile held-out 不退化。
-3. **Personalized Writing DNA**：仍需自然产生的真实 user acceptance/edit 或 post-publication performance evidence。
-4. **Universal operator-dependence incident**：本轮证明系统能从用户纠正中形成 durable guard，但事故总体仍需真实 held-out maintenance-decision trajectories + independent grading 才能关闭。
+1. **Novel CH9 real production proof**：代码/negative tests/CI 已证明 enforcement mechanics；尚未有真实 CH9 Context Pack + role receipts trajectory。只有首次生产 PASS 后才能说 domain release-evidence gate 在真实章节上工作。
+2. **Novel true execution attestation**：CHAT_BRIDGED receipt 仍是 self-attested。不同 execution identity/provider trace 未提供前，不得说真正 isolated / independently attested reviewer 已执行。
+3. **Financial action-level operational proof**：下一次真实 material article 仍需 event-activated `profile_runs` + independent verifier + operational methodology conformance。
+4. **Financial prose-quality promotion**：仍需 independently verifiable blind pairwise evidence；offshore-wind rejection 必须改善，rutile held-out 不退化。
+5. **Universal operator-dependence incident**：仍需 independently graded held-out product trajectories。
 
 ## Current stage
 
-`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
+`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__NOVEL_RELEASE_EVIDENCE_BINDING_HARDENED__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
 
 ## Next action
 
-- 下一次真实 Financial material action：先 declaration/applicability conformance，再仅激活本动作需要的 profiles，最后用真实 receipt + independent verifier 做 operational conformance。
-- 有独立 Financial blind pairwise judge/verifier 时跑 quality promotion。
-- 有独立 Universal product-run/grader path 时跑 maintenance-decision held-out suite。
-- 不以 CI 替代 live evidence，不要求用户制造内部验收样本，不偷 owner business lease。
+- Novel：等 CH8 外部发布确认后，业务 owner 进入 CH9；首次 CH9 必须真实生成/验证 release-evidence artifacts，不得由 maintenance task 代跑或补造。
+- Financial：下一次真实 article material action 做 action-level methodology conformance；有独立 pairwise judge/verifier 后跑质量 promotion。
+- Universal：有真实 product-run/grader path 后跑 maintenance-decision held-out suite。
+- 缺真实能力/证据时保持 OPEN，不用 CI、角色名或自报 receipt 冒充更高 assurance。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `OWNER_ADAPTER_CONTRACT.json`
 - `OWNER_REGISTRY.json`
 - `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
+- `OWNER_ADAPTER_CONTRACT.json`
 - `ENTRYPOINT.md`
-- `runtime/methodology_conformance.py`
-- `runtime/system_audit.py`
-- `tests/test_methodology_conformance.py`
-- `tests/test_system_audit.py`
+- Novel: `D1traverser-debug/novel-writing-agent@main:SKILL.md`
+- Novel: `continuity/EXECUTION_CAPABILITIES.json`
+- Novel: `runtime/release_evidence_guard.py`
+- Novel: `audits/NOVEL_SYSTEM_EVOLUTION_AUDIT_2026-10-10.md`
 
 恢复时先读 manifest + 本 Handoff，再按 ENTRYPOINT 事件矩阵加载当前动作所需 authority；不要从旧聊天重建执行真相。
