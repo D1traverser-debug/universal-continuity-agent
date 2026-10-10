@@ -47,5 +47,5 @@ def test_bootstrap_does_not_embed_detailed_methodology_receipt_algorithm():
     entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
     assert "receipt-contract-1.3" not in entrypoint
     assert "independent hook-assessment verifier" not in entrypoint
-    assert "evaluate_operational_methodology_conformance" not in entrypoint
+    assert "runtime/methodology_conformance.py:evaluate_operational_methodology_conformance" in entrypoint
     assert "OWNER_ADAPTER_CONTRACT.json" in entrypoint
