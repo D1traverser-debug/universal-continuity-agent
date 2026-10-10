@@ -42,6 +42,7 @@ def validate_agent_manifest(
     *,
     repository_paths: set[str] | None = None,
     file_sizes: Mapping[str, int] | None = None,
+    observed_owner_head: str | None = None,
 ) -> ArchitectureResult:
     errors: list[str] = []
     warnings: list[str] = []
@@ -94,12 +95,12 @@ def validate_agent_manifest(
     if refs and mirror_policy not in allowed_mirror:
         errors.append("references.mirror_policy is not allowed")
 
-    observed_head = str(manifest.get("observed_owner_head", "")).strip()
     receipt_head = str(manifest.get("harness_receipt_head", "")).strip()
+    observed_head = str(observed_owner_head or "").strip()
     if observed_head and receipt_head and observed_head != receipt_head:
-        errors.append("architecture harness receipt is stale relative to observed owner head")
+        errors.append("architecture harness receipt is stale relative to externally observed owner head")
     elif observed_head and not receipt_head:
-        warnings.append("observed owner head has no architecture harness receipt binding")
+        warnings.append("externally observed owner head has no architecture harness receipt binding")
 
     if repository_paths is not None:
         refs_to_check: list[str] = []
