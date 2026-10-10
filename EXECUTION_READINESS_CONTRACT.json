@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "name": "UNIVERSAL_EXECUTION_READINESS",
+  "scope": "All GitHub-backed domain agents orchestrated from ChatGPT",
+  "purpose": "Separate declared capability from actually executable capability. A role, prompt, Skill, config row, or workflow stage is not counted as operational unless it has an invocation path, executor binding, evidence contract, and current-session capability handshake.",
+  "separation_of_concerns": {
+    "continuity": "Task discovery, recovery, lease, checkpoint and progress observability.",
+    "execution_harness": "Capability handshake, execution routing, evidence requirements, side-channel prevention and execution-readiness decisions.",
+    "domain_owner": "Business state machine, domain rules, artifacts and domain-specific gates."
+  },
+  "owner_surface": {
+    "canonical_path": "continuity/EXECUTION_CAPABILITIES.json",
+    "required_for_github_agents": true,
+    "registry_is_cache_not_authority": true
+  },
+  "assurance_levels": [
+    {
+      "id": "DECLARED_ONLY",
+      "rank": 0,
+      "meaning": "Role/prompt/config exists but no mechanically proven invocation path. Does not satisfy an execution requirement."
+    },
+    {
+      "id": "HARNESS_WIRED",
+      "rank": 1,
+      "meaning": "Workflow stage is bound to a concrete executor path and fail-closed state transition, but the current ChatGPT session/runtime has not proven the executor is available."
+    },
+    {
+      "id": "SESSION_EXECUTABLE",
+      "rank": 2,
+      "meaning": "The current execution window has the required tool/runtime/credential binding and can run the capability now."
+    },
+    {
+      "id": "ATTESTED_ISOLATED",
+      "rank": 3,
+      "meaning": "Execution is bound to a distinct external/provider run or otherwise inspectable isolated execution identity with context/trace evidence."
+    }
+  ],
+  "availability": ["AVAILABLE", "PARTIAL", "BLOCKED", "UNKNOWN"],
+  "execution_modes": [
+    "OWNER_NATIVE",
+    "CHAT_BRIDGED",
+    "DETERMINISTIC_TOOL",
+    "ISOLATED_EXTERNAL",
+    "BLOCKED"
+  ],
+  "capability_required_fields": [
+    "capability_id",
+    "scope",
+    "assurance_ceiling",
+    "invocation_path",
+    "executor_type",
+    "evidence_contract",
+    "side_channel_allowed"
+  ],
+  "session_handshake_required_fields": [
+    "capability_id",
+    "availability",
+    "observed_assurance",
+    "execution_mode"
+  ],
+  "hard_invariants": [
+    "A declared agent without an invocation path is DECLARED_ONLY and must not be reported as having executed.",
+    "A prompt, markdown policy, Skill, or config row is not execution evidence.",
+    "Current-session availability is evaluated separately from repository code readiness.",
+    "Repository readiness is a ceiling, not proof that the current chat can execute the capability.",
+    "A requirement for ATTESTED_ISOLATED may not be satisfied by role-playing multiple reviewers inside one unverified context.",
+    "Quality-critical side-channel tool calls are forbidden when the owner declares side_channel_allowed=false; they must route through the owner gateway/work-order path.",
+    "A hard required capability that is unavailable, below required assurance, or missing its evidence contract blocks the stage.",
+    "Optional missing capabilities may degrade the route only when the owner explicitly declares a safe degraded path.",
+    "The dispatcher never fabricates an executor or silently lowers an assurance requirement to obtain PASS.",
+    "Every material execution must leave a durable receipt bound to task/stage/capability, executor identity, input artifact digests or references, output references, and result/status.",
+    "Business state remains authoritative in the domain owner; the universal execution registry never rewrites business stage or artifacts."
+  ],
+  "routing_algorithm": [
+    "Read exact domain owner and task state through Continuity/domain routing.",
+    "Read owner continuity/EXECUTION_CAPABILITIES.json.",
+    "Validate that required stages/capabilities have concrete invocation paths and executor bindings.",
+    "Perform a current-session capability handshake for only the capabilities needed by the next action.",
+    "Compute effective assurance as the lower of owner assurance ceiling and observed session assurance.",
+    "Select OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL, ISOLATED_EXTERNAL, safe DEGRADED, or BLOCKED.",
+    "Dispatch only through the selected owner path; do not bypass the owner with an ad-hoc conversational tool call when side-channel use is forbidden.",
+    "Require the configured execution receipt/evidence before advancing the business gate.",
+    "Persist material owner state through the owner's writer/version guard, then re-read before reporting COMMITTED."
+  ],
+  "anti_bloat": {
+    "new_agent_rule": "Do not add a permanent role merely because a failure occurred. First determine whether the missing function can be expressed as a stage capability, deterministic gate, on-demand sidecar, or existing role responsibility.",
+    "operational_agent_definition": "A permanent agent is operational only when it is scheduled or event-triggered, has an executor binding, and emits required receipts.",
+    "learning_roles": "Learning/evolution functions should default to an on-demand capability-gap sidecar rather than steady-state production participants."
+  }
+}
