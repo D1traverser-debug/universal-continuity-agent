@@ -1,18 +1,18 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_OPERATIONAL_HYGIENE_BASELINE_ACTIVE__OWNER_EVOLUTION_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
+  "status": "PASS_V37_EPISTEMIC_INDEPENDENCE_GATE_ACTIVE__METHODOLOGY_COMPOSITION_REVIEW_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38032272822,
-    "job_id": 114155522633,
-    "validated_head_sha": "0651195c95e7697dd57700bdad6ce193b6a8a5ff",
+    "github_actions_run_id": 38034208661,
+    "job_id": 114161174157,
+    "validated_head_sha": "04aebdaa09e80d105f12d2c1d3cfe4c87dca0caf",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 93,
-    "note": "Validated reliability-guard and operational-hygiene owner conformance plus current Novel owner cutover invariants. Initial run 38031960585 exposed six stale Novel legacy tests after a valid NOVEL_WRITING_AGENT/v3.7 cutover; authority was retained and tests were reconciled to current invariants. Later audit/checkpoint/status writes are metadata-only."
+    "pytest_count": 94,
+    "note": "Validated the epistemic-independence/candidate-adoption gate on top of the operational-hygiene baseline. The new regression prevents treating user solution proposals, analogies, or the assistant's first idea as architecture authority without alternative comparison, failure-mode search, and evidence-gated promotion. Later checkpoint/status/cache writes are metadata-only."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -26,23 +26,49 @@
   "system_maintenance": {
     "status": "ACTIVE_CI_PASS",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.3",
+    "policy_version": "1.4",
     "self_detected_systemic_gap_is_trigger": true,
     "repeated_owner_failure_or_regression_is_trigger": true,
+    "premature_solution_canonicalization_is_trigger": true,
     "authority_surface_admission_gate_active": true,
     "default_new_parallel_authority_surface_decision": "REJECT_IF_EXISTING_AUTHORITY_CAN_OWN_IT",
     "prefer_modify_existing_authority_over_new_parallel_surface": true,
-    "artifact_context_or_cache_drift_is_trigger": true,
-    "chat_only_material_change_not_persisted_is_trigger": true,
+    "challenge_user_and_assistant_initial_solution": true,
+    "compare_credible_alternatives_for_nontrivial_design": true,
+    "seek_counterexample_or_failure_mode_before_adoption": true,
     "wait_for_user_to_enumerate_internal_followups": false,
     "material_change_requires_durable_record": true,
     "may_steal_other_owner_lease": false,
     "may_rewrite_domain_business_truth": false
   },
+  "epistemic_independence": {
+    "status": "ACTIVE_CI_PASS",
+    "policy": "CONTINUOUS_LEARNING_POLICY.md",
+    "user_goal_or_constraint_is_authoritative_when_explicit": true,
+    "user_solution_or_analogy_is_architecture_authority_by_default": false,
+    "assistant_first_idea_is_privileged": false,
+    "other_agent_or_framework_proposal_is_authority_by_default": false,
+    "nontrivial_candidate_requires_current_authority_inspection": true,
+    "nontrivial_candidate_requires_credible_alternative_comparison": true,
+    "nontrivial_candidate_requires_counterexample_or_failure_mode_search": true,
+    "promotion_requires_eval_or_regression_evidence": true,
+    "analogy_alone_can_establish_architecture": false,
+    "owner_specific_method_specialization_allowed": true,
+    "owner_specific_method_may_bypass_cross_agent_evidence_reliability_or_authority_invariants": false
+  },
+  "control_plane_bloat_review": {
+    "status": "PENDING_INDEPENDENT_CANDIDATE_REVIEW",
+    "current_observation": "SYSTEM_BLUEPRINT currently maps 11 architecture layers and OWNER_ADAPTER_CONTRACT is accumulating multiple cross-cutting conformance domains. The system is not yet declared structurally collapsed, but additional horizontal policy growth is considered a maintainability risk.",
+    "inheritance_tree_preselected": false,
+    "candidate_direction_only": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_METHODOLOGY_MODULES_OR_BUNDLES_PLUS_OWNER_HOOKS_OR_OVERRIDES_PLUS_CENTRAL_CONFORMANCE",
+    "candidate_is_production_authority": false,
+    "decision_requires": ["alternative comparison","coupling analysis","upgrade propagation analysis","owner autonomy","failure containment","context cost","versioning","testability","migration/deprecation path"]
+  },
   "operational_hygiene": {
     "status": "BASELINE_ACTIVE_CI_PASS",
     "model": ["RECONCILER","OBSERVABILITY_OR_EVAL","OWNER_AWARE_GC","INCIDENT_OR_POSTMORTEM","SCOPED_RELIABILITY_GUARD","EVOLUTION_GATE"],
     "repeated_user_restating_same_durable_requirement_is_reliability_signal": true,
+    "repeated_user_correcting_premature_solution_canonicalization_is_reliability_signal": true,
     "repeated_fixed_defect_is_incident_trigger": true,
     "chat_apology_or_reminder_counts_as_fix": false,
     "declared_learning_role_without_invocation_and_receipt_is_operational": false,
@@ -52,9 +78,7 @@
     "unrelated_healthy_owners_frozen": false,
     "user_manages_incident_backlog": false,
     "self_cleaning_means": "OWNER_DEPENDENCY_RETENTION_AWARE_GC_ONLY",
-    "blanket_delete_old_business_evidence": false,
-    "background_continuous_maintenance_without_scheduler_claimed": false,
-    "owner_conformance_required": ["observability_or_incident_evidence_location","self_maintenance_trigger_path","learning_evidence_location","eval_or_regression_promotion_path","garbage_collection_owner_and_dependency_rule","reliability_or_change_freeze_guard","superseded_mechanism_cleanup_rule"]
+    "background_continuous_maintenance_without_scheduler_claimed": false
   },
   "artifact_context_governance": {
     "status": "ACTIVE_CI_PASS",
@@ -84,13 +108,7 @@
       "run_id": 38032299542,
       "job_id": 114155603504,
       "head_sha": "a6e69993787394f1abeef4b5da6e5bb3cb0b5e9d",
-      "pytest_count": 50,
-      "openai_agents_sdk_smoke": "PASS",
-      "mcp_streamable_http_smoke": "PASS_17_TYPED_TOOLS",
-      "contract_eval": "PASS_NO_FAILING_CASES",
-      "static_audit": "PASS",
-      "isolated_wheel_install": "PASS",
-      "docx_render_smoke": "PASS"
+      "pytest_count": 50
     },
     "video_growth": {
       "status": "SCHEDULED_LEARNING_EVIDENCE_PIPELINE_WIRED_CI_PASS",
@@ -104,8 +122,7 @@
       "run_id": 38032673305,
       "job_id": 114156701436,
       "head_sha": "81f3f96e168128de42b9d1661f25f8189c93dc3a",
-      "pytest_count": 84,
-      "installed_cli_agentic_studio_smoke": "PASS"
+      "pytest_count": 84
     },
     "novel_regression_reconciliation": {
       "status": "PASS",
@@ -143,12 +160,6 @@
     "same_chat_resume_epoch_change_for_protocol_upgrade": false,
     "historical_business_evidence_deleted_for_protocol_cleanup": false
   },
-  "owner_protocol_adaptation": {
-    "registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json",
-    "maintenance_may_steal_active_task_lease": false,
-    "maintenance_may_overwrite_active_owner_checkpoint": false,
-    "business_state_rewrite_for_protocol_overlay": false
-  },
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
     "account_level_hook_required": true,
@@ -183,6 +194,7 @@
     "self_detected_gap_feeds_maintenance_loop": true,
     "chat_only_idea_counts_as_durable_evolution": false,
     "raw_learning_evidence_auto_promotes": false,
-    "broader_self_evolution_design": "DEFERRED_SEPARATE_FROM_OPERATIONAL_HYGIENE_BASELINE"
+    "epistemic_independence_gate_active": true,
+    "broader_self_evolution_design": "PARTIAL_BASELINE_ACTIVE__CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_PENDING"
   }
 }
