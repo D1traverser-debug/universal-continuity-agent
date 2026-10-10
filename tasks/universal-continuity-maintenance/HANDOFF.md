@@ -10,132 +10,136 @@
 
 ## 当前总状态
 
-- Universal v3.7 existing-chat / fresh-chat Continuity product E2E: PASS。
-- Methodology profile applicability negative-space guard: PASS；current-contract profile 不能静默漏绑。
-- **Second-order evolution method 已蒸馏进 `evolution@1.0` semantics**：非平凡修复在首次 regression PASS 后，还必须挑战“修复本身”和闭环声明的证据强度。
-- Operational methodology receipt contract 当前已进到 **1.2**：不仅 evidence ref 要独立验证，还必须由独立 assessment verifier 判断这些证据是否真的支持具体 hook 的 `INVOKED / NOT_APPLICABLE_FOR_ACTION` claim；“真实但无关的证据”不能洗白 hook claim。
-- Novel release-evidence binding 已二次加固；真实 CH9 production proof / true independent execution attestation 仍 OPEN。
-- Financial 三 profile 已绑定并 owner regression PASS；真实 article action-level methodology conformance / prose-quality promotion 仍 OPEN。
-- Universal operator-dependence incident 仍 OPEN；代码/CI/本轮自我进化不能替代 independently graded live product trajectories。
+- **Known-topology** existing-chat / fresh-chat Continuity product E2E：历史真实证据仍 PASS。
+- **Real new-owner cold-start product E2E：OPEN。** 过去的 fresh-chat PASS 不能泛化成“未来新增任意 Agent 后，真正失忆的新聊天一定能自动接入”。
+- Dynamic owner membership/admission mechanics：`REGRESSION_VERIFIED`。`OWNER_REGISTRY.json` 已成为唯一 owner-membership authority；bare discovery 与 system-audit scope 动态推导。
+- Universal operator-dependence incident：仍 OPEN。本轮用户再次需要提醒“从遗忘的新对话 / 新 Agent 视角重审”，这是该 incident 的新增真实证据，不视为用户应继续提供测试用例。
+- Second-order challenge / closure calibration 已在 `evolution@1.0`；本轮正是它发现了 closed-world E2E 被错误扩大成 open-world extensibility claim。
+- Operational methodology receipt contract = 1.2，evidence ref verification 与 hook-claim semantic verification 分离。
+- Novel：release-evidence binding 已加固；真实 CH9 production proof / true independent execution attestation 仍 OPEN。
+- Financial：三 profile 已绑定并 regression PASS；真实 article action-level methodology conformance / prose-quality promotion 仍 OPEN。
 
-## 本轮：把“怎么进化”做成通用方法，而不是新 Agent
+## 本轮根因：总控“认识谁”存在多份名单
 
-用户提出是否应把当前进化技巧/复盘持久化并复用于类似问题。
+从零知识 / 新 Agent 接入视角重新检查后发现：
 
-架构判断：**不新建 permanent Challenge/Evolution Agent，也不新建平行 root policy。** 原因：
-- 缺口是所有 owner 的 evolution 方法论，不是独立业务执行职责；
-- 新角色不能自动创造独立 executor identity / evidence；
-- `CONTINUOUS_LEARNING_POLICY.md` 已是 `evolution@1.0` semantics owner，现有 authority 可以无歧义承载；
-- 新 Agent / 新 root policy 会增加声明式复杂度和重复 authority。
+1. `OWNER_REGISTRY.json` 看起来像 owner registry；
+2. 但旧 `BARE_INHERIT_DISCOVERY.json` 又硬编码 `GENERIC + Financial + A-share + Novel + Video` 五个 source；
+3. 旧 `runtime/system_audit.py` 又硬编码四个 `BUSINESS_OWNERS`；
+4. 回归测试还把具体 owner 名称和 `required_owner_quorum == 5` 当成永久不变量。
 
-采用方案：把真实事故蒸馏成 `Second-order challenge / closure calibration（二阶挑刺与闭环校准）`，写入现有 evolution semantics，并加 regression + audit evidence。
+因此“接一个新 Agent”实际上要求维护者记得同步多个 owner-name surface。即使所有旧表彼此一致，也只能证明**已知名单内部一致**，不能证明未来未知 owner 会自动进入 discovery/audit。
 
-### 二阶挑刺核心
+这解释了为什么此前我会说“fresh-chat E2E PASS”但仍没真正覆盖用户指出的视角：那次真实 E2E 是 closed-world evidence，只测试了当时已经存在的 topology。
 
-第一次修复/回归通过后，在 closure 前继续检查：
-1. Exact claim：现在到底要宣称 wiring、regression、真实 action、independent attestation，还是 live outcome？
-2. Evidence ceiling：证据最多支持到哪一级？明确它不能证明什么。
-3. Negative space：validator 是否只检查“存在的东西”，却没检查“本应存在但被省略的东西”？
-4. Self-reference：同一 actor 是否产出、写 receipt、评分、再验证自己？
-5. Post-hoc provenance：receipt/timestamp/角色记录能否最后一次性补写而不证明执行时序？
-6. Escape path：新 guard 是否能被另一入口、旧 compatibility path、stale cache、lower authority 绕过？
-7. Test realism：CI/synthetic 只证明 mechanics，还是 claim 实际需要真实产品 trajectory / held-out / external outcome？
-8. Generalization：是否只修好了触发样本，held-out/collateral regression 是否存在？
-9. Supersession：弱旧机制是否真的被替换/降级，而不是并存？
-10. Closure boundary：还剩什么 OPEN，需要什么新证据才能升级？
+## 架构决策
 
-### Evidence assurance ladder
+比较三种方案：
 
-统一分层，禁止跨级偷换：
+- 再维护一份 central/static owner list：拒绝，继续制造第二 membership authority；
+- 新建 onboarding/challenge Agent：拒绝，角色本身不能消除拓扑漂移，也不能创造独立产品证据；
+- **`OWNER_REGISTRY` = sole owner-membership authority**：采用。
 
-`DECLARED`
-→ `WIRED`
-→ `REGRESSION_VERIFIED`
-→ `ACTION_LEVEL_SELF_ATTESTED`
-→ `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`
-→ `LIVE_OUTCOME_VERIFIED`
+现在：
 
-关键禁止：
-- CI PASS ≠ action-level execution proof；
-- same-session structured receipt ≠ independent attestation；
-- independently verified action ≠ long-run quality/business outcome。
+- `owner_kind == BUSINESS` 决定 durable business membership；
+- `bare_inherit_participant == true` + `bare_inherit_source` 决定 bare discovery quorum；
+- `runtime/owner_topology.py` 动态推导 business owners / bare sources，并校验 admission metadata；
+- `BARE_INHERIT_DISCOVERY.json` 已删除具体 `required_sources` owner 名单；
+- `runtime/system_audit.py` 已删除 `BUSINESS_OWNERS` 常量；
+- `OWNER_PROTOCOL_ADAPTATION_REGISTRY` / `OWNER_EXECUTION_REGISTRY` 是 rebuildable conformance/status caches，不是 membership authority；它们必须收敛到 derived BUSINESS set，否则 audit fail closed。
 
-### 从真实事故蒸馏的跨-owner failure patterns
+## Synthetic unknown-owner regression
 
-- silent applicable-item omission / negative-space blind spot；
-- declaration-to-operation gap；
-- self-attestation inflation；
-- CI-to-product overclaim；
-- single-example overfit；
-- post-hoc receipt illusion；
-- cache/authority circularity；
-- patch-without-distillation。
+测试中临时加入一个生产代码从未认识过的 `SYNTHETIC_NEW_AGENT`：
 
-这些是通用失败类，不是把 Financial/Novel 业务规则复制到 Universal。
+1. 只加入 `OWNER_REGISTRY` 后，它自动进入 bare discovery 和 global audit scope；
+2. 因 adaptation/execution caches 尚未有它，control-plane audit 必须 FAIL；
+3. 测试再补齐两份派生 cache；
+4. audit PASS，并且 synthetic owner 同时出现在 checked business/bare sets。
 
-## 本轮 durable evidence
+没有修改任何 Python owner-name allowlist 来“教会”系统这个 synthetic name。
 
-Authority:
-- `CONTINUOUS_LEARNING_POLICY.md`：新增二阶挑刺、证据阶梯、通用 failure taxonomy。
-- `tests/test_system_maintenance_policy.py`：回归固定上述方法，防后续被静默删除。
-- `audits/SECOND_ORDER_EVOLUTION_METHOD_DISTILLATION_2026-10-10.md`：记录真实案例、候选方案取舍、为何不建新 Agent、剩余边界。
+Intermediate head `4535ce6fcada3d04fc8bde60d87211432edd00f7`：system_audit PASS，pytest 139 PASS / 1 FAIL；唯一失败是旧 test 精确要求 `OWNER_REGISTRY schema_version == 3.0`。
 
-Commits:
-- learning semantics: `d01eddf72341dd7c6d9e42a44c63c3fb4a4d5597`
-- regression: `0b05e5ac66f545768a7ca7bfa75f5c4b3985202a`
-- distillation audit: `5801459a877dece2fa12a54e613b0fc3c48121c8`
+该旧 topology assertion 被更新，而不是回滚新模型。
 
-Initial validation:
-- Universal Actions run `38065950440` / job `114253506018`: `runtime.system_audit` PASS + full pytest PASS。
+Validated behavioral head `e878f8b217356d67ad986033ca04705179197164`：Actions run `38067271852` / job `114257353885`，system_audit PASS + full pytest PASS。
 
-Final-integration challenge:
-- 在写 maintenance checkpoint 期间，mainline 同时推进 operational receipt contract 到 1.2：runtime/contract 先到位而旧 methodology tests 尚未同步，导致 integration run `38066058541` 出现 `system_audit PASS / pytest FAIL`；没有把中间绿灯当最终 closure。
-- 1.2 目标经复核成立：verified evidence ref 仍可能与 hook claim 无关，所以需要独立 semantic `assessment_verifier`；这是“evidence exists ≠ evidence supports claim”的更强约束，不应回滚。
-- 对应 tests 随后同步到 1.2；head `ccf80e81499bbb5913955e5d739664c7f3bc2d7b`，Actions run `38066100238` / job `114253942541`: `runtime.system_audit` PASS + full pytest PASS。
-- 随后的 Handoff integration head `55faf61f71872995e767895bdd0771c34fd921ff` 再次触发 1 个 pytest failure：`ENTRYPOINT.md` 已有双层验证语义，但使用了 `evidence-ref verifier` 表述，没有稳定写成“independent evidence verifier + independent hook-assessment verifier”的入口合同用语。没有把上一 head 的绿灯替代最终 head 验证。
-- `ENTRYPOINT.md` 已在 commit `76001ffaf20a5f850db581573be334d85359515c` 收敛为 receipt-contract-1.2 双 verifier：独立 evidence verifier 先验证 referenced evidence，独立 hook-assessment verifier 再判断 verified evidence + reason 是否支持具体 hook assessment；real-but-irrelevant ref 明确不是 proof。
-- 最终 integration Actions run `38066316557` / job `114254572485`: `runtime.system_audit` PASS + full pytest PASS。
+随后 `STARTUP_HOOK.md`、`NEW_CHAT_BOOTSTRAP.json`、`ENTRYPOINT.md` 也改为：每次裸继承从**当前** `OWNER_REGISTRY` 推导 quorum，禁止历史 owner count / copied list；并明确 known-topology E2E 不是 future-owner proof。
 
-`evolution@1.0` profile version **未 bump**：本轮二阶挑刺属于 semantics owner 的兼容加强，hook/invariant contract 未因该方法论改动而变化；当前绑定 evolution@1.0 的 owner 自动获得新方法，无需复制规则。Operational receipt 1.2 是独立的 action-receipt contract hardening，不应与 profile semantics version 混为一谈。
+## 证据边界
 
-## 之前已收口的重要维护事实
+当前可以说：
 
-### Financial
-- `artifact_io + operational_hygiene + evolution` 均已绑定；遗漏 `artifact_io` 的根因已蒸馏成 negative-space applicability guard。
-- General editorial quality harness 已有 real-negative + held-out 防过拟合结构。
-- 仍不能宣称真实 prose quality 已提升；需要 independent blind pairwise + verifier。
-- Personalized Writing DNA 仍需自然产生的 user acceptance/edit 或 publication-performance evidence。
+- `KNOWN_TOPOLOGY_FRESH_CHAT_E2E = PASS`
+- `DYNAMIC_OWNER_MEMBERSHIP_MECHANICS = REGRESSION_VERIFIED`
 
-### Novel
-- CH9+ release evidence guard 已加强 local ref/hash、Context Pack、receipt id/context/result/source binding。
-- CHAT_BRIDGED receipts 明确是 `structured self-attested`，不是 independent cognition/chronology proof。
-- first real CH9 trajectory 仍未发生；true attestation 仍需 distinct execution identity/provider trace。
+当前**不能**说：
+
+- `REAL_NEW_OWNER_FRESH_CHAT_PRODUCT_E2E = PASS`
+
+因为这个聊天无法制造一个真正独立的新 ChatGPT product session，也不能用 synthetic Python fixture 冒充该产品轨迹。
+
+真实新-owner cold-start PASS 至少需要：
+
+1. 一个真实新 BUSINESS owner 按 canonical registry admission 接入；
+2. derived adaptation/execution metadata 收敛；
+3. 一个真正新聊天从 `ENTRYPOINT + CURRENT_PROTOCOL` 启动；
+4. 它从当前 registry 自动发现/路由该新 owner；
+5. 若进入 material work，再通过该 owner 当前 capability/methodology handshake。
+
+在此之前保持 OPEN，不再使用无范围限定的“fresh-chat E2E 已证明一切”。
+
+## 本轮新增 authority / evidence
+
+- `runtime/owner_topology.py`
+- `OWNER_REGISTRY.json` schema 3.1 membership authority
+- `BARE_INHERIT_DISCOVERY.json` schema 1.1 dynamic quorum
+- `runtime/system_audit.py` dynamic owner scope
+- `STARTUP_HOOK.md` dynamic topology + cold-start evidence boundary
+- `NEW_CHAT_BOOTSTRAP.json` dynamic quorum / new-owner verification boundary
+- `ENTRYPOINT.md` owner admission + closed-world/open-world claim boundary
+- `tests/test_bare_inherit_discovery.py`
+- `tests/test_system_audit.py`
+- `tests/test_universal_continuity.py`
+- `tests/test_startup_hook.py`
+- `audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md`
+
+## 仍未闭环
+
+1. **Universal real new-owner fresh-chat product E2E**：OPEN。
+2. **Universal operator-dependence incident**：OPEN；仍需 independently graded held-out product trajectories，且本轮新增用户提醒作为真实负向证据。
+3. **Novel first hardened CH9 real production trajectory**：OPEN。
+4. **Novel true independent execution attestation**：OPEN。
+5. **Financial action-level operational methodology proof**：OPEN。
+6. **Financial prose-quality blind pairwise promotion**：OPEN。
+7. **Personalized Writing DNA**：仍需自然产生的 acceptance/edit/performance evidence。
 
 ## Current stage
 
-`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__SECOND_ORDER_EVOLUTION_METHOD_DISTILLED__NOVEL_RELEASE_EVIDENCE_BINDING_HARDENED__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
+`V3_7_KNOWN_TOPOLOGY_PRODUCT_E2E_PASS__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__SECOND_ORDER_EVOLUTION_METHOD_DISTILLED__NOVEL_RELEASE_EVIDENCE_BINDING_HARDENED__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
 
 ## Next action
 
-- 任何后续 non-trivial owner evolution：使用 `evolution@1.0` 二阶挑刺与 evidence ladder，不允许首次 CI 绿后直接扩大 closure claim。
-- 任何 operational methodology claim：按 receipt contract 1.2 同时验证 evidence ref 与 evidence 对具体 hook claim 的语义支持。
-- Novel：等 CH8 外部发布确认后由业务 owner 执行 CH9；真实 CH9 evidence trajectory 才能提升 live proof。
-- Financial：下一次真实 article material action 做 action-level methodology conformance；有独立 pairwise judge/verifier 后做质量 promotion。
-- Universal：有真实 product-run/grader path 后跑 maintenance-decision held-out suite；operator-dependence incident 未闭环前保持 OPEN。
-- 不要求用户制造内部验收样本；不偷 owner business lease；不靠角色名/更多文件/自报 timestamp 伪造 assurance。
+- 任何新的 owner admission：只在 `OWNER_REGISTRY` 声明 membership；不新增第二 owner-name allowlist；派生 caches 未收敛则 fail closed。
+- 出现真实新 BUSINESS owner 后，用真正 fresh chat 跑 new-owner cold-start product E2E；没有真实产品轨迹前保持 OPEN。
+- 任何 non-trivial evolution 继续执行二阶挑刺，特别检查 known-case evidence 是否被误说成 open-world/generalized proof。
+- Universal operator-dependence incident 在真实 independently graded held-out trajectories 前不关闭，也不再要求用户继续举例。
+- Novel / Financial 保持各自现有 live-evidence gates，不偷 business lease，不伪造 independent evidence。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `CONTINUOUS_LEARNING_POLICY.md`
-- `SYSTEM_MAINTENANCE_POLICY.json`
-- `OWNER_ADAPTER_CONTRACT.json`
 - `ENTRYPOINT.md`
-- `runtime/methodology_conformance.py`
-- `tests/test_methodology_conformance.py`
-- `tests/test_system_maintenance_policy.py`
-- `audits/SECOND_ORDER_EVOLUTION_METHOD_DISTILLATION_2026-10-10.md`
+- `STARTUP_HOOK.md`
+- `NEW_CHAT_BOOTSTRAP.json`
 - `OWNER_REGISTRY.json`
-- `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
+- `BARE_INHERIT_DISCOVERY.json`
+- `runtime/owner_topology.py`
+- `runtime/system_audit.py`
+- `audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md`
+- `CONTINUOUS_LEARNING_POLICY.md`
+- `audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md`
 
-恢复时先读 manifest + 本 Handoff，再按 `ENTRYPOINT.md` 事件矩阵加载当前动作所需 authority；不要从旧聊天重建执行真相。
+恢复时先读 manifest + 本 Handoff，再按 `ENTRYPOINT.md` 事件矩阵加载当前动作所需 authority。不要从旧聊天、历史 owner 数量或旧 topology 重建当前执行真相。
