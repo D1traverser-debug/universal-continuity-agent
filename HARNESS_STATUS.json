@@ -2,32 +2,33 @@
   "schema_version": "3.7",
   "role": "REBUILDABLE_STATUS_CACHE_NOT_AUTHORITY",
   "updated_at": "2026-10-11",
-  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__FULL_CONTROL_PLANE_LOCAL_FAULT_EXECUTION_HARDENED__REMOTE_OWNER_METADATA_SWEEP_COMPLETE__OWNER_PROFILE_DECLARATION_MIGRATION_COMPLETE__METHODOLOGY_RECEIPT_1_3_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
+  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__FULL_CONTROL_PLANE_LOCAL_FAULT_EXECUTION_HARDENED__META_GOVERNANCE_HARNESS_REGRESSION_VERIFIED_CANDIDATE_CLOSURE_PENDING__METHODOLOGY_RECEIPT_1_3_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_full_control_plane_learning_audit": "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md",
+  "latest_meta_maintenance_run": "audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
   "latest_global_system_audit": "audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md",
   "latest_cold_start_topology_audit": "audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38074724886,
-    "job_id": 114279195145,
-    "validated_head_sha": "cf017eae33ff70a688a0738938eade384376e96f",
-    "validation_scope": "CURRENT_RUNTIME_RECOVERY_HARDENING_REGRESSION_BEFORE_FINAL_STATUS_SYNC",
+    "github_actions_run_id": 38077334862,
+    "validated_head_sha": "3d98d5d78518ecaeda8171c440b7799bbd94510b",
+    "validation_scope": "META_GOVERNANCE_POLICY_HARNESS_ENTRYPOINT_META_RUN_AND_BLUEPRINT_BEHAVIORAL_REGRESSION_BEFORE_FINAL_STATUS_SYNC",
     "installed_package_version": "3.7.0",
     "system_audit_preflight": "PASS",
     "pytest": "PASS",
-    "pytest_count": 149,
-    "note": "This regression validates repository behavior at the cited head. Later status/checkpoint-only commits require their own current-main CI. High-risk final control-plane changes are expected to select executable synthetic fault injection from real changed paths."
+    "pytest_count": null,
+    "note": "This behavioral run validates the candidate meta-governance policy/harness/entrypoint/meta-run/blueprint stack at the cited head. Later registry/HARNESS/checkpoint sync commits require current-main CI before final COMMITTED."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
-    "architecture_model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_METHODOLOGY_PROFILES_PLUS_OWNER_LOCAL_BINDINGS",
+    "architecture_model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_METHODOLOGY_PROFILES_PLUS_NARROW_VERIFICATION_HARNESSES_PLUS_OWNER_LOCAL_BINDINGS",
     "minimal_repository_bootstrap": ["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],
     "event_driven_authority_loading": true,
     "system_blueprint_is_fixed_bootstrap_input": false,
     "system_maintenance_policy": "SYSTEM_MAINTENANCE_POLICY.json",
+    "meta_maintenance_runtime": "runtime/meta_maintenance.py",
     "artifact_context_governance_policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
     "owner_membership_authority": "OWNER_REGISTRY.json",
@@ -38,24 +39,51 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE__RISK_TIERED_AUDIT_EXECUTION_WIRED__LOCAL_SYNTHETIC_FAULT_EXECUTION_REAL__REMOTE_OWNER_SWEEP_SEPARATE__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
+    "status": "ACTIVE__META_MAINTENANCE_OUTLINE_ACTIVE__RISK_TIERED_AUDIT_EXECUTION_WIRED__LOCAL_SYNTHETIC_FAULT_EXECUTION_REAL__REMOTE_OWNER_SWEEP_SEPARATE__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.5",
+    "policy_version": "1.6",
     "self_detected_systemic_gap_is_trigger": true,
+    "material_user_correction_first_occurrence_triggers_impact_review": true,
+    "user_challenge_to_maintenance_completeness_is_trigger": true,
     "repeated_owner_failure_or_regression_is_trigger": true,
     "wait_for_user_to_enumerate_internal_followups": false,
     "material_change_requires_durable_record": true,
+    "learning_scout_decision_required_for_systemic_work": true,
+    "instruction_surface_review_required_for_systemic_behavior_gap": true,
+    "cross_subsystem_inheritance_review_required_for_shared_change": true,
+    "complexity_efficiency_budget_required_for_nontrivial_control_plane_change": true,
+    "global_flawlessness_claim_allowed": false,
     "may_steal_other_owner_lease": false,
     "may_rewrite_domain_business_truth": false,
     "ci_changed_paths_wired_into_audit_plan": true,
     "audit_plan_is_execution_proof": false,
     "selected_synthetic_faults_execute": true,
     "ci_local_full_sweep_is_remote_owner_sweep": false,
-    "remote_owner_metadata_sweep": "COMPLETE_FOR_CURRENT_FOUR_BUSINESS_OWNERS__READ_CURRENT_ADAPTER_CAPABILITY_DISCOVERY_SURFACES__DERIVED_METADATA_REPAIRS_ONLY",
+    "remote_owner_metadata_sweep": "CURRENT_OWNER_ADAPTERS_REREAD_DURING_META_GOVERNANCE_PROPAGATION_REVIEW__NOVEL_DERIVED_METADATA_REFRESHED_TO_2_2_0_2_3__NO_BUSINESS_STATE_OR_LEASE_MUTATION",
     "remote_owner_sweep_mutated_business_state": false,
     "audit_layers": ["CORE_ALWAYS","IMPACT_SCOPED","OWNER_SENTINEL_ROTATION","FULL_CONTROL_PLANE","SYNTHETIC_FAULT_INJECTION"],
     "full_business_pipeline_every_audit": false,
     "synthetic_fault_injection_production_mutation_by_default": false
+  },
+  "meta_governance": {
+    "status": "REGRESSION_VERIFIED_CANDIDATE_CLOSURE_PENDING_FINAL_MANIFEST_HANDOFF_SYNC",
+    "authority": "SYSTEM_MAINTENANCE_POLICY.json",
+    "policy_version": "1.6",
+    "runtime": "runtime/meta_maintenance.py",
+    "runtime_version": "1.0-candidate",
+    "run_ref": "audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json",
+    "structural_harness_tests": "tests/test_meta_maintenance.py",
+    "status_alignment_tests": "tests/test_meta_governance_status_alignment.py",
+    "assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
+    "independent_semantic_review_proven": false,
+    "same_actor_can_posthoc_fill_structured_record": true,
+    "independent_trajectory_grader_still_required_for_semantic_independence": true,
+    "business_hot_path_preload_added": false,
+    "external_account_instruction_expansion_required": false,
+    "external_account_instruction_reason": "Existing STARTUP_HOOK already routes system maintenance to current repository authority. Root defect was internal maintenance governance/self-verification, not missing account routing. Do not duplicate the full meta method into Custom Instructions without product evidence of a routing failure.",
+    "new_supervisory_llm_agent_admitted": false,
+    "new_supervisory_llm_agent_boundary": "Require distinct executor/trace plus heldout measurable verification lift before adding one; otherwise a role-named meta agent would recreate self-attestation and coordination bloat.",
+    "optimizer_boundary": "GEPA/DSPy-like optimizers are optional only when a trustworthy metric plus train/heldout data exists; they are not architecture authority for this maintenance problem."
   },
   "epistemic_independence": {
     "status": "ACTIVE",
@@ -66,10 +94,11 @@
     "nontrivial_candidate_requires_current_authority_inspection": true,
     "nontrivial_candidate_requires_credible_alternative_comparison": true,
     "nontrivial_candidate_requires_counterexample_or_failure_mode_search": true,
+    "systemic_change_requires_learning_scout_or_explicit_policy_allowed_exception": true,
     "promotion_requires_eval_or_regression_evidence": true,
     "second_order_challenge_required_for_nontrivial_closure": true,
     "closed_world_evidence_may_be_generalized_to_open_world_claim_without_new_evidence": false,
-    "latest_learning_pass": "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md"
+    "latest_learning_pass": "audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json"
   },
   "methodology_composition": {
     "status": "DECLARATION_MIGRATION_COMPLETE__RECEIPT_1_3_EXACT_ACTION_CONTRACT_ACTIVE__INDEPENDENT_LIVE_PROOF_PER_ACTION_PENDING",
@@ -89,7 +118,8 @@
     "profile_failure_containment": "AFFECTED_OWNER_CAPABILITY_OR_PROFILE_ONLY"
   },
   "operational_hygiene": {
-    "status": "BASELINE_ACTIVE",
+    "status": "META_MAINTENANCE_SEMANTICS_ACTIVE",
+    "material_user_correction_requires_classification_and_impact_review": true,
     "repeated_user_restating_same_durable_requirement_is_reliability_signal": true,
     "chat_apology_or_reminder_counts_as_fix": false,
     "declared_learning_role_without_invocation_and_receipt_is_operational": false,
@@ -125,12 +155,16 @@
       "owner_validation": {"head":"5d259ac62ee5c0636ae30af5fab3364b904e4f9f","run_id":38074881268,"result":"PASS"}
     },
     "novel": {
-      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_HARDENED__DISCOVERY_VERSION_METADATA_REFRESHED__CH9_PRODUCTION_PROOF_PENDING",
+      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_HARDENED__SIGNING_FEEDBACK_REPAIR_ACTIVE__CENTRAL_METADATA_REFRESHED_TO_SKILL_2_2_0_RUNTIME_2_3__PRODUCTION_AND_SIGNING_OUTCOMES_PENDING",
       "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"},
-      "metadata_validation": {"head":"44a7a83b7327d5ec650d192650fffb7c473df863","run_id":38074843270,"result":"PASS"}
+      "observed_owner_head": "3cf6be4eb09a0ae34c042f40a472d323664bc140",
+      "observed_skill_version": "Novel Writing Agent 2.2.0-github",
+      "observed_runtime_version": "github-owner-2.3",
+      "owner_regression": {"head":"fb97395df5d7028360edf7138d161ab190390ae8","run_id":38075873129,"job_id":114282590528,"result":"PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_ALL_OWNER_TESTS_WITH_SIGNING_FEEDBACK_RECOVERY"},
+      "business_state_rewritten_by_universal": false
     },
     "video_growth": {
-      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__REMOTE_METADATA_SWEEP_NO_NEW_DRIFT__STRICT_ISOLATED_REVIEW_AND_UNIQUE_GENERATION_GATE_BLOCKERS_OPEN",
+      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__STRICT_ISOLATED_REVIEW_AND_UNIQUE_GENERATION_GATE_BLOCKERS_OPEN",
       "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"}
     }
   },
@@ -160,6 +194,7 @@
     "existing_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE",
     "fresh_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE__KNOWN_TOPOLOGY_ONLY",
     "new_owner_cold_start_product_e2e": "PENDING_REAL_CHAT_EVIDENCE",
+    "meta_maintenance_account_hook_delta": "NO_EXTERNAL_EXPANSION_REQUIRED_WITH_CURRENT_EVIDENCE",
     "owner_entrypoint_refresh_rule": "Before material execution, refresh only the current owner entrypoint/Skill plus continuity/EXECUTION_CAPABILITIES.json and methodology profile(s) activated by the current action; handshake only required capabilities."
   },
   "product_e2e": {
@@ -173,6 +208,7 @@
     "account_level_hook_required":true,
     "repository_minimal_bootstrap":["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],
     "broad_control_plane_preload_required":false,
+    "meta_maintenance_method_copied_into_account_prompt":false,
     "github_presence_alone_is_not_trigger":true,
     "library_presence_alone_is_not_trigger":true,
     "bootstrap_unavailable_marker":"CONTINUITY_BOOTSTRAP_UNAVAILABLE",
@@ -197,13 +233,16 @@
   "continuous_learning": {
     "policy":"CONTINUOUS_LEARNING_POLICY.md",
     "self_detected_gap_feeds_maintenance_loop":true,
+    "material_user_correction_feeds_impact_review_and_eval_when_testable":true,
     "chat_only_idea_counts_as_durable_evolution":false,
     "raw_learning_evidence_auto_promotes":false,
     "epistemic_independence_gate_active":true,
     "second_order_challenge_active":true,
     "closed_world_to_open_world_claim_requires_new_evidence":true,
-    "latest_learning_pass":"audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md",
-    "new_reusable_failure_classes":["untrusted-verifier-input gap","plan-execution disconnect","schema-coercion privilege escalation","complete-discovery / incomplete-presentation split","historical-proof version laundering","suite/history amnesia"],
+    "latest_learning_pass":"audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json",
+    "new_reusable_failure_classes":["repair-first governance / meta-process omission","self-review without process verifier","user-correction assimilation gap","instruction-surface omission","cross-subsystem inheritance blind spot","complexity-efficiency blindness","premature global closure language"],
+    "external_methods_adopted_wholesale":false,
+    "optional_optimizer_boundary":"GEPA/DSPy only with trustworthy metric plus train/heldout data; not current architecture authority",
     "mechanical_regressions_or_fault_cases_added":true
   }
 }
