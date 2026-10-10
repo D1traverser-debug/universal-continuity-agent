@@ -24,7 +24,7 @@ def test_bare_inherit_required_sources_match_owner_registry_participants():
         "GENERIC_HANDOFF",
         "FINANCIAL_WRITING_AGENT_RUNTIME",
         "A_SHARE_MARKET_AGENT",
-        "NOVEL_OS",
+        "NOVEL_WRITING_AGENT",
         "VIDEO_GROWTH_AGENT",
     }
 
@@ -54,3 +54,11 @@ def test_system_infra_owners_do_not_pollute_bare_inherit():
 
     assert by_name["FINANCIAL_WRITING_AGENT_ENGINEERING"]["bare_inherit_participant"] is False
     assert by_name["FINANCIAL_WRITING_AGENT_STANDALONE"]["bare_inherit_participant"] is False
+
+
+def test_novel_legacy_alias_does_not_replace_canonical_owner_name():
+    owners = load("OWNER_REGISTRY.json")
+    by_name = {row["name"]: row for row in owners["owners"]}
+    novel = by_name["NOVEL_WRITING_AGENT"]
+    assert "NOVEL_OS" in novel.get("aliases", [])
+    assert novel["bare_inherit_participant"] is True
