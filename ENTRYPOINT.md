@@ -96,8 +96,8 @@ Before a material owner action:
 6. determine which bound methodology profiles are activated by the concrete action/event and load only those profiles;
 7. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
 8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.2 `profile_runs` evidence with profile version, activation id/trigger, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
-9. require an evidence-ref verifier independent of the receipt's self-report **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
-10. evaluate the activated subset with `runtime.methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
+9. require an independent evidence verifier for referenced evidence **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
+10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
 11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
 12. block only the exact hard capability/profile-dependent gate that is unavailable;
 13. require execution/artifact/review receipts for gates that claim completion.
