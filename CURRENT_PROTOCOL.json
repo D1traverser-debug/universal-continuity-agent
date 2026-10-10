@@ -1,0 +1,11 @@
+{
+  "continuity_protocol_version": "3.7",
+  "status": "ACTIVE",
+  "system_blueprint": "SYSTEM_BLUEPRINT.md",
+  "contract": "CONTINUITY_CONTRACT.json",
+  "version_lifecycle_policy": "VERSION_LIFECYCLE_POLICY.json",
+  "live_chat_reconciliation_policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
+  "progress_observability_policy": "PROGRESS_OBSERVABILITY_POLICY.json",
+  "user_migration_required": false,
+  "chat_protocol_version_pinned_at_creation": false
+}
