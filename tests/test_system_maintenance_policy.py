@@ -16,10 +16,15 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     assert "ASSISTANT_DETECTS_SYSTEMIC_GAP" in policy["triggers"]
     assert "USER_REPORT_REVEALS_SYSTEMIC_GAP" in policy["triggers"]
     assert "REPEATED_OWNER_FAILURE_OR_REGRESSION" in policy["triggers"]
+    assert "PREMATURE_SOLUTION_CANONICALIZATION_OR_USER_CORRECTION_SIGNAL" in policy["triggers"]
 
     autonomy = policy["default_autonomy"]
     assert autonomy["diagnose_root_cause"] is True
     assert autonomy["assess_reliability_guard_before_feature_expansion"] is True
+    assert autonomy["separate_user_goal_from_user_proposed_mechanism"] is True
+    assert autonomy["challenge_user_and_assistant_initial_solution"] is True
+    assert autonomy["compare_credible_alternatives_for_nontrivial_design"] is True
+    assert autonomy["seek_counterexample_or_failure_mode_before_adoption"] is True
     assert autonomy["apply_smallest_safe_fix"] is True
     assert autonomy["prefer_modify_existing_authority_over_new_parallel_surface"] is True
     assert autonomy["add_or_update_regression_guard_when_testable"] is True
@@ -49,7 +54,10 @@ def test_repeated_owner_failure_activates_scoped_reliability_guard():
 
     assert "same defect class materially recurs after an accepted fix" in guard["incident_triggers"]
     assert "the user repeatedly has to restate the same durable requirement" in guard["incident_triggers"]
+    assert "the user repeatedly has to correct the system for treating the user's suggested mechanism or analogy as canonical architecture" in guard["incident_triggers"]
     assert "PERSIST_INCIDENT_OR_FAILURE_EVIDENCE" in guard["required_response"]
+    assert "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM" in guard["required_response"]
+    assert "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA" in guard["required_response"]
     assert "ADD_OR_UPDATE_REGRESSION_OR_EVAL" in guard["required_response"]
     assert guard["affected_owner_non_reliability_expansion"] == "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY"
     assert guard["freeze_scope"] == "AFFECTED_OWNER_OR_CAPABILITY_ONLY"
@@ -57,6 +65,31 @@ def test_repeated_owner_failure_activates_scoped_reliability_guard():
     assert guard["user_manages_incident_backlog"] is False
     assert guard["chat_only_apology_or_reminder_counts_as_fix"] is False
     assert "ASSESS_RELIABILITY_GUARD" in policy["maintenance_loop"]
+    assert "CHALLENGE_INITIAL_SOLUTION_CANDIDATES" in policy["maintenance_loop"]
+
+
+def test_learning_policy_requires_epistemic_independence_before_nontrivial_adoption():
+    learning = (ROOT / "CONTINUOUS_LEARNING_POLICY.md").read_text(encoding="utf-8")
+    adapter = load_json(ROOT / "OWNER_ADAPTER_CONTRACT.json")
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+
+    assert "Epistemic independence and candidate-adoption gate" in learning
+    assert "not automatically the authority for an implementation pattern" in learning
+    assert "assistant's own first idea" in learning
+    assert "generate or retrieve at least one credible alternative" in learning
+    assert "actively search for a counterexample" in learning
+    assert "an analogy never establishes architecture by itself" in learning
+
+    hygiene = adapter["operational_hygiene_and_learning"]
+    assert hygiene["solution_proposal_from_user_assistant_or_other_agent_is_candidate_not_authority"] is True
+    assert hygiene["user_goal_and_constraint_must_be_separated_from_user_proposed_mechanism"] is True
+    assert hygiene["nontrivial_evolution_candidate_requires_alternative_comparison_and_failure_mode_search"] is True
+    assert hygiene["domain_specific_evolution_may_specialize_method_but_must_preserve_cross_agent_evidence_reliability_and_authority_invariants"] is True
+    assert hygiene["owner_override_may_replace_method_but_not_bypass_required_evidence_or_owner_boundaries"] is True
+
+    assert policy["scope_boundaries"]["do_not_treat_user_solution_proposal_as_architecture_authority_by_default"] is True
+    assert policy["scope_boundaries"]["do_not_treat_assistant_first_idea_as_privileged_candidate"] is True
+    assert policy["failure_semantics"]["nontrivial_solution_adopted_without_independent_candidate_critique"] == "EVOLUTION_GATE_NOT_SATISFIED"
 
 
 def test_system_maintenance_policy_preserves_owner_boundaries():
