@@ -1,15 +1,17 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "VALIDATION_PENDING_V37_ARTIFACT_GOVERNANCE_CONSOLIDATION",
+  "status": "PASS_V37_GOVERNANCE_CONSOLIDATED__OWNER_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "source_validation": {
-    "status": "PENDING_AFTER_CONSOLIDATION",
-    "target_head_sha": "854acd73f63a9eee55965cb5f2093815592ee752",
-    "previous_run_id": 38021429230,
-    "previous_result": "FAIL_SCHEMA_KEY_DRIFT_IN_HARNESS_STATUS",
-    "previous_pytest": "87 passed / 1 failed",
-    "note": "The consolidation itself reached tests; failure was an existing status-field drift introduced by an earlier metadata rewrite. Canonical acceptance key restored without weakening the old regression test."
+    "status": "PASS",
+    "github_actions_run_id": 38021590796,
+    "job_id": 114123561213,
+    "validated_head_sha": "44c9af2d05752df5be35ec279d6fb8458591bbef",
+    "installed_package_version": "3.7.0",
+    "pytest": "PASS",
+    "pytest_count": 89,
+    "note": "Validated the consolidated artifact/file governance and authority-surface admission gate. Earlier run 38021429230 exposed canonical HARNESS_STATUS acceptance-key drift (87 passed / 1 failed); the canonical key was restored without weakening the test. Later audit/checkpoint/status-only writes do not change runtime behavior."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -21,10 +23,13 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE",
+    "status": "ACTIVE_CI_PASS",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.1",
+    "policy_version": "1.2",
     "self_detected_systemic_gap_is_trigger": true,
+    "authority_surface_admission_gate_active": true,
+    "default_new_parallel_authority_surface_decision": "REJECT_IF_EXISTING_AUTHORITY_CAN_OWN_IT",
+    "prefer_modify_existing_authority_over_new_parallel_surface": true,
     "artifact_context_or_cache_drift_is_trigger": true,
     "chat_only_material_change_not_persisted_is_trigger": true,
     "wait_for_user_to_enumerate_internal_followups": false,
@@ -33,7 +38,7 @@
     "may_rewrite_domain_business_truth": false
   },
   "artifact_context_governance": {
-    "status": "ACTIVE_VALIDATION_PENDING",
+    "status": "ACTIVE_CI_PASS",
     "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "policy_version": "1.1",
     "storage_classes": ["ENGINEERING_AUTHORITY","DURABLE_TASK_STATE","BUSINESS_EVIDENCE","LEARNING_EVIDENCE","REBUILDABLE_CACHE","SESSION_SCRATCH","EXTERNAL_REFERENCE","CHAT_PERSONALIZATION_CONTEXT"],
