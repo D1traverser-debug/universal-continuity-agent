@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+CURRENT_META_MAINTENANCE_SCHEMA = "1.1"
+SUPPORTED_META_MAINTENANCE_SCHEMAS = {"1.0", CURRENT_META_MAINTENANCE_SCHEMA}
 SYSTEMIC_SCOPES = {"SYSTEMIC", "ARCHITECTURE", "FULL_CONTROL_PLANE"}
 USER_SIGNAL_CLASSES = {
     "GOAL_OR_CONSTRAINT",
@@ -13,8 +15,10 @@ USER_SIGNAL_CLASSES = {
     "PRODUCT_OR_ACCOUNT_INSTRUCTION_REQUEST",
 }
 LEARNING_DISPOSITIONS = {"SCOUT_DONE", "NOT_REQUIRED_WITH_REASON"}
+LEARNING_SOURCE_DISPOSITIONS = {"ADOPT", "NARROW", "REJECT"}
 INSTRUCTION_DECISIONS = {"CHANGE", "NO_CHANGE", "EXTERNAL_ACTION_REQUIRED"}
 PROPAGATION_SCOPES = {"ALL_BUSINESS_OWNERS", "SUBSET_WITH_REASON", "NOT_APPLICABLE_WITH_REASON"}
+IMPLEMENTATION_DECISIONS = {"CHANGE_APPLIED", "NO_CHANGE_REQUIRED"}
 ASSURANCE_ORDER = {
     "DECLARED": 1,
     "WIRED": 2,
@@ -65,8 +69,8 @@ def evaluate_meta_maintenance_run(
 
     A PASS means the run supplied the control/evidence fields required by the current
     maintenance policy. It does not prove that the diagnosis, research, alternative
-    comparison, or final architecture judgment is semantically correct. That higher
-    claim still requires independent trajectory/grader evidence when applicable.
+    comparison, falsification, or final architecture judgment is semantically correct.
+    That higher claim still requires independent trajectory/grader evidence when applicable.
     """
 
     errors: list[str] = []
@@ -74,7 +78,7 @@ def evaluate_meta_maintenance_run(
         "signal",
         "authority_and_failure_model",
         "learning",
-        "alternatives",
+        "alternatives_and_falsification",
         "instruction_surface",
         "propagation",
         "complexity_efficiency",
@@ -84,8 +88,11 @@ def evaluate_meta_maintenance_run(
     if not isinstance(run, Mapping):
         return MetaMaintenanceResult("FAIL", ("maintenance_run_required",), checked, "STRUCTURED_PROCESS_CONFORMANCE_ONLY")
 
-    if run.get("schema_version") != "1.0":
+    schema_version = str(run.get("schema_version", ""))
+    if schema_version not in SUPPORTED_META_MAINTENANCE_SCHEMAS:
         errors.append("unsupported_meta_maintenance_schema")
+    current_schema = schema_version == CURRENT_META_MAINTENANCE_SCHEMA
+
     if not _nonempty(run.get("run_id")):
         errors.append("run_id_required")
     scope = str(run.get("scope", "")).strip().upper()
@@ -106,6 +113,8 @@ def evaluate_meta_maintenance_run(
         errors.append("user_goal_or_constraint_required")
     if "PROPOSED_MECHANISM" in (classes or []) and "proposed_mechanism" not in signal:
         errors.append("proposed_mechanism_field_required_when_classified")
+    if current_schema and "COUNTEREXAMPLE_OR_FAILURE_REPORT" in (classes or []) and not _nonempty(signal.get("counterexample")):
+        errors.append("counterexample_required_when_failure_report_classified")
 
     authority = _mapping(run.get("authority_inspection"))
     if not _nonempty_str_list(authority.get("refs")):
@@ -122,6 +131,8 @@ def evaluate_meta_maintenance_run(
         errors.append("failure_classes_required")
     if not isinstance(failure.get("system_impact_map"), list) or not failure.get("system_impact_map"):
         errors.append("system_impact_map_required")
+    if current_schema and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
+        errors.append("systemic_falsification_checks_required")
 
     learning = _mapping(run.get("learning_scout"))
     disposition = learning.get("disposition")
@@ -139,6 +150,8 @@ def evaluate_meta_maintenance_run(
                 for field in ("ref", "observation", "disposition", "rationale"):
                     if not _nonempty(source.get(field)):
                         errors.append(f"learning_source_{idx}_{field}_required")
+                if current_schema and source.get("disposition") not in LEARNING_SOURCE_DISPOSITIONS:
+                    errors.append(f"learning_source_{idx}_disposition_invalid")
     elif disposition == "NOT_REQUIRED_WITH_REASON" and not _nonempty(learning.get("reason")):
         errors.append("learning_not_required_reason_required")
 
@@ -209,7 +222,25 @@ def evaluate_meta_maintenance_run(
         errors.append("new_authority_surface_requires_admission_gate")
 
     implementation = _mapping(run.get("implementation"))
-    if not _nonempty_str_list(implementation.get("changed_paths")):
+    changed_paths = implementation.get("changed_paths")
+    if not isinstance(changed_paths, list) or any(not _nonempty(item) for item in changed_paths):
+        errors.append("changed_paths_must_be_string_list")
+        changed_paths = []
+    if current_schema:
+        implementation_decision = implementation.get("decision")
+        if implementation_decision not in IMPLEMENTATION_DECISIONS:
+            errors.append("implementation_decision_required")
+        inspected_paths = implementation.get("inspected_paths")
+        if not _nonempty_str_list(inspected_paths):
+            errors.append("inspected_paths_required")
+        if implementation_decision == "CHANGE_APPLIED" and not changed_paths:
+            errors.append("change_applied_requires_changed_paths")
+        if implementation_decision == "NO_CHANGE_REQUIRED":
+            if changed_paths:
+                errors.append("no_change_required_forbids_changed_paths")
+            if not _nonempty(implementation.get("no_change_reason")):
+                errors.append("no_change_required_reason_required")
+    elif not changed_paths:
         errors.append("changed_paths_required")
     if not isinstance(implementation.get("superseded_or_demoted_surfaces"), list):
         errors.append("superseded_or_demoted_surfaces_list_required")
@@ -219,6 +250,8 @@ def evaluate_meta_maintenance_run(
         errors.append("regression_or_eval_refs_required")
     if validation.get("second_order_challenge") != "PASS":
         errors.append("second_order_challenge_required")
+    if current_schema and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(validation.get("second_order_findings")):
+        errors.append("systemic_second_order_findings_required")
     if scope in SYSTEMIC_SCOPES and validation.get("cross_surface_or_fault_audit") != "PASS":
         errors.append("systemic_change_requires_cross_surface_or_fault_audit")
 
