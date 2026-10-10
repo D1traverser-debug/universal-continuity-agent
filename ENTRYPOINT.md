@@ -1,186 +1,123 @@
 # Universal Continuity — Entry Point
 
-Status: ACTIVE
-Contract: v3.7
+Status: ACTIVE  
+Contract: v3.7  
 Engineering authority: this repository `main`
 
-## Critical startup boundary
+## Kernel boundary
 
-Chat is an ephemeral execution window; the durable object is the task. GitHub/Library are storage and discovery surfaces, not automatic event listeners. Bare `继承 / 继续 / 恢复` therefore requires the account startup hook in `STARTUP_HOOK.md`.
+Chat is an ephemeral execution window; the durable object is the task. GitHub/Library are storage and discovery surfaces, not automatic event listeners.
 
-If required Continuity resources cannot actually be accessed, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; do not reconstruct execution truth from Memory or old chat text.
+Universal owns discovery, routing, compatibility, lease/takeover, progress observability, recovery pointers and cross-owner control-plane invariants. Domain owners retain business rules, business state machines, evidence and business artifacts.
 
-## Core ownership
-
-Universal Continuity owns discovery, routing, compatibility, takeover lease semantics, progress observability, recovery pointers and cross-agent control-plane invariants. Domain owners retain business rules, business state machines, evidence and business artifacts. The sibling execution plane owns capability handshake/routing evidence, not business state.
-
-`OWNER_REGISTRY.json` is the **sole control-plane owner-membership authority**. Business-owner membership, bare-inherit participation and the source pointers needed to derive discovery/audit scope are declared there. `BARE_INHERIT_DISCOVERY.json`, execution/adaptation registries and audit outputs may derive or cache owner information; they must not become parallel owner-name authorities.
-
-## Intent precedence
-
-`学习继承，任务不继承` applies to **NEW_TASK**. Explicit continuation intent (`继承`, `继续`, `恢复`, `接着上次`, or a named continuation) is `CONTINUE` first.
+If required Continuity resources cannot actually be accessed, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; never reconstruct execution truth from Memory or an old chat.
 
 ## Minimal bootstrap invariant
 
-Do **not** preload the whole repository.
+Do **not** preload the repository.
 
 Every Continuity bootstrap begins with only:
 
 1. `ENTRYPOINT.md`;
 2. `CURRENT_PROTOCOL.json`.
 
-Everything else is event-driven. Load an authority only when the current action activates it. `SYSTEM_BLUEPRINT.md`, audits/research, unrelated owner repositories and old transcripts are cold-path references, not mandatory startup context.
+Everything else is event-driven. `SYSTEM_BLUEPRINT.md`, audits, methodology details, owner repositories and old transcripts are cold-path references.
 
-## Event-driven authority loading matrix
+## Intent routing
 
-- **Bare CONTINUE** -> `BARE_INHERIT_DISCOVERY.json`, then derive the current required owner/source quorum from `OWNER_REGISTRY.json`; never use a remembered/copied owner list or historical owner count.
-- **Named CONTINUE** -> exact owner/task manifest + short owner checkpoint first; skip global discovery unless resolution is ambiguous.
-- **New owner admission / owner-topology change** -> `OWNER_REGISTRY.json` + only the derived discovery/adaptation/execution conformance surfaces required to prove convergence. Registration must not require editing a second owner-name allowlist.
-- **Protocol mismatch** -> `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
-- **Recovery gap** -> `CONTEXT_RECOVERY_POLICY.json`, then exact artifact refs, then selective history only if still needed.
-- **Material GitHub-backed business execution** -> `OWNER_REGISTRY.json` for current owner membership/pointers, `EXECUTION_READINESS_CONTRACT.json`, exact owner Skill/entrypoint, exact owner `continuity/EXECUTION_CAPABILITIES.json`, then current-session handshake only for required capabilities. `OWNER_EXECUTION_REGISTRY.json` is a rebuildable pointer/status cache, not membership authority.
-- **Artifact/file/storage operation** -> `artifact_io@1.0` profile from `OWNER_ADAPTER_CONTRACT.json`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when its semantics are needed.
-- **Maintenance/repeated failure/drift/cleanup, including a material user correction that challenges maintenance method or global completeness** -> `operational_hygiene@1.0`; load `SYSTEM_MAINTENANCE_POLICY.json` and use its current meta-maintenance depth rules before adopting a proposed mechanism.
-- **Durable learning/evolution claim** -> `evolution@1.0`; load `CONTINUOUS_LEARNING_POLICY.md`.
-- **Media evidence/distillation** -> `MEDIA_DISTILLATION_PROTOCOL.md`.
-- **Architecture/control-plane review** -> `SYSTEM_BLUEPRINT.md` plus only the implicated contracts/policies.
+`学习继承，任务不继承` applies to **NEW_TASK**. Explicit `继承 / 继续 / 恢复 / 接着上次` intent is `CONTINUE` first.
 
-Methodology profiles are composable interface contracts, not copied parent-agent prose. Owners bind domain-local hooks and may specialize local methods, but cannot override kernel authority/evidence/reliability/destructive-mutation invariants. Declaration conformance is mechanically evaluated by `runtime/methodology_conformance.py`. Every profile defined by the current contract must be explicitly assessed as `APPLIES` or `NOT_APPLICABLE` with owner-local reason/evidence; omission is not a valid negative decision. Declaration/CI alone is never action-level operational proof.
+- **Bare CONTINUE** → load `BARE_INHERIT_DISCOVERY.json`, derive the current source quorum from `OWNER_REGISTRY.json`, complete every required source, then present eligible USER tasks. Never reuse a historical owner count.
+- **Named CONTINUE** → route directly to the exact owner/task manifest + short checkpoint. Skip global discovery unless routing is ambiguous.
+- **SYSTEM_INFRA** → never appears in bare candidates. It may resume only after explicit selection when its own manifest is eligible.
+- **NEW_TASK** → route to the matching owner without inheriting unfinished task state.
 
-## Task identity and topology
+`OWNER_REGISTRY.json` is the **sole control-plane owner-membership authority**. Parallel copied owner-name allowlists are forbidden.
 
-Every durable USER task has:
-- stable machine `task_id`;
-- user-facing `display_name_zh`.
+## Continuation invariant
 
-A rename never changes `task_id`. Same goal/same work keeps the same task. A materially different major branch that must coexist may become a child task. A one-shot side question should not mutate durable progress by default.
+For a selected durable task:
 
-## New-chat continuation
+1. read authoritative manifest + short checkpoint;
+2. show **继承前进度** before takeover mutation;
+3. reconcile protocol only when required;
+4. acquire/verify the writer lease with owner/CAS protection;
+5. load only the artifacts and capabilities required by the real `next_action`;
+6. continue from authoritative `current_stage / next_action`.
 
-After routing to Continuity:
+A real takeover increments `resume_epoch` and supersedes the old lease. Same-writer control-plane refresh preserves both. Partial discovery is `INCOMPLETE_DISCOVERY` and can never auto-resume.
 
-1. classify CONTINUE vs NEW_TASK;
-2. resolve exact task or, for bare CONTINUE, derive the **current** discovery quorum from `OWNER_REGISTRY.json` and complete all derived sources;
-3. read authoritative manifest + short checkpoint;
-4. capture and show **继承前进度** before takeover mutation;
-5. reconcile compatibility only if needed;
-6. for a genuine new-chat takeover, increment `resume_epoch` and acquire/verify a new lease with owner version/CAS guard where available;
-7. load only artifacts/capabilities/profiles needed by the real `next_action`;
-8. continue from authoritative `current_stage / next_action`.
+Bare candidates are USER tasks with `resume_eligible=true`, `resume_visibility=DEFAULT`, and non-terminal resumable status. Hidden/system/test/eval/migration tasks are excluded.
 
-Same-chat protocol/control-plane refresh preserves the current lease and `resume_epoch`. Only a genuine new-chat takeover changes them.
+## Event-driven authority loading
 
-If a derived required bare-discovery source fails, return `INCOMPLETE_DISCOVERY`; never present a partial list as authoritative total.
+Load the following only when the event occurs:
 
-## Owner admission and topology
+- **Owner admission/topology** → `OWNER_REGISTRY.json`, `AGENT_ARCHITECTURE_CONTRACT.json`, and only the derived adaptation/execution/architecture conformance surfaces needed now.
+- **Protocol mismatch** → `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
+- **Recovery gap** → `CONTEXT_RECOVERY_POLICY.json`, then exact artifact refs, then selective history only if still necessary.
+- **Material owner execution** → exact owner Skill/entrypoint + `continuity/EXECUTION_CAPABILITIES.json` + `EXECUTION_READINESS_CONTRACT.json`; perform a current-session handshake only for the exact next action.
+- **Execution/methodology proof used for a gate** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py`; apply the current receipt/action-binding contract there rather than copying it into this bootstrap.
+- **Artifact/file/storage** → `artifact_io@1.0`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when its semantics activate.
+- **Maintenance/repeated failure/drift/material user correction** → `operational_hygiene@1.0` + `SYSTEM_MAINTENANCE_POLICY.json`.
+- **Durable learning/evolution** → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`.
+- **Media evidence/distillation** → `MEDIA_DISTILLATION_PROTOCOL.md`.
+- **Architecture/control-plane review** → `AGENT_ARCHITECTURE_CONTRACT.json` + `SYSTEM_BLUEPRINT.md` + implicated contracts only.
 
-A durable business owner is admitted by one canonical membership declaration in `OWNER_REGISTRY.json` with `owner_kind=BUSINESS` plus its checkpoint/protocol/execution pointers. A bare-inherit participant additionally declares `bare_inherit_participant=true` and a `bare_inherit_source`.
+Methodology profiles are conditional contracts. They are loaded only when their activation event occurs. Owners pin exact versions; Floating `latest` is forbidden.
 
-After that declaration:
+## Owner execution boundary
 
-1. `runtime/owner_topology.py` derives the current business-owner and bare-discovery sets;
-2. bare discovery and system-audit scope must include the new owner without another name-list edit;
-3. rebuildable protocol-adaptation and execution registries must converge to the derived BUSINESS set;
-4. until convergence, owner-admission conformance fails closed rather than silently omitting the owner.
-
-A historical E2E run over the previous owner set does not prove this admission path works in a genuinely fresh product chat for a later owner. Dynamic membership mechanics may be regression-verified synthetically; open-world new-owner product support requires a real post-admission fresh-chat trajectory.
-
-## Bare inherit eligibility
-
-Plain `继承/继续` candidates must have:
-- `task_class == USER`;
-- `resume_eligible == true`;
-- `resume_visibility == DEFAULT`;
-- status in `ACTIVE / WAITING / BLOCKED`.
-
-SYSTEM_INFRA/TEST/FIXTURE/EVAL/MIGRATION/terminal/hidden tasks are not bare candidates. An explicit SYSTEM_INFRA task may resume only when its own visibility/eligibility permits it.
-
-## Compatibility
-
-A resumed task is `COMPATIBLE`, `MIGRATABLE`, `INCOMPATIBLE`, or `UNKNOWN`. Supported additive migrations are system work, not user work. Unknown or incompatible execution truth fails closed rather than being guessed from chat memory.
-
-## GitHub-backed owner execution
-
-Repository declarations establish at most a capability ceiling, not current execution proof.
+Repository declarations are capability ceilings, not current execution proof.
 
 Before a material owner action:
-1. refresh the exact owner Skill/entrypoint and capability manifest;
-2. identify only capabilities needed by the current next action;
-3. perform current-session observations/handshake;
-4. evaluate with `runtime/execution_readiness.py`;
-5. evaluate the owner's methodology declaration with `runtime/methodology_conformance.py:evaluate_methodology_conformance`; every contract profile must have explicit applicability evidence, and any `APPLIES` profile must be exact-version bound before execution proceeds;
-6. determine which bound methodology profiles are activated by the concrete action/event and load only those profiles;
-7. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
-8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.3 `profile_runs` evidence with profile version, activation id/trigger, exact task/stage/action plus subject/input binding, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
-9. require an independent evidence verifier for referenced evidence **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
-10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` against an external action expectation before claiming the profile-dependent gate or action is operationally complete;
-11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, exact action binding, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
-12. block only the exact hard capability/profile-dependent gate that is unavailable;
-13. require execution/artifact/review receipts for gates that claim completion;
-14. when an execution receipt is used as proof, validate its exact task/stage/capability/action plus owner-required subject/input bindings through `runtime/execution_receipt.py`; apply owner-required anti-replay identities for distinct/single-use executions.
 
-`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat. A methodology declaration marked `BOUND_EXACT_VERSION` or an owner CI PASS proves wiring/regression only; it does not prove the current material action activated and satisfied the profile. Conversely, an omitted profile is not assumed non-applicable: the owner must make that exclusion explicit and evidence-bearing.
+1. refresh the exact owner Skill and execution capability manifest;
+2. observe only capabilities needed by the current action;
+3. evaluate execution readiness and applicable methodology using the current contracts;
+4. use only an allowed owner-native / deterministic / CHAT_BRIDGED / attested route at its real assurance level;
+5. validate any receipt against the exact current task/stage/action/subject/input before using it as proof;
+6. block only the exact unavailable hard gate.
 
-A real receipt is still not proof for the wrong claim. Exact-action receipt binding prevents stale/foreign execution evidence from being reused across another task, stage, capability, candidate, brief, replay corpus, artifact version or action. The generic binding validator proves identity/binding and configured anti-replay constraints; it does **not** upgrade executor trust, provider issuance, chronology, reviewer independence or semantic quality by itself.
+`DECLARED_ONLY` is not execution. CI/regression wiring is not current-session proof. Role-switching is not attested isolation. A real proof object for another action is not proof for this action.
 
-## Artifact and methodology invariants
+## Agent product architecture
 
-Shared cross-agent methodology is composed rather than inherited as a giant parent behavior bundle:
+Every BUSINESS owner must expose the `agent_manifest_ref` declared by `OWNER_REGISTRY.json`. The manifest separates:
 
-- `artifact_io@1.0` -> stable identity, freshness/conflict handling, verified mutation, invalidation, retention/cleanup and artifact-vault bindings;
-- `operational_hygiene@1.0` -> incident evidence, self-maintenance trigger, owner-aware GC and scoped reliability freeze;
-- `evolution@1.0` -> learning evidence, independent candidate critique, eval/regression promotion and superseded-mechanism cleanup.
+`Skill/router → Runtime/executor → Workflow/state → Harness/eval → References → Continuity`.
 
-Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Every current contract profile also has a mandatory applicability assessment. `APPLIES` requires binding; `NOT_APPLICABLE` requires a concrete reason and owner-local evidence refs. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
+Universal validates this through `AGENT_ARCHITECTURE_CONTRACT.json` and `runtime/agent_architecture_audit.py`. Large Skills/bootstrap surfaces are architecture drift, not execution evidence. A manifest is a static description and never self-certifies current repository freshness; remote observations are rebuildable control-plane evidence.
 
-Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete. Under receipt contract 1.3, exact action binding, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
+## Maintenance and learning
 
-## Learning and maintenance
+User goals/corrections are high-value signals, not automatic implementation commands. For systemic/non-trivial maintenance, follow the current `SYSTEM_MAINTENANCE_POLICY.json`: inspect authority, build the failure model, learn/compare alternatives when required, test counterexamples, review instruction/propagation/complexity impact, implement the smallest adequate mechanism, validate, attack the accepted fix again, and persist the result.
 
-External advice, user analogies, assistant first ideas and other Agent/framework proposals are candidates, not architecture authority. For nontrivial adoption: inspect current authority, separate goal from proposed mechanism, compare a credible alternative, actively seek a failure mode/counterexample, then require relevant eval/regression evidence before production promotion.
-
-A material user correction or challenge to maintenance completeness is itself a maintenance/evolution signal; it must be classified and reviewed through the current `SYSTEM_MAINTENANCE_POLICY.json` rather than being treated as a direct implementation command. The policy decides whether external learning, instruction-surface change, cross-subsystem propagation and full-depth audit are required. Do not add prompt/instruction text merely because a runtime/schema/eval defect was discovered.
-
-When a systemic defect or repeated owner failure is inside the current maintenance writer's authority, follow the maintenance closure instead of stopping at explanation. The user does not maintain the internal defect backlog.
-
-Before declaring a nontrivial repair "done", apply `evolution@1.0` second-order challenge / closure calibration to the **accepted fix itself**. In particular, distinguish closed-world evidence (known owners/cases at test time) from open-world claims (future owner admission/generalization), and distinguish a real proof object from proof bound to the exact current claim. A green CI on a synthetic new owner is not a real fresh-product-chat trajectory; a real receipt for another action is not current-action proof.
+Do not create another permanent Agent merely to simulate independent review. Deterministic harnesses, distinct execution identities and real graders must keep their assurance boundaries separate.
 
 ## Progress observability
 
-For every final response on an active durable task, emit exactly one `进度提交` state:
-- `COMMITTED` only after material write + authoritative reread verification;
-- `NO_MATERIAL_CHANGE` when the durable resume point did not change;
-- `COMMIT_FAILED` when an intended durable write could not be persisted or verified;
-- `STALE_WRITER` when this chat lost its lease.
+Every final response on an active durable task emits exactly one:
 
-`COMMITTED` is a **durable-persistence receipt**, not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable. Missing action-level operational conformance evidence therefore keeps the corresponding profile-dependent gate/action claim OPEN; it does not forbid persisting that blocker and reporting the persistence as COMMITTED. Report assurance/gate state separately from commit status.
+- `进度提交：COMMITTED` — material state was written and authoritative state reread;
+- `进度提交：NO_MATERIAL_CHANGE` — durable resume point unchanged;
+- `进度提交：COMMIT_FAILED` — intended persistence failed or could not be verified;
+- `进度提交：STALE_WRITER` — this chat lost its lease.
 
-A tool-success response, cache write or model memory is never commit proof. Conversely, a verified commit does not raise the assurance level of the content merely because it was persisted.
+`COMMITTED` means durable persistence only. It does not imply execution, methodology, review, quality or outcome PASS.
 
 ## Performance invariant
 
-Continuity stays off the steady-state business hot path:
-- global discovery only for bare continuation or unresolved routing;
-- current owner topology derived from `OWNER_REGISTRY.json`, never a fixed copied owner list;
-- metadata before content;
-- short checkpoint before deep artifacts;
-- targeted execution handshake only for current action;
-- methodology declaration/applicability validation at owner-entry boundaries, not as broad repository preload;
-- methodology profiles loaded only when their activation event occurs;
-- operational methodology validation only for the profiles activated by the current material action;
-- exact receipt-binding validation only when an execution receipt is being used to satisfy a gate/claim;
-- meta-maintenance learning/research/harness work is cold path and activated only for systemic/nontrivial maintenance, not ordinary business turns;
-- old chat history is last resort;
-- no material change means no heartbeat write.
+Keep Continuity off the steady-state business hot path: metadata before content, short checkpoint before deep artifacts, targeted capability/profile loading, no global discovery for exact routing, old history last, and no heartbeat write when nothing material changed.
 
 ## Authority order
 
 1. compatible authoritative domain runtime/checkpoint;
-2. authoritative task/system manifest for routing/lease/protocol metadata;
-3. current GitHub `main` engineering authority for code/contracts/profiles, including `OWNER_REGISTRY.json` for owner membership;
-4. explicitly owner-referenced business evidence required now;
-5. rebuildable registries/caches;
-6. external references unless explicitly designated by owner contract;
+2. authoritative task/system manifest;
+3. current GitHub `main` engineering authority, including `OWNER_REGISTRY.json` for membership;
+4. owner-referenced evidence required by the current action;
+5. rebuildable registries/observations/caches;
+6. external references unless explicitly promoted by owner contract;
 7. chat history only as recovery evidence.
 
-A lower authority may not silently overwrite fresher higher-authority truth.
+A lower authority cannot overwrite fresher higher-authority truth.
