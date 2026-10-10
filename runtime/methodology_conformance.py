@@ -39,8 +39,12 @@ def evaluate_methodology_conformance(
 ) -> MethodologyConformanceResult:
     """Validate declaration-level composable methodology conformance.
 
-    This proves only that an owner declares compatible profile versions, hook bindings and
-    overrides. It does *not* prove that any hook was invoked during a real maintenance,
+    Declaration conformance has two jobs:
+    1. validate every profile the owner binds; and
+    2. make profile omission explicit by requiring an applicability assessment for every
+       profile in the current contract.
+
+    This still does *not* prove that any hook was invoked during a real maintenance,
     artifact or evolution action. Call ``evaluate_operational_methodology_conformance``
     when operational evidence is required.
     """
@@ -70,10 +74,13 @@ def evaluate_methodology_conformance(
         )
 
     profile_refs = methodology.get("profile_refs")
+    profile_applicability = methodology.get("profile_applicability")
     hook_bindings = methodology.get("hook_bindings")
     overrides = methodology.get("overrides", {})
     if not isinstance(profile_refs, Mapping):
         return MethodologyConformanceResult("FAIL", (), ("missing_or_invalid_profile_refs",))
+    if not isinstance(profile_applicability, Mapping):
+        return MethodologyConformanceResult("FAIL", (), ("missing_or_invalid_profile_applicability",))
     if not isinstance(hook_bindings, Mapping):
         return MethodologyConformanceResult("FAIL", (), ("missing_or_invalid_hook_bindings",))
     if not isinstance(overrides, Mapping):
@@ -87,11 +94,53 @@ def evaluate_methodology_conformance(
         if str(key) in forbidden_overrides:
             errors.append(f"forbidden_override:{key}")
 
+    # Negative-space validation: every contract profile must be consciously assessed.
+    # This prevents a missing profile from silently passing simply because the owner never
+    # mentioned it in profile_refs.
+    for raw_profile_id in profile_applicability:
+        profile_id = str(raw_profile_id)
+        if profile_id not in profiles:
+            errors.append(f"unknown_profile_applicability:{profile_id}")
+
+    for raw_profile_id in profiles:
+        profile_id = str(raw_profile_id)
+        assessment = profile_applicability.get(profile_id)
+        if not isinstance(assessment, Mapping):
+            errors.append(f"missing_profile_applicability:{profile_id}")
+            continue
+
+        status = str(assessment.get("status", "")).strip()
+        reason = str(assessment.get("reason", "")).strip()
+        refs_raw = assessment.get("evidence_refs")
+        refs = (
+            [str(ref).strip() for ref in refs_raw if isinstance(ref, str) and str(ref).strip()]
+            if isinstance(refs_raw, list)
+            else []
+        )
+
+        if status not in {"APPLIES", "NOT_APPLICABLE"}:
+            errors.append(f"invalid_profile_applicability_status:{profile_id}:{status}")
+        if not reason:
+            errors.append(f"missing_profile_applicability_reason:{profile_id}")
+        if not refs:
+            errors.append(f"missing_profile_applicability_evidence_refs:{profile_id}")
+
+        if status == "APPLIES" and profile_id not in profile_refs:
+            errors.append(f"applicable_profile_not_declared:{profile_id}")
+        if status == "NOT_APPLICABLE" and profile_id in profile_refs:
+            errors.append(f"profile_declared_but_marked_not_applicable:{profile_id}")
+
     for profile_id, requested_version in profile_refs.items():
         profile = profiles.get(profile_id)
         if not isinstance(profile, Mapping):
             errors.append(f"unknown_profile:{profile_id}")
             continue
+
+        assessment = profile_applicability.get(profile_id)
+        if not isinstance(assessment, Mapping) or str(assessment.get("status", "")).strip() != "APPLIES":
+            # The detailed applicability error is emitted above. Keep validating the rest so
+            # callers get the complete defect set in one pass.
+            pass
 
         expected_version = str(profile.get("version", ""))
         if str(requested_version) != expected_version:
