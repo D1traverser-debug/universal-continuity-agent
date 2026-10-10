@@ -9,7 +9,14 @@ from runtime.methodology_conformance import (
     evaluate_methodology_conformance,
     evaluate_operational_methodology_conformance,
 )
+from runtime.owner_topology import (
+    bare_inherit_sources,
+    business_owner_names,
+    validate_owner_registry,
+)
 
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 CORE_CHECKS = (
     "protocol_version_alignment",
@@ -19,6 +26,7 @@ CORE_CHECKS = (
     "product_e2e_status_alignment",
     "owner_protocol_registry_state_consistency",
     "methodology_declaration_operational_separation",
+    "owner_membership_single_source_of_truth",
 )
 
 FAULT_INJECTION_SCENARIOS = (
@@ -26,6 +34,8 @@ FAULT_INJECTION_SCENARIOS = (
     "stale_registry_attempts_to_override_owner_authority",
     "same_chat_protocol_refresh_changes_lease_or_resume_epoch",
     "new_chat_takeover_fails_to_change_writer_lease",
+    "new_business_owner_is_added_without_execution_or_adaptation_convergence",
+    "bare_discovery_uses_stale_parallel_owner_list",
     "methodology_profile_floats_latest",
     "methodology_profile_missing_required_hook",
     "methodology_profile_overrides_kernel_invariant",
@@ -36,13 +46,6 @@ FAULT_INJECTION_SCENARIOS = (
     "destructive_mutation_has_unknown_identity_or_dependency",
     "external_reference_is_promoted_to_authority_by_presence",
     "declared_executor_is_treated_as_session_execution_proof",
-)
-
-BUSINESS_OWNERS = (
-    "FINANCIAL_WRITING_AGENT_RUNTIME",
-    "A_SHARE_MARKET_AGENT",
-    "NOVEL_WRITING_AGENT",
-    "VIDEO_GROWTH_AGENT",
 )
 
 HIGH_RISK_PATHS = {
@@ -92,19 +95,35 @@ def _normalize_paths(paths: Iterable[str]) -> tuple[str, ...]:
     return tuple(sorted({str(path).strip().replace("\\", "/") for path in paths if str(path).strip()}))
 
 
-def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) -> dict[str, Any]:
-    """Build a deterministic risk-tiered audit plan without defaulting to all business pipelines."""
+def _load_json(root: Path, relative: str) -> dict[str, Any]:
+    return json.loads((root / relative).read_text(encoding="utf-8"))
+
+
+def _business_owner_scope(owner_registry: dict[str, Any] | None = None) -> set[str]:
+    registry = owner_registry or _load_json(REPO_ROOT, "OWNER_REGISTRY.json")
+    return set(business_owner_names(registry))
+
+
+def plan_audit(
+    changed_paths: Iterable[str] = (),
+    trigger: str | None = None,
+    *,
+    owner_registry: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a deterministic risk-tiered audit plan from current owner membership."""
 
     paths = _normalize_paths(paths=changed_paths)
     trigger = (trigger or "routine_change").strip()
     modes = ["CORE_ALWAYS", "IMPACT_SCOPED"]
     checks = set(CORE_CHECKS)
     owner_scope: set[str] = set()
+    business_owners = _business_owner_scope(owner_registry)
     risk = "LOW"
 
     high_risk_change = any(path in HIGH_RISK_PATHS for path in paths)
     owner_surface_change = any(
         path.startswith("OWNER_")
+        or path.startswith("runtime/owner_topology.py")
         or path.startswith("runtime/methodology_conformance.py")
         or path.startswith("runtime/execution_readiness.py")
         for path in paths
@@ -116,12 +135,12 @@ def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) ->
 
     if owner_surface_change:
         risk = "HIGH"
-        owner_scope.update(BUSINESS_OWNERS)
+        owner_scope.update(business_owners)
         checks.update({"owner_pointer_reachability", "owner_protocol_observation_match"})
 
     if trigger in FULL_SWEEP_TRIGGERS or high_risk_change:
         modes.append("FULL_CONTROL_PLANE")
-        owner_scope.update(BUSINESS_OWNERS)
+        owner_scope.update(business_owners)
         checks.update(
             {
                 "all_control_plane_contracts_and_registries",
@@ -153,10 +172,6 @@ def plan_audit(changed_paths: Iterable[str] = (), trigger: str | None = None) ->
         "fault_injection_scenarios": list(FAULT_INJECTION_SCENARIOS) if "SYNTHETIC_FAULT_INJECTION" in modes else [],
         "changed_paths": list(paths),
     }
-
-
-def _load_json(root: Path, relative: str) -> dict[str, Any]:
-    return json.loads((root / relative).read_text(encoding="utf-8"))
 
 
 def _local_ref_candidates(manifest: dict[str, Any]) -> list[str]:
@@ -206,8 +221,6 @@ def _methodology_separation_errors(contract: dict[str, Any]) -> list[str]:
         errors.append("synthetic declaration-conformant owner did not pass declaration validation")
         return errors
 
-    # Regression for the Financial false-negative class: an owner surface says artifact_io
-    # applies, but profile_refs silently omits it. This must never declaration-PASS again.
     omission_applicability = {
         key: dict(value) for key, value in profile_applicability.items()
     }
@@ -273,6 +286,7 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
     contract = _load_json(root, "CONTINUITY_CONTRACT.json")
     adapter = _load_json(root, "OWNER_ADAPTER_CONTRACT.json")
     owner_registry = _load_json(root, "OWNER_REGISTRY.json")
+    discovery = _load_json(root, "BARE_INHERIT_DISCOVERY.json")
     adaptation = _load_json(root, "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json")
     execution = _load_json(root, "OWNER_EXECUTION_REGISTRY.json")
     maintenance = _load_json(root, "SYSTEM_MAINTENANCE_POLICY.json")
@@ -287,6 +301,8 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         errors.append("OWNER_ADAPTER_CONTRACT.continuity_contract != current protocol")
     if owner_registry.get("continuity_protocol_version") != protocol:
         errors.append("OWNER_REGISTRY.continuity_protocol_version != current protocol")
+    if discovery.get("continuity_protocol_version") != protocol:
+        errors.append("BARE_INHERIT_DISCOVERY.continuity_protocol_version != current protocol")
     if adaptation.get("current_continuity_protocol") != protocol:
         errors.append("OWNER_PROTOCOL_ADAPTATION_REGISTRY.current_continuity_protocol != current protocol")
     if task_manifest.get("continuity_protocol_version") != protocol:
@@ -295,18 +311,39 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         errors.append("maintenance TASK_MANIFEST system_maintenance_policy_version is stale")
 
     errors.extend(_methodology_separation_errors(adapter))
+    errors.extend(validate_owner_registry(owner_registry))
 
-    owner_entries = {entry["name"]: entry for entry in owner_registry.get("owners", [])}
+    owner_entries_map = {entry["name"]: entry for entry in owner_registry.get("owners", []) if isinstance(entry, dict) and entry.get("name")}
     adaptation_entries = {entry["owner"]: entry for entry in adaptation.get("owners", [])}
     execution_entries = {entry["owner"]: entry for entry in execution.get("owners", [])}
-    expected_business = set(BUSINESS_OWNERS)
+    expected_business = set(business_owner_names(owner_registry))
+    derived_bare = bare_inherit_sources(owner_registry)
+    derived_bare_names = {row["owner"] for row in derived_bare}
+    registry_bare_names = {
+        entry["name"]
+        for entry in owner_registry.get("owners", [])
+        if isinstance(entry, dict) and entry.get("bare_inherit_participant") is True and entry.get("name")
+    }
 
-    if not expected_business.issubset(owner_entries):
-        errors.append("OWNER_REGISTRY is missing one or more durable business owners")
+    participant_authority = discovery.get("participant_authority", {})
+    if not isinstance(participant_authority, dict):
+        errors.append("BARE_INHERIT_DISCOVERY missing participant_authority")
+    else:
+        if participant_authority.get("source") != "OWNER_REGISTRY.json":
+            errors.append("BARE_INHERIT_DISCOVERY participant authority is not OWNER_REGISTRY.json")
+        if participant_authority.get("hard_coded_owner_list_allowed") is not False:
+            errors.append("BARE_INHERIT_DISCOVERY permits a parallel hard-coded owner list")
+    if "required_sources" in discovery:
+        errors.append("BARE_INHERIT_DISCOVERY contains legacy hard-coded required_sources")
+    if derived_bare_names != registry_bare_names:
+        errors.append("derived bare-inherit owner set does not match OWNER_REGISTRY participants")
+
+    if not expected_business.issubset(owner_entries_map):
+        errors.append("OWNER_REGISTRY derived BUSINESS set is internally inconsistent")
     if set(adaptation_entries) != expected_business:
-        errors.append("OWNER_PROTOCOL_ADAPTATION_REGISTRY owner set does not match durable business owners")
+        errors.append("OWNER_PROTOCOL_ADAPTATION_REGISTRY owner set does not match OWNER_REGISTRY BUSINESS membership")
     if set(execution_entries) != expected_business:
-        errors.append("OWNER_EXECUTION_REGISTRY owner set does not match durable business owners")
+        errors.append("OWNER_EXECUTION_REGISTRY owner set does not match OWNER_REGISTRY BUSINESS membership")
 
     for owner in sorted(expected_business.intersection(adaptation_entries)):
         entry = adaptation_entries[owner]
@@ -314,7 +351,7 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         target = entry.get("target_protocol")
         classification = entry.get("classification")
         status = str(entry.get("status", ""))
-        registry_status = str(owner_entries.get(owner, {}).get("adapter_status", ""))
+        registry_status = str(owner_entries_map.get(owner, {}).get("adapter_status", ""))
         if observed == target and classification != "COMPATIBLE":
             errors.append(f"{owner}: observed protocol equals target but classification is not COMPATIBLE")
         if observed == target and "PENDING_VALID_WRITER_RECONCILIATION" in status:
@@ -345,15 +382,13 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
     if harness.get("execution_propagation", {}).get("fresh_chat_product_e2e") == "PENDING_REAL_CHAT_EVIDENCE" and fresh == "PASS":
         errors.append("HARNESS_STATUS execution_propagation fresh-chat state contradicts product_e2e")
 
-    # Product E2E is independent live evidence, so it can detect two stale cache surfaces
-    # agreeing with each other. This avoids circular cache-vs-cache validation.
     evidence_owner = existing_e2e.get("owner")
     evidence_protocol = existing_e2e.get("to_protocol")
     if evidence_owner in adaptation_entries and evidence_protocol:
         adaptation_entry = adaptation_entries[evidence_owner]
         if adaptation_entry.get("observed_protocol") != evidence_protocol:
             errors.append(f"{evidence_owner}: adaptation registry contradicts verified existing-chat protocol evidence")
-        registry_status = str(owner_entries.get(evidence_owner, {}).get("adapter_status", ""))
+        registry_status = str(owner_entries_map.get(evidence_owner, {}).get("adapter_status", ""))
         if evidence_protocol == adaptation_entry.get("target_protocol") and "RECONCILED" not in registry_status:
             errors.append(f"{evidence_owner}: OWNER_REGISTRY does not reflect verified existing-chat reconciliation evidence")
 
@@ -364,6 +399,7 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
     resolver = owner_registry.get("resolver", {})
     for key in (
         "module",
+        "owner_topology",
         "bare_inherit_policy",
         "protocol_adaptation_registry",
         "execution_readiness_contract",
@@ -386,6 +422,7 @@ def audit_local_control_plane(root: str | Path) -> dict[str, Any]:
         "warnings": warnings,
         "checked_protocol": protocol,
         "checked_business_owners": sorted(expected_business),
+        "checked_bare_inherit_owners": sorted(derived_bare_names),
         "checked_core_invariants": list(CORE_CHECKS),
     }
 
@@ -420,9 +457,11 @@ def main() -> int:
     parser.add_argument("--changed-path", action="append", default=[])
     args = parser.parse_args()
 
+    repo_root = Path(args.repo_root)
+    owner_registry = _load_json(repo_root, "OWNER_REGISTRY.json")
     result = {
-        "plan": plan_audit(args.changed_path, args.trigger),
-        "local_audit": audit_local_control_plane(args.repo_root),
+        "plan": plan_audit(args.changed_path, args.trigger, owner_registry=owner_registry),
+        "local_audit": audit_local_control_plane(repo_root),
     }
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0 if result["local_audit"]["status"] == "PASS" else 1
