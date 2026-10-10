@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 6,
+  "manifest_version": 7,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,15 +10,17 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T07:32:00Z",
+  "updated_at": "2026-10-10T15:33:35Z",
   "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
   "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state in the GitHub owner and continue CH9 from the existing READY contract without replaying completed CH8 work.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
-  "domain_contract_version": "2.0-github",
-  "skill_version": "Novel Writing Agent 2.0.0-github",
-  "runtime_version": "github-owner-2.1",
+  "domain_contract_version": "2.1-github",
+  "skill_version": "Novel Writing Agent 2.1.0-github",
+  "runtime_version": "github-owner-2.2",
+  "release_evidence_contract_version": "1.0",
+  "release_evidence_strict_from_chapter": 9,
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
   "resume_epoch": 2,
   "active_lease": {
@@ -30,7 +32,7 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "UNIVERSAL_ROUTING_AND_LEASE_MANIFEST",
-  "owner_adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/CONTINUITY_ADAPTER.json",
+  "owner_adapter_ref": "D1traverser-debug/novel-writing-agent@main:CONTINUITY_ADAPTER.json",
   "owner_task_index_ref": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
   "owner_entrypoint_ref": "D1traverser-debug/novel-writing-agent@main:ENTRYPOINT.md",
   "business_state_authority": "D1traverser-debug/novel-writing-agent@main",
@@ -38,13 +40,16 @@
   "compatibility": {
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
-    "checked_against": "Universal Continuity v3.7"
+    "checked_against": "Universal Continuity v3.7",
+    "owner_internal_hardening": "Novel owner 2.1 / runtime 2.2 is compatible additive evidence enforcement; no task replay or lease change."
   },
   "continuity_acceptance": {
     "result": "PASS",
     "owner_acceptance_ref": "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json",
     "owner_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/recovery_guard.py",
+    "owner_release_evidence_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/release_evidence_guard.py",
     "test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_recovery_contract.py",
+    "release_evidence_test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_release_evidence_contract.py",
     "new_chat_recovery": "PASS",
     "takeover_simulation": "PASS",
     "github_owner_cutover": "PASS"
