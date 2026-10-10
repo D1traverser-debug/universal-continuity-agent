@@ -175,6 +175,32 @@ def evaluate_methodology_conformance(
     )
 
 
+def _verify_evidence_refs(
+    refs_raw: Any,
+    *,
+    profile_id: str,
+    label: str,
+    evidence_verifier: Callable[[str], bool],
+    errors: list[str],
+) -> list[str]:
+    refs = (
+        [str(ref).strip() for ref in refs_raw if isinstance(ref, str) and str(ref).strip()]
+        if isinstance(refs_raw, list)
+        else []
+    )
+    if not refs:
+        errors.append(f"missing_{label}_evidence_refs:{profile_id}")
+        return []
+    for ref in refs:
+        try:
+            verified = bool(evidence_verifier(ref))
+        except Exception:
+            verified = False
+        if not verified:
+            errors.append(f"unverified_{label}_evidence_ref:{profile_id}:{ref}")
+    return refs
+
+
 def evaluate_operational_methodology_conformance(
     owner_declaration: Mapping[str, Any],
     contract: Mapping[str, Any],
@@ -183,12 +209,18 @@ def evaluate_operational_methodology_conformance(
     required_profiles: Iterable[str] | None = None,
     evidence_verifier: Callable[[str], bool] | None = None,
 ) -> OperationalMethodologyConformanceResult:
-    """Validate that required methodology profiles were actually invoked with verified evidence.
+    """Validate event-activated methodology use with independently verified evidence.
 
     Operational PASS is deliberately stronger than declaration PASS. A self-authored receipt is
     only an index: every referenced evidence item must be independently accepted by the caller's
-    ``evidence_verifier``. This function therefore cannot return PASS from owner declaration or
-    receipt structure alone.
+    ``evidence_verifier``.
+
+    A profile contains the complete set of hooks that its owner must be capable of supporting,
+    but a single action does not necessarily execute every hook. New receipts therefore assess
+    every hook for the current action as either ``INVOKED`` or
+    ``NOT_APPLICABLE_FOR_ACTION``. This preserves negative-space checking without forcing fake
+    executions of unrelated hooks. Legacy receipts without ``hook_assessments`` remain valid only
+    under the previous all-hooks-invoked semantics.
 
     ``required_profiles`` should be the event-activated subset for the current action. If omitted,
     every declaration-conformant profile is required.
@@ -278,34 +310,91 @@ def evaluate_operational_methodology_conformance(
 
         required_hooks_from = str(profile.get("required_hooks_from", ""))
         try:
-            required_hooks = _resolve_path(contract, required_hooks_from)
+            required_hooks_raw = _resolve_path(contract, required_hooks_from)
         except KeyError:
             errors.append(f"invalid_required_hooks_ref:{profile_id}:{required_hooks_from}")
             continue
-        if not isinstance(required_hooks, list):
+        if not isinstance(required_hooks_raw, list):
             errors.append(f"required_hooks_not_list:{profile_id}:{required_hooks_from}")
             continue
+        required_hooks = tuple(str(item) for item in required_hooks_raw)
+        required_hook_set = set(required_hooks)
 
         invoked_hooks_raw = run.get("invoked_hooks")
-        invoked_hooks = {
-            str(item) for item in invoked_hooks_raw
-        } if isinstance(invoked_hooks_raw, list) else set()
-        missing_hooks = sorted(set(str(item) for item in required_hooks) - invoked_hooks)
-        for hook in missing_hooks:
-            errors.append(f"required_hook_not_observed:{profile_id}:{hook}")
+        reported_invoked_hooks = (
+            {str(item) for item in invoked_hooks_raw}
+            if isinstance(invoked_hooks_raw, list)
+            else None
+        )
 
-        refs_raw = run.get("evidence_refs")
-        refs = [str(ref) for ref in refs_raw if str(ref).strip()] if isinstance(refs_raw, list) else []
-        if not refs:
-            errors.append(f"missing_evidence_refs:{profile_id}")
+        hook_assessments = run.get("hook_assessments")
+        if hook_assessments is None:
+            # Backward-compatible legacy receipts: absence of action-scoped assessments means
+            # the receipt is interpreted exactly as before -- every profile hook must have run.
+            invoked_hooks = reported_invoked_hooks or set()
+            missing_hooks = sorted(required_hook_set - invoked_hooks)
+            for hook in missing_hooks:
+                errors.append(f"required_hook_not_observed:{profile_id}:{hook}")
+            unknown_hooks = sorted(invoked_hooks - required_hook_set)
+            for hook in unknown_hooks:
+                errors.append(f"unknown_invoked_hook:{profile_id}:{hook}")
+        elif not isinstance(hook_assessments, Mapping):
+            errors.append(f"invalid_hook_assessments:{profile_id}")
         else:
-            for ref in refs:
-                try:
-                    verified = bool(evidence_verifier(ref))
-                except Exception:
-                    verified = False
-                if not verified:
-                    errors.append(f"unverified_evidence_ref:{profile_id}:{ref}")
+            for raw_hook in hook_assessments:
+                hook = str(raw_hook)
+                if hook not in required_hook_set:
+                    errors.append(f"unknown_hook_assessment:{profile_id}:{hook}")
+
+            assessed_invoked: set[str] = set()
+            for hook in required_hooks:
+                assessment = hook_assessments.get(hook)
+                if not isinstance(assessment, Mapping):
+                    errors.append(f"missing_hook_assessment:{profile_id}:{hook}")
+                    continue
+
+                status = str(assessment.get("status", "")).strip()
+                reason = str(assessment.get("reason", "")).strip()
+                if status not in {"INVOKED", "NOT_APPLICABLE_FOR_ACTION"}:
+                    errors.append(f"invalid_hook_assessment_status:{profile_id}:{hook}:{status}")
+                if not reason:
+                    errors.append(f"missing_hook_assessment_reason:{profile_id}:{hook}")
+
+                refs_raw = assessment.get("evidence_refs")
+                refs = (
+                    [str(ref).strip() for ref in refs_raw if isinstance(ref, str) and str(ref).strip()]
+                    if isinstance(refs_raw, list)
+                    else []
+                )
+                if not refs:
+                    errors.append(f"missing_hook_assessment_evidence_refs:{profile_id}:{hook}")
+                else:
+                    for ref in refs:
+                        try:
+                            verified = bool(evidence_verifier(ref))
+                        except Exception:
+                            verified = False
+                        if not verified:
+                            errors.append(f"unverified_hook_assessment_evidence_ref:{profile_id}:{hook}:{ref}")
+
+                if status == "INVOKED":
+                    assessed_invoked.add(hook)
+
+            if not assessed_invoked:
+                errors.append(f"no_invoked_hooks_for_action:{profile_id}")
+
+            if reported_invoked_hooks is not None and reported_invoked_hooks != assessed_invoked:
+                errors.append(
+                    f"invoked_hooks_mismatch:{profile_id}:reported={','.join(sorted(reported_invoked_hooks))}:assessed={','.join(sorted(assessed_invoked))}"
+                )
+
+        _verify_evidence_refs(
+            run.get("evidence_refs"),
+            profile_id=profile_id,
+            label="profile",
+            evidence_verifier=evidence_verifier,
+            errors=errors,
+        )
 
         profile_errors = [error for error in errors if f":{profile_id}" in error]
         if not profile_errors:
