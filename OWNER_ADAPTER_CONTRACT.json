@@ -7,12 +7,15 @@
   "required_capabilities": ["list_resumable_tasks_metadata_only","get_task_checkpoint_by_id","compatibility_check","resume_or_migrate_or_block","provide_short_handoff_or_equivalent_checkpoint","provide_stable_artifact_refs_for_next_action","provide_pre_takeover_progress_state","persist_material_progress_with_owner_version_guard","reread_authoritative_state_after_write","reconcile_supported_older_continuity_protocol_without_user_migration"],
   "artifact_context_governance": {
     "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
-    "owner_must_expose": ["durable_task_state_location","authoritative_business_evidence_classes","cache_or_reference_only_stores","upstream_to_downstream_invalidation_rule","superseded_artifact_cleanup_rule"],
+    "owner_must_expose": ["durable_task_state_location","authoritative_business_evidence_classes","canonical_artifact_or_file_stores","cache_or_reference_only_stores","stable_identity_strategy","read_freshness_requirements","mutation_conflict_strategy","post_write_verification_method","upstream_to_downstream_invalidation_rule","delete_and_retention_rules","superseded_artifact_cleanup_rule","external_artifact_vault_if_any"],
     "cache_may_be_checkpoint_authority": false,
     "chat_memory_may_be_checkpoint_authority": false,
     "external_reference_is_authority_by_presence": false,
     "chat_only_material_change_requires_persistence_before_future_resume": true,
     "superseded_active_implementation_should_be_removed_or_demoted": true,
+    "material_file_mutation_requires_postcondition_verification": true,
+    "destructive_mutation_requires_stable_identity_and_dependency_check": true,
+    "tool_success_alone_is_commit_proof": false,
     "domain_specific_retention_stays_owner_controlled": true
   },
   "live_chat_reconciliation": {"policy":"LIVE_CHAT_RECONCILIATION_POLICY.json","user_migration_required":false,"same_chat_protocol_upgrade_preserves_resume_epoch":true,"same_chat_protocol_upgrade_preserves_active_lease":true,"new_chat_takeover_changes_lease":true,"maintenance_task_must_not_overwrite_another_active_task_writer_manifest":true,"supported_additive_edges":["3.3->3.7","3.5->3.7","3.6->3.7"]},
@@ -21,7 +24,7 @@
   "bare_inherit_predicate": {"task_class":["USER"],"resume_eligible":true,"resume_visibility":["DEFAULT"],"status":["ACTIVE","WAITING","BLOCKED"]},
   "explicit_system_infra": {"bare_inherit_eligible":false,"explicit_resume_allowed_when":"task_class=SYSTEM_INFRA + resume_eligible=true + resume_visibility=EXPLICIT_ONLY + explicit user selection"},
   "lease_epoch": {"canonical":"top-level resume_epoch","nested_active_lease_resume_epoch_required":false,"rule":"When nested active_lease.resume_epoch is absent, use top-level resume_epoch. When both exist and conflict, fail closed."},
-  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context"},
+  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context","file_identity_or_dependency_unknown_for_destructive_mutation":"BLOCK_MUTATION_OR_DELETE"},
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
 }
