@@ -1,17 +1,18 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_GOVERNANCE_CONSOLIDATED__OWNER_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
+  "status": "PASS_V37_OPERATIONAL_HYGIENE_BASELINE_ACTIVE__OWNER_EVOLUTION_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
+  "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38021590796,
-    "job_id": 114123561213,
-    "validated_head_sha": "44c9af2d05752df5be35ec279d6fb8458591bbef",
+    "github_actions_run_id": 38032272822,
+    "job_id": 114155522633,
+    "validated_head_sha": "0651195c95e7697dd57700bdad6ce193b6a8a5ff",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 89,
-    "note": "Validated the consolidated artifact/file governance and authority-surface admission gate. Earlier run 38021429230 exposed canonical HARNESS_STATUS acceptance-key drift (87 passed / 1 failed); the canonical key was restored without weakening the test. Later audit/checkpoint/status-only writes do not change runtime behavior."
+    "pytest_count": 93,
+    "note": "Validated reliability-guard and operational-hygiene owner conformance plus current Novel owner cutover invariants. Initial run 38031960585 exposed six stale Novel legacy tests after a valid NOVEL_WRITING_AGENT/v3.7 cutover; authority was retained and tests were reconciled to current invariants. Later audit/checkpoint/status writes are metadata-only."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -25,8 +26,9 @@
   "system_maintenance": {
     "status": "ACTIVE_CI_PASS",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
-    "policy_version": "1.2",
+    "policy_version": "1.3",
     "self_detected_systemic_gap_is_trigger": true,
+    "repeated_owner_failure_or_regression_is_trigger": true,
     "authority_surface_admission_gate_active": true,
     "default_new_parallel_authority_surface_decision": "REJECT_IF_EXISTING_AUTHORITY_CAN_OWN_IT",
     "prefer_modify_existing_authority_over_new_parallel_surface": true,
@@ -37,13 +39,29 @@
     "may_steal_other_owner_lease": false,
     "may_rewrite_domain_business_truth": false
   },
+  "operational_hygiene": {
+    "status": "BASELINE_ACTIVE_CI_PASS",
+    "model": ["RECONCILER","OBSERVABILITY_OR_EVAL","OWNER_AWARE_GC","INCIDENT_OR_POSTMORTEM","SCOPED_RELIABILITY_GUARD","EVOLUTION_GATE"],
+    "repeated_user_restating_same_durable_requirement_is_reliability_signal": true,
+    "repeated_fixed_defect_is_incident_trigger": true,
+    "chat_apology_or_reminder_counts_as_fix": false,
+    "declared_learning_role_without_invocation_and_receipt_is_operational": false,
+    "promotion_requires_eval_or_regression_evidence": true,
+    "scoped_change_freeze_on_core_reliability_failure": true,
+    "freeze_scope": "AFFECTED_OWNER_OR_CAPABILITY_ONLY",
+    "unrelated_healthy_owners_frozen": false,
+    "user_manages_incident_backlog": false,
+    "self_cleaning_means": "OWNER_DEPENDENCY_RETENTION_AWARE_GC_ONLY",
+    "blanket_delete_old_business_evidence": false,
+    "background_continuous_maintenance_without_scheduler_claimed": false,
+    "owner_conformance_required": ["observability_or_incident_evidence_location","self_maintenance_trigger_path","learning_evidence_location","eval_or_regression_promotion_path","garbage_collection_owner_and_dependency_rule","reliability_or_change_freeze_guard","superseded_mechanism_cleanup_rule"]
+  },
   "artifact_context_governance": {
     "status": "ACTIVE_CI_PASS",
     "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "policy_version": "1.1",
     "storage_classes": ["ENGINEERING_AUTHORITY","DURABLE_TASK_STATE","BUSINESS_EVIDENCE","LEARNING_EVIDENCE","REBUILDABLE_CACHE","SESSION_SCRATCH","EXTERNAL_REFERENCE","CHAT_PERSONALIZATION_CONTEXT"],
     "parallel_file_operation_policy_exists": false,
-    "file_operations_consolidated_into_artifact_governance": true,
     "material_file_mutation_requires_postcondition_verification": true,
     "destructive_mutation_requires_stable_identity_and_dependency_check": true,
     "tool_success_alone_is_commit_proof": false,
@@ -55,8 +73,49 @@
     "notion_is_control_plane_dependency": false,
     "google_drive_role": "OPTIONAL_ARTIFACT_VAULT_OR_EXPLICIT_REFERENCE",
     "google_drive_is_control_plane_dependency": false,
-    "owner_business_retention_is_domain_owned": true,
-    "owner_conformance_rollout": "ON_VALID_OWNER_WRITER_OR_MAINTENANCE_TURN"
+    "owner_business_retention_is_domain_owned": true
+  },
+  "owner_operational_hardening": {
+    "financial_writing": {
+      "status": "LEARNING_EVIDENCE_CAPTURE_WIRED_CI_PASS",
+      "profile_version": 2,
+      "material_user_feedback_requires_durable_sample_before_durable_learning_claim": true,
+      "learning_evidence_capability": "SESSION_EXECUTABLE",
+      "run_id": 38032299542,
+      "job_id": 114155603504,
+      "head_sha": "a6e69993787394f1abeef4b5da6e5bb3cb0b5e9d",
+      "pytest_count": 50,
+      "openai_agents_sdk_smoke": "PASS",
+      "mcp_streamable_http_smoke": "PASS_17_TYPED_TOOLS",
+      "contract_eval": "PASS_NO_FAILING_CASES",
+      "static_audit": "PASS",
+      "isolated_wheel_install": "PASS",
+      "docx_render_smoke": "PASS"
+    },
+    "video_growth": {
+      "status": "SCHEDULED_LEARNING_EVIDENCE_PIPELINE_WIRED_CI_PASS",
+      "profile_version": 2,
+      "learn_sequence": ["production_methodologist","evolution_engineer","red_team","showrunner"],
+      "scheduled_learning_pipeline_assurance": "SESSION_EXECUTABLE",
+      "midstage_repeated_failure_sidecar_assurance": "HARNESS_WIRED",
+      "learning_artifact_is_production_authority_mutation": false,
+      "critical_isolated_reviewer_currently_executable": false,
+      "enforced_quality_critical_generation_gateway_currently_executable": false,
+      "run_id": 38032673305,
+      "job_id": 114156701436,
+      "head_sha": "81f3f96e168128de42b9d1661f25f8189c93dc3a",
+      "pytest_count": 84,
+      "installed_cli_agentic_studio_smoke": "PASS"
+    },
+    "novel_regression_reconciliation": {
+      "status": "PASS",
+      "canonical_owner": "NOVEL_WRITING_AGENT",
+      "legacy_alias": "NOVEL_OS",
+      "valid_owner_cutover_was_reverted": false,
+      "stale_tests_reconciled_to_current_authority": true
+    },
+    "a_share_operational_hygiene_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN",
+    "novel_operational_hygiene_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN"
   },
   "execution_control_plane": {
     "status": "ACTIVE",
@@ -124,6 +183,6 @@
     "self_detected_gap_feeds_maintenance_loop": true,
     "chat_only_idea_counts_as_durable_evolution": false,
     "raw_learning_evidence_auto_promotes": false,
-    "broader_self_evolution_design": "DEFERRED_BY_USER_FOR_SEPARATE_DISCUSSION"
+    "broader_self_evolution_design": "DEFERRED_SEPARATE_FROM_OPERATIONAL_HYGIENE_BASELINE"
   }
 }
