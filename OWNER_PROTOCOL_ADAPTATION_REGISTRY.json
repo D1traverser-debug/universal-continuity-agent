@@ -43,16 +43,17 @@
       "status": "OWNER_ADAPTER_AND_CHECKPOINT_COMPACTION_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION"
     },
     {
-      "owner": "NOVEL_OS",
-      "repository": null,
+      "owner": "NOVEL_WRITING_AGENT",
+      "repository": "D1traverser-debug/novel-writing-agent",
       "observed_protocol": "3.3",
       "target_protocol": "3.7",
       "classification": "MIGRATABLE",
-      "strategy": "UNIVERSAL_ROUTING_OVERLAY_NOW__OWNER_BUSINESS_CHECKPOINT_LAZY_RECONCILIATION",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY_DURING_GITHUB_OWNER_CUTOVER",
       "business_state_rewrite": false,
       "force_lease_takeover": false,
-      "adapter_ref": "tasks/FQ001_MINGRI_ORDER/PROTOCOL_ADAPTER.json",
-      "status": "ROUTING_ADAPTER_STAGED__TASK_AND_OWNER_CHECKPOINT_PENDING_VALID_WRITER_RECONCILIATION"
+      "adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "conformance_ref": "D1traverser-debug/novel-writing-agent@main:continuity/ARTIFACT_CONTEXT_GOVERNANCE.json",
+      "status": "ACTIVE_ENTRY_RECONCILED_V37"
     }
   ],
   "rule": "A maintenance task may stage owner protocol adapters and conformance plans, but it must not overwrite an active task manifest/checkpoint owned by another writer lease. Task-level protocol metadata and compacted recovery state are applied by the valid task writer on its next durable turn or by a genuine new-chat takeover."
