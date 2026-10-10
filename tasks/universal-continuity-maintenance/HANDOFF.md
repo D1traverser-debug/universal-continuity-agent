@@ -5,182 +5,141 @@
 - owner: `UNIVERSAL_CONTINUITY_HARNESS`
 - status: `ACTIVE`
 - contract: `CONTINUITY_V3_7`
-- current writer: `lease-4b4bc507-0949-4b2e-aed4-c0186dd07566`
-- resume_epoch: `2`
-- manifest_version: `38`
+- current writer: `lease-0f3dc1cd-1656-4493-af73-97f3b334c858`
+- resume_epoch: `3`
+- manifest_version: `41`
+- system maintenance policy: `1.6`
+- meta-maintenance harness: `1.1`
 
 ## 当前阶段
 
-`V3_7_META_GOVERNANCE_HARNESS_REGRESSION_VERIFIED__SYSTEMIC_MAINTENANCE_OUTLINE_ACTIVE__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
+`V3_7_META_GOVERNANCE_HARNESS_1_1_PROMOTED__POLICY_TO_VERIFIER_ALIGNMENT_HARDENED__TOPOLOGY_BOUND_PROPAGATION_GUARD_ACTIVE__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
-这不是“整个系统无误”的状态。它只表示：本轮暴露出的 **repair-first / self-review / user-correction assimilation / instruction-impact / propagation / complexity-efficiency / premature-closure** 治理缺口已经形成新的规范层 + 确定性过程验证层，并达到 `REGRESSION_VERIFIED`。独立语义/产品效果证据仍按各自 gate 保持 OPEN。
+这不是“系统已经无误”。本轮只把用户要求的 **总控自检 / 挑刺 / 蒸馏 / 学习 / 进化** 真正作用到 Universal Continuity 自身，并把发现的 policy→runtime proof gaps 修成可回归约束。保证上限仍是 `REGRESSION_VERIFIED / STRUCTURED_PROCESS_CONFORMANCE_ONLY`；独立语义和真实产品效果 gate 继续 OPEN。
 
-## 这轮为什么重新打开维护
+## 本轮发现的根因
 
-用户连续指出：过去即使总控能挑刺、学习、跑 CI，维护仍容易按“收到问题 → 自己闷头修 → 绿灯 → 说好了”的旧路径推进，缺少默认且显式的：
+1. **policy-to-verifier drift**：`SYSTEM_MAINTENANCE_POLICY 1.6` 已要求 meta-governance alignment、用户挑战 maintenance completeness 时升级 full audit、以及新的 fault classes；`runtime/system_audit.py` 没完全同步这些执行覆盖。
+2. **mutation-theater pressure**：Meta Harness 1.0 强制 `implementation.changed_paths` 非空，导致一次正确的 `NO_CHANGE_REQUIRED` 审计也必须制造写入，和“不要为了维护活跃而发明工作”冲突。
+3. **falsification-as-label**：旧 Harness 可只写 `second_order_challenge=PASS`，却不机械要求系统性 run 留下 counterexample / falsification checks / second-order findings。
+4. **topology-bound proof ambiguity**：新 BUSINESS owner 加入后，不能只让 adaptation/execution registry 收敛；如果仍复用旧 topology 的“ALL_BUSINESS_OWNERS propagation proof”，全局闭环就是历史证明洗成当前证明。
 
-- 用户修正/需求变化的分类与吸收；
-- 全系统 impact map；
-- 是否需要外部学习/逆向/蒸馏工具的决策；
-- 是否应该修改 GPT/account/startup instruction 的专门判断；
-- 子系统是否真正继承、是否存在 stale override/shadow copy；
-- 复杂度、上下文、工具调用、延迟、迁移成本和臃肿审查；
-- 修复后对“全局没问题/未来问题都考虑过”的 claim calibration。
+Durable machine-readable record：`audits/META_MAINTENANCE_SYSTEM_SELF_AUDIT_2026-10-11.json`。
 
-这不是用户方案自动成为架构命令。它被分类为：`GOAL_OR_CONSTRAINT + COUNTEREXAMPLE_OR_FAILURE_REPORT + PROPOSED_MECHANISM`，然后重新比较架构候选。
+## 实际修复
 
-## 外部学习 / 逆向结果
+### Meta-Governance Harness 1.1
 
-Durable machine-readable record：`audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json`。
+`runtime/meta_maintenance.py` 现在：
 
-实际检查并蒸馏的模式包括：
+- 新 systemic failure-report run 必须有显式 `counterexample`；
+- systemic run 必须有 `failure_model.falsification_checks`；
+- learning source disposition 限定为 `ADOPT / NARROW / REJECT`；
+- implementation 必须显式 `CHANGE_APPLIED` 或 `NO_CHANGE_REQUIRED`；
+- `NO_CHANGE_REQUIRED` 允许 `changed_paths=[]`，但必须给 `inspected_paths + no_change_reason`，仍需完整 validation/closure；
+- systemic second-order review 必须留下 `second_order_findings`，不再接受只有一个 `PASS` 标签；
+- 历史 schema `1.0` 继续作为历史证据可读，不会被偷偷升级成 1.1 assurance。
 
-- OpenAI tracing / agent eval：执行 trace 与 grader/eval 分离；不要从声明推断“真的执行过”。
-- Anthropic agent evals / long-running harness：用 eval 和 durable progress artifact 代替生产后被动补洞；跨 context 由 harness 管持久进度。
-- Anthropic Agent Skills：progressive disclosure，复杂方法按事件加载，避免把完整方法塞进常驻 prompt。
-- mini-SWE-agent：真实实现保持 agent/harness 极简，同时保留 trajectory、step/cost/time limit 与可回放 observation；“层更多”不是成熟度指标。
-- GEPA / DSPy 类 optimizer：只有在可靠 evaluator + train/heldout 数据存在时才适合自动优化 prompt/code/agent architecture；当前不把它们升级成总控架构权威，避免 Goodhart/过拟合。
-- OpenAI Prompt Optimizer：吸收“优化前后必须 eval/人工复核”的纪律，但不把 prompt optimizer 作为当前核心依赖，也不允许用 prompt 增长掩盖 runtime/eval 缺陷。
+### System Audit 与 Policy 1.6 对齐
 
-外部方法没有整套照搬；每一项都记录 ADOPT / NARROW 及本系统失败模式映射。
+`runtime/system_audit.py` 现在：
 
-## 架构候选与结论
+- `CORE_ALWAYS` 纳入 `maintenance_meta_governance_alignment`；
+- canonical `USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS` 会升级为 `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`；
+- 新增 fault：`meta_maintenance_outline_omitted_after_systemic_correction`；
+- 新增 fault：`hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade`；
+- 继续明确 local CI audit ≠ remote owner sweep，full closure 的远程 owner metadata 证据仍由 maintenance runner 提供。
 
-比较了三种：
+### Topology-bound propagation
 
-1. **只继续扩 `SYSTEM_MAINTENANCE_POLICY`** → REJECTED as complete solution。规范必要，但维护者仍可自己跳步骤、自己解释完成。
-2. **再建一个上层 LLM Meta Agent** → REJECTED FOR NOW。当前没有 distinct executor / trace / held-out measured lift；新增角色名会重演 self-attestation inflation，并增加协调/context 成本。
-3. **规范层 + deterministic Meta-Governance Harness + 现有独立 grader/live gate** → ACCEPTED。
+`tests/test_system_audit.py` 的 synthetic new-owner 场景现在要求三层都收敛：
 
-职责分离：
+1. adaptation registry；
+2. execution registry；
+3. **当前 meta run 的 propagation evidence 覆盖新的 BUSINESS owner topology**。
 
-- `SYSTEM_MAINTENANCE_POLICY.json`：规范 authority；
-- `runtime/meta_maintenance.py`：窄职责、确定性过程完整性 verifier；
-- 独立 trajectory grader / distinct evidence verifier / real outcome：真正语义与效果保证。
+否则 local control-plane audit 继续 FAIL CLOSED。
 
-Meta Harness PASS 的保证上限固定为：`STRUCTURED_PROCESS_CONFORMANCE_ONLY`。它不能证明同一模型没有事后补写 run，也不能证明研究/诊断/架构判断语义正确。
+### 版本/状态绑定
 
-## SYSTEM_MAINTENANCE_POLICY 1.6
+`tests/test_meta_governance_status_alignment.py` 现在机械要求：
 
-默认 systemic/non-trivial maintenance 现在显式经过：
+`runtime.meta_maintenance.CURRENT_META_MAINTENANCE_SCHEMA == TASK_MANIFEST.meta_maintenance_harness_version == HARNESS_STATUS.meta_governance.runtime_version == 1.1`
 
-`signal classification → failure/impact model → learning scout → alternatives/falsification → instruction-surface decision → complexity/efficiency budget → minimum implementation → multi-layer validation → cross-subsystem propagation → second-order challenge → durable learning/checkpoint`
+并要求 HARNESS 当前 meta run 与 manifest pointer 一致。
 
-关键新增边界：
+## 反证结果：我自己的初步诊断被推翻
 
-- 一次 material user correction 即可触发 system-impact review；不需要等用户重复三次。
-- user goal/constraint 是高权威输入；user proposed mechanism 不是默认架构权威。
-- systemic/architecture change 默认要求 learning scout；local deterministic bug 可 `NOT_REQUIRED_WITH_REASON`。
-- prompt/account instruction 不是默认修法；先判断根因层。
-- shared control-plane change 必须从当前 owner registry 推导 impacted owners 并扫 stale override/shadow logic。
-- nontrivial control-plane change 必须评估 authority surface、startup context、tool/remote reads、steady-state latency、duplicate rule、cross-owner touch、migration/test burden。
-- 禁止声称 global system error-free、所有未来 failure class 已提前考虑、或所有机制都已被证明合适。
+本轮一度怀疑中央 Financial/A-share owner validation cache 落后于 owner adapter 内嵌 evidence。实际做 Git commit ancestry 比较后，该判断被否决：
 
-## Instruction / GPT 指令结论
+- Financial 中央 validation head 比 adapter baseline **领先 25 commits**；
+- A-share 中央 validation head 比 adapter baseline **领先 4 commits**。
 
-**没有扩写外部 ChatGPT Custom Instructions。**
+因此没有为了“看起来统一”回滚中央更强证据。这个反例已经写进本轮 meta run，作为维护者自己的 diagnosis 也必须被挑战的长期样本。
 
-原因不是“嫌麻烦”，而是根因不在 account routing：现有 `STARTUP_HOOK.md` 已能把 system maintenance 路由到当前 repo authority，本次聊天本身也进入了正确 maintenance task。把完整 meta 方法复制进 Custom Instructions 会：
+## 外部学习蒸馏
 
-- 重复 repo authority；
-- 增加常驻 prompt；
-- 产生 future drift；
-- 掩盖真正的 internal governance/eval defect。
+本轮重新看了当前 OpenAI agent eval / tracing / evaluation best-practice 资料，采纳的是方法而不是产品依赖：
 
-内部 `ENTRYPOINT.md` 已做最小修改：
-- material user correction / challenge to maintenance completeness 明确进入 current meta-maintenance path；
-- stale methodology receipt wording `1.2` 已统一为 `1.3`；
-- 明确 systemic meta work 是 cold path，不进入普通业务热路径。
+- workflow claim 应绑定 trace / grader / dataset evidence，而不是相信 agent 自述；
+- evaluation 要覆盖 edge cases / variation，不靠单一 happy path；
+- 当前产品 eval 接口变化不应变成 Universal 的硬依赖，保留 generic trace/dataset/grader abstraction。
 
-如果未来真实 product evidence 表明当前 account hook 对这种 maintenance signal 路由失败，再持久化最小外部 instruction delta 并只要求用户执行一次 UI 修改；repo write 本身不冒充 account propagation。
+这支持了本轮“结构化 run ≠ 独立语义正确”的 assurance ceiling，而不是给总控再加一层 LLM 角色。
 
-## 子系统继承 / propagation review
+## 架构候选结论
 
-当前 `OWNER_REGISTRY` 的 4 个 BUSINESS owner 均重新读取：
+- 继续只扩 policy：**REJECTED**，因为 policy 已经比 runtime verifier 强；
+- 再造上层 Meta Agent / parallel registry：**REJECTED**，会增加 self-attestation 与 authority split；
+- 在现有 Meta Harness / System Audit / tests 上补机械 proof obligation：**ACCEPTED**。
 
-- `FINANCIAL_WRITING_AGENT_RUNTIME`
-- `A_SHARE_MARKET_AGENT`
-- `NOVEL_WRITING_AGENT`
-- `VIDEO_GROWTH_AGENT`
+新 root authority / permanent agent / business hot-path preload：`0`。
 
-四个都继续 exact-version 绑定 `artifact_io@1.0 + operational_hygiene@1.0 + evolution@1.0`。当前 owner override 属于 evaluator/artifact/domain specialization，没有发现覆盖 shared maintenance evidence/reliability/authority invariant 的 shadow override。
+## 当前验证证据
 
-因此这次是兼容 semantics-owner hardening：不 bump Continuity protocol，不 bump methodology profile version，也不复制同一套 prose 到四仓。
+这轮 CI 没有“一路绿”：
 
-Propagation sweep 还实际发现：Novel owner 在上一轮 sweep 后已独立升级到 `Novel Writing Agent 2.2.0-github / github-owner-2.3`，而中央 derived registry 仍是 `2.1.1 / 2.2.1`。中央 `OWNER_REGISTRY / OWNER_PROTOCOL_ADAPTATION_REGISTRY / HARNESS_STATUS` 已只刷新 metadata；没有改小说正文、Canon、业务 task stage、next_action 或 lease。当前 Novel 业务状态以 owner 自身权威为准，Universal 不覆盖。
+- run `38083693672`：正确抓到 takeover 后 `GENERIC_TASK_REGISTRY` 暂时落后 manifest；
+- run `38083708497`：local audit PASS 后，pytest 暴露 current meta run 仍是 schema 1.0 与新-owner topology proof 未收敛；
+- run `38083873449`：继续暴露 manifest 还没正式晋升 Harness 1.1；
+- head `30c730123c26dd48c521ad86f77880675353a677`：run `38084028371` / job `114306630234` **SUCCESS**，risk-tiered system audit PASS + pytest PASS。
 
-## Complexity / efficiency
+`HARNESS_STATUS.json` 已把这次成功 behavioral head 记录为 Harness 1.1 regression evidence。当前 Handoff/status-only sync 写入后，仍需观察最新 `main` CI 成功后才能对用户报告 `COMMITTED`。
 
-本轮结论：`ACCEPTABLE`，但原因写死：
+## 仍然 OPEN
 
-- 新 root policy/registry/permanent Agent：`0`；
-- `runtime/meta_maintenance.py` 是 verifier implementation，不是第二 authority；
-- mandatory startup context delta：`0`；
-- ordinary business hot-path preload：`0`；
-- 外部学习/全 owner impact review 只在 systemic/non-trivial maintenance 触发；
-- local deterministic fix 可以带理由走 lightweight path；
-- 不复制 meta doctrine 到 owner prompts/Custom Instructions；
-- 不创建上层 LLM Agent，除非未来有 distinct executor/trace + held-out measured lift。
-
-## Meta Harness 1.0
-
-`runtime/meta_maintenance.py` 会 fail closed 检查 systemic maintenance run 是否具备：
-
-- user signal classification + goal/constraint；
-- authority refs + root-cause layers + system impact map；
-- systemic learning scout 及 source observation/disposition/rationale；
-- 至少两个 credible alternatives 且只有一个 accepted；
-- instruction-surface decision + reason；
-- registry-derived propagation scope + stale override scan；
-- complexity/efficiency budget；
-- implementation / supersession record；
-- regression/eval refs + second-order challenge + systemic cross-surface/fault audit；
-- assurance ceiling + open gates + unknown/open-world boundary；
-- `global_flawlessness_claimed=false`。
-
-`tests/test_meta_maintenance.py` 还把最终 maintenance closure 与机器可读 run 绑定：manifest 离开本轮 IN_PROGRESS stage 后，必须 `meta_maintenance_harness_version=1.0`、指向本轮 run，且 run 的 `target_manifest_version` 必须匹配最终 manifest version。
-
-`tests/test_meta_governance_status_alignment.py` 额外要求 Policy / Manifest / Harness policy version 一致，并检查 Blueprint 不能把 Meta Harness 描述成独立语义 reviewer。
-
-## 当前已验证证据
-
-- candidate policy/harness 初次集成曾因 manifest 仍写 policy 1.5 被 system audit 正确打红；不是关闭检查器。
-- 修复状态版本同步后，旧 `tests/test_system_audit.py` 又因精确断言 1.5 红；更新 stale expectation，不回滚 1.6。
-- head `7e902847427a624bbc60fcbfb25f732b70781f78`：run `38077001860` SUCCESS。
-- head `7ccc80e47eb42058d1085b40243dd969e282c787`：run `38077281754` SUCCESS，包含 machine-readable meta-run + closure-binding + current receipt-semantic tests。
-- head `3d98d5d78518ecaeda8171c440b7799bbd94510b`：run `38077334862` SUCCESS，包含 Blueprint 架构同步。
-- 最终 registry/HARNESS/manifest/Handoff/cache 同步仍必须以最新 `main` 再跑 CI 后才可用户侧报告 `COMMITTED`。
-
-## 仍然 OPEN，不能被 Meta Harness 冒充解决
-
-1. Universal operator-dependence incident：真正独立 held-out/live trajectory grader + evidence verifier。
-2. real new BUSINESS owner + genuinely fresh ChatGPT chat 的 cold-start E2E。
-3. owner real action 的 methodology 1.3 independent semantic verification。
-4. Financial live prose-quality independent blind pairwise promotion；Personalized Writing DNA 的真实 user/outcome evidence。
+1. Universal operator-dependence：独立 held-out/live maintenance trajectory grader + distinct evidence verifier。
+2. real newly admitted BUSINESS owner + genuinely fresh ChatGPT product chat cold-start E2E。
+3. owner real action 的 methodology receipt 1.3 independent semantic verification。
+4. Financial live prose-quality / Personalized Writing DNA real outcome evidence。
 5. Video strict isolated reviewer / unique quality-critical generation gateway。
-6. arbitrary ChatGPT→GitHub mutation 仍是 repository CI post-write enforcement，不是 universal pre-write `WRITE_PATH_ENFORCED`。
-7. Meta Harness 不能证明未来 unknown failure classes 都被预见，也不能证明自己结构记录的语义真伪。
+6. arbitrary ChatGPT→GitHub mutation 仍缺 universal pre-write `WRITE_PATH_ENFORCED`。
+7. remote owner sweep 目前仍由 maintenance runner 收集；还没有 first-class universal remote-observation/freshness receipt 自动比较器。
+8. Meta Harness 1.1 仍只能证明结构/过程义务被记录，不能证明同一 actor 没有事后补写，也不能证明未来 unknown failure classes 都已被覆盖。
 
 ## Next action
 
-没有新的真实 maintenance signal / capability / external evidence 时，不发明内部工作。
+没有新的真实 maintenance signal / capability / external evidence时，不制造 heartbeat 修复。
 
-下次出现 systemic/non-trivial signal，默认走 policy 1.6 + Meta Harness；不能再退回“收到例子 → 直接补丁 → CI 绿 → 泛化说好了”的旧路径。
+下一次 systemic/non-trivial maintenance 默认走：
+
+`signal → failure/impact → learning scout → alternatives + falsification → instruction-surface → complexity budget → implementation OR evidence-backed NO_CHANGE → validation → topology-derived propagation → second-order findings → durable checkpoint`
+
+并继续区分：`COMMITTED` 只是持久化；`REGRESSION_VERIFIED` 不是独立语义证明；真实 product/live outcome 必须单独拿证据。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `audits/META_MAINTENANCE_GOVERNANCE_RUN_2026-10-11.json`
+- `audits/META_MAINTENANCE_SYSTEM_SELF_AUDIT_2026-10-11.json`
 - `SYSTEM_MAINTENANCE_POLICY.json`
-- `SYSTEM_BLUEPRINT.md`
-- `ENTRYPOINT.md`
+- `CONTINUOUS_LEARNING_POLICY.md`
 - `runtime/meta_maintenance.py`
+- `runtime/system_audit.py`
 - `tests/test_meta_maintenance.py`
+- `tests/test_system_audit.py`
 - `tests/test_meta_governance_status_alignment.py`
 - `HARNESS_STATUS.json`
 - `OWNER_REGISTRY.json`
 - `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
-- `CONTINUOUS_LEARNING_POLICY.md`
-- `audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md`
 
-恢复时先读 manifest + 本 Handoff。不要把 Meta Harness PASS、CI、COMMITTED、同会话 self-review 或外部方法引用外推成 independent semantic correctness / global flawlessness。
+恢复时先读 manifest + 本 Handoff。不要把 Harness PASS、CI、COMMITTED、同会话 self-review 或外部方法引用外推成 independent semantic correctness / global flawlessness。
