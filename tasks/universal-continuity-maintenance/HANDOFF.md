@@ -10,106 +10,120 @@
 
 ## 当前总状态
 
-- Universal v3.7 existing-chat / fresh-chat Continuity 产品传播 E2E：PASS。
-- Methodology profile applicability negative-space guard：PASS。任何 current-contract profile 都必须显式 `APPLIES / NOT_APPLICABLE + reason + evidence_refs`；适用 profile 静默漏绑会 FAIL。
-- Financial：`artifact_io + operational_hygiene + evolution` 已绑定并 owner regression PASS；真实文章 action-level methodology conformance 与 prose-quality blind pairwise evidence仍 OPEN。
-- Novel：Release Execution Evidence 已完成二次挑刺/加固；domain business stage/Canon/lease 未改。
-- Universal operator-dependence incident：仍 OPEN，需真实 independently graded maintenance-decision trajectories 才能关闭。
+- Universal v3.7 existing-chat / fresh-chat Continuity product E2E: PASS。
+- Methodology profile applicability negative-space guard: PASS；current-contract profile 不能静默漏绑。
+- **Second-order evolution method 已蒸馏进 `evolution@1.0` semantics**：非平凡修复在首次 regression PASS 后，还必须挑战“修复本身”和闭环声明的证据强度。
+- Novel release-evidence binding 已二次加固；真实 CH9 production proof / true independent execution attestation 仍 OPEN。
+- Financial 三 profile 已绑定并 owner regression PASS；真实 article action-level methodology conformance / prose-quality promotion 仍 OPEN。
+- Universal operator-dependence incident 仍 OPEN；代码/CI/本轮自我进化不能替代 independently graded live product trajectories。
 
-## Novel owner 独立核验与二次挑刺
+## 本轮：把“怎么进化”做成通用方法，而不是新 Agent
 
-用户提供 Novel owner 自审回复后，本 maintenance writer 独立读取了 Novel `SKILL.md`、`continuity/EXECUTION_CAPABILITIES.json`、`runtime/release_evidence_guard.py`、tests、checkpoint、evolution audit 与 CI。
+用户提出是否应把当前进化技巧/复盘持久化并复用于类似问题。
 
-原回复的核心事实成立：
-- Skill 已进入 2.1 系列；
-- CH9+ 有 release-evidence hard gate；
-- CH8 明确 `LEGACY_AGGREGATE_MIGRATED`，不补造历史 receipts；
-- normal review = `CHAT_BRIDGED / ROLE_SEPARATED_NOT_ATTESTED_ISOLATED`；
-- `strict_attested_isolated_reviewer` 仍 `DECLARED_ONLY`；
-- CH8/CH9 business stage、Canon v12、external publication fact、resume_epoch/lease 未被系统进化改写；
-- owner CI 的 Recovery Guard / Release Evidence Guard / owner contract tests 均可执行。
+架构判断：**不新建 permanent Challenge/Evolution Agent，也不新建平行 root policy。** 原因：
+- 缺口是所有 owner 的 evolution 方法论，不是独立业务执行职责；
+- 新角色不能自动创造独立 executor identity / evidence；
+- `CONTINUOUS_LEARNING_POLICY.md` 已是 `evolution@1.0` semantics owner，现有 authority 可以无歧义承载；
+- 新 Agent / 新 root policy 会增加声明式复杂度和重复 authority。
 
-但原自审还有第二阶证据强度缺口：一个最终聚合 `CHxxxx_EXECUTION_EVIDENCE.json` 仍可能由同一 CHAT_BRIDGED session 事后一次性补写。更多角色名、timestamp 或文件数量不能把这种 self-attested receipt 变成独立 execution attestation。
+采用方案：把真实事故蒸馏成 `Second-order challenge / closure calibration（二阶挑刺与闭环校准）`，写入现有 evolution semantics，并加 regression + audit evidence。
 
-同时原 guard 还存在可机械修复的绑定弱点：
-- Project Profile / Canon refs / recent FINAL refs 没有逐项验证文件存在与 hash；
-- CHAT_BRIDGED receipts 没有统一强制 Context Pack binding 与非空 result summary；
-- final-body pipeline roles 没有统一绑定 FINAL source hash；
-- blind reviewer receipt 的自身 source/context binding 不够严格。
+### 二阶挑刺核心
 
-## Novel 二次加固
+第一次修复/回归通过后，在 closure 前继续检查：
+1. Exact claim：现在到底要宣称 wiring、regression、真实 action、independent attestation，还是 live outcome？
+2. Evidence ceiling：证据最多支持到哪一级？明确它不能证明什么。
+3. Negative space：validator 是否只检查“存在的东西”，却没检查“本应存在但被省略的东西”？
+4. Self-reference：同一 actor 是否产出、写 receipt、评分、再验证自己？
+5. Post-hoc provenance：receipt/timestamp/角色记录能否最后一次性补写而不证明执行时序？
+6. Escape path：新 guard 是否能被另一入口、旧 compatibility path、stale cache、lower authority 绕过？
+7. Test realism：CI/synthetic 只证明 mechanics，还是 claim 实际需要真实产品 trajectory / held-out / external outcome？
+8. Generalization：是否只修好了触发样本，held-out/collateral regression 是否存在？
+9. Supersession：弱旧机制是否真的被替换/降级，而不是并存？
+10. Closure boundary：还剩什么 OPEN，需要什么新证据才能升级？
 
-采用最小修法：强化能机械验证的 binding，同时明确降级不能证明的 assurance；不新增更多假 Agent，也不伪造 isolated executor。
+### Evidence assurance ladder
 
-Novel owner 现在要求：
-- 所有本地 Project Profile / Canon / recent FINAL Context Pack ref 必须存在并 SHA-256 匹配；
-- 每个 receipt 必须有唯一 id；
-- CHAT_BRIDGED receipt 必须绑定 frozen Context Pack；
-- 每个 receipt 必须有非空 role result summary；
-- `COPYEDITOR_PROOFREADER / ARTIFACT_RELEASE_ENGINEER / CANON_COMMITTER` 必须绑定 FINAL source hash；
-- blinded reviewer evidence 本身必须有有效 source hash + Context Pack binding；
-- deterministic guard 输出 evidence strength：`STRUCTURED_SELF_ATTESTED_CHAT_BRIDGED_UNLESS_EXTERNAL_TRACE_PRESENT`；
-- Skill / execution capabilities 明确：CHAT_BRIDGED receipt 是结构化自证，不是 independent proof of cognition or chronology；真正 attestation 需要 distinct execution identity/provider trace。
+统一分层，禁止跨级偷换：
 
-Novel versions after hardening:
-- Skill: `2.1.1-github`
-- runtime metadata: `github-owner-2.2.1`
-- execution-capability profile_version: `3`
-- release_evidence_contract: `1.0`（兼容加固，首次真实 CH9 尚未发生）
+`DECLARED`
+→ `WIRED`
+→ `REGRESSION_VERIFIED`
+→ `ACTION_LEVEL_SELF_ATTESTED`
+→ `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`
+→ `LIVE_OUTCOME_VERIFIED`
 
-Key owner evidence:
-- hardened behavioral/test head: `ced06cec1a2201135d32c7f9d8c8c32c43b83507`
-- CI run `38065144178` / job `114251164978`: Recovery Guard PASS, Release Evidence Guard PASS, full owner tests PASS
-- owner metadata/audit head: `2ebc4dea8c5b6c083ad1db5d0c88b8839b6a6f95`
-- CI run `38065230141`: PASS
+关键禁止：
+- CI PASS ≠ action-level execution proof；
+- same-session structured receipt ≠ independent attestation；
+- independently verified action ≠ long-run quality/business outcome。
 
-第一次 hardened CI `38065104562` 曾 FAIL，因为旧 recovery-contract test 对 pre-hardening evidence-contract 字符串做了精确断言；guards 本身均 PASS。旧断言随后被更新，没有绕过失败。
+### 从真实事故蒸馏的跨-owner failure patterns
 
-Novel current business truth remains owner-owned:
-- current_stage: `CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION`
-- Canon v12
-- last FINAL = CH8
-- CH8 external publication = not confirmed
-- CH9 = READY
-- 新 evidence contract 从 CH9 首次生产正式接受 action-level 验证
+- silent applicable-item omission / negative-space blind spot；
+- declaration-to-operation gap；
+- self-attestation inflation；
+- CI-to-product overclaim；
+- single-example overfit；
+- post-hoc receipt illusion；
+- cache/authority circularity；
+- patch-without-distillation。
 
-## Central cache reconciliation
+这些是通用失败类，不是把 Financial/Novel 业务规则复制到 Universal。
 
-Novel owner 自审指出 Universal `OWNER_PROTOCOL_ADAPTATION_REGISTRY` 仍缓存旧 regression head。当前 SYSTEM_INFRA chat 持有合法 Universal maintenance lease，因此本轮已同步：
-- `OWNER_REGISTRY.json` Novel status -> release-evidence binding hardened + CHAT_BRIDGED self-attested + CH9 production proof pending；
-- `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json` -> novel behavioral head / owner metadata head / CI refs / skill/runtime version / evidence-strength boundary。
+## 本轮 durable evidence
 
-这些是 rebuildable conformance metadata；没有修改 Novel business task manifest/checkpoint/Canon/正文/发布事实/lease。
+Authority:
+- `CONTINUOUS_LEARNING_POLICY.md`：新增二阶挑刺、证据阶梯、通用 failure taxonomy。
+- `tests/test_system_maintenance_policy.py`：回归固定上述方法，防后续被静默删除。
+- `audits/SECOND_ORDER_EVOLUTION_METHOD_DISTILLATION_2026-10-10.md`：记录真实案例、候选方案取舍、为何不建新 Agent、剩余边界。
 
-## 仍未闭环
+Commits:
+- learning semantics: `d01eddf72341dd7c6d9e42a44c63c3fb4a4d5597`
+- regression: `0b05e5ac66f545768a7ca7bfa75f5c4b3985202a`
+- distillation audit: `5801459a877dece2fa12a54e613b0fc3c48121c8`
 
-1. **Novel CH9 real production proof**：代码/negative tests/CI 已证明 enforcement mechanics；尚未有真实 CH9 Context Pack + role receipts trajectory。只有首次生产 PASS 后才能说 domain release-evidence gate 在真实章节上工作。
-2. **Novel true execution attestation**：CHAT_BRIDGED receipt 仍是 self-attested。不同 execution identity/provider trace 未提供前，不得说真正 isolated / independently attested reviewer 已执行。
-3. **Financial action-level operational proof**：下一次真实 material article 仍需 event-activated `profile_runs` + independent verifier + operational methodology conformance。
-4. **Financial prose-quality promotion**：仍需 independently verifiable blind pairwise evidence；offshore-wind rejection 必须改善，rutile held-out 不退化。
-5. **Universal operator-dependence incident**：仍需 independently graded held-out product trajectories。
+Validation:
+- Universal Actions run `38065950440` / job `114253506018`: `runtime.system_audit` PASS + full pytest PASS。
+
+`evolution@1.0` profile version **未 bump**：hook/invariant contract 未变，属于 semantics owner 的兼容加强；当前绑定 evolution@1.0 的 owner 自动获得新方法，无需复制规则。
+
+## 之前已收口的重要维护事实
+
+### Financial
+- `artifact_io + operational_hygiene + evolution` 均已绑定；遗漏 `artifact_io` 的根因已蒸馏成 negative-space applicability guard。
+- General editorial quality harness 已有 real-negative + held-out 防过拟合结构。
+- 仍不能宣称真实 prose quality 已提升；需要 independent blind pairwise + verifier。
+- Personalized Writing DNA 仍需自然产生的 user acceptance/edit 或 publication-performance evidence。
+
+### Novel
+- CH9+ release evidence guard 已加强 local ref/hash、Context Pack、receipt id/context/result/source binding。
+- CHAT_BRIDGED receipts 明确是 `structured self-attested`，不是 independent cognition/chronology proof。
+- first real CH9 trajectory 仍未发生；true attestation 仍需 distinct execution identity/provider trace。
 
 ## Current stage
 
-`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__NOVEL_RELEASE_EVIDENCE_BINDING_HARDENED__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
+`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__SECOND_ORDER_EVOLUTION_METHOD_DISTILLED__NOVEL_RELEASE_EVIDENCE_BINDING_HARDENED__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
 
 ## Next action
 
-- Novel：等 CH8 外部发布确认后，业务 owner 进入 CH9；首次 CH9 必须真实生成/验证 release-evidence artifacts，不得由 maintenance task 代跑或补造。
-- Financial：下一次真实 article material action 做 action-level methodology conformance；有独立 pairwise judge/verifier 后跑质量 promotion。
-- Universal：有真实 product-run/grader path 后跑 maintenance-decision held-out suite。
-- 缺真实能力/证据时保持 OPEN，不用 CI、角色名或自报 receipt 冒充更高 assurance。
+- 任何后续 non-trivial owner evolution：使用 `evolution@1.0` 二阶挑刺与 evidence ladder，不允许首次 CI 绿后直接扩大 closure claim。
+- Novel：等 CH8 外部发布确认后由业务 owner 执行 CH9；真实 CH9 evidence trajectory 才能提升 live proof。
+- Financial：下一次真实 article material action 做 action-level methodology conformance；有独立 pairwise judge/verifier 后做质量 promotion。
+- Universal：有真实 product-run/grader path 后跑 maintenance-decision held-out suite；operator-dependence incident 未闭环前保持 OPEN。
+- 不要求用户制造内部验收样本；不偷 owner business lease；不靠角色名/更多文件/自报 timestamp 伪造 assurance。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `OWNER_REGISTRY.json`
-- `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
+- `CONTINUOUS_LEARNING_POLICY.md`
+- `SYSTEM_MAINTENANCE_POLICY.json`
 - `OWNER_ADAPTER_CONTRACT.json`
 - `ENTRYPOINT.md`
-- Novel: `D1traverser-debug/novel-writing-agent@main:SKILL.md`
-- Novel: `continuity/EXECUTION_CAPABILITIES.json`
-- Novel: `runtime/release_evidence_guard.py`
-- Novel: `audits/NOVEL_SYSTEM_EVOLUTION_AUDIT_2026-10-10.md`
+- `tests/test_system_maintenance_policy.py`
+- `audits/SECOND_ORDER_EVOLUTION_METHOD_DISTILLATION_2026-10-10.md`
+- `OWNER_REGISTRY.json`
+- `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
 
-恢复时先读 manifest + 本 Handoff，再按 ENTRYPOINT 事件矩阵加载当前动作所需 authority；不要从旧聊天重建执行真相。
+恢复时先读 manifest + 本 Handoff，再按 `ENTRYPOINT.md` 事件矩阵加载当前动作所需 authority；不要从旧聊天重建执行真相。
