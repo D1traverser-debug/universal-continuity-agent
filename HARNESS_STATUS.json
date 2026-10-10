@@ -232,7 +232,7 @@
       "required_discovery_sources": 5,
       "required_discovery_sources_succeeded": 5,
       "authoritative_default_candidate_count": 4,
-      "candidate_task_ids": ["financial-writing:main","ashare:recommendation","FQ001_MINGRI_ORDER","video-growth:main"],
+      "live_candidate_names_persisted_in_public_harness": false,
       "system_infra_explicit_only_excluded": true,
       "business_task_selected_on_first_turn": false,
       "business_takeover_performed": false,
@@ -260,12 +260,12 @@
     "latest_account_hook_confirmed": true,
     "acceptance_evidence": {
       "date": "2026-10-10",
-      "source": "user-supplied real fresh-chat first-turn response, independently cross-checked against all required current GitHub discovery sources",
+      "source": "real fresh-chat first-turn response independently cross-checked against all required current discovery sources",
       "bare_command": "继承",
       "required_owner_quorum": 5,
       "required_owner_quorum_succeeded": true,
       "authoritative_default_candidate_count": 4,
-      "live_candidate_names_persisted_in_public_harness": true
+      "live_candidate_names_persisted_in_public_harness": false
     },
     "latest_hook_product_revalidation": "FULL_PASS_EXISTING_AND_FRESH_CHAT"
   },
