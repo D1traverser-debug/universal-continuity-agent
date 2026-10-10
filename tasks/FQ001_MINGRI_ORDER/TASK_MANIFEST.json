@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 5,
+  "manifest_version": 6,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T06:51:08Z",
+  "updated_at": "2026-10-10T07:32:00Z",
   "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
   "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state in the GitHub owner and continue CH9 from the existing READY contract without replaying completed CH8 work.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
@@ -71,6 +71,7 @@
     "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json"
   ],
   "derived_artifact_refs": [
-    "ChatGPT Library deliverable: CH0008_第8章_药盒上的名字.docx"
+    "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
+    "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk"
   ]
 }
