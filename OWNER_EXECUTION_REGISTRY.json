@@ -21,6 +21,15 @@
       "strict_isolated_execution_claimed": false
     },
     {
+      "owner": "NOVEL_WRITING_AGENT",
+      "repository": "D1traverser-debug/novel-writing-agent@main",
+      "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
+      "summary": "GitHub-authoritative novel state/Canon + chat-bridged high-judgment serialization pipeline + deterministic recovery/length/proofread/texture guards + derived DOCX/render QA. Current-session capability handshake is required.",
+      "known_ceiling": "SESSION_EXECUTABLE",
+      "strict_isolated_execution_claimed": false,
+      "current_known_limitations": ["normal role-separated reviewers do not claim ATTESTED_ISOLATED assurance"]
+    },
+    {
       "owner": "VIDEO_GROWTH_AGENT",
       "repository": "D1traverser-debug/video-growth-agent@main",
       "capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
@@ -34,10 +43,6 @@
     }
   ],
   "excluded_from_this_registry": [
-    {
-      "owner": "NOVEL_OS",
-      "reason": "Current owner authority is Library/domain-native rather than a GitHub-backed executable agent; Continuity routing remains separate."
-    },
     {
       "owner": "UNIVERSAL_CONTINUITY_HARNESS",
       "reason": "Infrastructure control plane, not a business domain executor."
