@@ -10,81 +10,95 @@
 
 ## 当前结论
 
-Universal v3.7 的 existing-chat / fresh-chat Continuity 产品传播 E2E 已通过。四个业务 owner 的 methodology **声明级** rollout 已完成；但声明、hook binding 和 owner CI 都不是 action-level operational proof。
+Universal v3.7 existing-chat / fresh-chat Continuity 产品传播 E2E 已 PASS。四个业务 owner 的 methodology declaration 现在不仅有 exact-version profile binding，还必须覆盖**所有当前 contract profiles 的 applicability**；但 declaration/applicability/owner CI 仍不是 action-level operational proof。
 
-本轮纠正了上一轮维护误判：Financial Writing 的 Word 生成、render、持久 WritingState、知识写回和外部引用行为实际会触发 `artifact_io@1.0`。此前只绑定 `operational_hygiene@1.0 + evolution@1.0` 不完整，不能用“只声明当前实际需要的 profile”解释。
+本轮由用户再次质疑触发 reliability/evolution maintenance。上一轮 Financial Writing 漏绑 `artifact_io@1.0` 的根因不是单一粗心，而是两层同时失效：
 
-## Financial Writing 修复
+1. **判断错误**：维护者先入为主地把 Financial 归类成只需要 `operational_hygiene + evolution`；
+2. **验收结构缺口**：旧 `evaluate_methodology_conformance()` 只验证 `profile_refs` 中已经声明的 profile，不检查“未声明 profile 是否其实适用”，因此错误的 omission assumption 可以穿过 CI。
 
-### 1. artifact_io 已补齐
+这类缺口命名为 **methodology negative-space blind spot / silent applicable-profile omission**。
 
-当前 Financial adapter：`D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json`
+## 进化方案与取舍
 
-现在精确绑定：
+比较过三种方案：
+
+- 所有 owner 强制绑定全部 profile：拒绝，会破坏 composability / event-driven loading，并给真实不适用 owner 增加虚假义务；
+- 依赖维护者每次人工阅读 Skill/代码决定：拒绝，仍然依赖同一判断者，无法机械防复发；
+- **显式 profile applicability contract**：采用。每个 current-contract profile 都必须是 `APPLIES` 或 `NOT_APPLICABLE`，并带 owner-local `reason + evidence_refs`；`APPLIES` 必须 exact-version 绑定，`NOT_APPLICABLE` 不能同时声明 profile，省略不再代表“不适用”。
+
+## 已落地的中央修复
+
+- `runtime/methodology_conformance.py`：加入 negative-space declaration validation；`APPLIES` 但漏绑直接 `applicable_profile_not_declared:<profile>`。
+- `OWNER_ADAPTER_CONTRACT.json`：profile contract 仍为 `1.0`；新增 `owner_declaration_contract_version=1.1`，因为 hook/invariant contract 未变化，但 declaration shape 被强化。
+- `ENTRYPOINT.md`：material owner action 在执行前先验证完整 profile applicability，再进入 event-activated operational conformance。
+- `tests/test_methodology_conformance.py`：覆盖 missing applicability、APPLIES-but-omitted、NOT_APPLICABLE 缺 reason/evidence、声明/不适用矛盾。
+- `runtime/system_audit.py`：加入真实失败类负例 `methodology_applicable_profile_is_silently_omitted`；synthetic owner 明确模拟“会持久化/render artifact，但漏绑 artifact_io”，必须 FAIL。
+- `tests/test_system_audit.py`：固定该 fault scenario，防后续静默删除。
+
+关键 commits：
+- validator `a7c94124a57b24e9d646bf5755ccd409c620c792`
+- methodology tests `547ed96aba63cf0ca74762f1ebbeee4d0f680b0d`
+- owner declaration contract `ba4fe98b6afda19cf6eadae5095ffce356a0287d`
+- ENTRYPOINT `2517ffd86436abf2130a5999b04ba84a0300e210`
+- system-audit regression `c42cc58dadf53625bb48255ecaa59dc44208ef54`
+- fault-scenario test `31bf410cba1303ab0f36b7de8d723ea8f381a4f3`
+
+第一次 Universal CI run `38063164287` **FAIL**，原因是 `system_audit` 旧 synthetic declaration fixture 没有新 `profile_applicability`；没有绕过失败。升级 fixture 并加入 omission negative case 后，run `38063287004` **PASS**，其中 `runtime.system_audit` 与完整 pytest 均 PASS。
+
+## 四个 owner applicability evidence
+
+未接管任何业务 task lease/state，只更新 owner 工程 adapter：
+
+- Financial: `8f7710b64c330e0770154e65a40b4abc9a4e932d` / CI `38063063135` PASS。
+- A-share: `d001a857d94eaa2a103798d7186589a4931b2af1` / CI `38063084164` PASS。
+- Novel: `94d3626fa6695fdcb41b9139f42cd28853d3106a` / CI `38063108153` PASS；Canon/正文/发布事实/stage/lease 未改。
+- Video: `e3b60458ef858e963acd3417d4f188a2d0518f6b` / CI `38063131876` PASS。
+
+四者当前三个 profile 都是 APPLIES，但新 contract 不要求未来 owner 必须“三件套”；真实不适用 profile 可声明 NOT_APPLICABLE，只是必须可审计，不能静默省略。
+
+## Financial 当前边界
+
+Financial 已绑定：
 - `artifact_io@1.0`
 - `operational_hygiene@1.0`
 - `evolution@1.0`
 
-`artifact_io` 的 12 个 owner-local hooks 已映射到 Financial 自己现有的 WritingState / Word / render / hash / downstream invalidation / knowledge-writeback / external-reference 机制，没有复制 Universal 大段规则，也没有增加平行业务状态机。
+且 artifact_io binding 与 applicability evidence 已 owner CI 验证。Financial 业务 durable task `financial-writing:main` 的 active lease、manifest/Handoff、文章 stage/内容未被本 maintenance writer 修改。
 
-回归测试新增在 Financial `tests/test_execution_capability_entrypoint.py`，防止 `artifact_io` 或必需 hooks 后续被静默移除。
+仍不能声称：
+- 一篇新的真实 Financial article 已通过 action-level methodology receipt；
+- prose quality 已客观提升；
+- Personalized Writing DNA 已成熟。
 
-验证：
-- behavioral/test head: `07a05bf2dc93db25b9514f3c66807bc967a3d3bf`
-- Actions run `38062102017`
-- job `114242271276`
-- SDK surface / MCP smoke / unit+trajectory / executable contract eval / static ownership+bundle / wheel isolated install / DOCX render 全 PASS。
-- adapter evidence metadata commit: `91724371b7281024ff52bfac2c28b914104d06b2`
-- corresponding Actions run `38062215617`: PASS。
+## 仍未闭环
 
-Financial 的业务 durable task `financial-writing:main` 有独立 active lease；本次 SYSTEM_INFRA maintenance 没有修改它的 manifest/Handoff、文章 stage、文章内容或业务 lease。
-
-### 2. action-level operational methodology gate 已提升为总控硬步骤
-
-Universal 原本已有 `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`，它明确要求：
-- event-activated `profile_runs`；
-- profile version；
-- activation id / trigger；
-- 实际 observed hooks；
-- stable evidence refs；
-- independent evidence verifier。
-
-但上一轮 `ENTRYPOINT.md` 没把这条 evaluator 明确放进 material owner action 的强制执行链，导致“声明接线正确，但这一轮可能没触发”的 operator-dependence 风险仍存在。
-
-现已修复：
-- `ENTRYPOINT.md` commit `119b0197e7b659219d627aac155830ab802bb650`
-- `tests/test_methodology_conformance.py` commit `3be40d76819109bd38a0cf02ca5ec9415c438ad8`
-- Universal Actions run `38062342604`: PASS。
-
-当前规则：只验证本次动作实际激活的 profile；但凡该 profile 支撑/约束 material action，在宣称相应 gate 完成或 `COMMITTED` 前，必须拿真实 profile run + 独立可验证 evidence。缺 receipt/verifier 只阻塞对应 gate，不能用 declaration、owner regression 或 CI 替代。
-
-## 精确未闭环项
-
-1. **Financial action-level operational proof**：控制面硬门已接好，但尚未用一篇新的真实 Financial material article run 产生并独立验证完整 profile receipt。因此只能说 enforcement contract 已修，不能说 live article trajectory 已验证。
-2. **Financial prose quality improvement**：仍缺 independently verifiable blind pairwise judge + evidence verifier。已知 offshore-wind rejection 必须改善，rutile held-out 不得退化；CI 不能证明文章质量提升。
-3. **Personalized Writing DNA**：仍需要自然产生的真实 user acceptance/edit 或 post-publication performance evidence。
-4. **Universal operator-dependence incident**：仍需真实 live maintenance-decision/escalation product trajectories + independent grading/evidence verification 才能关闭。
+1. **Financial action-level operational proof**：下一次真实 material article action 必须留下 event-activated `profile_runs`、observed hooks、stable evidence refs，并由 independent verifier 验证后跑 operational methodology conformance。
+2. **Financial prose-quality promotion**：仍需 independently verifiable blind pairwise evidence；offshore-wind rejection 必须改善，rutile held-out 不退化。
+3. **Personalized Writing DNA**：仍需自然产生的真实 user acceptance/edit 或 post-publication performance evidence。
+4. **Universal operator-dependence incident**：本轮证明系统能从用户纠正中形成 durable guard，但事故总体仍需真实 held-out maintenance-decision trajectories + independent grading 才能关闭。
 
 ## Current stage
 
-`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING__OWNER_DECLARATION_MIGRATION_COMPLETE`
+`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_APPLICABILITY_GUARD_PASS__FINANCIAL_THREE_PROFILES_BOUND_AND_REGRESSION_PASS__ACTION_LEVEL_CONFORMANCE_PENDING__LIVE_QUALITY_EVIDENCE_PENDING`
 
 ## Next action
 
-- 下一次真实 Financial material action：按事件只激活需要的 methodology profiles，收集 `profile_runs` 与独立可验证 refs，运行 operational methodology conformance；只有真实 PASS 才能把 Financial action-level gate 标为已验证。
-- 有独立 Financial blind pairwise judge + verifier 时，跑 quality promotion evidence。
-- 有独立 product-run/grader path 时，跑 Universal maintenance-decision held-out trajectories。
-- 在这些能力未出现前保持精确 OPEN，不伪造后台执行或 operational PASS。
+- 下一次真实 Financial material action：先 declaration/applicability conformance，再仅激活本动作需要的 profiles，最后用真实 receipt + independent verifier 做 operational conformance。
+- 有独立 Financial blind pairwise judge/verifier 时跑 quality promotion。
+- 有独立 Universal product-run/grader path 时跑 maintenance-decision held-out suite。
+- 不以 CI 替代 live evidence，不要求用户制造内部验收样本，不偷 owner business lease。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
+- `OWNER_ADAPTER_CONTRACT.json`
 - `OWNER_REGISTRY.json`
 - `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json`
 - `ENTRYPOINT.md`
-- `OWNER_ADAPTER_CONTRACT.json`
 - `runtime/methodology_conformance.py`
-- Financial: `D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json`
-- Financial: `D1traverser-debug/financial-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json`
+- `runtime/system_audit.py`
+- `tests/test_methodology_conformance.py`
+- `tests/test_system_audit.py`
 
-恢复时读取 manifest + 本 Handoff，再按 `ENTRYPOINT.md` 事件矩阵加载当前动作需要的 authority；不要从旧聊天重建执行真相。
+恢复时先读 manifest + 本 Handoff，再按 ENTRYPOINT 事件矩阵加载当前动作所需 authority；不要从旧聊天重建执行真相。
