@@ -1,7 +1,7 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_EXECUTION_CONTROL_PLANE_ACTIVE__FRESH_CHAT_E2E_AND_OWNER_LAZY_RECONCILIATION_PENDING",
+  "status": "PASS_V37_EXECUTION_PROPAGATION_WIRED__ACCOUNT_BROADCAST_CONFIRMATION_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
   "latest_execution_audit": "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
@@ -13,7 +13,7 @@
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
     "pytest_count": 77,
-    "note": "Execution-readiness evaluator, cross-agent registry wiring, prior Continuity regressions and restored startup acceptance evidence all passed. Later audit/status/checkpoint writes are metadata-only unless executable code changes again."
+    "note": "Execution-readiness evaluator, cross-agent registry wiring, prior Continuity regressions and restored startup acceptance evidence all passed. Later owner-entrypoint propagation and checkpoint/status writes do not change the validated Universal evaluator code."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -51,6 +51,30 @@
     "ci_run": 38016256163,
     "ci_job": 114107069402,
     "ci_pytest_count": 77
+  },
+  "execution_propagation": {
+    "github_is_push_channel": false,
+    "account_level_broadcast_required_for_existing_chats_that_do_not_refresh_github": true,
+    "account_instruction_canonical_ref": "STARTUP_HOOK.md",
+    "account_instruction_installation_confirmed_by_user": false,
+    "owner_entrypoint_refresh_rule": "Before any material stage/next_action/work order, refresh current owner Skill/entrypoint plus continuity/EXECUTION_CAPABILITIES.json and handshake only required current-session capabilities.",
+    "financial_writing_skill_and_task_index_wired": true,
+    "a_share_skill_and_task_index_wired": true,
+    "video_growth_skill_and_task_index_wired": true,
+    "a_share_wiring_ci": {
+      "status": "PASS",
+      "run_id": 38016854800,
+      "head_sha": "650cba169c46246d431b0176d219867e92ebd051"
+    },
+    "video_growth_wiring_ci": {
+      "status": "PASS",
+      "run_id": 38017210573,
+      "head_sha": "61713e1655115036f3194f6eec369f1975b8e5b8"
+    },
+    "financial_writing_wiring": {
+      "status": "ENTRYPOINTS_READBACK_PASS__FULL_OWNER_CI_BLOCKED_BY_UNRELATED_MCP_STREAMABLE_HTTP_SMOKE",
+      "full_ci_pass_claimed": false
+    }
   },
   "version_lifecycle": {
     "active_protocol": "3.7",
