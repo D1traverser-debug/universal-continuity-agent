@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "audit_type": "AGENT_PRODUCTIZATION_ARCHITECTURE_ROLLOUT",
+  "date": "2026-10-11",
+  "trigger": "User challenged whether GitHub migration actually produced Agent/Skill/Harness/control-plane product architecture instead of moving large prompts into repositories.",
+  "root_cause": "Agent productization acceptance criteria were implicit. Continuity strongly validated state/evidence/leases, but did not mechanically validate separation of Skill router, executable runtime, authoritative workflow, Harness, progressive references and continuity. This allowed thin-Skill intent to coexist with fat bootstrap/Skill surfaces.",
+  "accepted_architecture": {
+    "skill": "thin router and progressive-loading map",
+    "runtime": "actual execution and tool/judgment surface",
+    "workflow": "durable state and transition authority",
+    "harness": "tests/evals/trace and architecture validation",
+    "universal": "membership/routing/recovery/governance/architecture monitoring",
+    "signal_plane": "non-authoritative observations/events separated from authoritative single-writer state"
+  },
+  "rejected_alternatives": [
+    "Require every owner to use OpenAI Agents SDK: rejected because executable Agent products may use deterministic or external runtimes.",
+    "Copy the Universal architecture validator into every owner: rejected because shared control semantics would drift across repositories.",
+    "Store current owner HEAD inside AGENT_MANIFEST: rejected because manifest writes would make their own freshness receipt stale.",
+    "Treat large Skills as automatic failure: rejected; size is architecture drift requiring refactor/justification, while missing runtime/workflow/harness is a hard failure."
+  ],
+  "owners": [
+    {
+      "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "repository": "D1traverser-debug/financial-writing-agent",
+      "observed_owner_head": "24757fd871a1e38d790672937536c6c6349b2a36",
+      "agent_manifest_ref": "D1traverser-debug/financial-writing-agent@main:continuity/AGENT_MANIFEST.json",
+      "owner_ci_run": 38087159770,
+      "owner_ci_result": "SUCCESS",
+      "architecture_validation_result": "PASS_WITH_DRIFT",
+      "drift": ["Skill router is approximately 20KB and exceeds the 8192-byte thin-router target; runtime/workflow/harness are real and separately declared."],
+      "validation_scope": "Current tree/manifest structure + current owner CI + previously observed Skill size; does not prove live prose quality or provider isolation."
+    },
+    {
+      "owner": "A_SHARE_MARKET_AGENT",
+      "repository": "D1traverser-debug/a-share-event-driven-agent",
+      "observed_owner_head": "a0eaf1aa0adaf58b1967c994ae57c463ce57d5eb",
+      "agent_manifest_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/AGENT_MANIFEST.json",
+      "owner_ci_run": 38087222816,
+      "owner_ci_result": "SUCCESS",
+      "architecture_validation_result": "PASS",
+      "drift": [],
+      "skill_size_bytes": 7384,
+      "validation_scope": "Current tree/manifest structure + current owner CI; judgment remains CHAT_BRIDGED where declared and independent audit is not inferred."
+    },
+    {
+      "owner": "VIDEO_GROWTH_AGENT",
+      "repository": "D1traverser-debug/video-growth-agent",
+      "observed_owner_head": "d6b5472e4bc756e19bb4eaaaa462bd6a8c00021e",
+      "agent_manifest_ref": "D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json",
+      "owner_ci_run": 38087238851,
+      "owner_ci_result": "SUCCESS",
+      "architecture_validation_result": "PASS_WITH_DRIFT",
+      "drift": ["Skill router is approximately 10KB and exceeds the 8192-byte thin-router target; strict isolated reviewer remains a separate unproven assurance."],
+      "validation_scope": "Current tree/manifest structure + current owner CI; does not prove strict isolated reviewer execution."
+    },
+    {
+      "owner": "NOVEL_WRITING_AGENT",
+      "repository": "D1traverser-debug/novel-writing-agent",
+      "observed_owner_head": "4cafb0ec1240f19f44e442d3b74f173173865555",
+      "agent_manifest_ref": "D1traverser-debug/novel-writing-agent@main:continuity/AGENT_MANIFEST.json",
+      "owner_ci_run": 38087533724,
+      "owner_ci_result": "SUCCESS",
+      "architecture_validation_result": "PASS_WITH_DRIFT",
+      "drift": ["Skill router is 19540 bytes and exceeds the 8192-byte thin-router target; normal judgment remains CHAT_BRIDGED rather than provider-attested isolated."],
+      "skill_size_bytes": 19540,
+      "validation_scope": "Current tree/manifest structure after concurrent Novel evolution + current owner CI; does not promote CHAT_BRIDGED receipts to independent attestation."
+    }
+  ],
+  "assurance_ceiling": "REGRESSION_AND_STRUCTURAL_ARCHITECTURE_VERIFIED__LIVE_AGENT_QUALITY_AND_CROSS_REPO_CONTINUOUS_FRESHNESS_SEPARATE",
+  "next_design_steps": [
+    "Run AGENT_ARCHITECTURE_CONTRACT in Universal CI.",
+    "Slim Universal ENTRYPOINT/STARTUP_HOOK so the actual bootstrap, not only the Skill file, is thin.",
+    "Create a non-authoritative control signal plane for stale-writer/CI/remote-drift observations.",
+    "Provide real recurring remote-owner monitoring through an execution surface that can read all private owner repositories."
+  ]
+}
