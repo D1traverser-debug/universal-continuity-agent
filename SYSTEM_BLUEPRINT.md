@@ -6,169 +6,130 @@ Engineering authority: `D1traverser-debug/universal-continuity-agent@main`
 
 ## Purpose
 
-This file is the top-level architecture map for Universal Continuity. Lower-level contracts, policies, Skills and owner adapters implement this blueprint; they must not contradict it.
+This is the architecture map, not a second copy of every policy. Lower contracts, runtime code and owner adapters implement the map; they must not contradict it. Domain owners retain business truth.
 
-The user is not the migration operator or the system maintenance operator. Universal Continuity owns protocol evolution, compatibility decisions, owner adaptation, progress observability, version hygiene and maintenance closure for defects inside its authority. Domain owners retain business truth.
+The user is not the migration operator, internal maintenance operator, cache janitor, regression manager, or cross-agent methodology integrator.
 
-## Architecture layers
+## Architecture shape
 
-1. **Account routing layer** — `STARTUP_HOOK.md`. Personalization/Custom Instructions route explicit continuation intent into Continuity. They are an account-level trigger, not task storage.
-2. **Discovery and routing layer** — `BARE_INHERIT_DISCOVERY.json`, `OWNER_REGISTRY.json`, executable harness. Finds exact durable tasks without treating chat memory as authority.
-3. **Recovery layer** — `CONTEXT_RECOVERY_POLICY.json`. Loads metadata -> short handoff -> exact artifacts -> selective history.
-4. **Compatibility and protocol reconciliation layer** — `VERSION_LIFECYCLE_POLICY.json`, `LIVE_CHAT_RECONCILIATION_POLICY.json`. Reconciles old task/chat protocol metadata to the current protocol without making the user migrate anything.
-5. **Domain owner layer** — owner runtime/checkpoint. Business rules, business state machines and business artifacts stay with the domain owner.
-6. **Writer ownership layer** — `resume_epoch` + `active_lease`. New-chat takeover changes the lease; an in-place protocol upgrade in the same active chat does not.
-7. **Progress observability layer** — `PROGRESS_OBSERVABILITY_POLICY.json`. Shows pre-resume durable progress and verified per-turn commit status.
-8. **Learning/evolution layer** — `CONTINUOUS_LEARNING_POLICY.md`, `MEDIA_DISTILLATION_PROTOCOL.md`, modular Skills and tests. Learning is distilled into the smallest authoritative surface.
-9. **System maintenance layer** — `SYSTEM_MAINTENANCE_POLICY.json`. A detected systemic defect triggers an autonomous diagnose -> patch -> guard -> validation -> record -> authoritative reread loop by default; internal maintenance must not wait for the user to enumerate adjacent follow-ups.
-10. **Artifact/context governance layer** — `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`. Separates engineering authority, durable task state, business evidence, learning evidence, rebuildable cache, session scratch, external references and ChatGPT personalization context; defines promotion, invalidation and cleanup rules so stale files or remembered context cannot silently become execution truth.
-11. **Lifecycle/cleanup layer** — current executable protocol stays in the working tree; superseded implementations live in Git history. Historical business evidence is never deleted merely because the protocol changed.
+Universal is intentionally a **small control kernel plus composable methodology profiles**, not a giant parent Agent and not a repository that owns every domain method.
+
+### 1. Bootstrap / routing edge
+
+`STARTUP_HOOK.md` routes explicit continuation intent. `ENTRYPOINT.md + CURRENT_PROTOCOL.json` are the minimal repository bootstrap. Bare discovery, named routing and deeper authorities are loaded only when their event occurs.
+
+### 2. Continuity kernel
+
+Stable cross-agent invariants:
+- durable task identity and current checkpoint;
+- exact owner routing;
+- protocol compatibility/reconciliation;
+- single active writer lease / resume epoch;
+- authoritative reread before `COMMITTED`;
+- lower-authority cache/chat context never silently overriding durable truth.
+
+The detailed persistence/discovery rules live in the current Continuity contract/runtime; the blueprint does not duplicate them.
+
+### 3. Execution kernel
+
+`ORCHESTRATION_BLUEPRINT.md`, `EXECUTION_READINESS_CONTRACT.json`, `OWNER_EXECUTION_REGISTRY.json` and `runtime/execution_readiness.py` determine whether a required owner capability is merely declared, wired, executable in this session, or independently attested.
+
+Repository declarations are an assurance ceiling, not current execution proof. A missing hard capability blocks the exact affected gate rather than every unrelated owner capability.
+
+### 4. Methodology composition
+
+`OWNER_ADAPTER_CONTRACT.json` is the composition interface. Shared cross-agent methods are referenced as narrow versioned profiles and implemented through owner-local hook bindings:
+
+- `artifact_io@1.0` -> semantics owned by `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`;
+- `operational_hygiene@1.0` -> semantics owned by `SYSTEM_MAINTENANCE_POLICY.json`;
+- `evolution@1.0` -> semantics owned by `CONTINUOUS_LEARNING_POLICY.md`.
+
+`runtime/methodology_conformance.py` mechanically checks exact profile versions, required owner hooks and forbidden overrides.
+
+Owners may specialize implementation, domain taxonomy, thresholds, artifact locations, evaluator choice and safe domain retention. They may not override kernel authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
+
+This is composition/extension, not an OO inheritance tree. A profile version changes when its hook/invariant contract changes; compatible improvements inside its semantics owner do not require every domain owner to copy new prose.
+
+### 5. Domain owner boundary
+
+Each business owner owns:
+- business state machine and stage semantics;
+- business evidence and accepted/published outputs;
+- domain-specific invalidation/retention;
+- domain-specific learning/evaluation method;
+- local executors/gateways and artifacts.
+
+Universal may validate conformance and route execution. It may not steal another active owner lease or rewrite domain business truth from a system-maintenance task.
+
+### 6. Artifact/context boundary
+
+Cross-agent artifact authority classes, stable identity, freshness/conflict handling, verified mutation, cache/reference treatment and cleanup safety are owned by `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`.
+
+Library/Drive/Notion/connected apps are reference/evidence by default unless an owner explicitly designates a role. Rebuildable cache is never checkpoint authority. Google Drive may be an explicit artifact vault but not an implicit runtime checkpoint or engineering rule source.
+
+### 7. Maintenance and evolution boundary
+
+`SYSTEM_MAINTENANCE_POLICY.json` owns autonomous maintenance closure and scoped reliability guards. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution.
+
+A detected systemic defect may trigger:
+`DETECT -> READ AUTHORITY -> ROOT CAUSE -> CHALLENGE CANDIDATES -> MINIMUM PATCH -> REGRESSION/EVAL -> CLEAN SUPERSEDED MECHANISM -> VALIDATE -> RECORD -> REREAD`
+
+User goals/constraints are requirements when explicit; user-proposed mechanisms, assistant first ideas, other Agents and popular frameworks are candidates. Nontrivial architecture adoption requires independent alternative comparison and failure-mode search.
 
 ## Authority order
 
-1. Compatible authoritative domain business checkpoint/runtime.
-2. Authoritative per-task/per-system manifest for routing, lease and protocol metadata.
-3. Current GitHub `main` engineering authority for GitHub-backed agent code/contracts/Skills/policies.
-4. Explicit owner-referenced business evidence needed by the current action.
-5. Universal registry/index cache and other rebuildable mirrors.
-6. External reference surfaces such as Library, Drive, Notion or project sources unless the owner contract explicitly promotes/designates them.
-7. Chat memory / past chat history as recovery evidence only.
+1. compatible authoritative domain runtime/checkpoint;
+2. authoritative task/system manifest for routing, lease and protocol metadata;
+3. current GitHub `main` engineering authority;
+4. explicit owner-referenced business evidence required by the current action;
+5. rebuildable registries/indexes/caches;
+6. external references unless explicitly designated by owner contract;
+7. past chat/history as recovery evidence only.
 
-A lower authority may never overwrite fresher higher-authority business truth.
-
-Behavioral instruction precedence is a separate concept from data authority. Account Custom Instructions are a global routing/UX surface; Project instructions may be scope-local and may override global Custom Instructions inside that Project. Neither is durable business checkpoint storage. A current user instruction may change a requirement, but a material durable change must be persisted by the valid owner writer before later chats can treat it as task authority.
-
-## Artifact/context lifecycle invariant
-
-Follow `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`.
-
-Cross-agent minimum rules:
-
-- caches, mirrors, derived summaries and session scratch are rebuildable/non-authoritative;
-- material ideas or decisions that exist only in chat are not durable evolution;
-- raw learning evidence does not automatically become a rule;
-- Library/Drive/Notion/Slack/project sources are reference/evidence by default, not executable checkpoint authority;
-- stale caches are rebuilt or deleted rather than migrated as truth;
-- duplicate active rules/docs are consolidated to one authority instead of accumulating parallel copies;
-- accepted/published business evidence and task checkpoints are preserved according to owner retention and compatibility rules;
-- superseded engineering implementations leave the active tree when safe; Git history is the implementation archive.
-
-Universal owns the cross-agent classification/promotion/cleanup contract. Each domain owner owns its business-specific storage schema, retention, artifact invalidation graph and learning promotion decisions.
-
-## Version model
-
-- The active working-tree protocol is singular: v3.7.
-- Old executable protocol copies are not kept active for convenience. Git history is the historical implementation archive.
-- Historical task/business facts remain durable even if created under an older protocol.
-- `continuity_protocol_version` identifies the Universal Continuity protocol.
-- `contract_version` remains accepted as a legacy compatibility field until all owners migrate; new manifests should also expose `continuity_protocol_version` so Universal protocol and business/domain contract versions cannot be confused.
-- An old chat is not permanently pinned to the protocol version it started with.
+Instruction precedence is separate from data authority. Custom Instructions/Project instructions may affect routing/behavior but are not durable business checkpoint storage.
 
 ## Live-chat upgrade invariant
 
-A chat that already owns a valid task lease may continue after Universal Continuity is upgraded.
+A valid active writer may reconcile a supported protocol/profile change in place. Same-chat control-plane refresh preserves the current lease and `resume_epoch`; only a genuine new-chat takeover changes them.
 
-Before its next material checkpoint/final durable response, it must reconcile against the current protocol:
-
-1. read current protocol marker/policies;
-2. compare persisted task protocol metadata;
-3. classify COMPATIBLE / MIGRATABLE / INCOMPATIBLE / UNKNOWN;
-4. apply a safe additive migration in place when supported;
-5. preserve the existing lease and `resume_epoch` for the same active chat;
-6. persist and re-read the adaptation record before claiming it is migrated;
-7. then apply current progress-observability rules.
-
-Only a genuine new-chat takeover increments `resume_epoch` and supersedes the old lease.
-
-## User responsibility boundary
-
-The user does **not**:
-
-- choose migration paths;
-- rewrite old checkpoints;
-- decide which obsolete implementation files to keep;
-- manually adapt each old chat;
-- reason about owner schema differences;
-- verify whether a write really persisted;
-- discover related system-maintenance follow-ups one by one;
-- maintain upgrade/change records for internal system changes;
-- decide which regression guard should be added after an internal defect;
-- classify caches, scratch files, learning evidence or external references by hand;
-- manually reconcile stale duplicate files across agent repositories.
-
-The user only supplies genuinely external facts/actions, permissions, account/UI operations or decisions that cannot be inferred safely.
+Before the next affected material action, refresh the exact current owner Skill/capability/profile surfaces required by that action. Do not replay business state merely because the control plane changed.
 
 ## Autonomous maintenance invariant
 
-When the active maintenance writer detects a systemic defect, drift, propagation gap, weak authority boundary, regression, duplicated/superseded mechanism, artifact/context lifecycle defect or execution-evidence gap inside Universal Continuity / the cross-agent control plane, it must follow `SYSTEM_MAINTENANCE_POLICY.json`.
+A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem or execution-evidence defect inside the active maintenance writer's authority must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
 
-Default behavior is to continue the maintenance closure without waiting for another user prompt:
+A material maintenance change requires durable problem/root-cause/change/validation/remaining-risk evidence and an authoritative reread before `COMMITTED`.
 
-`DETECT -> CLASSIFY AUTHORITY -> READ CURRENT TRUTH -> ROOT-CAUSE DIAGNOSIS -> MINIMUM SAFE PATCH -> REGRESSION GUARD -> VALIDATION/CI -> CHANGE/STATUS RECORD -> AUTHORITATIVE REREAD -> REPORT`
+## Lifecycle / cleanup invariant
 
-Stop and require the user only at a precise external boundary such as account/UI action, new permission/credential, irreversible high-impact choice, or an unrecoverable missing fact. A material maintenance change must leave durable evidence of the problem, root cause, changed authority surfaces, validation, behavioral effect, remaining risks, current stage and next action.
+One active engineering implementation is preferred. Superseded implementation belongs in Git history once no supported migration edge depends on it.
 
-This maintenance autonomy does not authorize stealing another active owner lease or rewriting domain business truth.
+Owner/dependency/retention-aware GC may delete or rebuild stale caches, mirrors and superseded active mechanisms. It must not delete current checkpoints, accepted/published evidence, active-next-action dependencies or required migration/audit evidence merely because they are old.
 
-## Upgrade classification
+## Hot path vs cold path
 
-- **PATCH / hardening**: tests, cleanup, documentation, owner conformance, compatible adapter additions. Keep the same protocol version.
-- **MINOR protocol change**: new required semantics that remain migratable from the previous active protocol. Version bump required with an explicit migration edge.
-- **BREAKING protocol change**: incompatible task semantics or persistence model. Version bump required; affected state must fail closed or migrate through an explicit audited path.
+The hot path is deliberately small:
 
-Do not increment the protocol number for every internal improvement.
+`ENTRYPOINT.md -> CURRENT_PROTOCOL.json -> event-specific authority -> exact owner state`
 
-## Cleanup invariant
+Do **not** use this architecture document as a command to preload all referenced files.
 
-Delete or archive from the active root any completed migration/cutover artifact that is no longer part of runtime/bootstrap authority. Before deletion, consolidate any still-useful audit facts into `archive/` or a current status artifact. Git history preserves the original files.
+Conditional loads:
+- bare discovery -> discovery/owner metadata only;
+- protocol mismatch -> lifecycle/reconciliation authority;
+- business execution -> execution contract + exact owner capability/Skill;
+- artifact/file action -> `artifact_io` profile;
+- maintenance/drift/reliability incident -> `operational_hygiene` profile;
+- durable learning/evolution -> `evolution` profile;
+- media evidence -> media distillation authority;
+- recovery gap -> recovery policy + selective history.
 
-Do not delete:
+Audits, research, unrelated owners, old conversations and inactive methodology profiles are cold-path evidence.
 
-- current business checkpoints;
-- historical decisions/evidence needed for audit or causality;
-- artifacts referenced by active `next_action`;
-- compatibility evidence still required by a supported migration edge;
-- accepted/published business artifacts that remain owner-retained evidence.
+## Version model
 
-Delete/rebuild when safe:
-
-- stale rebuildable caches/mirrors;
-- obsolete duplicate active docs after consolidation;
-- superseded executable implementations once no supported migration path depends on them;
-- stale external copies that materially risk drift, while preserving the true source/evidence owner.
+Continuity protocol and methodology profile contracts are separate version axes. Compatible internal hardening does not require a Continuity protocol bump. A profile version bumps only when its hook/invariant contract changes; owners pin exact supported profile versions rather than floating `latest`.
 
 ## Required final-response behavior
 
-For every active durable task, every final response follows `PROGRESS_OBSERVABILITY_POLICY.json`. `COMMITTED` is only valid after authoritative re-read verification. The outer account instruction is a routing/UX backstop; owner persistence remains the proof.
-
-A material system/business learning or decision that exists only in chat cannot justify `COMMITTED` as durable evolution. It must be persisted to the appropriate owner/system authority or explicitly recorded as an unpromoted pending hypothesis.
-
-## Sibling universal execution control plane
-
-Universal Continuity is intentionally **not** the business executor. GitHub-backed business agents use the sibling execution control plane defined by:
-
-- `ORCHESTRATION_BLUEPRINT.md`
-- `EXECUTION_READINESS_CONTRACT.json`
-- `OWNER_EXECUTION_REGISTRY.json`
-- `runtime/execution_readiness.py`
-
-After Continuity has resolved an exact owner/task, the execution control plane determines whether the next action is merely declared, actually wired, executable in the current session, or requires attested isolated execution.
-
-This separation prevents two opposite failures:
-
-1. treating a repository full of Skills/roles/configuration as if every specialist had actually run;
-2. declaring an entire GitHub agent unusable merely because one strict capability (for example isolated multimodal review) is unavailable.
-
-The execution dispatcher should maximize valid work under current capabilities, use CHAT_BRIDGED execution only where owner assurance permits, and fail closed at the exact missing hard capability. It may never rewrite domain business state except through the domain owner's own runtime/checkpoint contract.
-
-The execution-readiness contract has its own version (`1.0`) and does **not** require a Continuity protocol bump merely because execution orchestration hardening changes.
-
-## Read order
-
-`ENTRYPOINT.md` -> `SYSTEM_BLUEPRINT.md` -> `STARTUP_HOOK.md` -> `CONTINUITY_CONTRACT.json` -> `VERSION_LIFECYCLE_POLICY.json` -> `LIVE_CHAT_RECONCILIATION_POLICY.json` -> `SYSTEM_MAINTENANCE_POLICY.json` -> domain-specific policy/artifacts as needed.
-
-Load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` when the turn involves storage location, cache/scratch promotion, stale files, external sources, duplicate/superseded artifacts, chat-only learning persistence or authority conflict. It is not required on every ordinary business turn.
-
-For GitHub-backed business execution after owner/task resolution, continue with:
-
-`ORCHESTRATION_BLUEPRINT.md` -> `EXECUTION_READINESS_CONTRACT.json` -> owner `continuity/EXECUTION_CAPABILITIES.json` -> current-session capability handshake -> owner runtime/gateway.
+Every active durable task follows `PROGRESS_OBSERVABILITY_POLICY.json`: `COMMITTED` is valid only after authoritative reread verification. A chat-only insight, cache write, tool-success response or unpromoted learning candidate cannot justify durable `COMMITTED`.
