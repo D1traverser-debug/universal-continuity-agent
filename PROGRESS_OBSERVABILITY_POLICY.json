@@ -49,13 +49,21 @@
       "failed": "If material progress should have been persisted but the write or verification fails, report COMMIT_FAILED and explicitly state that the new progress may not survive the next chat.",
       "stale_writer": "If the current lease/epoch no longer matches, report STALE_WRITER and do not checkpoint.",
       "external_owner": "When business state is owned outside the universal repository, verification must use that owner's authoritative version/checkpoint rather than pretending a Universal cache write proves business persistence."
+    },
+    "assurance_separation": {
+      "commit_status_scope": "DURABLE_PERSISTENCE_ONLY",
+      "committed_is_methodology_operational_pass": false,
+      "committed_is_execution_quality_pass": false,
+      "blocked_or_unverified_gate_may_be_persisted": true,
+      "rule": "A task must be able to persist the truthful fact that an execution/methodology/quality gate is still OPEN or BLOCKED. Missing higher-assurance evidence blocks that gate or completion claim, not the ability to checkpoint the blocker itself. Report the assurance/gate state separately from COMMITTED."
     }
   },
   "anti_false_positive": {
     "assistant_self_report_is_not_proof": true,
     "cache_update_is_not_authoritative_commit": true,
     "commit_sha_without_authoritative_state_verification_is_not_enough": true,
-    "receipt_must_distinguish_no_change_from_failed_commit": true
+    "receipt_must_distinguish_no_change_from_failed_commit": true,
+    "committed_must_not_be_used_as_execution_or_methodology_attestation": true
   },
   "performance": {
     "do_not_write_every_turn_if_state_unchanged": true,
