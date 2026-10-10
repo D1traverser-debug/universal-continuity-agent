@@ -1,18 +1,19 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_FULL_REGRESSION__EXECUTION_CONTROL_PLANE_CI_RERUN_PENDING__FRESH_CHAT_E2E_PENDING",
+  "status": "PASS_V37_EXECUTION_CONTROL_PLANE_ACTIVE__FRESH_CHAT_E2E_AND_OWNER_LAZY_RECONCILIATION_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
+  "latest_execution_audit": "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
   "source_validation": {
-    "github_actions_run_id": 38014845513,
-    "job_id": 114102722190,
-    "validated_head_sha": "f785db3e0828190f9a8f53422bbe0548760708a2",
+    "github_actions_run_id": 38016256163,
+    "job_id": 114107069402,
+    "validated_head_sha": "ca865a831120d61039ffc347ede50aabd8899741",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 66,
-    "note": "This remains the last fully passing Continuity regression until the new execution-control-plane CI rerun succeeds. Run 38016204633 failed because this status artifact had accidentally dropped historical startup acceptance_evidence; the field is restored here."
+    "pytest_count": 77,
+    "note": "Execution-readiness evaluator, cross-agent registry wiring, prior Continuity regressions and restored startup acceptance evidence all passed. Later audit/status/checkpoint writes are metadata-only unless executable code changes again."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -26,10 +27,12 @@
     "new_chat_takeover_changes_lease": true
   },
   "execution_control_plane": {
+    "status": "ACTIVE_CI_PASS",
     "contract": "EXECUTION_READINESS_CONTRACT.json",
     "blueprint": "ORCHESTRATION_BLUEPRINT.md",
     "owner_registry": "OWNER_EXECUTION_REGISTRY.json",
     "evaluator": "runtime/execution_readiness.py",
+    "audit": "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
     "contract_version": "1.0",
     "continuity_protocol_bump_required": false,
     "github_owner_capability_surface": "continuity/EXECUTION_CAPABILITIES.json",
@@ -42,7 +45,12 @@
     "current_session_handshake_required": true,
     "declared_only_counts_as_execution": false,
     "isolated_execution_may_be_simulated_by_role_switching": false,
-    "ci_status": "RERUN_PENDING_AFTER_RESTORED_STARTUP_EVIDENCE"
+    "targeted_handshake_only_for_current_next_action": true,
+    "chat_bridged_execution_allowed_only_when_owner_contract_permits": true,
+    "hard_missing_capability_blocks_exact_gate_not_entire_owner": true,
+    "ci_run": 38016256163,
+    "ci_job": 114107069402,
+    "ci_pytest_count": 77
   },
   "version_lifecycle": {
     "active_protocol": "3.7",
