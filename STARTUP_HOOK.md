@@ -5,87 +5,79 @@ Updated: 2026-10-10
 
 ## Why this exists
 
-GitHub and ChatGPT Library are durable storage/discovery surfaces. They are **not automatic event listeners** for a new chat or an already-open chat.
+GitHub and ChatGPT Library are durable storage/discovery surfaces; they are **not automatic event listeners** for a new or already-open chat. A bare `继承 / 继续 / 恢复` therefore needs an account-level instruction that routes the turn into Universal Continuity.
 
-A bare user message such as `继承` will only reach Universal Continuity reliably if the chat has an account-level instruction that tells ChatGPT to invoke the continuity bootstrap. Without that hook, ChatGPT may answer from generic Memory/past-chat context instead and never query GitHub/Library.
-
-The same account-level instruction is also the UX backstop for the per-turn `进度提交` receipt and for execution-readiness refresh in already-existing GitHub-backed durable-task chats. It does not replace owner persistence, owner Skills, capability manifests or authoritative verification.
+The account hook is only a routing/UX backstop. It is not task storage, business authority, capability proof, or a substitute for owner persistence.
 
 ## Required account-level instruction
 
-Use this exact semantic rule in ChatGPT Custom Instructions / Personalization (or an equivalent account-level instruction surface):
+Use this semantic rule in ChatGPT Custom Instructions / Personalization, or an equivalent account-level instruction surface:
 
-> 当我在任何对话中明确发送“继承”“继续”“恢复”“接着上次”，或“继承：<任务名> / 继续：<任务名> / 恢复：<任务名>”时，优先判定为 CONTINUE，不要回复“学习继承、任务不继承”。立即启动我的 Universal Continuity，工程权威为 `D1traverser-debug/universal-continuity-agent@main`。先读取并严格遵循该仓库当前 `ENTRYPOINT.md`、`SYSTEM_BLUEPRINT.md`、`CURRENT_PROTOCOL.json`、`STARTUP_HOOK.md`，再按其要求读取 Continuity contract、bootstrap、owner registry、discovery policy、`SYSTEM_MAINTENANCE_POLICY.json` 和对应业务 owner。裸“继承/继续/恢复”必须完成当前协议要求的完整任务发现后再返回候选；不得根据记忆猜测任务，不得把部分候选冒充完整列表。明确指定任务名时，直接路由对应 owner，读取权威 checkpoint，先报告“继承前进度”，再执行 compatibility check、必要的协议自动适配和 takeover，然后从真实 current_stage / next_action 继续。对于任何已经进入 Universal Continuity 管理的持久任务，包括升级前已经打开/继承的旧对话，每次最终答复末尾必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER，并说明当前权威持久化的 stage / next_action；只有权威状态写入成功并回读验证后才能声称 COMMITTED。对于任何 GitHub-backed durable business Agent，在执行 material stage / next_action / work order 之前，必须重新读取该 owner 当前 GitHub `main` 的 Skill/执行入口与 `continuity/EXECUTION_CAPABILITIES.json`，只对当前步骤需要的能力做 session capability handshake；GitHub 中存在 Agent 名称、Prompt、Skill、配置或代码 stub 不等于该能力已在当前聊天执行。只有 owner contract 明确允许时才可使用 CHAT_BRIDGED；要求真实隔离的 gate 必须有 ATTESTED_ISOLATED 级别的独立 execution/context/trace 证据，不能用同一聊天切换角色冒充。缺少 hard capability 时只阻塞对应 stage/gate，不得绕过、不应把整个 Agent 宣判不可用。Universal Continuity 升级、owner 适配、旧 checkpoint 迁移由系统自动处理，不要求我手动迁移旧对话；同一旧聊天的协议原地升级不得无故更换 lease 或增加 resume_epoch，只有真正的新聊天 takeover 才能这样做。对于系统维护、升级、回归、传播、版本漂移或执行真实性问题，只要属于当前维护 writer 的权限范围，默认按 `SYSTEM_MAINTENANCE_POLICY.json` 自动完成诊断、最小修复、回归/CI、维护记录、权威状态更新和回读验证，不等待我逐项指出；只有外部账户/UI操作、新权限/凭证、不可逆高影响选择或无法安全推断的外部事实才需要我介入。若无法实际访问 Continuity 所需资源，明确回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不要假装已经恢复、迁移、执行或提交成功；若仅 owner execution-readiness 的特定能力不可用，则报告精确缺口并按 owner contract 阻塞对应 stage/gate。
+> 当我明确发送“继承”“继续”“恢复”“接着上次”，或“继承：<任务名> / 继续：<任务名> / 恢复：<任务名>”时，优先判定为 CONTINUE，不要回复“学习继承、任务不继承”。立即启动 Universal Continuity，工程权威为 `D1traverser-debug/universal-continuity-agent@main`。
+>
+> **启动时不要机械预读整个仓库。** 先读取当前 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后严格按 `ENTRYPOINT.md` 的事件驱动加载矩阵只读取本次动作真正需要的 authority。裸“继承/继续/恢复”才加载 discovery/owner metadata；明确任务名则直接路由对应 owner；只有出现协议不匹配才加载 version/reconciliation authority；只有进入 material GitHub-backed business action 才加载 execution-readiness authority 与该 owner 当前 Skill/入口及 `continuity/EXECUTION_CAPABILITIES.json`；只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时才加载对应 methodology profile/semantics owner。不要把 `SYSTEM_BLUEPRINT.md`、全部 policy、全部 owner、研究资料或旧聊天历史作为每次启动的固定前置上下文。
+>
+> 裸“继承/继续/恢复”必须完成当前协议要求的完整任务发现后再返回候选；不得根据记忆猜测任务，不得把部分候选冒充完整列表。明确指定任务名时，读取权威 checkpoint，先报告“继承前进度”，再执行 compatibility check、必要协议适配和合法 takeover，然后从真实 `current_stage / next_action` 继续。
+>
+> 对任何已进入 Continuity 管理的持久任务，每次最终答复末尾报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
+>
+> 对任何 GitHub-backed durable business Agent，在执行 material stage / next_action / work order 前，刷新该 owner 当前 GitHub `main` 的 Skill/执行入口与 `continuity/EXECUTION_CAPABILITIES.json`，只对当前动作需要的能力做 session capability handshake。Agent 名称、Prompt、Skill、配置或代码 stub 不等于当前聊天已经执行。只有 owner contract 明确允许时才可 CHAT_BRIDGED；需要真实隔离的 gate 必须有 ATTESTED_ISOLATED execution/context/trace 证据。缺少 hard capability 时只阻塞对应 stage/gate，不得绕过，也不得把整个 Agent 判死。
+>
+> Universal Continuity 升级、owner 适配和支持的旧 checkpoint 迁移由系统处理，不要求我手动迁移。相同旧聊天原地升级不得无故更换 lease 或增加 `resume_epoch`；只有真正新聊天 takeover 才这样做。
+>
+> 对系统维护、升级、回归、传播、版本/authority/artifact/cache 漂移、执行真实性或重复 owner 故障，只要属于当前 maintenance writer 权限，默认按 `SYSTEM_MAINTENANCE_POLICY.json` 完成诊断、最小修复、回归/CI、记录、状态更新和回读验证，不等待我逐项指出。用户提出的目标/约束与用户提出的解决机制要分开；用户方案、助手第一方案、其他 Agent/框架方案都只是 candidate，非平凡架构必须独立比较替代方案和失败模式后才能晋升。
+>
+> 若无法实际访问 Continuity 所需资源，明确回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不要假装已经恢复、迁移、执行或提交成功。若只缺 owner 的某项 execution capability，则报告精确缺口并按 owner contract 阻塞对应 gate。
+
+## Event-driven authority loading
+
+The account hook must route, not preload. After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`, load only what the event requires:
+
+- **bare CONTINUE** -> discovery/owner metadata needed to enumerate candidates;
+- **named CONTINUE** -> exact owner/task manifest and short checkpoint first;
+- **protocol mismatch** -> version lifecycle + live reconciliation authority;
+- **material business execution** -> execution registry/contract + exact owner capability manifest and Skill/entrypoint;
+- **artifact/file mutation or storage question** -> `artifact_io` methodology profile and `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only as needed;
+- **maintenance/repeated failure/drift/cleanup** -> `operational_hygiene` profile and `SYSTEM_MAINTENANCE_POLICY.json`;
+- **durable learning/evolution claim** -> `evolution` profile and `CONTINUOUS_LEARNING_POLICY.md`;
+- **media evidence work** -> media distillation authority;
+- **recovery gap** -> context recovery authority and only then selective history.
+
+`SYSTEM_BLUEPRINT.md`, research/audits, unrelated owner repositories and old chat transcripts are **cold-path references**, not mandatory bootstrap input.
 
 ## Product-surface boundary
 
-The repository cannot edit the user's ChatGPT Personalization/Custom Instructions by itself. The account instruction above must exist on the account-level instruction surface for global routing/UX behavior, including already-open chats that otherwise may never re-read GitHub. Repository policy remains the durable engineering authority for how the behavior is executed and verified.
-
-Current OpenAI product behavior should be verified against current first-party documentation when this assumption matters. The repository must not treat an old product-behavior claim as permanent protocol truth.
+This repository cannot edit the user's account Custom Instructions. Repository changes are therefore not proof that an already-open chat received a new hook. Product behavior must be verified with real existing-chat/fresh-chat evidence when materially relevant.
 
 ## System-maintenance autonomy
 
-For an active Universal Continuity / cross-agent control-plane maintenance task, follow `SYSTEM_MAINTENANCE_POLICY.json` whenever a systemic defect or adjacent causally related maintenance issue is detected.
+A systemic defect inside current maintenance authority must proceed through diagnosis -> smallest safe patch -> regression/eval -> validation/CI -> durable record -> authoritative reread. Do not stop at explanation and do not make the user maintain the internal defect backlog.
 
-Do not stop after explaining the defect if the fix is within current authority. Continue through diagnosis, minimum safe patch, regression guard, validation/CI, durable maintenance/change record, task status update and authoritative re-read. Do not make the user act as the internal maintenance operator.
+This does not authorize stealing another active owner lease, rewriting domain business truth, bypassing permissions/account boundaries, or claiming product E2E from repository CI.
 
-This autonomy never authorizes stealing another active owner lease, rewriting domain business truth, bypassing a product/account boundary, or claiming product-level E2E without real evidence.
+## Continuation order
 
-## Conflict rule
-
-The durable principle `学习继承，任务不继承` still applies to **NEW_TASK** classification.
-
-It must **not** suppress an explicit continuation command. A user message whose primary intent is `继承/继续/恢复` is `CONTINUE`, not `NEW_TASK`.
-
-Priority for continuation:
-1. explicit continuation command -> Universal Continuity bootstrap;
+1. explicit continuation intent -> bootstrap;
 2. resolve exact or bare candidate(s);
-3. read authoritative manifest/checkpoint and surface `继承前进度`;
-4. reconcile any supported older protocol state to the current protocol without asking the user to migrate it;
-5. compatibility/takeover when a true new-chat takeover is occurring;
-6. before material GitHub-backed business execution, refresh the owner Skill/entrypoint + `continuity/EXECUTION_CAPABILITIES.json` and perform a targeted current-session capability handshake;
-7. continue from authoritative `current_stage / next_action` using only an execution mode allowed by the owner capability contract;
-8. every final response on the active durable task ends with verified `进度提交` status.
+3. read authoritative manifest/checkpoint and show `继承前进度`;
+4. reconcile supported older protocol state if needed;
+5. perform legal takeover only for a genuine new chat;
+6. refresh only the exact owner execution/methodology surfaces needed by the current action;
+7. execute from authoritative `current_stage / next_action`;
+8. end with verified `进度提交`.
 
-For an already-open active task chat after a protocol or owner execution-contract upgrade, reconcile/refresh in place on the next durable turn; do not pretend a new resume occurred and do not steal the current lease.
+An already-open valid writer reconciles/refreshes in place; protocol or methodology refresh alone must not change lease/resume_epoch.
 
 ## Acceptance tests
 
 ### Fresh chat
 
-Open a truly new chat and send exactly `继承`.
+Send exactly `继承` in a truly new chat. PASS requires complete candidate discovery or `INCOMPLETE_DISCOVERY` when a required source is unavailable. If bootstrap resources cannot actually be accessed, return `CONTINUITY_BOOTSTRAP_UNAVAILABLE`.
 
-PASS requires one of:
-- complete candidate discovery and a consistent candidate list/count; or
-- `INCOMPLETE_DISCOVERY` if a required owner source is unavailable.
+After a task is selected, PASS additionally requires `继承前进度`, legal compatibility/takeover behavior, targeted owner execution/methodology refresh before material work, continuation from the real checkpoint, and a final verified `进度提交`.
 
-If the Continuity bootstrap resources themselves cannot actually be accessed, return `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; do not fabricate discovery or recovery.
+### Existing chat after contract/methodology upgrade
 
-After selecting a task, PASS additionally requires `继承前进度`, compatibility/protocol reconciliation, legal takeover, continuation from the real checkpoint, targeted execution-readiness handshake before material business action, and a final `进度提交` receipt.
+PASS requires current protocol/profile discovery without user migration; supported in-place reconciliation; exact current owner Skill/capability/profile refresh before the affected material action; preservation of the existing lease/resume_epoch; no replay of business state merely to refresh control metadata; and no use of repository declarations as execution evidence.
 
-### Existing chat after protocol/execution-contract upgrade
-
-Continue an already-open durable task that was inherited under an older supported protocol or loaded an older owner Skill/execution contract.
-
-PASS requires:
-- current protocol is discovered without asking the user to migrate;
-- supported protocol metadata is reconciled in place by the valid task writer;
-- current owner Skill/entrypoint and `continuity/EXECUTION_CAPABILITIES.json` are refreshed before the next material business action;
-- only capabilities needed by that action are handshaken;
-- existing `resume_epoch` and `active_lease` are preserved solely because protocol/execution metadata changed;
-- business state is not replayed or rewritten merely to refresh execution metadata;
-- repository declarations are not counted as execution evidence;
-- the final response uses the current `进度提交` receipt.
-
-FAIL includes:
-- replying only that learning/rules are inherited while task state is not;
-- asking the user to re-explain prior workflows before attempting bootstrap;
-- asking the user to choose or perform protocol migration;
-- claiming a total candidate count from a partial owner scan;
-- continuing a fresh takeover without showing where the durable task was previously persisted;
-- incrementing a lease epoch merely because the protocol or execution metadata was upgraded in the same chat;
-- executing from stale role/config assumptions without refreshing the owner capability contract before a material step;
-- counting Agent names/Prompts/Skill/config/code stubs as proof that specialists actually executed;
-- satisfying an isolated gate by role-switching inside one unverified chat context;
-- saying progress was saved merely because the assistant remembers it or because a write call returned success without authoritative verification;
-- waiting for the user to enumerate internal maintenance follow-ups that are already detectable and repairable within the active maintenance authority.
+FAIL includes guessing from memory, partial discovery presented as complete, broad repo preload as a fixed bootstrap ritual, stale owner execution, role-switching as fake isolation, write-call success treated as persistence proof, or waiting for the user to enumerate repairable internal follow-ups.
