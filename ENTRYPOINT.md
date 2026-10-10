@@ -42,7 +42,7 @@ Everything else is event-driven. Load an authority only when the current action 
 - **Media evidence/distillation** -> `MEDIA_DISTILLATION_PROTOCOL.md`.
 - **Architecture/control-plane review** -> `SYSTEM_BLUEPRINT.md` plus only the implicated contracts/policies.
 
-Methodology profiles are composable interface contracts, not copied parent-agent prose. Owners bind domain-local hooks and may specialize local methods, but cannot override kernel authority/evidence/reliability/destructive-mutation invariants. Profile conformance is mechanically evaluated by `runtime/methodology_conformance.py`.
+Methodology profiles are composable interface contracts, not copied parent-agent prose. Owners bind domain-local hooks and may specialize local methods, but cannot override kernel authority/evidence/reliability/destructive-mutation invariants. Declaration conformance is mechanically evaluated by `runtime/methodology_conformance.py`, but declaration/CI alone is never action-level operational proof.
 
 ## Task identity and topology
 
@@ -92,11 +92,15 @@ Before a material owner action:
 2. identify only capabilities needed by the current next action;
 3. perform current-session observations/handshake;
 4. evaluate with `runtime/execution_readiness.py`;
-5. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
-6. block only the exact hard capability that is unavailable;
-7. require execution/artifact/review receipts for gates that claim completion.
+5. determine which methodology profiles are activated by the concrete action/event and load only those profiles;
+6. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
+7. for every activated methodology profile that supports or constrains the material action, assemble the action's `profile_runs` evidence with profile version, activation id/trigger, observed hooks and stable evidence refs;
+8. require an evidence verifier independent of the receipt's self-report and evaluate the activated subset with `runtime.methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
+9. if an activated profile lacks a run, required hook observation, verified evidence ref, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for the missing operational proof;
+10. block only the exact hard capability/profile-dependent gate that is unavailable;
+11. require execution/artifact/review receipts for gates that claim completion.
 
-`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat.
+`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat. A methodology declaration marked `BOUND_EXACT_VERSION` or an owner CI PASS proves wiring/regression only; it does not prove the current material action activated and satisfied the profile.
 
 ## Artifact and methodology invariants
 
@@ -107,6 +111,8 @@ Shared cross-agent methodology is composed rather than inherited as a giant pare
 - `evolution@1.0` -> learning evidence, independent candidate critique, eval/regression promotion and superseded-mechanism cleanup.
 
 Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
+
+Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete or durably committed.
 
 ## Learning and maintenance
 
@@ -122,6 +128,8 @@ For every final response on an active durable task, emit exactly one `进度提�
 - `COMMIT_FAILED` when intended durable progress could not be verified;
 - `STALE_WRITER` when this chat lost its lease.
 
+If the current material write/action activated a methodology profile, `COMMITTED` also requires operational conformance for that activated profile when the profile governs the write/action. Missing action-level profile evidence is not a reason to fabricate PASS; it is an exact gate blocker.
+
 A tool-success response, cache write or model memory is never commit proof.
 
 ## Performance invariant
@@ -132,6 +140,7 @@ Continuity stays off the steady-state business hot path:
 - short checkpoint before deep artifacts;
 - targeted execution handshake only for current action;
 - methodology profiles loaded only when their activation event occurs;
+- operational methodology validation only for the profiles activated by the current material action;
 - maintenance/research/audits are cold path;
 - old chat history is last resort;
 - no material change means no heartbeat write.
