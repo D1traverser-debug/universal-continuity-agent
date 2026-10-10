@@ -19,6 +19,7 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     autonomy = policy["default_autonomy"]
     assert autonomy["diagnose_root_cause"] is True
     assert autonomy["apply_smallest_safe_fix"] is True
+    assert autonomy["prefer_modify_existing_authority_over_new_parallel_surface"] is True
     assert autonomy["add_or_update_regression_guard_when_testable"] is True
     assert autonomy["run_or_observe_relevant_ci"] is True
     assert autonomy["update_authoritative_status_and_handoff"] is True
@@ -26,6 +27,18 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     assert autonomy["reread_authority_before_claiming_committed"] is True
     assert autonomy["ask_user_to_manage_internal_migration_or_recordkeeping"] is False
     assert autonomy["wait_for_user_to_notice_related_internal_followups"] is False
+
+
+def test_new_authority_surface_requires_architecture_admission_gate():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    gate = policy["authority_surface_admission_gate"]
+
+    assert "CREATE_NEW_ROOT_POLICY" in gate["applies_before"]
+    assert "CAN_EXISTING_AUTHORITY_OWN_THIS_WITHOUT_AMBIGUITY" in gate["required_checks"]
+    assert "WOULD_THIS_DUPLICATE_OR_SPLIT_AN_EXISTING_INVARIANT" in gate["required_checks"]
+    assert gate["default_decision"] == "REJECT_NEW_SURFACE_IF_EXISTING_AUTHORITY_CAN_OWN_IT"
+    assert "Consolidate into the existing authority" in gate["failed_admission_behavior"]
+    assert policy["failure_semantics"]["new_authority_surface_without_admission"] == "REJECT_AND_CONSOLIDATE"
 
 
 def test_system_maintenance_policy_preserves_owner_boundaries():
