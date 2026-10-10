@@ -27,7 +27,7 @@
       "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
-      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_DECLARATION_BOUND__OPERATIONAL_EVIDENCE_PENDING",
+      "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_DECLARATION_BOUND__OWNER_HARNESS_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING",
       "discovery": "domain continuity index and compatible persisted domain runtime when available",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
