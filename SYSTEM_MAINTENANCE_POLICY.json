@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "status": "ACTIVE",
+  "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
+  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, or maintainability issue is detected, the active maintenance writer owns the repair loop by default.",
+  "triggers": [
+    "ASSISTANT_DETECTS_SYSTEMIC_GAP",
+    "USER_REPORT_REVEALS_SYSTEMIC_GAP",
+    "CI_OR_REGRESSION_FAILURE",
+    "PROTOCOL_OR_PRODUCT_BEHAVIOR_CHANGE",
+    "OWNER_ENTRYPOINT_OR_CAPABILITY_DRIFT",
+    "AUTHORITY_OR_PERSISTENCE_INCONSISTENCY",
+    "DUPLICATE_OR_SUPERSEDED_MECHANISM_FOUND",
+    "EXECUTION_EVIDENCE_OR_PROPAGATION_GAP"
+  ],
+  "default_autonomy": {
+    "diagnose_root_cause": true,
+    "inspect_authoritative_state_before_write": true,
+    "apply_smallest_safe_fix": true,
+    "add_or_update_regression_guard_when_testable": true,
+    "run_or_observe_relevant_ci": true,
+    "update_authoritative_status_and_handoff": true,
+    "record_change_and_remaining_risk": true,
+    "reread_authority_before_claiming_committed": true,
+    "ask_user_to_manage_internal_migration_or_recordkeeping": false,
+    "wait_for_user_to_notice_related_internal_followups": false
+  },
+  "maintenance_loop": [
+    "DETECT",
+    "CLASSIFY_SCOPE_AND_AUTHORITY",
+    "READ_CURRENT_AUTHORITY",
+    "DIAGNOSE_ROOT_CAUSE",
+    "PATCH_MINIMUM_AUTHORITY_SURFACE",
+    "ADD_OR_UPDATE_GUARD",
+    "RUN_OR_OBSERVE_VALIDATION",
+    "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
+    "REREAD_AUTHORITATIVE_STATE",
+    "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
+  ],
+  "required_durable_record": {
+    "when_material_change_occurs": true,
+    "fields": [
+      "problem",
+      "root_cause",
+      "changed_authority_surfaces",
+      "validation_or_ci_result",
+      "behavioral_effect",
+      "remaining_risks_or_external_dependencies",
+      "current_stage",
+      "next_action"
+    ],
+    "preferred_locations": [
+      "task HANDOFF/checkpoint",
+      "HARNESS_STATUS.json",
+      "audit or research artifact when detail is substantial",
+      "Git commit history for file-level change history"
+    ],
+    "avoid_duplicate_changelog_for_trivial_edits": true
+  },
+  "user_interruption_boundary": {
+    "interrupt_user_only_when": [
+      "EXTERNAL_ACCOUNT_OR_UI_ACTION_REQUIRED",
+      "NEW_PERMISSION_OR_CREDENTIAL_REQUIRED",
+      "IRREVERSIBLE_OR_HIGH_IMPACT_USER_CHOICE_REQUIRED",
+      "MISSING_FACT_CANNOT_BE_SAFELY_INFERRED_OR_RETRIEVED",
+      "LEGAL_OR_PRODUCT_BOUNDARY_REQUIRES_USER_ACTION"
+    ],
+    "otherwise_continue_maintenance": true
+  },
+  "scope_boundaries": {
+    "do_not_steal_other_active_owner_lease": true,
+    "do_not_rewrite_domain_business_truth_from_maintenance_task": true,
+    "do_not_add_permanent_agent_without_invocation_executor_evidence_contract": true,
+    "do_not_bump_protocol_for_compatible_internal_hardening": true,
+    "do_not_claim_product_e2e_without_real_product_evidence": true,
+    "do_not_treat_repo_write_as_proof_old_chats_received_update": true
+  },
+  "failure_semantics": {
+    "patch_write_failed": "COMMIT_FAILED",
+    "writer_lease_lost": "STALE_WRITER",
+    "validation_failed": "KEEP_TASK_ACTIVE_WITH_PRECISE_BLOCKER",
+    "external_user_action_required": "PERSIST_EXACT_PENDING_ACTION_AND_STOP_AT_BOUNDARY"
+  }
+}
