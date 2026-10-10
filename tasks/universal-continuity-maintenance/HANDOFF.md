@@ -13,7 +13,7 @@
 ## Current truth
 
 - 工程真源：`D1traverser-debug/universal-continuity-agent@main`。
-- 当前 maintenance chat 仍持有原 lease：`lease-f266a907-aaf1-4b6a-a283-0e64b979d652`；`resume_epoch=1`；本轮没有 takeover。
+- 当前 maintenance chat 已完成 new-chat takeover：`lease-4b4bc507-0949-4b2e-aed4-c0186dd07566`；`resume_epoch=2`；supersedes `lease-f266a907-aaf1-4b6a-a283-0e64b979d652`。
 - 产品传播链 existing-chat / fresh-chat 双路径 E2E 均已 PASS。
 - risk-tiered global audit 已常驻 CI preflight。
 - operator-dependence reliability incident 仍为 `PARTIALLY_REMEDIATED__PRODUCT_BEHAVIOR_EVAL_PENDING`；不能因为代码层 hardening 已完成就宣称总控已经能稳定自主识别所有 systemic signal。
