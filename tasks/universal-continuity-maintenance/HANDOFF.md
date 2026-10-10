@@ -16,130 +16,148 @@
 - 当前 maintenance chat 仍持有原 lease：`lease-f266a907-aaf1-4b6a-a283-0e64b979d652`；`resume_epoch=1`；本轮没有 takeover。
 - 产品传播链 existing-chat / fresh-chat 双路径 E2E 均已 PASS。
 - risk-tiered global audit 已常驻 CI preflight。
-- 新增的 operator-dependence reliability incident 仍为 `PARTIALLY_REMEDIATED__PRODUCT_BEHAVIOR_EVAL_PENDING`；不能因为代码层 hardening 已完成就宣称总控已经能稳定自主识别所有 systemic signal。
+- operator-dependence reliability incident 仍为 `PARTIALLY_REMEDIATED__PRODUCT_BEHAVIOR_EVAL_PENDING`；不能因为代码层 hardening 已完成就宣称总控已经能稳定自主识别所有 systemic signal。
+- 用户本轮要求优先修 Financial Writing；已在不改写 Financial 业务 task state / checkpoint / lease 的前提下完成 owner-system repair、质量回归 harness 与 owner regression。
 
 ## Operator-dependence reliability incident
 
 真实故障：用户再次需要提醒 Universal，不应等待用户提出架构机制或枚举后续内部问题，而应自己诊断、反驳初始方案、识别系统性/重复失败并推进修复。
 
-这不是缺少 policy 文案。`SYSTEM_MAINTENANCE_POLICY.json` 原本已经写明：用户不是系统维护员、重复纠正属于 reliability signal、非平凡方案必须挑战初始候选、内部维护不应等待用户枚举。
+这不是缺少 policy 文案。`SYSTEM_MAINTENANCE_POLICY.json` 已写明：用户不是系统维护员、重复纠正属于 reliability signal、非平凡方案必须挑战初始候选、内部维护不应等待用户枚举。
 
 因此根因属于 enforcement / product behavior，而不是“再补一句提示词”。详细 incident：`audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md`。
 
-## Verified remediation completed this turn
+## Central operational-conformance hardening remains active
 
-### 1. Declaration conformance 与 operational conformance 已在 runtime 分离
+`runtime/methodology_conformance.py` 继续区分：
 
-`runtime/methodology_conformance.py` 当前有两个不同层级：
+- `evaluate_methodology_conformance(...)`：声明级 profile/version/hooks/overrides 合法性；
+- `evaluate_operational_methodology_conformance(...)`：实际 profile-run、required hooks、caller-supplied independent verifier、evidence refs。
 
-- `evaluate_methodology_conformance(...)`：只证明 owner 声明的 profile/version/hooks/overrides 结构合法；
-- `evaluate_operational_methodology_conformance(...)`：证明当前 action 激活的 profile 有实际 profile-run、required hooks 被观察到，并且 evidence refs 经过 caller-supplied independent verifier 验证。
+硬边界不变：declaration PASS 不等于 operational PASS；self-reported receipt 不是 evidence；缺 independent verifier 或 evidence ref 验证失败必须 fail closed。
 
-硬边界：
+`runtime/system_audit.py` 的 `methodology_declaration_operational_separation` 仍属于 CORE_ALWAYS CI invariant。
 
-- declaration PASS 不等于 operational PASS；
-- receipt 本身只是 evidence index，不是 evidence；
-- 没有 independent verifier 时 operational 必须 FAIL；
-- evidence ref 验证失败必须 FAIL；
-- 声明了 hook 但运行证据没有观察到 required hook 必须 FAIL；
-- 只要求本次 action 激活的 profile，不能为了“统一”每次运行全部 profiles。
+## Financial Writing first-owner repair completed at engineering/harness level
 
-### 2. 该边界已进入 CORE_ALWAYS CI preflight
+### 1. 不是“再加一条少编号规则”，而是修冲突机制
 
-`runtime/system_audit.py` 新增核心不变量：
+真实海风失败稿被从 ChatGPT Library 找回，并固化成 owner-local regression artifact：
 
-`methodology_declaration_operational_separation`
+- `financial-writing-agent/evals/artifacts/offshore-wind-2026-10-10-rejected-deep-v071.md`
 
-每次 CI 在 pytest 前都会跑 synthetic negative check，证明：
+根因审计发现：Financial 的 `style.md` 已经反对机械对称，但 runtime 曾同时存在三层相反压力：
 
-- declaration-only owner 不能被当成 operational；
-- self-reported receipt 没有 independent verifier 不能 operational PASS。
+- Writer prompt 要求 `Use visible numbered hierarchy aggressively`；
+- deterministic `check_payload_navigation` 把文章长度、股票数、H1 数映射成最低 H2/H3 配额；
+- Word mechanical QA 对长 Deep 文再次要求至少 3 个低级编号。
 
-Fault inventory 也新增：
+这会把“可导航”错误等价成“编号越多越好”，直接制造报告腔/机械分组。
 
-- `declared_methodology_is_treated_as_operational_proof`
-- `self_reported_methodology_receipt_lacks_independent_evidence_verification`
+本轮已收敛为：
 
-### 3. CI evidence
+- H1 保留宏观导航；
+- H2/H3 只在真实并行分析分支、类别、步骤时使用；
+- 不再由篇幅、股票数量、H1 数量或视觉配额触发；
+- deterministic guard 只保留极端 `monolithic body block` 可读性保护，不再设编号最低数量；
+- company-universe/material coverage、stock-grounded monitoring、template cluster、Reader Funnel、Authorial Prose、factual/compliance/state/artifact gates 均保留。
 
-当前 behavioral head：`0692cd6929370507e8a4d09b2715515520618af5`
+因此这不是降低门槛，而是把错误的格式 proxy 从质量门槛中删除。
 
-- GitHub Actions run: `38042185203`
-- job: `114184468600`
-- `runtime.system_audit`: PASS
-- pytest: `116 passed in 0.20s`
+### 2. General editorial quality 与 Personalized Writing DNA 已拆开
 
-所以这一部分是实际 executable evidence，不是管理文字。
+新增 owner-local：
 
-## Enforcement assurance boundary
+- `financial_writing_agent/quality_regression.py`
+- `evals/quality_regression.json`
+- `tests/test_quality_regression.py`
 
-当前必须区分三件事：
+质量 promotion 需要：
 
-1. **Owner business runtime gate**：当 owner 的所有相关业务 mutation 都经过 controller/dispatcher 时，可以达到真正的 write-path enforcement。
-2. **Universal repository CI gate**：Universal 当前 GitHub Actions 会在 branch write 后运行 `system_audit + pytest`，因此当前可信等级是 `CI_ENFORCED_POST_WRITE`。
-3. **Arbitrary ChatGPT GitHub maintenance write**：当前 GitHub connector 写操作并不先经过 Universal-owned pre-write dispatcher，所以 Universal 现在不能声称 arbitrary maintenance mutation 已 `WRITE_PATH_ENFORCED`。
+- hard invariants 零退化；
+- blind pairwise candidate-vs-baseline；
+- candidate A/B 位置交换；
+- position-swap 结果稳定；
+- caller-supplied evidence verifier；
+- 已知真实失败必须改善；
+- held-out 不退化并至少有一个 candidate win。
 
-因此本轮明确拒绝先造一个 `maintenance_admission.py` 然后假装所有 GitHub writes 都会经过它。
+`GENERAL_EDITORIAL_QUALITY` 不再要求用户先给正向点赞/范文；系统不能把用户变成 optimizer。
 
-如果以后需要 hard pre-write enforcement，必须先建立真实 choke point，例如受控 maintenance dispatcher / PR gate / equivalent mutation path，然后再做绕过测试。
+`PERSONALIZED_WRITING_DNA` 若声称“这是用户个人偏好”，才额外要求真实 user acceptance/edit 或 post-publication performance evidence。
 
-## Product-behavior gap still open
+### 3. Corpus 已由系统主动回收，不依赖用户手工找文件
 
-代码层 hardening 没有自动证明下面这个行为：
+真实海风拒绝稿已完整固化；另从历史 Library 找到不同题材的 Financial 输出：
 
-> 当用户只暴露症状、重复失败或给出一个可能错误的机制时，live Universal 是否会自己识别 systemic signal、检查 authority、生成替代方案并升级到 maintenance，而不是等待用户再次提醒。
+- `financial-writing-agent/evals/artifacts/rutile-2026-10-06-heldout-baseline.md`
 
-当前 repo 没有 live-agent trace/eval runner。不能用关键词 detector 或静态 JSON fixture 冒充这个能力已经验证。
+它仅作为 cross-topic historical owner baseline，不被标成“用户喜欢的范文”。
 
-本 incident 的下一关闭条件必须包含真实 agent trajectory / product run：
+因此当前：
 
-- signal classification 不依赖固定关键词；
-- 能区分普通一次性 revision 与 repeated/systemic defect；
-- user / assistant / framework 的机制只作为 candidate；
-- 会主动检查当前 authority；
-- 至少比较可信替代方案并找反例；
-- 不让用户承担内部迁移/recordkeeping；
-- 不越过 owner lease 改写业务 truth；
-- 最终 evidence 能被独立 grader / human calibration 复核。
+- `GENERAL_EDITORIAL_QUALITY = PROMOTION_READY_CORPUS_ONLY`
+- `PERSONALIZED_WRITING_DNA = NOT_READY_POSITIVE_USER_OR_PERFORMANCE_EVIDENCE_MISSING`
 
-外部 agent-eval 实践也支持这个方向：真正的 agent harness 应看 end-to-end trace、tool calls、handoffs 和最终环境状态，而不是只读自述 receipt；但外部资料只是 candidate evidence，不能代替本仓库实际验证。
+一般质量 corpus 不再依赖用户继续反馈才能启动；但具体“质量提升”仍必须有独立盲评证据。
 
-## Financial Writing implication
+### 4. Financial owner regression = PASS
 
-Financial Writing 的判断中有三点已被当前代码事实证实：
+Financial behavioral head：`a52249967db7745ebf322e3c9696ef5a03c85f37`
 
-- 当前 Universal methodology validator 过去确实只有 declaration-level semantics；本轮已修中央 validator；
-- Financial 当前 `continuity/UNIVERSAL_PROTOCOL_ADAPTER.json` 尚未声明 methodology profile bindings；
-- Financial 自己的 runtime business workflow 已有 controller choke point，因此其文章 stage/gate 比系统工程 maintenance write 更接近真正 hard enforcement。
+GitHub Actions：
 
-但本轮没有从 Universal 直接重写 Financial 的 task state、checkpoint、active lease，也没有为了“看起来接入了”立刻给 Financial 塞 profile fields。
+- run `38045054149`
+- job `114192795282`
+- OpenAI Agents SDK surface smoke = PASS
+- MCP Streamable HTTP smoke = PASS
+- unit + trajectory = PASS
+- executable contract eval = PASS
+- static rule ownership / bundle audit = PASS
+- wheel + isolated install = PASS
+- DOCX render smoke = PASS
 
-Financial 将作为严格 operational-conformance rollout 的重点 owner，但只有在合法 owner maintenance/writer 边界下，且必须同时有 owner-local executable evidence / quality eval；不能把 declaration PASS 叫 integration complete。
+随后只追加 methodology assurance metadata commit `a65a6955e7fc40c59b78d782d4671fcf548921c7`，记录上述已验证 behavioral head；不要把 metadata receipt 自己当新的 prose-quality proof。
 
-## Global audit baseline remains active
+## What is proven vs not proven
 
-- `CORE_ALWAYS`
-- `IMPACT_SCOPED`
-- `OWNER_SENTINEL_ROTATION`
-- `FULL_CONTROL_PLANE`
-- `SYNTHETIC_FAULT_INJECTION`
+### Proven
 
-普通维护不机械执行所有业务流水线；协议、authority、startup/storage/methodology/execution contract 等横切变化才升级 full sweep。
+- Financial methodology declaration 已 exact-version bound：`operational_hygiene@1.0 + evolution@1.0`。
+- quality-regression promotion harness 已可执行并有 regression tests。
+- 海风真实失败已进入 durable regression evidence，不再依赖 Library 留存。
+- cross-topic held-out 已存在，一般质量 corpus 组成已足够。
+- 机械编号 quota 的 runtime/QA 冲突已经移除，同时保留材料完整性和可读性 hard guards。
+- Financial owner engineering regression 全绿。
+
+### Not yet proven
+
+- 不能说“财经文章质量已经实证变好”。当前缺的是**具体候选输出的独立 blind pairwise live evidence**。
+- 不能说 Personalized Writing DNA 已学会用户偏好；还没有足够真实 positive user/performance evidence。
+- 不能说 Universal operator-dependence incident 已关闭；还缺 real maintenance-decision/escalation product trajectory eval。
+- 不能说 arbitrary ChatGPT GitHub maintenance write 已 `WRITE_PATH_ENFORCED`；当前仍只有 Universal repository `CI_ENFORCED_POST_WRITE`，除非未来先建立真实 mutation choke point。
+
+## Infrastructure answer to the user's broader question
+
+- 不需要先部署服务器才能修 Financial。repo/runtime/CI/eval 足以完成当前这类结构性修复。
+- 服务器/scheduler/event worker 只在需要**聊天关闭后持续运行、在线 trace 采集、定期自动评测/优化**时才成为必要基础设施。
+- Custom Instructions/个性化只能改善启动、路由和行为倾向，不能替代 owner runtime gate、eval corpus、promotion evidence、artifact authority 或 CI。
+- 用户必须提供的只应是不可替代的外部事实/价值信号，例如：真正的个人审美确认、发布后的真实表现、账号权限/产品 UI 操作；内部诊断、方案比较、文件迁移、回归、状态同步不应转嫁给用户。
 
 ## Current stage
 
-`V3_7_PRODUCT_E2E_PASS__OPERATIONAL_CONFORMANCE_CI_ENFORCED__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
+`V3_7_PRODUCT_E2E_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED_AND_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
 
 ## Next action
 
-1. 不新增 root management policy；保持当前 incident OPEN。
-2. 在可获得真实 live-agent trajectory / product-run harness 时，建立并运行 maintenance-decision/escalation eval；没有真实 runner 前不伪造“自动 eval PASS”。
-3. 保持 declaration-vs-operational separation 为 CI `CORE_ALWAYS`。
-4. 下一 owner rollout 时优先验证 Video 当前绑定能否达到 operational conformance，而不只 declaration conformance。
-5. Financial Writing / A股 / Novel 只在各自合法 owner turn 做 thin binding + owner-local regression/eval；不能从 Universal 抢 lease 或重写业务状态。
-6. 若未来要求 GitHub maintenance pre-write hard enforcement，先建立真实 mutation choke point，再谈 `WRITE_PATH_ENFORCED`。
+1. 继续以 Financial Writing 为第一优先 owner。
+2. 当存在可验证 independent judge / live owner execution path 时，对具体 candidate 执行真实 blind pairwise：海风 rejection 必须改善；金红石 held-out 不得退化。
+3. 只有上述 live evidence PASS 后，才能说这次方法改动“文章质量被证明提升”；CI 本身不能替代该证据。
+4. Personalized Writing DNA 只在自然积累到真实 accepted/edit/performance evidence 后 promotion，不要求用户为了系统维护额外造样本。
+5. Universal operator-dependence incident 保持 OPEN，直到 real product trajectory eval 证明 live Universal 会主动升级 systemic signal，而非等待用户再次提醒。
+6. A股 / Novel 等 owner 后续 thin binding 仍须守 owner authority，不从 Universal 改写其业务 truth 或抢 lease。
 7. 无 scheduler/event-watch infrastructure 时，不声称聊天关闭后的离线持续自维护。
 
 ## Recovery rule
 
-恢复本系统任务时先读 `TASK_MANIFEST.json` + 本 Handoff，再按 `ENTRYPOINT.md` 的 event-driven matrix 加载所需 authority。不要从旧聊天记忆重建执行真相，也不要因为看到 profile declaration 就假定 operational integration 已成立。
+恢复本系统任务时先读 `TASK_MANIFEST.json` + 本 Handoff，再按 `ENTRYPOINT.md` 的 event-driven matrix 加载所需 authority。不要从旧聊天记忆重建执行真相，也不要因为 profile declaration 或 owner CI PASS 就假定 live quality 已被证明。
