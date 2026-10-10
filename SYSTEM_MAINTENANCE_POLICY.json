@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.3",
+  "schema_version": "1.4",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
-  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, or repeated owner failure is detected, the active maintenance writer owns the repair loop by default.",
+  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, or premature solution canonicalization is detected, the active maintenance writer owns the repair loop by default.",
   "triggers": [
     "ASSISTANT_DETECTS_SYSTEMIC_GAP",
     "USER_REPORT_REVEALS_SYSTEMIC_GAP",
@@ -14,13 +14,18 @@
     "EXECUTION_EVIDENCE_OR_PROPAGATION_GAP",
     "ARTIFACT_CONTEXT_OR_CACHE_DRIFT",
     "CHAT_ONLY_MATERIAL_CHANGE_NOT_PERSISTED",
-    "REPEATED_OWNER_FAILURE_OR_REGRESSION"
+    "REPEATED_OWNER_FAILURE_OR_REGRESSION",
+    "PREMATURE_SOLUTION_CANONICALIZATION_OR_USER_CORRECTION_SIGNAL"
   ],
   "default_autonomy": {
     "diagnose_root_cause": true,
     "inspect_authoritative_state_before_write": true,
     "classify_artifact_context_and_cache_authority": true,
     "assess_reliability_guard_before_feature_expansion": true,
+    "separate_user_goal_from_user_proposed_mechanism": true,
+    "challenge_user_and_assistant_initial_solution": true,
+    "compare_credible_alternatives_for_nontrivial_design": true,
+    "seek_counterexample_or_failure_mode_before_adoption": true,
     "apply_smallest_safe_fix": true,
     "prefer_modify_existing_authority_over_new_parallel_surface": true,
     "remove_or_demote_superseded_active_mechanisms_when_safe": true,
@@ -64,6 +69,7 @@
     "incident_triggers": [
       "same defect class materially recurs after an accepted fix",
       "the user repeatedly has to restate the same durable requirement",
+      "the user repeatedly has to correct the system for treating the user's suggested mechanism or analogy as canonical architecture",
       "a mandatory gate is repeatedly bypassed or falsely reported",
       "the owner repeatedly executes from stale rules, stale state, or stale artifacts",
       "CI, eval, or product evidence shows a regression in a core owner responsibility"
@@ -71,6 +77,8 @@
     "required_response": [
       "PERSIST_INCIDENT_OR_FAILURE_EVIDENCE",
       "CLASSIFY_ROOT_CAUSE_LAYER",
+      "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM",
+      "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA",
       "CHECK_EXECUTION_AND_REFRESH_PATH",
       "PATCH_TRUE_OWNER_SURFACE",
       "ADD_OR_UPDATE_REGRESSION_OR_EVAL",
@@ -90,6 +98,7 @@
     "READ_CURRENT_AUTHORITY",
     "DIAGNOSE_ROOT_CAUSE",
     "ASSESS_RELIABILITY_GUARD",
+    "CHALLENGE_INITIAL_SOLUTION_CANDIDATES",
     "RUN_AUTHORITY_SURFACE_ADMISSION_GATE",
     "PATCH_MINIMUM_AUTHORITY_SURFACE",
     "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
@@ -144,7 +153,9 @@
     "do_not_add_permanent_agent_without_invocation_executor_evidence_contract": true,
     "do_not_bump_protocol_for_compatible_internal_hardening": true,
     "do_not_claim_product_e2e_without_real_product_evidence": true,
-    "do_not_treat_repo_write_as_proof_old_chats_received_update": true
+    "do_not_treat_repo_write_as_proof_old_chats_received_update": true,
+    "do_not_treat_user_solution_proposal_as_architecture_authority_by_default": true,
+    "do_not_treat_assistant_first_idea_as_privileged_candidate": true
   },
   "failure_semantics": {
     "patch_write_failed": "COMMIT_FAILED",
@@ -152,6 +163,7 @@
     "validation_failed": "KEEP_TASK_ACTIVE_WITH_PRECISE_BLOCKER",
     "external_user_action_required": "PERSIST_EXACT_PENDING_ACTION_AND_STOP_AT_BOUNDARY",
     "new_authority_surface_without_admission": "REJECT_AND_CONSOLIDATE",
-    "repeated_owner_failure_without_durable_incident_or_regression": "RELIABILITY_GUARD_NOT_SATISFIED"
+    "repeated_owner_failure_without_durable_incident_or_regression": "RELIABILITY_GUARD_NOT_SATISFIED",
+    "nontrivial_solution_adopted_without_independent_candidate_critique": "EVOLUTION_GATE_NOT_SATISFIED"
   }
 }
