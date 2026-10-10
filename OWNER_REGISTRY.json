@@ -1,10 +1,12 @@
 {
   "schema_version": "3.0",
-  "updated_at": "2026-10-09",
+  "continuity_protocol_version": "3.7",
+  "updated_at": "2026-10-10",
   "resolver": {
     "owner": "UNIVERSAL_CONTINUITY_HARNESS",
     "module": "runtime/universal_continuity.py",
-    "bare_inherit_policy": "BARE_INHERIT_DISCOVERY.json"
+    "bare_inherit_policy": "BARE_INHERIT_DISCOVERY.json",
+    "protocol_adaptation_registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json"
   },
   "default_owner": "GENERIC_HANDOFF",
   "owners": [
@@ -12,7 +14,7 @@
       "name": "GENERIC_HANDOFF",
       "domains": ["*"],
       "priority": 0,
-      "adapter_status": "READY",
+      "adapter_status": "READY_V37_NATIVE",
       "checkpoint_authority": "generic durable task manifest/checkpoint",
       "bare_inherit_participant": true,
       "bare_inherit_source": "GENERIC_TASK_REGISTRY.json",
@@ -22,17 +24,18 @@
       "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
-      "adapter_status": "READY_MECHANICAL",
-      "discovery": "domain runtime resumable-task API plus private domain continuity index",
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER__ACTIVE_TASK_LAZY_RECONCILIATION",
+      "discovery": "domain continuity index and compatible persisted domain runtime when available",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
-      "checkpoint_authority": "compatible domain Runtime checkpoint"
+      "checkpoint_authority": "GitHub task manifest/handoff for continuity plus compatible persisted domain runtime checkpoint when available",
+      "protocol_adapter": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json"
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_ENGINEERING",
       "domains": ["FINANCIAL_WRITING_SITE_RUNTIME"],
       "priority": 100,
-      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "adapter_status": "READY_EXPLICIT_ONLY_DOMAIN_INDEX",
       "discovery": "private domain continuity/TASK_INDEX.md",
       "bare_inherit_participant": false,
       "checkpoint_authority": "private domain engineering handoff"
@@ -50,19 +53,21 @@
       "aliases": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW"],
       "domains": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW", "A_SHARE_MARKET"],
       "priority": 100,
-      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "adapter_status": "READY_V37_ACTIVE_ENTRY_RECONCILED",
       "discovery": "domain owner API plus private domain continuity/TASK_INDEX.md",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md",
-      "checkpoint_authority": "domain cutover-status-selected authority"
+      "checkpoint_authority": "domain cutover-status-selected authority",
+      "protocol_adapter": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json"
     },
     {
       "name": "NOVEL_OS",
       "domains": ["NOVEL"],
       "priority": 100,
-      "adapter_status": "READY_V3_3_DOMAIN_RECOVERY_CHAIN",
+      "adapter_status": "READY_V37_ROUTING_OVERLAY__OWNER_STATE_LAZY_RECONCILIATION",
       "discovery": "NOVEL_OS /NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
       "adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
+      "universal_protocol_adapter": "tasks/FQ001_MINGRI_ORDER/PROTOCOL_ADAPTER.json",
       "bare_inherit_participant": true,
       "bare_inherit_source": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
       "checkpoint_authority": "NOVEL_OS owner checkpoint and durable recovery chain",
@@ -73,11 +78,12 @@
       "name": "VIDEO_GROWTH_AGENT",
       "domains": ["VIDEO_GROWTH"],
       "priority": 100,
-      "adapter_status": "READY_PRIVATE_DOMAIN_INDEX",
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER__ACTIVE_TASK_LAZY_RECONCILIATION",
       "discovery": "private domain continuity/TASK_INDEX.md",
       "bare_inherit_participant": true,
       "bare_inherit_source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
-      "checkpoint_authority": "Video Growth Agent durable recovery chain"
+      "checkpoint_authority": "Video Growth Agent durable recovery chain",
+      "protocol_adapter": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json"
     }
   ],
   "cutover": {
