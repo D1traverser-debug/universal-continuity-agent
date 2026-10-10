@@ -66,17 +66,18 @@
       "execution_capability_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/EXECUTION_CAPABILITIES.json"
     },
     {
-      "name": "NOVEL_OS",
+      "name": "NOVEL_WRITING_AGENT",
+      "aliases": ["NOVEL_OS"],
       "domains": ["NOVEL"],
       "priority": 100,
-      "adapter_status": "READY_V37_ROUTING_OVERLAY__OWNER_STATE_LAZY_RECONCILIATION",
-      "discovery": "NOVEL_OS /NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
-      "adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
-      "universal_protocol_adapter": "tasks/FQ001_MINGRI_ORDER/PROTOCOL_ADAPTER.json",
+      "adapter_status": "READY_V37_GITHUB_DOMAIN_OWNER",
+      "discovery": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
       "bare_inherit_participant": true,
-      "bare_inherit_source": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
-      "checkpoint_authority": "NOVEL_OS owner checkpoint and durable recovery chain",
-      "business_state_authority": "/NOVEL_OS_小说系统/99_RECOVERY/START_HERE.md",
+      "bare_inherit_source": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
+      "checkpoint_authority": "D1traverser-debug/novel-writing-agent@main:projects/<task_id>/checkpoints/CURRENT_CHECKPOINT.json",
+      "business_state_authority": "D1traverser-debug/novel-writing-agent@main",
+      "protocol_adapter": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/novel-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json",
       "lease_authority": "Universal task manifest CAS"
     },
     {
