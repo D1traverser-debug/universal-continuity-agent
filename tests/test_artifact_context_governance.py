@@ -81,5 +81,26 @@ def test_owner_contract_requires_file_operation_conformance():
     assert gov["destructive_mutation_requires_stable_identity_and_dependency_check"] is True
 
 
+def test_owner_contract_requires_operational_hygiene_and_real_learning_path():
+    contract = json.loads((ROOT / "OWNER_ADAPTER_CONTRACT.json").read_text(encoding="utf-8"))
+    hygiene = contract["operational_hygiene_and_learning"]
+    required = set(hygiene["owner_must_expose"])
+    assert {
+        "observability_or_incident_evidence_location",
+        "self_maintenance_trigger_path",
+        "learning_evidence_location",
+        "eval_or_regression_promotion_path",
+        "garbage_collection_owner_and_dependency_rule",
+        "reliability_or_change_freeze_guard",
+        "superseded_mechanism_cleanup_rule",
+    } <= required
+    assert hygiene["repeated_material_failure_requires_durable_incident_or_failure_evidence"] is True
+    assert hygiene["repeated_user_restating_same_durable_requirement_is_reliability_signal"] is True
+    assert hygiene["chat_only_fix_counts_as_learning"] is False
+    assert hygiene["declared_learning_role_without_invocation_and_receipt_is_operational"] is False
+    assert hygiene["promotion_requires_eval_or_regression_evidence"] is True
+    assert hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is True
+
+
 def test_file_operation_rules_are_consolidated_not_parallel_root_policy():
     assert not (ROOT / "FILE_OPERATION_GOVERNANCE_POLICY.json").exists()
