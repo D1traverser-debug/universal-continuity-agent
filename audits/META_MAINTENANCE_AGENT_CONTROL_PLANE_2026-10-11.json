@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.1",
+  "run_id": "meta-maintenance-agent-control-plane-productization-2026-10-11",
+  "scope": "FULL_CONTROL_PLANE",
+  "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
+  "target_manifest_version": 44,
+  "user_signal": {
+    "classifications": ["GOAL_OR_CONSTRAINT", "COUNTEREXAMPLE_OR_FAILURE_REPORT", "PROPOSED_MECHANISM"],
+    "goal_or_constraint": "The GitHub migration must produce real Agent products that self-route, execute, evaluate, recover and monitor architecture drift without requiring the user to repeatedly enumerate missing review dimensions.",
+    "proposed_mechanism": "Reconsider whether the control plane should use Agent, Skill, Harness, monitoring or another upper-layer system; compare against compact proven Skill patterns rather than defaulting to the existing path.",
+    "counterexample": "Financial had a real runtime and CI but a roughly 20KB Skill still duplicated substantial product rules; Universal itself had a thin Skill while mandatory ENTRYPOINT bootstrap had grown to roughly 17KB. A stale maintenance chat also discovered architecture drift but had no non-authoritative delivery path to the active writer, so the user had to raise the issue again."
+  },
+  "authority_inspection": {
+    "refs": [
+      "ENTRYPOINT.md",
+      "STARTUP_HOOK.md",
+      "SYSTEM_BLUEPRINT.md",
+      "OWNER_REGISTRY.json",
+      "OWNER_ADAPTER_CONTRACT.json",
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "CONTINUOUS_LEARNING_POLICY.md",
+      "runtime/system_audit.py",
+      "runtime/meta_maintenance.py",
+      "skills/universal-continuity/SKILL.md",
+      "D1traverser-debug/financial-writing-agent@main:skills/financial-writing-agent/SKILL.md",
+      "D1traverser-debug/a-share-event-driven-agent@main:skills/a-share-event-driven-agent/SKILL.md",
+      "D1traverser-debug/video-growth-agent@main:skills/video-growth-agent/SKILL.md",
+      "D1traverser-debug/novel-writing-agent@main:SKILL.md"
+    ]
+  },
+  "failure_model": {
+    "root_cause_layers": ["REPOSITORY_POLICY", "RUNTIME_OR_SCHEMA", "TEST_OR_EVAL", "EVIDENCE_OR_PROPAGATION"],
+    "failure_classes": [
+      "implicit Agent-productization acceptance: GitHub cutover validated engineering authority/versioning/CI but did not mechanically define Skill-versus-Runtime-versus-Workflow-versus-Harness responsibilities",
+      "thin-Skill/fat-bootstrap split: Universal Skill was thin while mandatory ENTRYPOINT/STARTUP surfaces still carried large duplicated contract detail",
+      "owner architecture drift invisibility: an owner could retain a large Skill or change runtime/harness shape without a shared architecture contract or cross-owner validator",
+      "state-plane/signal-plane conflation: a stale chat correctly stopped authoritative writes but had no first-class non-authoritative way to deliver a newly discovered systemic signal to the current writer",
+      "remote freshness gap: local Universal CI could validate cached owner observations but could not itself discover a newer private owner HEAD",
+      "user-trigger dependence: the control plane did not proactively treat Agent productization/Skill bloat/monitoring completeness as a standing architecture invariant"
+    ],
+    "system_impact_map": [
+      "Universal bootstrap and account startup routing",
+      "OWNER_REGISTRY owner admission contract",
+      "all four current BUSINESS owner repositories",
+      "Universal CI and system audit",
+      "cross-owner remote observation/freshness",
+      "system maintenance signal delivery and monitoring",
+      "no owner business task stage, lease, Canon, article or market workflow state is mutated by this architecture rollout"
+    ],
+    "falsification_checks": [
+      "Validate a synthetic owner that has a Skill but no runtime/harness and require structural FAIL.",
+      "Validate an oversized Skill and require explicit PASS_WITH_DRIFT rather than silently treating it as a healthy thin router or hard-failing an otherwise executable owner.",
+      "Try storing the validated/current repository HEAD inside AGENT_MANIFEST and reject the design because writing the manifest makes its own receipt stale.",
+      "Try requiring a formal tool_surface for Novel and reject the design because repository-native Agent runtimes may be valid without a callable MCP/API surface.",
+      "Try copying the shared architecture validator into every owner and reject it because duplicated control semantics would drift.",
+      "Upgrade methodology receipt semantics while leaving version-specific bootstrap wording and require system audit to reject hard-coded stale receipt semantics; the thin bootstrap must delegate to current contract/runtime instead.",
+      "Require ENTRYPOINT and STARTUP_HOOK to remain below an explicit byte budget after restoring all kernel invariants exposed by historical tests.",
+      "Advance Novel concurrently after its Agent manifest write and verify remote observation is rebound to the newer actual owner HEAD instead of reusing the manifest commit as permanent proof.",
+      "Emit a control signal without a writer lease and require that it cannot claim authoritative state mutation."
+    ]
+  },
+  "learning_scout": {
+    "disposition": "SCOUT_DONE",
+    "sources": [
+      {
+        "ref": "https://openai.github.io/openai-agents-python/",
+        "observation": "Agent products can stay small at the orchestration surface while delegating execution to agents/tools/guardrails and preserving tracing rather than encoding the whole workflow as one giant prompt.",
+        "disposition": "ADOPT",
+        "rationale": "Supports explicit Runtime/Workflow/Harness separation and rejecting Skill prose as execution evidence."
+      },
+      {
+        "ref": "https://openai.github.io/openai-agents-python/tracing/",
+        "observation": "Execution traces expose agent runs, generations, tool activity and workflow structure as an observation surface distinct from the instruction text.",
+        "disposition": "ADOPT",
+        "rationale": "Supports treating Harness/observation as a separate product layer and preserving higher assurance for real traces rather than self-description."
+      },
+      {
+        "ref": "Anthropic Agent Skills progressive-disclosure design previously reviewed in this maintenance task",
+        "observation": "Compact Skill entrypoints can discover and progressively load detailed methods instead of placing the full operating manual on the hot path.",
+        "disposition": "ADOPT",
+        "rationale": "Directly supports the thin Skill/thin bootstrap architecture and event-driven authority loading."
+      },
+      {
+        "ref": "mini-SWE-agent trajectory/harness implementation previously reviewed in this maintenance task",
+        "observation": "A smaller agent scaffold can retain trajectory, limits and evaluation while removing framework ceremony.",
+        "disposition": "ADOPT",
+        "rationale": "Supports a narrow deterministic Universal architecture harness instead of another permanent supervisory LLM Agent."
+      },
+      {
+        "ref": "DSPy GEPA/MIPROv2 previously reviewed in this maintenance task",
+        "observation": "Automated instruction/program optimization is useful when a trustworthy evaluator and train/validation split exist, but it is not an architecture-truth oracle.",
+        "disposition": "NARROW",
+        "rationale": "Do not install an optimizer as the main control-plane judge before architecture-quality metrics have trustworthy held-out validation."
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "id": "keep-expanding-existing-maintenance-policy-only",
+      "decision": "REJECTED",
+      "rationale": "More prose cannot independently detect Skill/runtime/harness responsibility leakage or remote owner freshness."
+    },
+    {
+      "id": "force-openai-agents-sdk-and-tool-surface-on-every-owner",
+      "decision": "REJECTED",
+      "rationale": "Framework branding is not the invariant; deterministic, hybrid and repository-native runtimes can be valid and forcing tool APIs would create fake capability declarations."
+    },
+    {
+      "id": "new-permanent-meta-llm-agent",
+      "decision": "REJECTED",
+      "rationale": "Without a distinct executor/trace/evaluator boundary it would reproduce self-attestation while increasing prompt and coordination cost."
+    },
+    {
+      "id": "machine-readable-agent-architecture-contract-plus-central-harness-plus-thin-bootstrap-plus-signal-plane-and-remote-watch",
+      "decision": "ACCEPTED",
+      "rationale": "Separates responsibilities mechanically, keeps shared checks centralized, reduces hot-path context, preserves single-writer authority and gives unattended/stale observers a non-authoritative way to surface drift."
+    }
+  ],
+  "instruction_surface": {
+    "decision": "CHANGE",
+    "reason": "The demonstrated defect included a fat mandatory repository bootstrap, so ENTRYPOINT.md and STARTUP_HOOK.md were reduced to routing/kernel semantics with byte-budget regressions. No claim is made that repository edits changed the user's account-level Custom Instructions; real product propagation remains separately evidenced."
+  },
+  "propagation": {
+    "classification": "KERNEL_AGENT_ARCHITECTURE_AND_OBSERVABILITY_CONTRACT",
+    "scope": "ALL_BUSINESS_OWNERS",
+    "impacted_business_owners": ["A_SHARE_MARKET_AGENT", "FINANCIAL_WRITING_AGENT_RUNTIME", "NOVEL_WRITING_AGENT", "VIDEO_GROWTH_AGENT"],
+    "mechanism": "Each BUSINESS owner now exposes a static continuity/AGENT_MANIFEST.json referenced by OWNER_REGISTRY. Shared architecture validation remains centralized in Universal; owner local CI retains domain contract/trajectory/quality responsibility. OWNER_ARCHITECTURE_OBSERVATIONS records current remote head/architecture receipts without becoming business authority.",
+    "stale_override_scan": "PASS",
+    "override_scan_evidence": [
+      "Financial current architecture observation: PASS_WITH_DRIFT; executable hybrid runtime and harness are real, Skill remains above thin-router target.",
+      "A-share current architecture observation: PASS; Skill size 7384 bytes and owner CI success.",
+      "Novel current architecture observation was refreshed to concurrent owner head 4cafb0ec1240f19f44e442d3b74f173173865555; PASS_WITH_DRIFT and CHAT_BRIDGED assurance remain explicit.",
+      "Video current architecture observation: PASS_WITH_DRIFT; AgenticStudio/work-order runtime exists while strict isolated review remains a separate open assurance.",
+      "No business task lease/state/output was rewritten by the architecture rollout."
+    ]
+  },
+  "complexity_efficiency": {
+    "new_authority_surfaces": 2,
+    "mandatory_startup_context_delta": "DECREASED: ENTRYPOINT.md and STARTUP_HOOK.md are both mechanically constrained below 8192 bytes; detailed methodology receipt semantics moved back to event-driven authorities.",
+    "tool_or_remote_read_delta": "A daily condition-watch performs remote owner architecture checks only on the maintenance/monitoring cold path and remains silent when no meaningful drift exists.",
+    "steady_state_latency_effect": "REDUCED_BOOTSTRAP_CONTEXT; business hot path does not run global architecture discovery.",
+    "duplicate_rule_effect": "CONSOLIDATE: architecture validation is centralized in Universal rather than copied into each owner repository.",
+    "cross_owner_touch_count": 4,
+    "migration_compatibility_effect": "No Continuity protocol bump and no business-state migration. OWNER_REGISTRY schema advances to 3.2 for agent_manifest_ref admission metadata.",
+    "test_observability_effect": "Adds Agent architecture tests/audit, hot-path byte budgets, Signal Plane tests and daily remote architecture watch.",
+    "decision": "ACCEPTABLE"
+  },
+  "authority_surface_admission": "PASS",
+  "implementation": {
+    "decision": "CHANGE_APPLIED",
+    "inspected_paths": [
+      "ENTRYPOINT.md", "STARTUP_HOOK.md", "SYSTEM_BLUEPRINT.md", "OWNER_REGISTRY.json", "OWNER_ADAPTER_CONTRACT.json",
+      "SYSTEM_MAINTENANCE_POLICY.json", "CONTINUOUS_LEARNING_POLICY.md", "runtime/system_audit.py", "runtime/meta_maintenance.py",
+      "skills/universal-continuity/SKILL.md", "all four current owner Skills/runtimes/CI surfaces"
+    ],
+    "changed_paths": [
+      "AGENT_ARCHITECTURE_CONTRACT.json", "AGENT_MANIFEST.json", "OWNER_REGISTRY.json", "OWNER_ARCHITECTURE_OBSERVATIONS.json",
+      "runtime/agent_architecture.py", "runtime/agent_architecture_audit.py", "tests/test_agent_architecture.py", ".github/workflows/ci.yml",
+      "ENTRYPOINT.md", "STARTUP_HOOK.md", "tests/test_hot_path_loading.py", "tests/test_startup_hook.py",
+      "CONTROL_SIGNAL_CONTRACT.json", "SIGNAL_PLANE.md", "runtime/control_signal.py", "tests/test_control_signal.py", "tests/test_signal_plane_contract.py",
+      "SYSTEM_BLUEPRINT.md", "runtime/system_audit.py", "tests/test_meta_maintenance.py", "tests/test_universal_continuity.py",
+      "audits/AGENT_ARCHITECTURE_ROLLOUT_2026-10-11.json", "audits/CONTROL_SIGNAL_EXAMPLE_2026-10-11.json",
+      "D1traverser-debug/financial-writing-agent@main:continuity/AGENT_MANIFEST.json",
+      "D1traverser-debug/a-share-event-driven-agent@main:continuity/AGENT_MANIFEST.json",
+      "D1traverser-debug/novel-writing-agent@main:continuity/AGENT_MANIFEST.json",
+      "D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json"
+    ],
+    "superseded_or_demoted_surfaces": [
+      "The assumption that a thin SKILL.md alone proves a thin product is superseded by a budgeted mandatory bootstrap and explicit six-layer Agent architecture contract.",
+      "Version-specific methodology receipt semantics in ENTRYPOINT are superseded by delegation to OWNER_ADAPTER_CONTRACT/runtime validators.",
+      "The assumption that stale writers can only stop and verbally report discoveries is superseded by a non-authoritative Signal Plane.",
+      "The first design that stored current owner HEAD inside AGENT_MANIFEST was rejected before closure because it produced self-referential stale receipts."
+    ]
+  },
+  "validation": {
+    "regression_or_eval_refs": [
+      "Universal GitHub Actions run 38088847214 / head e82a0f4e86f47ddebfa4d516ff710d4bc7b22ce2: control-plane audit PASS + Agent architecture harness PASS + full pytest PASS",
+      "Financial owner CI 38087159770: SUCCESS",
+      "A-share owner CI 38087222816: SUCCESS",
+      "Video owner CI 38087238851: SUCCESS",
+      "Novel current owner CI 38087533724 at 4cafb0ec1240f19f44e442d3b74f173173865555: SUCCESS",
+      "GitHub Issue #1 [CONTROL_SIGNAL] Agent productization drift",
+      "Automation Agent Architecture Watch id 6acab16812248191b9f8c8ab52803491 enabled as daily condition watch"
+    ],
+    "second_order_challenge": "PASS",
+    "second_order_findings": [
+      "Putting current/validated HEAD inside the static owner manifest would make a manifest write invalidate its own freshness receipt; freshness moved to a rebuildable external observation cache.",
+      "Requiring a formal tool surface for every Agent would make repository-native Novel execution fabricate a capability; tool_surface_refs is optional while executable runtime entrypoints remain mandatory.",
+      "Copying the architecture checker into every owner would recreate cross-repository semantic drift; shared architecture validation stays central while owner CI keeps domain suites.",
+      "A hard Skill-size failure would confuse context architecture drift with runtime nonexistence; oversized Skills produce PASS_WITH_DRIFT while missing runtime/workflow/harness fails.",
+      "Slimming ENTRYPOINT initially broke historical tests that encoded both obsolete version duplication and still-valid kernel semantics; obsolete duplication tests were replaced, while valid existing-chat/progress/blocker semantics were restored without relaxing the byte budget.",
+      "The daily remote watch is an observation/notification surface, not an authoritative writer. It can emit/update control signals but cannot mutate owner business state or acquire leases.",
+      "A monitor task existing does not itself prove it will catch every future unknown architecture failure class; first real drift detection remains future operational evidence."
+    ],
+    "cross_surface_or_fault_audit": "PASS"
+  },
+  "closure": {
+    "assurance_ceiling": "REGRESSION_VERIFIED",
+    "independent_semantic_assurance": "OPEN",
+    "open_gates": [
+      "Financial, Novel and Video Skills remain above the 8192-byte thin-router target and are tracked as architecture drift until owner-specific safe slimming is completed and revalidated.",
+      "The Agent Architecture Watch has not yet produced a first real drift alert trajectory; it is enabled monitoring infrastructure, not evidence of future recall quality.",
+      "Universal operator-dependence still requires independent held-out/live maintenance trajectory grading and a distinct evidence verifier.",
+      "A truly fresh product chat with a newly admitted real BUSINESS owner remains unproven.",
+      "Owner real actions still require methodology receipt 1.3 exact-action independent verification where applicable.",
+      "Financial live prose-quality/Personalized Writing DNA outcome evidence and Video strict isolated review remain open.",
+      "Arbitrary ChatGPT-to-GitHub mutation still lacks universal pre-write WRITE_PATH_ENFORCED semantics."
+    ],
+    "unknown_or_open_world_boundary": "The architecture contract, harness, signal transport and remote watch reduce known operator dependence and make several drift classes proactively observable. They do not prove global flawlessness or that every future Agent/model/tool/product failure class has already been anticipated.",
+    "global_flawlessness_claimed": false
+  }
+}
