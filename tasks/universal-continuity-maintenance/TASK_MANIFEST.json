@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 19,
+  "manifest_version": 20,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,13 +10,14 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T07:24:00Z",
-  "current_stage": "V3_7_EPISTEMIC_INDEPENDENCE_GATE_ACTIVE__CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_PENDING",
-  "next_action": "本轮真实行为暴露 Continuous Learning 的关键缺口：系统会比较/测试候选，但过去没有把‘用户目标/约束’与‘用户提出的解决机制/类比’机械分离，也没有强制挑战助手自己的第一方案。SYSTEM_MAINTENANCE_POLICY.json v1.4、CONTINUOUS_LEARNING_POLICY.md 和 OWNER_ADAPTER_CONTRACT 已补 independent candidate-adoption gate：用户/助手/其他 Agent 的非平凡方案都只是 candidate，必须检查当前 authority、比较可信替代方案、主动寻找反例/失败模式并通过 eval/regression 后才能晋升；domain owner 可特化方法但不得绕过 evidence/reliability/authority invariants。CI run 38034208661 / job 114161174157 在 head 04aebdaa09e80d105f12d2c1d3cfe4c87dca0caf 为 94 passed。下一步继续审计 Universal 是否已接近方法学膨胀临界点，并研究/比较跨 Agent 通用能力的组合、bundle/module、hook/override、conformance 等复用模式；不预设 UVM inheritance 为答案，不让 Universal 变成巨型父类，也不复制一整套治理到每个 owner。随后再决定是否需要最小架构重构，并继续 owner conformance 与 product E2E。",
+  "updated_at": "2026-10-10T07:55:00Z",
+  "current_stage": "V3_7_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
+  "next_action": "Universal 已先在自身完成方法学复用 self-pilot：OWNER_ADAPTER_CONTRACT profile contract v1.0 定义 artifact_io@1.0、operational_hygiene@1.0、evolution@1.0，owner 只 pin exact profile version 并绑定 domain-local hooks；runtime/methodology_conformance.py 会机械拒绝 floating latest、缺 hook 和试图覆盖 authority/lease/verified-commit/candidate-vs-production/evidence/destructive-mutation 等 kernel invariants。ENTRYPOINT/STARTUP_HOOK/SYSTEM_BLUEPRINT 已改为 ENTRYPOINT.md + CURRENT_PROTOCOL.json 最小 bootstrap + event-driven loading，移除固定全量预读；中间 3 次 CI 失败分别保住 existing-chat coverage、mandatory 进度提交、version-lifecycle ownership pointer，最终工程 CI run 38036023965 / job 114166494334 / head f07c3b5a6a746f0adb70ed1878093d659c60b7c9 为 102 passed。下一步不复制共享 profile prose 到子 Agent；在 Financial Writing、Video Growth、A股、Novel 的合法 maintenance/writer turn 逐个绑定现有 domain hooks 并跑 owner-specific regression/eval，确认减少重复而非增加一层后再推广。Financial/Video 的领域进化方法保留本地，只复用 cross-agent invariants。legacy owner_must_expose mirrors 暂保兼容，待支持的 owners 全迁移且回归证明无旧 reader 后再删。账户级旧 Continuity hook 已确认存在，但最新 minimal-bootstrap/execution-readiness/autonomous-maintenance 语义仍未得到用户保存确认，existing-chat/fresh-chat 产品 E2E 仍待真实验收；无 scheduler 时不声称离线后台自治。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
   "execution_readiness_contract_version": "1.0",
+  "methodology_profile_contract_version": "1.0",
   "system_maintenance_policy_version": "1.4",
   "artifact_context_governance_policy_version": "1.1",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
@@ -30,9 +31,10 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统","跨对话继承","Continuity","系统维护","运行卫生","epistemic independence","candidate adoption","critical learning","anti-sycophancy","方法学复用","composition","owner override","operational hygiene","reliability guard","incident","self-maintenance","self-cleaning","owner-aware GC","eval","进化证据","架构治理","artifact lifecycle","execution readiness","Custom Instructions","handoff","进度提交","持续学习","版本生命周期","系统回归"],
+  "keywords": ["继承系统","跨对话继承","Continuity","small stable kernel","composable methodology","methodology profile","event-driven loading","hot path slimming","owner hooks","conformance","epistemic independence","candidate adoption","运行卫生","self-maintenance","self-cleaning","artifact_io","evolution","reliability guard","owner-aware GC","eval","架构治理","execution readiness","Custom Instructions","handoff","进度提交","持续学习","版本生命周期","系统回归"],
   "artifact_refs": [
     "ENTRYPOINT.md",
+    "CURRENT_PROTOCOL.json",
     "SYSTEM_BLUEPRINT.md",
     "SYSTEM_MAINTENANCE_POLICY.json",
     "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
@@ -52,10 +54,14 @@
     "HARNESS_STATUS.json",
     "runtime/protocol_reconciliation.py",
     "runtime/execution_readiness.py",
+    "runtime/methodology_conformance.py",
+    "tests/test_methodology_conformance.py",
+    "tests/test_hot_path_loading.py",
     "skills/universal-continuity/SKILL.md",
     "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md",
     "audits/CROSS_AGENT_ARTIFACT_CONTEXT_GOVERNANCE_2026-10-10.md",
     "audits/CONTROL_PLANE_ARCHITECTURE_REVIEW_2026-10-10.md",
-    "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md"
+    "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
+    "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md"
   ]
 }
