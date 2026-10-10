@@ -30,4 +30,6 @@ jobs:
             args+=(--changed-path "$path")
           done
           python -m runtime.system_audit --repo-root . --trigger routine_change "${args[@]}"
+      - name: Run Agent architecture harness
+        run: python -m runtime.agent_architecture_audit --repo-root .
       - run: python -m pytest -q
