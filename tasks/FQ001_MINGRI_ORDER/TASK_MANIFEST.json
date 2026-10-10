@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 8,
+  "manifest_version": 9,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,15 +10,15 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T18:17:00Z",
-  "current_stage": "FRONT_ARC_SIGNING_REPAIR_ACTIVE__CH8_PUBLISH_READY_NOT_CONFIRMED__CH9_READY",
-  "next_action": "Execute the targeted CH1-CH8 signing-repair matrix and prepare only high-value candidate revisions before the 50k second signing application; if the user confirms CH8 publication, record that external fact separately; keep CH9 READY and continue it under the evidence contract without consuming the second signing attempt until a signing-readiness audit passes.",
+  "updated_at": "2026-10-10T20:04:00Z",
+  "current_stage": "FULL_FRONT_ARC_REBASE_ACTIVE__SIGNING_PACKET_REARCHITECTURE",
+  "next_action": "Freeze CH1-CH8 old FINALs as immutable historical baseline evidence; finalize and validate the new front-arc signing-packet architecture, then rewrite candidate CH1-CH8 as a coherent unit under rebase and execution-evidence gates. Keep platform withdrawal/replacement and any CH8 publication fact user-controlled; hold old CH9 execution; do not consume the 50k second-signing attempt until the replacement packet passes signing-readiness audit.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
   "domain_contract_version": "2.1-github",
-  "skill_version": "Novel Writing Agent 2.2.0-github",
-  "runtime_version": "github-owner-2.3",
+  "skill_version": "Novel Writing Agent 2.3.0-github",
+  "runtime_version": "github-owner-2.4",
   "release_evidence_contract_version": "1.0",
   "release_evidence_strict_from_chapter": 9,
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
@@ -41,7 +41,7 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner 2.2 / runtime 2.3 adds platform-signing feedback recovery and controlled front-arc unfreeze; Canon, CH8 body/publication truth, CH9 READY contract, resume_epoch and lease are preserved."
+    "owner_internal_hardening": "Novel owner 2.3 / runtime 2.4 applies the Universal candidate-adoption and M0-M11 evolution loop to the signing failure plus changed user impact boundary. The old targeted patch plan and old CH9 READY path are superseded; historical FINAL hashes, Canon v12, publication facts, resume_epoch and active lease are preserved."
   },
   "continuity_acceptance": {
     "result": "PASS",
@@ -52,7 +52,8 @@
     "release_evidence_test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_release_evidence_contract.py",
     "new_chat_recovery": "PASS",
     "takeover_simulation": "PASS",
-    "github_owner_cutover": "PASS"
+    "github_owner_cutover": "PASS",
+    "full_front_arc_rebase_recovery": "PENDING_FINAL_OWNER_CI"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
@@ -60,15 +61,31 @@
     "third_application_threshold_if_needed": 80000,
     "second_application_gate": "SECOND_SIGNING_APPLICATION_REQUIRES_SIGNING_READINESS_AUDIT_PASS",
     "owner_quality_diagnosis_ref": "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
-    "owner_front_arc_repair_matrix_ref": "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
+    "owner_active_rebase_plan_ref": "D1traverser-debug/novel-writing-agent@main:audits/FULL_FRONT_ARC_REBASE_PLAN_2026-10-11.md",
+    "owner_learning_evidence_ref": "D1traverser-debug/novel-writing-agent@main:audits/FULL_REBASE_LEARNING_EVIDENCE_2026-10-11.md",
+    "owner_superseded_targeted_matrix_ref": "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
+  },
+  "rebase": {
+    "mode": "CONTROLLED_FULL_FRONT_ARC_REBASE",
+    "scope": "CH1-CH8_FRONT_ARC",
+    "old_finals_role": "IMMUTABLE_HISTORICAL_BASELINE",
+    "old_chapter_boundaries_binding": false,
+    "old_ch9_contract_status": "SUPERSEDED_BY_FULL_FRONT_ARC_REBASE",
+    "candidate_promotion_gate": "WHOLE_PACKET_GATES_BEFORE_AUTHORITATIVE_REPLACEMENT",
+    "platform_replacement_user_controlled": true,
+    "outcome_assurance": "NOT_LIVE_OUTCOME_VERIFIED"
   },
   "strategic_constraints": [
-    "DO_NOT_BLINDLY_CONTINUE_TO_50K_WITHOUT_FRONT_ARC_REPAIR",
+    "DO_NOT_BLINDLY_CONTINUE_TO_50K_WITHOUT_FRONT_ARC_REBASE",
     "SECOND_SIGNING_APPLICATION_REQUIRES_SIGNING_READINESS_AUDIT_PASS",
-    "PUBLISHED_CHAPTER_PLATFORM_REPLACEMENT_REMAINS_USER_CONTROLLED"
+    "OLD_FINALS_NOT_ACTIVE_REPLACEMENT_UNTIL_PACKET_ACCEPTED",
+    "CH9_EXECUTION_HELD_DURING_FULL_REBASE",
+    "PUBLISHED_CHAPTER_PLATFORM_REPLACEMENT_REMAINS_USER_CONTROLLED",
+    "CI_OR_SELF_REVIEW_MUST_NOT_BE_CLAIMED_AS_LIVE_QUALITY_OUTCOME"
   ],
-  "waiting_on": [
-    "USER_EXTERNAL_ACTION_CONFIRMATION: Fanqie publication of CH8"
+  "waiting_on": [],
+  "external_fact_pending": [
+    "CH8 Fanqie publication status remains unconfirmed. This does not block internal full-front-arc rebase and must not be inferred either way."
   ],
   "blockers": [],
   "keywords": [
@@ -79,6 +96,8 @@
     "FQ001",
     "NOVEL_WRITING_AGENT",
     "NOVEL_OS",
+    "全前段重构",
+    "FULL_FRONT_ARC_REBASE",
     "签约修复",
     "二签"
   ],
@@ -87,9 +106,12 @@
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/reviews/CH0008_ACCEPTANCE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/NEXT_CHAPTER_CONTRACT.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/CURRENT_STATE.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/PROJECT_PROFILE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/PLATFORM_PUBLICATION_LOG.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
     "D1traverser-debug/novel-writing-agent@main:audits/PLATFORM_SIGNING_SIGNAL_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:audits/FULL_REBASE_LEARNING_EVIDENCE_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:audits/FULL_FRONT_ARC_REBASE_PLAN_2026-10-11.md",
     "D1traverser-debug/novel-writing-agent@main:audits/FRONT_ARC_SIGNING_REPAIR_MATRIX_2026-10-11.md"
   ],
   "derived_artifact_refs": [
