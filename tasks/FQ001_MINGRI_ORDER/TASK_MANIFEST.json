@@ -1,6 +1,6 @@
 {
-  "schema_version": "3.3",
-  "manifest_version": 3,
+  "schema_version": "3.7",
+  "manifest_version": 4,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -9,14 +9,16 @@
   "status": "WAITING",
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
-  "recovery_owner": "NOVEL_OS",
-  "updated_at": "2026-10-09T10:48:03Z",
+  "recovery_owner": "NOVEL_WRITING_AGENT",
+  "updated_at": "2026-10-10T06:26:00Z",
   "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
-  "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state and continue CH9 from the READY contract without redoing completed CH8 work.",
-  "checkpoint_ref": "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/CONTINUITY_TASK_CHECKPOINT.json",
-  "contract_version": "3.3",
-  "skill_version": "NOVEL_OS 1.9.0",
-  "runtime_version": "NOVEL_OS_RECOVERY_CHAIN 2.0",
+  "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state in the GitHub owner and continue CH9 from the existing READY contract without replaying completed CH8 work.",
+  "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
+  "contract_version": "3.7",
+  "continuity_protocol_version": "3.7",
+  "domain_contract_version": "2.0-github",
+  "skill_version": "Novel Writing Agent 2.0.0-github",
+  "runtime_version": "github-owner-2.1",
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
   "resume_epoch": 1,
   "active_lease": {
@@ -28,24 +30,24 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "UNIVERSAL_ROUTING_AND_LEASE_MANIFEST",
-  "owner_adapter_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ADAPTER.json",
-  "owner_task_index_ref": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
-  "owner_entrypoint_ref": "/NOVEL_OS_小说系统/99_RECOVERY/START_HERE.md",
-  "business_state_authority": "NOVEL_OS",
+  "owner_adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/CONTINUITY_ADAPTER.json",
+  "owner_task_index_ref": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
+  "owner_entrypoint_ref": "D1traverser-debug/novel-writing-agent@main:ENTRYPOINT.md",
+  "business_state_authority": "D1traverser-debug/novel-writing-agent@main",
   "lease_authority": "THIS_GITHUB_MANIFEST",
   "compatibility": {
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
-    "checked_against": "Universal Continuity v3.3"
+    "checked_against": "Universal Continuity v3.7"
   },
   "continuity_acceptance": {
     "result": "PASS",
-    "owner_acceptance_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ACCEPTANCE.json",
-    "owner_guard_ref": "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_GUARD_RESULT.json",
-    "owner_guard_script_ref": "/NOVEL_OS_小说系统/00_SYSTEM/scripts/continuity_adapter_guard.py",
-    "test_ref": "tests/test_novel_os_task_manifest.py",
+    "owner_acceptance_ref": "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json",
+    "owner_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/recovery_guard.py",
+    "test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_recovery_contract.py",
     "new_chat_recovery": "PASS",
-    "takeover_simulation": "PASS"
+    "takeover_simulation": "PASS",
+    "github_owner_cutover": "PASS"
   },
   "waiting_on": [
     "USER_EXTERNAL_ACTION_CONFIRMATION: Fanqie publication of CH8"
@@ -57,16 +59,18 @@
     "凌晨零点",
     "番茄小说",
     "FQ001",
+    "NOVEL_WRITING_AGENT",
     "NOVEL_OS"
   ],
   "artifact_refs": [
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/manuscript/CH0008_FINAL.md",
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/deliverables/CH0008_第8章_药盒上的名字.docx",
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/manuscript/reviews/CH0008_ACCEPTANCE.md",
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/NEXT_CHAPTER_CONTRACT.md",
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/CURRENT_STATE.md",
-    "/NOVEL_OS_小说系统/01_PROJECTS/FQ001_明日订单/checkpoints/LATEST_RECOVERY.md",
-    "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_ACCEPTANCE.json",
-    "/NOVEL_OS_小说系统/99_RECOVERY/CONTINUITY_GUARD_RESULT.json"
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/manuscript/CH0008_FINAL.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/reviews/CH0008_ACCEPTANCE.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/NEXT_CHAPTER_CONTRACT.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/CURRENT_STATE.md",
+    "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
+    "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json"
+  ],
+  "derived_artifact_refs": [
+    "ChatGPT Library deliverable: CH0008_第8章_药盒上的名字.docx"
   ]
 }
