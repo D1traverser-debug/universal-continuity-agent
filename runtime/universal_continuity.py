@@ -370,9 +370,7 @@ def build_resume_progress_receipt(task: TaskMetadata, checkpoint: Mapping[str, A
     checkpoint = checkpoint or {}
     if checkpoint:
         checkpoint_task_id = str(checkpoint.get("task_id") or "").strip()
-        if not checkpoint_task_id:
-            raise ValueError("checkpoint_missing_task_id")
-        if checkpoint_task_id != task.task_id:
+        if checkpoint_task_id and checkpoint_task_id != task.task_id:
             raise ValueError(f"checkpoint_task_id_mismatch:{checkpoint_task_id}:{task.task_id}")
     blockers = _receipt_state_items(checkpoint.get("blockers")); waiting = _receipt_state_items(checkpoint.get("waiting_on"))
     persisted_at = task.updated_at
