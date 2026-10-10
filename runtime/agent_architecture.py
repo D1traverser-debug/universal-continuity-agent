@@ -50,8 +50,9 @@ def validate_agent_manifest(
         errors.append("architecture_contract_version mismatch")
     if not _nonempty_str(manifest.get("owner")):
         errors.append("owner is required")
+    owner_kind = manifest.get("owner_kind")
     allowed_owner_kinds = set(contract.get("applies_to_owner_kind", ()))
-    if manifest.get("owner_kind") not in allowed_owner_kinds:
+    if owner_kind not in allowed_owner_kinds:
         errors.append("owner_kind is outside AGENT_ARCHITECTURE_CONTRACT scope")
 
     required_layers = contract.get("required_layers", {})
@@ -61,7 +62,13 @@ def validate_agent_manifest(
             errors.append(f"missing layer: {layer_name}")
             continue
         spec = required_layers.get(layer_name, {}) if isinstance(required_layers, Mapping) else {}
-        _require_fields(layer, spec.get("required_fields", ()), layer_name, errors)
+        fields = spec.get("required_fields", ())
+        if layer_name == "continuity":
+            fields = spec.get(
+                "system_infra_required_fields" if owner_kind == "SYSTEM_INFRA" else "business_required_fields",
+                (),
+            )
+        _require_fields(layer, fields, layer_name, errors)
 
     skill = manifest.get("skill", {}) if isinstance(manifest.get("skill"), Mapping) else {}
     if skill and skill.get("role") != "ROUTER":
@@ -99,13 +106,18 @@ def validate_agent_manifest(
         refs_to_check: list[str] = []
         if _nonempty_str(skill_entrypoint):
             refs_to_check.append(str(skill_entrypoint))
-        for layer_name, fields in {
+        reference_fields = {
             "runtime": ("entrypoints", "tool_surface_refs"),
             "workflow": ("state_authority_refs", "transition_guard_refs"),
             "harness": ("ci_workflow_ref",),
             "references": ("canonical_roots",),
-            "continuity": ("task_index_ref", "protocol_adapter_ref", "execution_capability_ref"),
-        }.items():
+            "continuity": (
+                ("task_manifest_ref", "owner_registry_ref", "current_protocol_ref")
+                if owner_kind == "SYSTEM_INFRA"
+                else ("task_index_ref", "protocol_adapter_ref", "execution_capability_ref")
+            ),
+        }
+        for layer_name, fields in reference_fields.items():
             layer = manifest.get(layer_name, {})
             if not isinstance(layer, Mapping):
                 continue
