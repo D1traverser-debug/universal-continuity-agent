@@ -1,25 +1,15 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
   "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, or maintainability issue is detected, the active maintenance writer owns the repair loop by default.",
-  "triggers": [
-    "ASSISTANT_DETECTS_SYSTEMIC_GAP",
-    "USER_REPORT_REVEALS_SYSTEMIC_GAP",
-    "CI_OR_REGRESSION_FAILURE",
-    "PROTOCOL_OR_PRODUCT_BEHAVIOR_CHANGE",
-    "OWNER_ENTRYPOINT_OR_CAPABILITY_DRIFT",
-    "AUTHORITY_OR_PERSISTENCE_INCONSISTENCY",
-    "DUPLICATE_OR_SUPERSEDED_MECHANISM_FOUND",
-    "EXECUTION_EVIDENCE_OR_PROPAGATION_GAP",
-    "ARTIFACT_CONTEXT_OR_CACHE_DRIFT",
-    "CHAT_ONLY_MATERIAL_CHANGE_NOT_PERSISTED"
-  ],
+  "triggers": ["ASSISTANT_DETECTS_SYSTEMIC_GAP","USER_REPORT_REVEALS_SYSTEMIC_GAP","CI_OR_REGRESSION_FAILURE","PROTOCOL_OR_PRODUCT_BEHAVIOR_CHANGE","OWNER_ENTRYPOINT_OR_CAPABILITY_DRIFT","AUTHORITY_OR_PERSISTENCE_INCONSISTENCY","DUPLICATE_OR_SUPERSEDED_MECHANISM_FOUND","EXECUTION_EVIDENCE_OR_PROPAGATION_GAP","ARTIFACT_CONTEXT_OR_CACHE_DRIFT","CHAT_ONLY_MATERIAL_CHANGE_NOT_PERSISTED"],
   "default_autonomy": {
     "diagnose_root_cause": true,
     "inspect_authoritative_state_before_write": true,
     "classify_artifact_context_and_cache_authority": true,
     "apply_smallest_safe_fix": true,
+    "prefer_modify_existing_authority_over_new_parallel_surface": true,
     "remove_or_demote_superseded_active_mechanisms_when_safe": true,
     "add_or_update_regression_guard_when_testable": true,
     "run_or_observe_relevant_ci": true,
@@ -29,69 +19,29 @@
     "ask_user_to_manage_internal_migration_or_recordkeeping": false,
     "wait_for_user_to_notice_related_internal_followups": false
   },
-  "maintenance_loop": [
-    "DETECT",
-    "CLASSIFY_SCOPE_AND_AUTHORITY",
-    "READ_CURRENT_AUTHORITY",
-    "DIAGNOSE_ROOT_CAUSE",
-    "PATCH_MINIMUM_AUTHORITY_SURFACE",
-    "ADD_OR_UPDATE_GUARD",
-    "RUN_OR_OBSERVE_VALIDATION",
-    "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
-    "REREAD_AUTHORITATIVE_STATE",
-    "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
-  ],
-  "artifact_context_governance": {
-    "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
-    "stale_cache_is_authority": false,
-    "chat_only_material_change_is_durable": false,
-    "external_reference_presence_implies_authority": false,
-    "superseded_engineering_implementation_kept_active_by_default": false,
-    "owner_business_evidence_retention_is_domain_owned": true
+  "authority_surface_admission_gate": {
+    "applies_before": ["CREATE_NEW_ROOT_POLICY","CREATE_NEW_CONTRACT","CREATE_NEW_REGISTRY","CREATE_NEW_PERMANENT_AGENT","CREATE_NEW_ACTIVE_COMPATIBILITY_LAYER"],
+    "required_checks": [
+      "CAN_EXISTING_AUTHORITY_OWN_THIS_WITHOUT_AMBIGUITY",
+      "WOULD_THIS_DUPLICATE_OR_SPLIT_AN_EXISTING_INVARIANT",
+      "IS_THE_MISSING_CONTROL_BETTER_EXPRESSED_AS_RUNTIME_CODE_TEST_SCHEMA_OR_OWNER_ADAPTER",
+      "CAN_A_SUPERSEDED_MECHANISM_BE_REMOVED_INSTEAD_OF_COEXISTING",
+      "DOES_THE_NEW_SURFACE_HAVE_A_UNIQUE_OWNER_LOAD_TRIGGER_AND_DEPRECATION_PATH"
+    ],
+    "default_decision": "REJECT_NEW_SURFACE_IF_EXISTING_AUTHORITY_CAN_OWN_IT",
+    "creation_requires": ["unique responsibility","explicit owner","load/read trigger","non-overlap rationale","testable invariant where applicable","deprecation_or_merge path"],
+    "anti_pattern": "User reports a symptom -> create another policy/prompt/role without architecture classification.",
+    "failed_admission_behavior": "Consolidate into the existing authority or implement the missing executable/test mechanism; do not accumulate parallel documentation."
   },
+  "maintenance_loop": ["DETECT","CLASSIFY_SCOPE_AND_AUTHORITY","READ_CURRENT_AUTHORITY","DIAGNOSE_ROOT_CAUSE","RUN_AUTHORITY_SURFACE_ADMISSION_GATE","PATCH_MINIMUM_AUTHORITY_SURFACE","REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM","ADD_OR_UPDATE_GUARD","RUN_OR_OBSERVE_VALIDATION","UPDATE_CHANGE_RECORD_AND_TASK_STATE","REREAD_AUTHORITATIVE_STATE","REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"],
+  "artifact_context_governance": {"policy":"ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json","stale_cache_is_authority":false,"chat_only_material_change_is_durable":false,"external_reference_presence_implies_authority":false,"superseded_engineering_implementation_kept_active_by_default":false,"owner_business_evidence_retention_is_domain_owned":true},
   "required_durable_record": {
     "when_material_change_occurs": true,
-    "fields": [
-      "problem",
-      "root_cause",
-      "changed_authority_surfaces",
-      "validation_or_ci_result",
-      "behavioral_effect",
-      "remaining_risks_or_external_dependencies",
-      "current_stage",
-      "next_action"
-    ],
-    "preferred_locations": [
-      "task HANDOFF/checkpoint",
-      "HARNESS_STATUS.json",
-      "audit or research artifact when detail is substantial",
-      "Git commit history for file-level change history"
-    ],
+    "fields": ["problem","root_cause","changed_authority_surfaces","validation_or_ci_result","behavioral_effect","remaining_risks_or_external_dependencies","current_stage","next_action"],
+    "preferred_locations": ["task HANDOFF/checkpoint","HARNESS_STATUS.json","audit or research artifact when detail is substantial","Git commit history for file-level change history"],
     "avoid_duplicate_changelog_for_trivial_edits": true
   },
-  "user_interruption_boundary": {
-    "interrupt_user_only_when": [
-      "EXTERNAL_ACCOUNT_OR_UI_ACTION_REQUIRED",
-      "NEW_PERMISSION_OR_CREDENTIAL_REQUIRED",
-      "IRREVERSIBLE_OR_HIGH_IMPACT_USER_CHOICE_REQUIRED",
-      "MISSING_FACT_CANNOT_BE_SAFELY_INFERRED_OR_RETRIEVED",
-      "LEGAL_OR_PRODUCT_BOUNDARY_REQUIRES_USER_ACTION"
-    ],
-    "otherwise_continue_maintenance": true
-  },
-  "scope_boundaries": {
-    "do_not_steal_other_active_owner_lease": true,
-    "do_not_rewrite_domain_business_truth_from_maintenance_task": true,
-    "do_not_delete_business_evidence_without_owner_retention_authority": true,
-    "do_not_add_permanent_agent_without_invocation_executor_evidence_contract": true,
-    "do_not_bump_protocol_for_compatible_internal_hardening": true,
-    "do_not_claim_product_e2e_without_real_product_evidence": true,
-    "do_not_treat_repo_write_as_proof_old_chats_received_update": true
-  },
-  "failure_semantics": {
-    "patch_write_failed": "COMMIT_FAILED",
-    "writer_lease_lost": "STALE_WRITER",
-    "validation_failed": "KEEP_TASK_ACTIVE_WITH_PRECISE_BLOCKER",
-    "external_user_action_required": "PERSIST_EXACT_PENDING_ACTION_AND_STOP_AT_BOUNDARY"
-  }
+  "user_interruption_boundary": {"interrupt_user_only_when":["EXTERNAL_ACCOUNT_OR_UI_ACTION_REQUIRED","NEW_PERMISSION_OR_CREDENTIAL_REQUIRED","IRREVERSIBLE_OR_HIGH_IMPACT_USER_CHOICE_REQUIRED","MISSING_FACT_CANNOT_BE_SAFELY_INFERRED_OR_RETRIEVED","LEGAL_OR_PRODUCT_BOUNDARY_REQUIRES_USER_ACTION"],"otherwise_continue_maintenance":true},
+  "scope_boundaries": {"do_not_steal_other_active_owner_lease":true,"do_not_rewrite_domain_business_truth_from_maintenance_task":true,"do_not_delete_business_evidence_without_owner_retention_authority":true,"do_not_add_permanent_agent_without_invocation_executor_evidence_contract":true,"do_not_bump_protocol_for_compatible_internal_hardening":true,"do_not_claim_product_e2e_without_real_product_evidence":true,"do_not_treat_repo_write_as_proof_old_chats_received_update":true},
+  "failure_semantics": {"patch_write_failed":"COMMIT_FAILED","writer_lease_lost":"STALE_WRITER","validation_failed":"KEEP_TASK_ACTIVE_WITH_PRECISE_BLOCKER","external_user_action_required":"PERSIST_EXACT_PENDING_ACTION_AND_STOP_AT_BOUNDARY","new_authority_surface_without_admission":"REJECT_AND_CONSOLIDATE"}
 }
