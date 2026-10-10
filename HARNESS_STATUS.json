@@ -2,23 +2,24 @@
   "schema_version": "3.7",
   "role": "REBUILDABLE_STATUS_CACHE_NOT_AUTHORITY",
   "updated_at": "2026-10-11",
-  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__OWNER_PROFILE_DECLARATION_MIGRATION_COMPLETE__METHODOLOGY_RECEIPT_1_3_MIGRATION_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
+  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__FULL_CONTROL_PLANE_LOCAL_FAULT_EXECUTION_HARDENED__REMOTE_OWNER_METADATA_SWEEP_COMPLETE__OWNER_PROFILE_DECLARATION_MIGRATION_COMPLETE__METHODOLOGY_RECEIPT_1_3_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
+  "latest_full_control_plane_learning_audit": "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
   "latest_global_system_audit": "audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md",
   "latest_cold_start_topology_audit": "audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38039769573,
-    "job_id": 114177507423,
-    "validated_head_sha": "fc6de3b4d43b81b68a3df43974fd7c3ba4019204",
-    "validation_scope": "HISTORICAL_BEHAVIORAL_AUDIT_RUNTIME_AND_TEST_HEAD",
+    "github_actions_run_id": 38074724886,
+    "job_id": 114279195145,
+    "validated_head_sha": "cf017eae33ff70a688a0738938eade384376e96f",
+    "validation_scope": "CURRENT_RUNTIME_RECOVERY_HARDENING_REGRESSION_BEFORE_FINAL_STATUS_SYNC",
     "installed_package_version": "3.7.0",
     "system_audit_preflight": "PASS",
     "pytest": "PASS",
-    "pytest_count": 110,
-    "note": "Historical receipt only. Current material changes require their own current-main CI and explicit evidence ceiling."
+    "pytest_count": 149,
+    "note": "This regression validates repository behavior at the cited head. Later status/checkpoint-only commits require their own current-main CI. High-risk final control-plane changes are expected to select executable synthetic fault injection from real changed paths."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -37,31 +38,24 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE__RISK_TIERED_LOCAL_AUDIT_EXECUTION_WIRED__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
+    "status": "ACTIVE__RISK_TIERED_AUDIT_EXECUTION_WIRED__LOCAL_SYNTHETIC_FAULT_EXECUTION_REAL__REMOTE_OWNER_SWEEP_SEPARATE__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "policy_version": "1.5",
     "self_detected_systemic_gap_is_trigger": true,
     "repeated_owner_failure_or_regression_is_trigger": true,
-    "premature_solution_canonicalization_is_trigger": true,
-    "authority_surface_admission_gate_active": true,
-    "prefer_modify_existing_authority_over_new_parallel_surface": true,
-    "challenge_user_and_assistant_initial_solution": true,
-    "compare_credible_alternatives_for_nontrivial_design": true,
-    "seek_counterexample_or_failure_mode_before_adoption": true,
     "wait_for_user_to_enumerate_internal_followups": false,
     "material_change_requires_durable_record": true,
     "may_steal_other_owner_lease": false,
     "may_rewrite_domain_business_truth": false,
-    "risk_tiered_system_audit_active": true,
-    "system_audit_runtime": "runtime/system_audit.py",
     "ci_changed_paths_wired_into_audit_plan": true,
+    "audit_plan_is_execution_proof": false,
+    "selected_synthetic_faults_execute": true,
     "ci_local_full_sweep_is_remote_owner_sweep": false,
-    "ci_preflight_before_pytest": true,
+    "remote_owner_metadata_sweep": "COMPLETE_FOR_CURRENT_FOUR_BUSINESS_OWNERS__READ_CURRENT_ADAPTER_CAPABILITY_DISCOVERY_SURFACES__DERIVED_METADATA_REPAIRS_ONLY",
+    "remote_owner_sweep_mutated_business_state": false,
     "audit_layers": ["CORE_ALWAYS","IMPACT_SCOPED","OWNER_SENTINEL_ROTATION","FULL_CONTROL_PLANE","SYNTHETIC_FAULT_INJECTION"],
     "full_business_pipeline_every_audit": false,
-    "synthetic_fault_injection_production_mutation_by_default": false,
-    "explicit_global_audit_owner_metadata_sweep": "REQUIRES_MAINTENANCE_RUNNER_REMOTE_EVIDENCE",
-    "dynamic_owner_membership_regression": "PASS_SYNTHETIC_UNKNOWN_OWNER_AUTO_SCOPE_AND_FAIL_CLOSED_CACHE_CONVERGENCE"
+    "synthetic_fault_injection_production_mutation_by_default": false
   },
   "epistemic_independence": {
     "status": "ACTIVE",
@@ -69,16 +63,16 @@
     "user_goal_or_constraint_is_authoritative_when_explicit": true,
     "user_solution_or_analogy_is_architecture_authority_by_default": false,
     "assistant_first_idea_is_privileged": false,
-    "other_agent_or_framework_proposal_is_authority_by_default": false,
     "nontrivial_candidate_requires_current_authority_inspection": true,
     "nontrivial_candidate_requires_credible_alternative_comparison": true,
     "nontrivial_candidate_requires_counterexample_or_failure_mode_search": true,
     "promotion_requires_eval_or_regression_evidence": true,
     "second_order_challenge_required_for_nontrivial_closure": true,
-    "closed_world_evidence_may_be_generalized_to_open_world_claim_without_new_evidence": false
+    "closed_world_evidence_may_be_generalized_to_open_world_claim_without_new_evidence": false,
+    "latest_learning_pass": "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md"
   },
   "methodology_composition": {
-    "status": "DECLARATION_MIGRATION_COMPLETE__ACTION_LEVEL_RECEIPT_1_3_MIGRATION_ACTIVE__INDEPENDENT_LIVE_PROOF_PENDING",
+    "status": "DECLARATION_MIGRATION_COMPLETE__RECEIPT_1_3_EXACT_ACTION_CONTRACT_ACTIVE__INDEPENDENT_LIVE_PROOF_PER_ACTION_PENDING",
     "contract": "OWNER_ADAPTER_CONTRACT.json",
     "profile_contract_version": "1.0",
     "owner_declaration_contract_version": "1.1",
@@ -88,20 +82,11 @@
     "profiles": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"},
     "exact_profile_version_pinning_required": true,
     "floating_latest_allowed": false,
-    "copy_shared_profile_prose_into_owner_required": false,
-    "load_only_profiles_required_by_current_action": true,
     "business_owner_declaration_rollout": "COMPLETE",
+    "historical_weaker_receipt_auto_upgrades_to_current_assurance": false,
     "action_level_operational_conformance": "PENDING_PER_REAL_ACTION",
     "domain_specific_business_truth_stays_owner_local": true,
-    "profile_failure_containment": "AFFECTED_OWNER_CAPABILITY_OR_PROFILE_ONLY",
-    "parallel_methodology_root_policy_exists": false
-  },
-  "control_plane_bloat_review": {
-    "status": "SMALL_KERNEL_ACCEPTED",
-    "giant_parent_agent_inheritance_tree_rejected": true,
-    "copy_common_policy_into_every_owner_rejected": true,
-    "universal_owns_all_domain_evolution_rejected": true,
-    "accepted_direction": "SMALL_STABLE_KERNEL_PLUS_VERSIONED_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_HOOKS_PLUS_EXECUTABLE_CONFORMANCE_PLUS_EVENT_DRIVEN_LOADING"
+    "profile_failure_containment": "AFFECTED_OWNER_CAPABILITY_OR_PROFILE_ONLY"
   },
   "operational_hygiene": {
     "status": "BASELINE_ACTIVE",
@@ -123,23 +108,34 @@
     "cache_is_checkpoint_authority": false,
     "chat_only_material_change_is_durable": false,
     "external_reference_presence_implies_authority": false,
-    "google_drive_is_control_plane_dependency": false,
     "owner_business_retention_is_domain_owned": true
   },
   "owner_operational_hardening": {
     "financial_writing": {
-      "status": "ALL_THREE_PROFILES_DECLARATION_BOUND__OWNER_REGRESSION_PASS_FOR_PRIOR_BEHAVIOR__RECEIPT_1_3_EMITTER_WIRED__V1_3_OWNER_CI_PENDING__LIVE_OPERATIONAL_AND_QUALITY_EVIDENCE_PENDING",
+      "status": "ALL_THREE_PROFILES_BOUND__RECEIPT_1_3_EXACT_ACTION_EMITTER_AND_PUBLIC_SCHEMA_WIRED__OWNER_CI_PASS__INDEPENDENT_OPERATIONAL_AND_LIVE_QUALITY_EVIDENCE_PENDING",
       "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"},
+      "owner_validation": {"head":"464c7aae2aa94ec61dd6da286aab1107b709629a","run_id":38074834696,"job_id":114279535922,"result":"PASS_71_TESTS_PLUS_SDK_MCP_CONTRACT_STATIC_WHEEL_DOCX_RENDER"},
       "live_quality_improvement_proven": false,
       "business_state_rewritten": false,
       "business_lease_stolen": false
     },
-    "video_growth": {"status":"ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__ACTION_LEVEL_1_3_MIGRATION_PENDING","methodology_profile_refs":{"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"}},
-    "a_share": {"status":"ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__ACTION_LEVEL_1_3_MIGRATION_PENDING","methodology_profile_refs":{"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"}},
-    "novel": {"status":"ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_HARDENED__ACTION_LEVEL_1_3_MIGRATION_PENDING","methodology_profile_refs":{"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"}}
+    "a_share": {
+      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_CI_PASS__PRE_V1_3_SELF_AUDIT_HISTORICAL_ONLY__CURRENT_V1_3_OPERATIONAL_PASS_PENDING",
+      "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"},
+      "owner_validation": {"head":"5d259ac62ee5c0636ae30af5fab3364b904e4f9f","run_id":38074881268,"result":"PASS"}
+    },
+    "novel": {
+      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_HARDENED__DISCOVERY_VERSION_METADATA_REFRESHED__CH9_PRODUCTION_PROOF_PENDING",
+      "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"},
+      "metadata_validation": {"head":"44a7a83b7327d5ec650d192650fffb7c473df863","run_id":38074843270,"result":"PASS"}
+    },
+    "video_growth": {
+      "status": "ALL_THREE_PROFILE_DECLARATIONS_BOUND__OWNER_REGRESSION_PASS__REMOTE_METADATA_SWEEP_NO_NEW_DRIFT__STRICT_ISOLATED_REVIEW_AND_UNIQUE_GENERATION_GATE_BLOCKERS_OPEN",
+      "methodology_profile_refs": {"artifact_io":"1.0","operational_hygiene":"1.0","evolution":"1.0"}
+    }
   },
   "execution_control_plane": {
-    "status": "ACTIVE__ATTESTATION_SELF_ASSERTION_REJECTED__ROUTE_BINDING_REQUIRED_WHEN_SIDE_CHANNEL_FORBIDDEN",
+    "status": "ACTIVE__EXPECTATION_UNDERCONSTRAINT_HARDENED__REPLAY_HISTORY_COMPLETENESS_REQUIRED__ATTESTATION_SELF_ASSERTION_REJECTED__ROUTE_BINDING_ENFORCED",
     "contract": "EXECUTION_READINESS_CONTRACT.json",
     "owner_registry": "OWNER_REGISTRY.json",
     "execution_registry": "OWNER_EXECUTION_REGISTRY.json",
@@ -161,7 +157,6 @@
     "account_minimal_bootstrap_extension_confirmed": true,
     "account_latest_hook_replaced_legacy_continuity_block": true,
     "account_confirmation_date": "2026-10-10",
-    "account_confirmation_source": "USER_EXPLICIT_CONFIRMATION_IN_ACTIVE_MAINTENANCE_CHAT",
     "existing_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE",
     "fresh_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE__KNOWN_TOPOLOGY_ONLY",
     "new_owner_cold_start_product_e2e": "PENDING_REAL_CHAT_EVIDENCE",
@@ -174,11 +169,41 @@
   },
   "version_lifecycle": {"active_protocol":"3.7","active_protocol_count":1,"methodology_profile_contract":"1.0","methodology_profiles_float_latest":false,"superseded_implementation_archive":"GIT_HISTORY_ONLY","same_chat_resume_epoch_change_for_protocol_upgrade":false,"historical_business_evidence_deleted_for_protocol_cleanup":false},
   "startup_trigger": {
-    "canonical_ref":"STARTUP_HOOK.md","account_level_hook_required":true,"repository_minimal_bootstrap":["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],"broad_control_plane_preload_required":false,"github_presence_alone_is_not_trigger":true,"library_presence_alone_is_not_trigger":true,"bootstrap_unavailable_marker":"CONTINUITY_BOOTSTRAP_UNAVAILABLE","end_to_end_bare_inherit_claim":true,"end_to_end_bare_inherit_claim_scope":"KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME","new_owner_cold_start_end_to_end_claim":false,"latest_account_hook_confirmed":true,
+    "canonical_ref":"STARTUP_HOOK.md",
+    "account_level_hook_required":true,
+    "repository_minimal_bootstrap":["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],
+    "broad_control_plane_preload_required":false,
+    "github_presence_alone_is_not_trigger":true,
+    "library_presence_alone_is_not_trigger":true,
+    "bootstrap_unavailable_marker":"CONTINUITY_BOOTSTRAP_UNAVAILABLE",
+    "end_to_end_bare_inherit_claim":true,
+    "end_to_end_bare_inherit_claim_scope":"KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME",
+    "new_owner_cold_start_end_to_end_claim":false,
+    "latest_account_hook_confirmed":true,
     "acceptance_evidence":{"date":"2026-10-10","source":"historical real fresh-chat first-turn response independently cross-checked against every owner/source required by the topology observed at that time","scope":"KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME","bare_command":"继承","required_owner_quorum":5,"required_owner_quorum_succeeded":true,"historical_observed_quorum_only":true,"authoritative_default_candidate_count":4,"live_candidate_names_persisted_in_public_harness":false},
     "latest_hook_product_revalidation":"KNOWN_TOPOLOGY_FULL_PASS__NEW_OWNER_COLD_START_PENDING"
   },
-  "context_recovery": {"policy":"CONTEXT_RECOVERY_POLICY.json","load_order":["metadata","short_handoff","exact_artifact_refs","selective_search","old_chat_history_last_resort"],"handoff_is_execution_truth_not_transcript":true,"cache_satisfies_authority_read":false},
+  "context_recovery": {
+    "policy":"CONTEXT_RECOVERY_POLICY.json",
+    "load_order":["metadata","short_handoff","exact_artifact_refs","selective_search","old_chat_history_last_resort"],
+    "handoff_is_execution_truth_not_transcript":true,
+    "cache_satisfies_authority_read":false,
+    "authoritative_candidate_set_silently_capped":false,
+    "incomplete_discovery_may_autoresume":false,
+    "terminal_or_paused_task_may_directly_take_writer_lease":false,
+    "cross_owner_task_id_collision_fails_closed":true
+  },
   "progress_observability": {"policy":"PROGRESS_OBSERVABILITY_POLICY.json","committed_requires_authoritative_reread":true,"committed_is_persistence_only":true,"no_change_avoids_heartbeat":true,"new_owner_cold_start_product_e2e_pending":true},
-  "continuous_learning": {"policy":"CONTINUOUS_LEARNING_POLICY.md","self_detected_gap_feeds_maintenance_loop":true,"chat_only_idea_counts_as_durable_evolution":false,"raw_learning_evidence_auto_promotes":false,"epistemic_independence_gate_active":true,"second_order_challenge_active":true,"closed_world_to_open_world_claim_requires_new_evidence":true,"user_proposed_mechanism_is_candidate":true,"assistant_first_solution_is_candidate":true,"independent_alternative_comparison_required":true,"failure_mode_search_required":true}
+  "continuous_learning": {
+    "policy":"CONTINUOUS_LEARNING_POLICY.md",
+    "self_detected_gap_feeds_maintenance_loop":true,
+    "chat_only_idea_counts_as_durable_evolution":false,
+    "raw_learning_evidence_auto_promotes":false,
+    "epistemic_independence_gate_active":true,
+    "second_order_challenge_active":true,
+    "closed_world_to_open_world_claim_requires_new_evidence":true,
+    "latest_learning_pass":"audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md",
+    "new_reusable_failure_classes":["untrusted-verifier-input gap","plan-execution disconnect","schema-coercion privilege escalation","complete-discovery / incomplete-presentation split","historical-proof version laundering","suite/history amnesia"],
+    "mechanical_regressions_or_fault_cases_added":true
+  }
 }
