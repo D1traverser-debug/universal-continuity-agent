@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Define the minimum product architecture for a durable BUSINESS owner without requiring one specific agent framework.",
+  "applies_to_owner_kind": ["BUSINESS"],
+  "default_manifest_path": "continuity/AGENT_MANIFEST.json",
+  "model": "THIN_SKILL_ROUTER__EXECUTABLE_RUNTIME__AUTHORITATIVE_WORKFLOW__INDEPENDENT_HARNESS_SURFACE__PROGRESSIVE_REFERENCES__DURABLE_CONTINUITY",
+  "required_layers": {
+    "skill": {
+      "role": "ROUTER",
+      "required_fields": ["entrypoint"],
+      "target_max_bytes": 8192,
+      "oversize_result": "ARCHITECTURE_DRIFT_REQUIRES_JUSTIFICATION_OR_REFACTOR",
+      "principle": "Skill should route, load progressive references and state hard boundaries; executable business logic belongs in runtime/workflow/guards rather than duplicated prose."
+    },
+    "runtime": {
+      "required_fields": ["runtime_type", "entrypoints", "tool_surface_refs", "judgment_execution"],
+      "allowed_runtime_type": ["AGENTS_SDK", "DETERMINISTIC_WORKFLOW", "HYBRID", "EXTERNAL_RUNTIME"],
+      "judgment_execution_status": ["EXECUTABLE", "CHAT_BRIDGED", "DECLARED_ONLY", "NOT_APPLICABLE"],
+      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime."
+    },
+    "workflow": {
+      "required_fields": ["state_authority_refs", "transition_guard_refs"],
+      "principle": "Durable stage/state truth and transition guards must live outside chat prose."
+    },
+    "harness": {
+      "required_fields": ["ci_workflow_ref", "commands", "suites"],
+      "minimum_suites": ["architecture", "contract", "trajectory"],
+      "principle": "Harness evaluates the Agent; it must not be the same thing as the Skill or a self-authored PASS paragraph."
+    },
+    "references": {
+      "required_fields": ["canonical_roots", "mirror_policy"],
+      "allowed_mirror_policy": ["NONE", "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR"],
+      "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill."
+    },
+    "continuity": {
+      "required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"],
+      "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state."
+    }
+  },
+  "freshness": {
+    "owner_head_field": "observed_owner_head",
+    "harness_receipt_head_field": "harness_receipt_head",
+    "rule": "An architecture conformance receipt is stale when it is not bound to the owner HEAD it claims to validate."
+  },
+  "assurance": {
+    "architecture_pass_proves": ["declared layer separation", "required refs structurally present", "configured harness surface", "receipt freshness when supplied"],
+    "architecture_pass_does_not_prove": ["live model quality", "provider isolation", "tool credentials", "current-session execution", "global correctness"]
+  },
+  "admission": {
+    "business_owner_registry_requires_agent_manifest_ref": true,
+    "missing_manifest_result": "OWNER_AGENT_ARCHITECTURE_UNDECLARED",
+    "invalid_manifest_blocks_global_architecture_conformance_claim": true,
+    "does_not_block_unrelated_healthy_owners": true
+  }
+}
