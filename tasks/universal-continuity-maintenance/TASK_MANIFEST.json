@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 14,
+  "manifest_version": 15,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,13 +10,14 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T02:36:00Z",
-  "current_stage": "V3_7_ACCOUNT_CONTINUITY_HOOK_CONFIRMED__EXECUTION_READINESS_EXTENSION_AND_OWNER_HANDSHAKES_PENDING",
-  "next_action": "用户已确认账户 Custom Instructions 中存在 Continuity 继承/恢复/进度提交旧版总入口；无需重装、无需逐聊迁移。仅需在现有指令末尾补充 execution-readiness 扩展：任何 GitHub-backed durable business Agent 在 material stage/next_action/work order 前刷新当前 owner Skill/entrypoint + continuity/EXECUTION_CAPABILITIES.json，并对当前步骤做 targeted session capability handshake；声明/角色/Prompt/stub 不计执行证据，ATTESTED_ISOLATED 不得由同聊天角色切换冒充。补充后继续在 Financial Writing、A股、Video Growth 的真实 material turn 验 handshake，并完成 fresh-chat Continuity E2E。",
+  "updated_at": "2026-10-10T02:50:00Z",
+  "current_stage": "V3_7_AUTONOMOUS_SYSTEM_MAINTENANCE_ACTIVE__ACCOUNT_EXECUTION_EXTENSION_AND_OWNER_HANDSHAKES_PENDING",
+  "next_action": "系统维护默认按 SYSTEM_MAINTENANCE_POLICY.json 自治闭环：发现系统性缺口后由当前合法 maintenance writer 自动完成诊断、最小修复、回归/CI、升级维护记录、权威状态更新和回读验证，不等待用户逐项指出；仅在账户/UI、权限/凭证、不可逆高影响选择或不可安全推断的外部事实边界请求用户动作。当前外部待办仍是用户将最新 STARTUP_HOOK/完整版账户指令中的 execution-readiness + autonomous-maintenance 增量保存到 ChatGPT Custom Instructions；随后在 Financial Writing、A股、Video Growth 的真实 material turn 验 targeted session handshake，并继续 fresh-chat Continuity 产品 E2E。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
   "execution_readiness_contract_version": "1.0",
+  "system_maintenance_policy_version": "1.0",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 1,
@@ -28,10 +29,11 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "总调度", "GitHub Agent", "execution harness", "execution readiness", "capability handshake", "Custom Instructions", "旧聊天广播", "任务接入", "候选一致性", "启动钩子", "handoff", "上下文恢复", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲", "系统回归"],
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "主动维护", "自治维护", "升级记录", "总调度", "GitHub Agent", "execution harness", "execution readiness", "capability handshake", "Custom Instructions", "旧聊天广播", "任务接入", "候选一致性", "启动钩子", "handoff", "上下文恢复", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲", "系统回归"],
   "artifact_refs": [
     "ENTRYPOINT.md",
     "SYSTEM_BLUEPRINT.md",
+    "SYSTEM_MAINTENANCE_POLICY.json",
     "ORCHESTRATION_BLUEPRINT.md",
     "EXECUTION_READINESS_CONTRACT.json",
     "OWNER_EXECUTION_REGISTRY.json",
@@ -56,6 +58,7 @@
     "archive/migrations/2026-10-09-library-to-github.md",
     "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md",
     "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
-    "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md"
+    "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md",
+    "audits/SYSTEM_MAINTENANCE_AUTONOMY_2026-10-10.md"
   ]
 }
