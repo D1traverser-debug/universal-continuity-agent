@@ -129,7 +129,7 @@ def test_turn_commit_receipt_distinguishes_no_change_and_stale_writer():
     assert stale.verified_after_write is False
 
 
-def test_progress_policy_requires_both_user_receipts():
+def test_progress_policy_requires_both_user_receipts_and_separates_assurance():
     policy = json.loads((Path(__file__).resolve().parents[1] / "PROGRESS_OBSERVABILITY_POLICY.json").read_text(encoding="utf-8"))
     assert policy["continuity_contract"] == "3.7"
     assert policy["resume_progress_receipt"]["user_label_zh"] == "继承前进度"
@@ -137,3 +137,10 @@ def test_progress_policy_requires_both_user_receipts():
     assert "COMMITTED" in policy["turn_commit_receipt"]["statuses"]
     assert "NO_MATERIAL_CHANGE" in policy["turn_commit_receipt"]["statuses"]
     assert policy["anti_false_positive"]["assistant_self_report_is_not_proof"] is True
+
+    separation = policy["turn_commit_receipt"]["assurance_separation"]
+    assert separation["commit_status_scope"] == "DURABLE_PERSISTENCE_ONLY"
+    assert separation["committed_is_methodology_operational_pass"] is False
+    assert separation["committed_is_execution_quality_pass"] is False
+    assert separation["blocked_or_unverified_gate_may_be_persisted"] is True
+    assert policy["anti_false_positive"]["committed_must_not_be_used_as_execution_or_methodology_attestation"] is True
