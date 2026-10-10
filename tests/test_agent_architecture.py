@@ -35,13 +35,12 @@ def valid_manifest() -> dict:
             "protocol_adapter_ref": "continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
             "execution_capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
         },
-        "observed_owner_head": "abc",
         "harness_receipt_head": "abc",
     }
 
 
 def test_valid_agent_architecture_passes():
-    result = validate_agent_manifest(valid_manifest(), CONTRACT)
+    result = validate_agent_manifest(valid_manifest(), CONTRACT, observed_owner_head="abc")
     assert result.status == ArchitectureStatus.PASS
 
 
@@ -51,6 +50,7 @@ def test_big_skill_is_drift_not_silent_pass():
         manifest,
         CONTRACT,
         file_sizes={manifest["skill"]["entrypoint"]: 20000},
+        observed_owner_head="abc",
     )
     assert result.status == ArchitectureStatus.PASS_WITH_DRIFT
     assert any("skill router exceeds" in warning for warning in result.warnings)
@@ -60,16 +60,15 @@ def test_skill_only_owner_fails():
     manifest = valid_manifest()
     del manifest["runtime"]
     del manifest["harness"]
-    result = validate_agent_manifest(manifest, CONTRACT)
+    result = validate_agent_manifest(manifest, CONTRACT, observed_owner_head="abc")
     assert result.status == ArchitectureStatus.FAIL
     assert "missing layer: runtime" in result.errors
     assert "missing layer: harness" in result.errors
 
 
-def test_stale_harness_receipt_fails():
+def test_stale_harness_receipt_fails_against_external_head():
     manifest = valid_manifest()
-    manifest["harness_receipt_head"] = "old"
-    result = validate_agent_manifest(manifest, CONTRACT)
+    result = validate_agent_manifest(manifest, CONTRACT, observed_owner_head="new")
     assert result.status == ArchitectureStatus.FAIL
     assert any("stale" in error for error in result.errors)
 
@@ -87,7 +86,7 @@ def test_missing_repository_ref_fails():
         "continuity/TASK_INDEX.json",
         "continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
     }
-    result = validate_agent_manifest(manifest, CONTRACT, repository_paths=paths)
+    result = validate_agent_manifest(manifest, CONTRACT, repository_paths=paths, observed_owner_head="abc")
     assert result.status == ArchitectureStatus.FAIL
     assert any("EXECUTION_CAPABILITIES" in error for error in result.errors)
 
