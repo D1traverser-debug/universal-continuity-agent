@@ -8,7 +8,7 @@ Engineering authority: `D1traverser-debug/universal-continuity-agent@main`
 
 This file is the top-level architecture map for Universal Continuity. Lower-level contracts, policies, Skills and owner adapters implement this blueprint; they must not contradict it.
 
-The user is not the migration operator. Universal Continuity owns protocol evolution, compatibility decisions, owner adaptation, progress observability and version hygiene. Domain owners retain business truth.
+The user is not the migration operator or the system maintenance operator. Universal Continuity owns protocol evolution, compatibility decisions, owner adaptation, progress observability, version hygiene and maintenance closure for defects inside its authority. Domain owners retain business truth.
 
 ## Architecture layers
 
@@ -20,7 +20,8 @@ The user is not the migration operator. Universal Continuity owns protocol evolu
 6. **Writer ownership layer** — `resume_epoch` + `active_lease`. New-chat takeover changes the lease; an in-place protocol upgrade in the same active chat does not.
 7. **Progress observability layer** — `PROGRESS_OBSERVABILITY_POLICY.json`. Shows pre-resume durable progress and verified per-turn commit status.
 8. **Learning/evolution layer** — `CONTINUOUS_LEARNING_POLICY.md`, `MEDIA_DISTILLATION_PROTOCOL.md`, modular Skills and tests. Learning is distilled into the smallest authoritative surface.
-9. **Lifecycle/cleanup layer** — current executable protocol stays in the working tree; superseded implementations live in Git history. Historical business evidence is never deleted merely because the protocol changed.
+9. **System maintenance layer** — `SYSTEM_MAINTENANCE_POLICY.json`. A detected systemic defect triggers an autonomous diagnose -> patch -> guard -> validation -> record -> authoritative reread loop by default; internal maintenance must not wait for the user to enumerate adjacent follow-ups.
+10. **Lifecycle/cleanup layer** — current executable protocol stays in the working tree; superseded implementations live in Git history. Historical business evidence is never deleted merely because the protocol changed.
 
 ## Authority order
 
@@ -66,9 +67,24 @@ The user does **not**:
 - decide which obsolete implementation files to keep;
 - manually adapt each old chat;
 - reason about owner schema differences;
-- verify whether a write really persisted.
+- verify whether a write really persisted;
+- discover related system-maintenance follow-ups one by one;
+- maintain upgrade/change records for internal system changes;
+- decide which regression guard should be added after an internal defect.
 
-The user only supplies genuinely external facts/actions or decisions that cannot be inferred safely.
+The user only supplies genuinely external facts/actions, permissions, account/UI operations or decisions that cannot be inferred safely.
+
+## Autonomous maintenance invariant
+
+When the active maintenance writer detects a systemic defect, drift, propagation gap, weak authority boundary, regression, duplicated/superseded mechanism or execution-evidence gap inside Universal Continuity / the cross-agent control plane, it must follow `SYSTEM_MAINTENANCE_POLICY.json`.
+
+Default behavior is to continue the maintenance closure without waiting for another user prompt:
+
+`DETECT -> CLASSIFY AUTHORITY -> READ CURRENT TRUTH -> ROOT-CAUSE DIAGNOSIS -> MINIMUM SAFE PATCH -> REGRESSION GUARD -> VALIDATION/CI -> CHANGE/STATUS RECORD -> AUTHORITATIVE REREAD -> REPORT`
+
+Stop and require the user only at a precise external boundary such as account/UI action, new permission/credential, irreversible high-impact choice, or an unrecoverable missing fact. A material maintenance change must leave durable evidence of the problem, root cause, changed authority surfaces, validation, behavioral effect, remaining risks, current stage and next action.
+
+This maintenance autonomy does not authorize stealing another active owner lease or rewriting domain business truth.
 
 ## Upgrade classification
 
@@ -115,7 +131,7 @@ The execution-readiness contract has its own version (`1.0`) and does **not** re
 
 ## Read order
 
-`ENTRYPOINT.md` -> `SYSTEM_BLUEPRINT.md` -> `STARTUP_HOOK.md` -> `CONTINUITY_CONTRACT.json` -> `VERSION_LIFECYCLE_POLICY.json` -> `LIVE_CHAT_RECONCILIATION_POLICY.json` -> domain-specific policy/artifacts as needed.
+`ENTRYPOINT.md` -> `SYSTEM_BLUEPRINT.md` -> `STARTUP_HOOK.md` -> `CONTINUITY_CONTRACT.json` -> `VERSION_LIFECYCLE_POLICY.json` -> `LIVE_CHAT_RECONCILIATION_POLICY.json` -> `SYSTEM_MAINTENANCE_POLICY.json` -> domain-specific policy/artifacts as needed.
 
 For GitHub-backed business execution after owner/task resolution, continue with:
 
