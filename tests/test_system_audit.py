@@ -145,7 +145,7 @@ def test_policy_owns_risk_tiered_audit_without_creating_parallel_root_policy():
     policy = json.loads((ROOT / "SYSTEM_MAINTENANCE_POLICY.json").read_text(encoding="utf-8"))
     audit = policy["system_audit_strategy"]
 
-    assert policy["schema_version"] == "1.5"
+    assert policy["schema_version"] == "1.6"
     assert audit["runtime"] == "runtime/system_audit.py"
     assert audit["full_business_pipeline_every_audit"] is False
     assert set(audit["layers"]) == {
