@@ -10,6 +10,7 @@ from runtime.system_audit import (
     audit_local_control_plane,
     evaluate_owner_protocol_observation,
     plan_audit,
+    run_synthetic_fault_injection,
 )
 
 
@@ -265,3 +266,12 @@ def test_fault_injection_suite_targets_unknown_unknown_boundaries():
     assert "declared_executor_is_treated_as_session_execution_proof" in scenarios
     assert "meta_maintenance_outline_omitted_after_systemic_correction" in scenarios
     assert "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade" in scenarios
+
+
+def test_full_synthetic_fault_suite_executes_and_passes_on_current_repository():
+    result = run_synthetic_fault_injection(ROOT, FAULT_INJECTION_SCENARIOS)
+
+    assert result["status"] == "PASS", result
+    assert result["failed"] == []
+    assert set(result["results"]) == set(FAULT_INJECTION_SCENARIOS)
+    assert set(result["results"].values()) == {"PASS"}
