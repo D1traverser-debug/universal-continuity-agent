@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 24,
+  "manifest_version": 25,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T08:58:00Z",
-  "current_stage": "V3_7_PRODUCT_E2E_PASS__RISK_TIERED_GLOBAL_AUDIT_HARDENING_IN_PROGRESS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
-  "next_action": "Complete the explicit global control-plane audit: keep the new risk-tiered audit preflight green, reconcile stale derived status/cache surfaces, finish metadata-only verification across all durable owners without stealing leases, record the audit result, then continue owner methodology-profile rollout with Video central conformance first.",
+  "updated_at": "2026-10-10T09:00:00Z",
+  "current_stage": "V3_7_PRODUCT_E2E_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE_CI_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+  "next_action": "Keep the risk-tiered system-audit preflight as an always-on control-plane gate; then complete Video central executable methodology conformance, followed by thin exact-version profile binding plus owner-specific regression/eval for Financial Writing, A-share and Novel only on valid owner turns. Use owner-local executable evidence for artifact operations rather than running every business pipeline from Universal.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
@@ -65,6 +65,7 @@
     "audits/CROSS_AGENT_ARTIFACT_CONTEXT_GOVERNANCE_2026-10-10.md",
     "audits/CONTROL_PLANE_ARCHITECTURE_REVIEW_2026-10-10.md",
     "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
-    "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md"
+    "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
+    "audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md"
   ]
 }
