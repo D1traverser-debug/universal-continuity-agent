@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AUTONOMOUS_SYSTEM_MAINTENANCE_ACTIVE__ACCOUNT_EXECUTION_EXTENSION_AND_OWNER_HANDSHAKES_PENDING",
-      "next_action": "系统维护默认自治闭环，不等待用户逐项指出；当前仅保留账户级 Custom Instructions 增量这一外部边界，随后验 owner targeted session handshake 与 fresh-chat Continuity E2E。",
+      "current_stage": "V3_7_CROSS_AGENT_ARTIFACT_GOVERNANCE_ACTIVE__OWNER_CONFORMANCE_AND_PRODUCT_E2E_PENDING",
+      "next_action": "Artifact/context/cache lifecycle governance 已激活；后续由各 durable owner 的合法 writer/maintenance turn 补齐 storage/evidence/cache/invalidation/cleanup conformance，同时保留账户级 Custom Instructions 与 existing/fresh-chat 产品 E2E 外部边界。更广义进化系统留待后续单独设计。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T02:50:00Z"
+      "updated_at": "2026-10-10T03:16:00Z"
     }
   ]
 }
