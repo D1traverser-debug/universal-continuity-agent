@@ -8,6 +8,7 @@ from runtime.execution_readiness import (
     evaluate_execution,
     validate_owner_profile,
 )
+from runtime.owner_topology import business_owner_names
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,8 +45,12 @@ def _cap(
 def test_contract_file_declares_role_without_invocation_is_not_execution():
     contract = json.loads((ROOT / "EXECUTION_READINESS_CONTRACT.json").read_text(encoding="utf-8"))
     assert contract["schema_version"] == "1.0"
+    assert contract["execution_receipt_binding_contract_version"] == "1.0"
+    assert contract["execution_receipt_binding"]["validator"] == "runtime/execution_receipt.py"
     assert any("declared agent without an invocation path" in item for item in contract["hard_invariants"])
     assert any("Current-session availability" in item for item in contract["hard_invariants"])
+    assert any("Receipt existence is not enough" in item for item in contract["hard_invariants"])
+    assert any("shadow allowlist" in item for item in contract["hard_invariants"])
 
 
 def test_owner_profile_rejects_fake_non_declared_prompt_only_path():
@@ -197,35 +202,31 @@ def test_partial_capability_requires_explicit_safe_degraded_mode():
     assert decision.degraded_capabilities == ("safe_degraded:research:CHAT_BRIDGED",)
 
 
-def test_cross_agent_registry_covers_current_github_business_agents():
+def test_cross_agent_registry_covers_current_github_business_agents_dynamically():
     registry = json.loads((ROOT / "OWNER_EXECUTION_REGISTRY.json").read_text(encoding="utf-8"))
+    owner_registry = json.loads((ROOT / "OWNER_REGISTRY.json").read_text(encoding="utf-8"))
     owners = {item["owner"]: item for item in registry["owners"]}
+    expected_business = set(business_owner_names(owner_registry))
+
     assert registry["execution_readiness_contract"] == "EXECUTION_READINESS_CONTRACT.json"
-    assert set(owners) == {
-        "FINANCIAL_WRITING_AGENT_RUNTIME",
-        "A_SHARE_MARKET_AGENT",
-        "NOVEL_WRITING_AGENT",
-        "VIDEO_GROWTH_AGENT",
-    }
+    assert set(owners) == expected_business
     for item in owners.values():
         assert item["capability_ref"] == "continuity/EXECUTION_CAPABILITIES.json"
         assert "@main" in item["repository"]
 
 
-def test_continuity_owner_router_points_to_execution_control_plane():
+def test_continuity_owner_router_points_to_execution_control_plane_without_name_allowlist():
     registry = json.loads((ROOT / "OWNER_REGISTRY.json").read_text(encoding="utf-8"))
     resolver = registry["resolver"]
     assert resolver["execution_readiness_contract"] == "EXECUTION_READINESS_CONTRACT.json"
     assert resolver["execution_registry"] == "OWNER_EXECUTION_REGISTRY.json"
     assert resolver["execution_evaluator"] == "runtime/execution_readiness.py"
+
+    expected_business = set(business_owner_names(registry))
     github_owners = {
         item["name"]: item
         for item in registry["owners"]
-        if item["name"] in {
-            "FINANCIAL_WRITING_AGENT_RUNTIME",
-            "A_SHARE_MARKET_AGENT",
-            "NOVEL_WRITING_AGENT",
-            "VIDEO_GROWTH_AGENT",
-        }
+        if item["name"] in expected_business
     }
+    assert set(github_owners) == expected_business
     assert all(item.get("execution_capability_ref", "").endswith("continuity/EXECUTION_CAPABILITIES.json") for item in github_owners.values())
