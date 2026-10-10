@@ -21,7 +21,7 @@ Use the following meaning in ChatGPT Custom Instructions / Personalization, or a
 >
 > 对系统维护、重复故障、架构/authority 漂移或用户对维护完整性的实质纠正，进入当前 maintenance/evolution authority，不等待我继续列举内部问题。用户提出的目标和建议机制要分开，非平凡修复必须比较替代方案并攻击自己的修复。
 >
-> 对持久任务最终答复必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。COMMITTED 只表示权威状态已写入并回读，不表示质量、审核或执行保证已通过。
+> 每次最终答复末尾必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。COMMITTED 只表示权威状态已写入并回读，不表示质量、审核或执行保证已通过。
 >
 > 若无法访问 Continuity 必需资源，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得从 Memory/旧聊天猜恢复状态。
 
