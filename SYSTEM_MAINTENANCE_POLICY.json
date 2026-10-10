@@ -1,11 +1,12 @@
 {
-  "schema_version": "1.5",
+  "schema_version": "1.6",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
-  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal is detected, the active maintenance writer owns the repair loop by default.",
+  "principle": "The user is not the system maintenance operator. A user correction, systemic defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal starts a maintenance process; it is not a direct implementation order. The maintenance writer must classify the signal, inspect the affected system, decide what must be learned or changed, and only then execute the smallest evidence-backed change.",
   "triggers": [
     "ASSISTANT_DETECTS_SYSTEMIC_GAP",
     "USER_REPORT_REVEALS_SYSTEMIC_GAP",
+    "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
     "CI_OR_REGRESSION_FAILURE",
     "PROTOCOL_OR_PRODUCT_BEHAVIOR_CHANGE",
     "OWNER_ENTRYPOINT_OR_CAPABILITY_DRIFT",
@@ -23,10 +24,17 @@
     "inspect_authoritative_state_before_write": true,
     "classify_artifact_context_and_cache_authority": true,
     "assess_reliability_guard_before_feature_expansion": true,
+    "classify_user_feedback_before_adoption": true,
     "separate_user_goal_from_user_proposed_mechanism": true,
     "challenge_user_and_assistant_initial_solution": true,
     "compare_credible_alternatives_for_nontrivial_design": true,
     "seek_counterexample_or_failure_mode_before_adoption": true,
+    "run_meta_maintenance_outline_before_nontrivial_patch": true,
+    "assess_learning_scout_need": true,
+    "assess_instruction_surface_impact": true,
+    "assess_cross_subsystem_inheritance_and_propagation": true,
+    "assess_complexity_and_efficiency_budget": true,
+    "perform_global_claim_scope_check": true,
     "select_audit_depth_by_change_risk": true,
     "use_synthetic_fault_injection_for_unknown_unknowns_when_justified": true,
     "apply_smallest_safe_fix": true,
@@ -38,56 +46,135 @@
     "record_change_and_remaining_risk": true,
     "reread_authority_before_claiming_committed": true,
     "ask_user_to_manage_internal_migration_or_recordkeeping": false,
-    "wait_for_user_to_notice_related_internal_followups": false
+    "wait_for_user_to_notice_related_internal_followups": false,
+    "claim_global_perfection_or_all_future_failures_preconsidered": false
+  },
+  "meta_maintenance_outline": {
+    "purpose": "Default governance path for non-trivial systemic maintenance. It prevents symptom-driven patching, blind obedience to proposed fixes, prompt-only papering-over, cross-subsystem drift, and unbounded architecture growth.",
+    "activation": {
+      "full_depth": [
+        "explicit global audit",
+        "systemic reliability incident",
+        "user challenges maintenance method/global completeness",
+        "protocol/authority/execution/methodology/startup architecture change",
+        "repeated material failure"
+      ],
+      "lightweight_depth": "Local, reversible, low-coupling defects still pass through the same classifications, but external scouting and broad owner sweeps may be NOT_REQUIRED_WITH_REASON."
+    },
+    "stages": [
+      "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
+      "M1_REQUIREMENT_AND_FAILURE_MODEL",
+      "M2_FULL_SYSTEM_IMPACT_MAP",
+      "M3_LEARNING_AND_EVIDENCE_SCOUT",
+      "M4_ALTERNATIVES_AND_FALSIFICATION",
+      "M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION",
+      "M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET",
+      "M7_IMPLEMENTATION_AND_SUPERSESSION",
+      "M8_MULTI_LAYER_VALIDATION",
+      "M9_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION",
+      "M10_SECOND_ORDER_REVIEW_AND_GLOBAL_CLAIM_CALIBRATION",
+      "M11_DURABLE_LEARNING_AND_CHECKPOINT"
+    ],
+    "mandatory_questions": [
+      "What exact user goal/constraint/counterexample was revealed, separate from the proposed mechanism?",
+      "What is the root-cause layer: account/prompt instruction, repository policy, runtime, schema, test/eval, owner binding, product capability, evidence, or propagation?",
+      "What other active surfaces can contradict or bypass this fix?",
+      "What relevant prior incidents, accepted rules, user corrections, and current external practices should be learned before choosing a fix?",
+      "What credible alternative includes deletion/simplification/no-change rather than only adding another layer?",
+      "Does this require changing GPT/account/startup instructions, or would that merely mask a runtime/schema/test defect?",
+      "Will child owners/subsystems inherit the invariant automatically, or are there stale overrides/shadow copies?",
+      "What does the change add to startup context, tool calls, latency, authority surfaces, migration burden, and maintenance coupling?",
+      "What old mechanism is superseded and must be removed/demoted?",
+      "What negative/held-out/cross-surface evidence could falsify the accepted fix?",
+      "What is the exact assurance ceiling and what remains unknown?"
+    ]
+  },
+  "user_feedback_assimilation": {
+    "principle": "Material user corrections are first-class reliability/eval evidence, not direct architecture commands and not disposable chat feedback.",
+    "classify_each_material_correction_as": ["GOAL_OR_CONSTRAINT", "COUNTEREXAMPLE_OR_FAILURE_REPORT", "PROPOSED_MECHANISM", "STYLE_OR_UX_PREFERENCE", "PRODUCT_OR_ACCOUNT_INSTRUCTION_REQUEST"],
+    "material_correction_triggers_system_impact_review_after_first_occurrence": true,
+    "repetition_required_before_systemic_review": false,
+    "goal_or_constraint_is_high_authority": true,
+    "proposed_mechanism_is_canonical_by_default": false,
+    "accepted_durable_requirement_must_be_persisted_in_smallest_authoritative_surface": true,
+    "testable_correction_should_feed_regression_or_eval": true,
+    "rejected_or_narrowed_mechanism_requires_material_rationale": true,
+    "do_not_require_user_to_restate_accepted_requirement": true,
+    "external_account_instruction_action_if_required": "Stabilize repository semantics first, persist the exact minimal account-level delta, then ask the user once because repository writes cannot mutate ChatGPT account instructions."
+  },
+  "instruction_surface_review": {
+    "required_for_systemic_behavior_gap": true,
+    "root_cause_layers": ["ACCOUNT_OR_PRODUCT_INSTRUCTION", "STARTUP_OR_ROUTING_INSTRUCTION", "REPOSITORY_POLICY", "RUNTIME_OR_SCHEMA", "TEST_OR_EVAL", "OWNER_BINDING", "PRODUCT_CAPABILITY", "EVIDENCE_OR_PROPAGATION"],
+    "prompt_or_account_instruction_change_is_default_fix": false,
+    "change_instruction_when": [
+      "behavior must activate before repository authority can be loaded",
+      "routing/bootstrap semantics are actually wrong",
+      "a durable user-facing product instruction cannot be enforced by runtime alone"
+    ],
+    "do_not_change_instruction_when": [
+      "runtime/schema/test can mechanically enforce the invariant",
+      "the proposed instruction would duplicate repository authority",
+      "the change only makes a stale lower-level implementation appear compliant"
+    ],
+    "repository_write_proves_account_instruction_propagated": false,
+    "no_instruction_change_requires_reason": true,
+    "anti_bloat_rule": "Prefer a short routing/activation instruction that delegates to current repository authority over copying maintenance doctrine into Custom Instructions."
+  },
+  "learning_evolution_review": {
+    "principle": "Learning is a required decision point, not mandatory browsing theater. Non-trivial/systemic maintenance must explicitly decide SCOUT_REQUIRED or NOT_REQUIRED_WITH_REASON.",
+    "systemic_or_architecture_change_default": "SCOUT_REQUIRED",
+    "local_mechanical_bug_with_clear_authority_and_regression": "MAY_BE_NOT_REQUIRED_WITH_REASON",
+    "preferred_inputs": ["current internal incidents and user corrections", "current first-party OpenAI documentation for OpenAI behavior", "original engineering documentation/repos for studied systems", "relevant high-signal independent analysis"],
+    "accepted_learning_requires": ["mapped failure or opportunity", "comparison against current mechanism", "explicit accepted/rejected disposition", "smallest authority change if adopted", "regression/eval or evidence plan"],
+    "citation_without_behavioral_integration_is_learning": false,
+    "accepted_user_corrections_feed_future_eval_corpus": true
+  },
+  "cross_subsystem_inheritance_review": {
+    "required_for_shared_control_plane_change": true,
+    "classify_change_as": ["KERNEL_INVARIANT", "COMPOSABLE_PROFILE_METHOD", "OWNER_LOCAL_BUSINESS_RULE", "PRODUCT_OR_ACCOUNT_HOOK"],
+    "kernel_or_profile_change_requires_impacted_owner_derivation_from_registry": true,
+    "owner_local_rule_must_not_be_globalized_without_cross_owner_evidence": true,
+    "shared_invariant_should_propagate_by_contract_profile_or_runtime_not_copied_prose": true,
+    "check_for_stale_owner_override_or_shadow_logic": true,
+    "check_new_owner_inheritance_path": true,
+    "business_state_or_lease_mutation_during_metadata_propagation": false
+  },
+  "complexity_efficiency_budget": {
+    "required_for_nontrivial_control_plane_change": true,
+    "dimensions": ["new_authority_surfaces", "mandatory_startup_context", "tool_and_remote_read_count", "steady_state_latency", "duplicate_rule_count", "cross_owner_touch_count", "migration_and_compatibility_burden", "observability_and_test_cost"],
+    "prefer_deletion_or_consolidation_over_addition": true,
+    "new_root_surface_requires_unique_responsibility": true,
+    "increase_in_startup_preload_requires_explicit_justification": true,
+    "full_global_audit_on_every_business_turn": false,
+    "performance_regression_may_be_hidden_by_more_agents_or_prompts": false
+  },
+  "closure_claim_limits": {
+    "claim_global_system_is_error_free": false,
+    "claim_all_future_problem_classes_have_been_preconsidered": false,
+    "claim_no_inappropriate_mechanism_remains_without_evidence": false,
+    "required_closure_fields": ["scope actually inspected", "evidence and tests actually run", "known open gates", "unknown/open-world boundary", "assurance ceiling", "complexity/efficiency effect", "propagation/inheritance effect"],
+    "rule": "A completed maintenance pass means the scoped process closed with bounded evidence; it never means the entire evolving system is globally flawless."
   },
   "authority_surface_admission_gate": {
-    "applies_before": [
-      "CREATE_NEW_ROOT_POLICY",
-      "CREATE_NEW_CONTRACT",
-      "CREATE_NEW_REGISTRY",
-      "CREATE_NEW_PERMANENT_AGENT",
-      "CREATE_NEW_ACTIVE_COMPATIBILITY_LAYER"
-    ],
-    "required_checks": [
-      "CAN_EXISTING_AUTHORITY_OWN_THIS_WITHOUT_AMBIGUITY",
-      "WOULD_THIS_DUPLICATE_OR_SPLIT_AN_EXISTING_INVARIANT",
-      "IS_THE_MISSING_CONTROL_BETTER_EXPRESSED_AS_RUNTIME_CODE_TEST_SCHEMA_OR_OWNER_ADAPTER",
-      "CAN_A_SUPERSEDED_MECHANISM_BE_REMOVED_INSTEAD_OF_COEXISTING",
-      "DOES_THE_NEW_SURFACE_HAVE_A_UNIQUE_OWNER_LOAD_TRIGGER_AND_DEPRECATION_PATH"
-    ],
+    "applies_before": ["CREATE_NEW_ROOT_POLICY", "CREATE_NEW_CONTRACT", "CREATE_NEW_REGISTRY", "CREATE_NEW_PERMANENT_AGENT", "CREATE_NEW_ACTIVE_COMPATIBILITY_LAYER"],
+    "required_checks": ["CAN_EXISTING_AUTHORITY_OWN_THIS_WITHOUT_AMBIGUITY", "WOULD_THIS_DUPLICATE_OR_SPLIT_AN_EXISTING_INVARIANT", "IS_THE_MISSING_CONTROL_BETTER_EXPRESSED_AS_RUNTIME_CODE_TEST_SCHEMA_OR_OWNER_ADAPTER", "CAN_A_SUPERSEDED_MECHANISM_BE_REMOVED_INSTEAD_OF_COEXISTING", "DOES_THE_NEW_SURFACE_HAVE_A_UNIQUE_OWNER_LOAD_TRIGGER_AND_DEPRECATION_PATH"],
     "default_decision": "REJECT_NEW_SURFACE_IF_EXISTING_AUTHORITY_CAN_OWN_IT",
-    "creation_requires": [
-      "unique responsibility",
-      "explicit owner",
-      "load/read trigger",
-      "non-overlap rationale",
-      "testable invariant where applicable",
-      "deprecation_or merge path"
-    ],
+    "creation_requires": ["unique responsibility", "explicit owner", "load/read trigger", "non-overlap rationale", "testable invariant where applicable", "deprecation_or merge path"],
     "anti_pattern": "User reports a symptom -> create another policy/prompt/role without architecture classification.",
     "failed_admission_behavior": "Consolidate into the existing authority or implement the missing executable/test mechanism; do not accumulate parallel documentation."
   },
   "reliability_guard": {
-    "principle": "Repeated material failure of the same owner responsibility is a system reliability signal, not a reason to ask the user to restate the rule or to keep adding features.",
+    "principle": "Repeated material failure is a system reliability signal. A single material correction may already trigger a system-impact review when it exposes a plausible shared failure class.",
     "incident_triggers": [
       "same defect class materially recurs after an accepted fix",
       "the user repeatedly has to restate the same durable requirement",
+      "a single material user correction exposes a plausible shared control-plane failure class",
       "the user repeatedly has to correct the system for treating the user's suggested mechanism or analogy as canonical architecture",
       "a mandatory gate is repeatedly bypassed or falsely reported",
       "the owner repeatedly executes from stale rules, stale state, or stale artifacts",
       "CI, eval, or product evidence shows a regression in a core owner responsibility"
     ],
-    "required_response": [
-      "PERSIST_INCIDENT_OR_FAILURE_EVIDENCE",
-      "CLASSIFY_ROOT_CAUSE_LAYER",
-      "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM",
-      "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA",
-      "CHECK_EXECUTION_AND_REFRESH_PATH",
-      "PATCH_TRUE_OWNER_SURFACE",
-      "ADD_OR_UPDATE_REGRESSION_OR_EVAL",
-      "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM",
-      "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE"
-    ],
+    "required_response": ["PERSIST_INCIDENT_OR_FAILURE_EVIDENCE", "CLASSIFY_ROOT_CAUSE_LAYER", "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA", "BUILD_FULL_SYSTEM_IMPACT_MAP", "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM", "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE", "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA", "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW", "CHECK_EXECUTION_AND_REFRESH_PATH", "PATCH_TRUE_OWNER_SURFACE", "ADD_OR_UPDATE_REGRESSION_OR_EVAL", "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM", "VERIFY_CROSS_SUBSYSTEM_PROPAGATION", "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE", "CALIBRATE_CLOSURE_CLAIM"],
     "affected_owner_non_reliability_expansion": "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY",
     "freeze_scope": "AFFECTED_OWNER_OR_CAPABILITY_ONLY",
     "freeze_clearance": "ROOT_CAUSE_PATCH_PLUS_RELEVANT_REGRESSION_OR_EVAL_PASS_PLUS_VERIFIED_AUTHORITY_REREAD",
@@ -100,139 +187,63 @@
     "runtime": "runtime/system_audit.py",
     "principle": "Audit depth is selected by risk and change impact. Do not run every owner business pipeline on every maintenance turn; do not use a light targeted check when a cross-cutting change makes wider uncertainty material.",
     "layers": {
-      "CORE_ALWAYS": {
-        "activation": "every control-plane CI run and every material maintenance closure",
-        "checks": [
-          "protocol/version alignment",
-          "local authority reference reachability",
-          "owner-set consistency across registries",
-          "maintenance manifest/cache alignment",
-          "product-E2E status alignment",
-          "owner protocol-registry state consistency"
-        ]
-      },
-      "IMPACT_SCOPED": {
-        "activation": "every material change",
-        "checks": [
-          "changed authority surface",
-          "direct dependents",
-          "affected runtime/tests",
-          "affected owner adapters or capability pointers"
-        ]
-      },
-      "OWNER_SENTINEL_ROTATION": {
-        "activation": "owner-related maintenance or active maintenance turns where additional confidence is useful without a full sweep",
-        "checks": [
-          "metadata/index/manifest pointer freshness",
-          "adapter and execution-capability reachability",
-          "no business execution or lease takeover"
-        ]
-      },
-      "FULL_CONTROL_PLANE": {
-        "activation": [
-          "explicit global audit",
-          "Continuity protocol change",
-          "authority-precedence or writer-lease model change",
-          "startup/discovery routing change",
-          "artifact/storage authority change",
-          "methodology profile contract change",
-          "execution-readiness contract change",
-          "cross-owner migration",
-          "systemic reliability incident",
-          "major release boundary"
-        ],
-        "checks": [
-          "all control-plane contracts/policies/registries",
-          "all durable-owner metadata surfaces",
-          "cross-surface contradiction scan",
-          "dangling remote pointer scan",
-          "stale derived-cache/status scan",
-          "relevant owner-specific regressions without stealing owner leases"
-        ]
-      },
-      "SYNTHETIC_FAULT_INJECTION": {
-        "activation": "explicit global audit, systemic incident, or high-risk architecture/reliability boundary where negative evidence is needed",
-        "production_mutation_allowed_by_default": false,
-        "checks": [
-          "required discovery source unavailable",
-          "stale registry tries to override owner authority",
-          "same-chat refresh changes lease/epoch",
-          "new-chat takeover fails to change lease",
-          "floating/missing/forbidden methodology profile state",
-          "COMMITTED without authoritative reread",
-          "destructive mutation with unknown identity/dependency",
-          "external reference promoted to authority by presence",
-          "declared executor treated as current-session proof"
-        ],
-        "safety": "Use deterministic fixtures or non-production experiments by default; define stop/fail-closed conditions before any real-system fault experiment."
-      }
+      "CORE_ALWAYS": {"activation": "every control-plane CI run and every material maintenance closure", "checks": ["protocol/version alignment", "local authority reference reachability", "owner-set consistency across registries", "maintenance manifest/cache alignment", "product-E2E status alignment", "owner protocol-registry state consistency", "maintenance meta-governance alignment"]},
+      "IMPACT_SCOPED": {"activation": "every material change", "checks": ["changed authority surface", "direct dependents", "affected runtime/tests", "affected owner adapters or capability pointers", "instruction-surface impact", "inheritance/propagation impact", "complexity/efficiency impact"]},
+      "OWNER_SENTINEL_ROTATION": {"activation": "owner-related maintenance or active maintenance turns where additional confidence is useful without a full sweep", "checks": ["metadata/index/manifest pointer freshness", "adapter and execution-capability reachability", "no business execution or lease takeover"]},
+      "FULL_CONTROL_PLANE": {"activation": ["explicit global audit", "Continuity protocol change", "authority-precedence or writer-lease model change", "startup/discovery routing change", "artifact/storage authority change", "methodology profile contract change", "execution-readiness contract change", "cross-owner migration", "systemic reliability incident", "user challenges maintenance method/global completeness", "major release boundary"], "checks": ["all control-plane contracts/policies/registries", "all durable-owner metadata surfaces", "cross-surface contradiction scan", "dangling remote pointer scan", "stale derived-cache/status scan", "instruction/policy/runtime alignment", "cross-subsystem inheritance and stale-override scan", "complexity/efficiency and supersession review", "relevant owner-specific regressions without stealing owner leases"]},
+      "SYNTHETIC_FAULT_INJECTION": {"activation": "explicit global audit, systemic incident, or high-risk architecture/reliability boundary where negative evidence is needed", "production_mutation_allowed_by_default": false, "checks": ["required discovery source unavailable", "stale registry tries to override owner authority", "same-chat refresh changes lease/epoch", "new-chat takeover fails to change lease", "floating/missing/forbidden methodology profile state", "COMMITTED without authoritative reread", "destructive mutation with unknown identity/dependency", "external reference promoted to authority by presence", "declared executor treated as current-session proof", "meta-maintenance outline omitted after systemic correction", "hard-coded stale methodology receipt semantics survive contract upgrade"], "safety": "Use deterministic fixtures or non-production experiments by default."}
     },
     "decision_rules": [
       "Routine low-risk changes run CORE_ALWAYS + IMPACT_SCOPED.",
-      "A change to protocol, authority, registry, startup/discovery, storage/artifact governance, methodology contract, or execution contract escalates to FULL_CONTROL_PLANE.",
-      "Explicit deep audit or systemic incident also activates SYNTHETIC_FAULT_INJECTION.",
-      "Full owner business pipelines are not a default audit primitive; invoke an owner-specific business regression only when the changed invariant or incident actually depends on it.",
+      "A change to protocol, authority, registry, startup/discovery, storage/artifact governance, methodology contract, execution contract, or system-maintenance method escalates to FULL_CONTROL_PLANE.",
+      "Explicit deep audit, systemic incident, or user challenge to maintenance completeness activates the full meta-maintenance outline and SYNTHETIC_FAULT_INJECTION.",
+      "Full owner business pipelines are not a default audit primitive.",
       "A full control-plane sweep may read all owner metadata/pointers but must not steal active owner leases or mutate business truth.",
-      "Unknown-unknown coverage comes from negative scenarios, contradiction scans, stale/dangling reference checks and boundary tests, not from an unbounded checklist."
+      "Unknown-unknown coverage comes from negative scenarios, contradiction scans, stale/dangling reference checks and boundary tests, not from an unbounded checklist.",
+      "Efficiency is part of correctness: a repair that materially increases steady-state context/tool/latency cost without proportional reliability value fails design review."
     ],
     "full_business_pipeline_every_audit": false,
     "no_background_scheduler_claim": true
   },
   "maintenance_loop": [
     "DETECT",
+    "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA",
     "CLASSIFY_SCOPE_AND_AUTHORITY",
     "READ_CURRENT_AUTHORITY",
+    "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "DIAGNOSE_ROOT_CAUSE",
     "ASSESS_RELIABILITY_GUARD",
+    "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE",
     "CHALLENGE_INITIAL_SOLUTION_CANDIDATES",
+    "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW",
     "RUN_AUTHORITY_SURFACE_ADMISSION_GATE",
+    "ASSESS_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION",
+    "ASSESS_COMPLEXITY_AND_EFFICIENCY_BUDGET",
     "SELECT_RISK_TIERED_AUDIT_DEPTH",
     "PATCH_MINIMUM_AUTHORITY_SURFACE",
     "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
     "ADD_OR_UPDATE_GUARD",
     "RUN_OR_OBSERVE_VALIDATION",
     "RUN_SELECTED_CROSS_SURFACE_OR_FAULT_AUDIT",
+    "RUN_CROSS_SUBSYSTEM_PROPAGATION_CHECK",
+    "RUN_SECOND_ORDER_CHALLENGE_AND_CLAIM_CALIBRATION",
+    "DISTILL_ACCEPTED_LEARNING_AND_USER_CORRECTION",
     "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
     "REREAD_AUTHORITATIVE_STATE",
     "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
   ],
-  "artifact_context_governance": {
-    "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
-    "stale_cache_is_authority": false,
-    "chat_only_material_change_is_durable": false,
-    "external_reference_presence_implies_authority": false,
-    "superseded_engineering_implementation_kept_active_by_default": false,
-    "owner_business_evidence_retention_is_domain_owned": true
-  },
+  "artifact_context_governance": {"policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json", "stale_cache_is_authority": false, "chat_only_material_change_is_durable": false, "external_reference_presence_implies_authority": false, "superseded_engineering_implementation_kept_active_by_default": false, "owner_business_evidence_retention_is_domain_owned": true},
   "required_durable_record": {
     "when_material_change_occurs": true,
-    "fields": [
-      "problem",
-      "root_cause",
-      "changed_authority_surfaces",
-      "validation_or_ci_result",
-      "behavioral_effect",
-      "remaining_risks_or_external_dependencies",
-      "current_stage",
-      "next_action"
-    ],
-    "preferred_locations": [
-      "task HANDOFF/checkpoint",
-      "HARNESS_STATUS.json",
-      "audit or research artifact when detail is substantial",
-      "Git commit history for file-level change history"
-    ],
+    "fields": ["problem", "root_cause", "user_signal_classification", "system_impact_map", "learning_scout_disposition", "instruction_surface_disposition", "inheritance_propagation_effect", "complexity_efficiency_effect", "changed_authority_surfaces", "validation_or_ci_result", "behavioral_effect", "remaining_risks_or_external_dependencies", "assurance_ceiling", "current_stage", "next_action"],
+    "preferred_locations": ["task HANDOFF/checkpoint", "HARNESS_STATUS.json", "audit or research artifact when detail is substantial", "Git commit history for file-level change history"],
     "avoid_duplicate_changelog_for_trivial_edits": true
   },
   "user_interruption_boundary": {
-    "interrupt_user_only_when": [
-      "EXTERNAL_ACCOUNT_OR_UI_ACTION_REQUIRED",
-      "NEW_PERMISSION_OR_CREDENTIAL_REQUIRED",
-      "IRREVERSIBLE_OR_HIGH_IMPACT_USER_CHOICE_REQUIRED",
-      "MISSING_FACT_CANNOT_BE_SAFELY_INFERRED_OR_RETRIEVED",
-      "LEGAL_OR_PRODUCT_BOUNDARY_REQUIRES_USER_ACTION"
-    ],
-    "otherwise_continue_maintenance": true
+    "interrupt_user_only_when": ["EXTERNAL_ACCOUNT_OR_UI_ACTION_REQUIRED", "NEW_PERMISSION_OR_CREDENTIAL_REQUIRED", "IRREVERSIBLE_OR_HIGH_IMPACT_USER_CHOICE_REQUIRED", "MISSING_FACT_CANNOT_BE_SAFELY_INFERRED_OR_RETRIEVED", "LEGAL_OR_PRODUCT_BOUNDARY_REQUIRES_USER_ACTION"],
+    "otherwise_continue_maintenance": true,
+    "user_feedback_is_still_an_input": true,
+    "autonomy_does_not_mean_ignore_user_corrections_or_skip_learning": true
   },
   "scope_boundaries": {
     "do_not_steal_other_active_owner_lease": true,
@@ -243,7 +254,10 @@
     "do_not_claim_product_e2e_without_real_product_evidence": true,
     "do_not_treat_repo_write_as_proof_old_chats_received_update": true,
     "do_not_treat_user_solution_proposal_as_architecture_authority_by_default": true,
-    "do_not_treat_assistant_first_idea_as_privileged_candidate": true
+    "do_not_treat_assistant_first_idea_as_privileged_candidate": true,
+    "do_not_treat_autonomous_maintenance_as_permission_to_skip_user_signal_analysis": true,
+    "do_not_use_prompt_growth_to_mask_missing_runtime_or_eval_enforcement": true,
+    "do_not_claim_global_flawlessness": true
   },
   "failure_semantics": {
     "patch_write_failed": "COMMIT_FAILED",
@@ -253,6 +267,12 @@
     "new_authority_surface_without_admission": "REJECT_AND_CONSOLIDATE",
     "repeated_owner_failure_without_durable_incident_or_regression": "RELIABILITY_GUARD_NOT_SATISFIED",
     "nontrivial_solution_adopted_without_independent_candidate_critique": "EVOLUTION_GATE_NOT_SATISFIED",
+    "nontrivial_systemic_fix_without_meta_maintenance_outline": "META_MAINTENANCE_GATE_NOT_SATISFIED",
+    "systemic_fix_without_learning_scout_disposition": "LEARNING_DECISION_NOT_RECORDED",
+    "systemic_behavior_fix_without_instruction_surface_review": "INSTRUCTION_IMPACT_NOT_ASSESSED",
+    "shared_change_without_inheritance_propagation_review": "PROPAGATION_GATE_NOT_SATISFIED",
+    "control_plane_change_without_complexity_efficiency_review": "EFFICIENCY_GATE_NOT_SATISFIED",
+    "global_perfection_claim": "CLAIM_SCOPE_INVALID",
     "required_global_audit_not_run": "AUDIT_CLOSURE_NOT_SATISFIED",
     "cross_surface_drift_detected": "KEEP_TASK_ACTIVE_UNTIL_RECONCILED_AND_REGRESSION_GUARDED"
   }
