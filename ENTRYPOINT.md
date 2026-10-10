@@ -95,11 +95,12 @@ Before a material owner action:
 5. evaluate the owner's methodology declaration with `runtime/methodology_conformance.py:evaluate_methodology_conformance`; every contract profile must have explicit applicability evidence, and any `APPLIES` profile must be exact-version bound before execution proceeds;
 6. determine which bound methodology profiles are activated by the concrete action/event and load only those profiles;
 7. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
-8. for every activated methodology profile that supports or constrains the material action, assemble the action's `profile_runs` evidence with profile version, activation id/trigger, observed hooks and stable evidence refs;
-9. require an evidence verifier independent of the receipt's self-report and evaluate the activated subset with `runtime.methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
-10. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a run, required hook observation, verified evidence ref, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
-11. block only the exact hard capability/profile-dependent gate that is unavailable;
-12. require execution/artifact/review receipts for gates that claim completion.
+8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.2 `profile_runs` evidence with profile version, activation id/trigger, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
+9. require an evidence-ref verifier independent of the receipt's self-report **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
+10. evaluate the activated subset with `runtime.methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate, mutation or durable progress is complete;
+11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
+12. block only the exact hard capability/profile-dependent gate that is unavailable;
+13. require execution/artifact/review receipts for gates that claim completion.
 
 `DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not session proof. `ATTESTED_ISOLATED` cannot be simulated by role-switching inside one unverified chat. A methodology declaration marked `BOUND_EXACT_VERSION` or an owner CI PASS proves wiring/regression only; it does not prove the current material action activated and satisfied the profile. Conversely, an omitted profile is not assumed non-applicable: the owner must make that exclusion explicit and evidence-bearing.
 
@@ -113,7 +114,7 @@ Shared cross-agent methodology is composed rather than inherited as a giant pare
 
 Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Every current contract profile also has a mandatory applicability assessment. `APPLIES` requires binding; `NOT_APPLICABLE` requires a concrete reason and owner-local evidence refs. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
 
-Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete or durably committed.
+Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete or durably committed. Under receipt contract 1.2, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
 
 ## Learning and maintenance
 
