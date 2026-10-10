@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
+from runtime.owner_topology import business_owner_names, validate_owner_registry
 from runtime.universal_continuity import (
     Compatibility,
     TaskMetadata,
@@ -135,17 +136,21 @@ def test_checkpoint_quality_catches_false_resumability():
     assert "resumable-user-without-checkpoint-ref" in validate_checkpoint_quality(raw)
 
 
-def test_owner_registry_is_machine_readable_and_unique():
+def test_owner_registry_is_machine_readable_unique_and_topology_authoritative():
     import json
     from pathlib import Path
+
     data = json.loads((Path(__file__).resolve().parents[1] / "OWNER_REGISTRY.json").read_text(encoding="utf-8"))
-    assert data["schema_version"] == "3.0"
+    assert data["schema_version"] == "3.1"
     assert data["default_owner"] == "GENERIC_HANDOFF"
+    assert data["membership_authority"]["role"] == "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY"
+    assert data["membership_authority"]["parallel_hard_coded_owner_lists_allowed"] is False
+    assert data["resolver"]["owner"] == "UNIVERSAL_CONTINUITY_HARNESS"
+    assert data["resolver"]["owner_topology"] == "runtime/owner_topology.py"
+    assert validate_owner_registry(data) == ()
     names = [row["name"] for row in data["owners"]]
     assert len(names) == len(set(names))
-    assert "FINANCIAL_WRITING_AGENT_RUNTIME" in names
-    assert "A_SHARE_MARKET_AGENT" in names
-    assert data["resolver"]["owner"] == "UNIVERSAL_CONTINUITY_HARNESS"
+    assert business_owner_names(data)
 
 
 def test_system_registry_is_machine_readable_and_has_generic_bootstrap():
