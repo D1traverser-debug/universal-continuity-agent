@@ -49,6 +49,7 @@ def make_binding_contract(profile_ids):
 
 
 def profile_run(contract, profile_id, *, evidence_refs=None, invoked_hooks=None):
+    """Legacy receipt fixture: absence of hook_assessments means every hook must be invoked."""
     composition = contract["methodology_composition"]
     profile = composition["profiles"][profile_id]
     hook_set_name = profile["required_hooks_from"].split(".")[-1]
@@ -59,6 +60,34 @@ def profile_run(contract, profile_id, *, evidence_refs=None, invoked_hooks=None)
         "trigger": "test-trigger",
         "invoked_hooks": invoked_hooks if invoked_hooks is not None else list(composition["hook_sets"][hook_set_name]),
         "evidence_refs": evidence_refs if evidence_refs is not None else [f"evidence://{profile_id}/1"],
+    }
+
+
+def action_scoped_profile_run(contract, profile_id, invoked_hooks, *, evidence_refs=None):
+    composition = contract["methodology_composition"]
+    profile = composition["profiles"][profile_id]
+    hook_set_name = profile["required_hooks_from"].split(".")[-1]
+    hooks = list(composition["hook_sets"][hook_set_name])
+    invoked = set(invoked_hooks)
+    return {
+        "profile_id": profile_id,
+        "profile_version": profile["version"],
+        "activation_id": f"action-activation-{profile_id}",
+        "trigger": "action-scoped-test-trigger",
+        "invoked_hooks": sorted(invoked),
+        "hook_assessments": {
+            hook: {
+                "status": "INVOKED" if hook in invoked else "NOT_APPLICABLE_FOR_ACTION",
+                "reason": (
+                    f"{hook} executed for this synthetic action"
+                    if hook in invoked
+                    else f"{hook} is outside this synthetic action's scope"
+                ),
+                "evidence_refs": [f"evidence://{profile_id}/{hook}"],
+            }
+            for hook in hooks
+        },
+        "evidence_refs": evidence_refs if evidence_refs is not None else [f"evidence://{profile_id}/action"],
     }
 
 
@@ -200,18 +229,14 @@ def test_operational_conformance_rejects_unverified_evidence_ref():
     )
 
     assert operational.status == "FAIL"
-    assert "unverified_evidence_ref:operational_hygiene:trace://missing" in operational.errors
+    assert "unverified_profile_evidence_ref:operational_hygiene:trace://missing" in operational.errors
 
 
-def test_operational_conformance_rejects_declared_hook_that_was_not_observed():
+def test_legacy_operational_receipt_still_requires_all_profile_hooks():
     contract, owner = make_binding_contract(["operational_hygiene"])
     all_hooks = contract["methodology_composition"]["hook_sets"]["operational_hygiene"]
     observed = [hook for hook in all_hooks if hook != "reliability_or_change_freeze_guard"]
-    evidence = {
-        "profile_runs": [
-            profile_run(contract, "operational_hygiene", invoked_hooks=observed)
-        ]
-    }
+    evidence = {"profile_runs": [profile_run(contract, "operational_hygiene", invoked_hooks=observed)]}
 
     operational = evaluate_operational_methodology_conformance(
         owner,
@@ -225,7 +250,117 @@ def test_operational_conformance_rejects_declared_hook_that_was_not_observed():
     assert "required_hook_not_observed:operational_hygiene:reliability_or_change_freeze_guard" in operational.errors
 
 
-def test_operational_conformance_passes_only_for_required_profile_with_verified_evidence():
+def test_action_scoped_receipt_can_pass_with_real_subset_and_explicit_negative_space():
+    contract, owner = make_binding_contract(["artifact_io", "operational_hygiene", "evolution"])
+    invoked = ["learning_evidence_location"]
+    run = action_scoped_profile_run(contract, "evolution", invoked)
+    evidence = {"profile_runs": [run]}
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        evidence,
+        required_profiles=["evolution"],
+        evidence_verifier=lambda ref: ref.startswith("evidence://evolution/"),
+    )
+
+    assert operational.status == "PASS"
+    assert operational.verified_profiles == ("evolution@1.0",)
+    assert operational.errors == ()
+
+
+def test_action_scoped_receipt_rejects_missing_hook_assessment():
+    contract, owner = make_binding_contract(["artifact_io"])
+    run = action_scoped_profile_run(contract, "artifact_io", ["post_write_verification_method"])
+    run["hook_assessments"].pop("delete_and_retention_rules")
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        {"profile_runs": [run]},
+        required_profiles=["artifact_io"],
+        evidence_verifier=lambda ref: True,
+    )
+
+    assert operational.status == "FAIL"
+    assert "missing_hook_assessment:artifact_io:delete_and_retention_rules" in operational.errors
+
+
+def test_action_scoped_not_applicable_requires_reason_and_verified_evidence():
+    contract, owner = make_binding_contract(["evolution"])
+    run = action_scoped_profile_run(contract, "evolution", ["learning_evidence_location"])
+    assessment = run["hook_assessments"]["eval_or_regression_promotion_path"]
+    assessment["reason"] = ""
+    assessment["evidence_refs"] = []
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        {"profile_runs": [run]},
+        required_profiles=["evolution"],
+        evidence_verifier=lambda ref: True,
+    )
+
+    assert operational.status == "FAIL"
+    assert "missing_hook_assessment_reason:evolution:eval_or_regression_promotion_path" in operational.errors
+    assert "missing_hook_assessment_evidence_refs:evolution:eval_or_regression_promotion_path" in operational.errors
+
+
+def test_action_scoped_receipt_requires_at_least_one_invoked_hook():
+    contract, owner = make_binding_contract(["operational_hygiene"])
+    run = action_scoped_profile_run(contract, "operational_hygiene", [])
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        {"profile_runs": [run]},
+        required_profiles=["operational_hygiene"],
+        evidence_verifier=lambda ref: True,
+    )
+
+    assert operational.status == "FAIL"
+    assert "no_invoked_hooks_for_action:operational_hygiene" in operational.errors
+
+
+def test_action_scoped_receipt_rejects_invoked_hook_summary_mismatch():
+    contract, owner = make_binding_contract(["operational_hygiene"])
+    run = action_scoped_profile_run(contract, "operational_hygiene", ["observability_or_incident_evidence_location"])
+    run["invoked_hooks"] = ["self_maintenance_trigger_path"]
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        {"profile_runs": [run]},
+        required_profiles=["operational_hygiene"],
+        evidence_verifier=lambda ref: True,
+    )
+
+    assert operational.status == "FAIL"
+    assert any(error.startswith("invoked_hooks_mismatch:operational_hygiene:") for error in operational.errors)
+
+
+def test_action_scoped_receipt_rejects_unknown_hook_assessment():
+    contract, owner = make_binding_contract(["evolution"])
+    run = action_scoped_profile_run(contract, "evolution", ["learning_evidence_location"])
+    run["hook_assessments"]["invented_hook"] = {
+        "status": "NOT_APPLICABLE_FOR_ACTION",
+        "reason": "synthetic",
+        "evidence_refs": ["evidence://evolution/invented"],
+    }
+
+    operational = evaluate_operational_methodology_conformance(
+        owner,
+        contract,
+        {"profile_runs": [run]},
+        required_profiles=["evolution"],
+        evidence_verifier=lambda ref: True,
+    )
+
+    assert operational.status == "FAIL"
+    assert "unknown_hook_assessment:evolution:invented_hook" in operational.errors
+
+
+def test_operational_conformance_passes_legacy_all_hooks_receipt_with_verified_evidence():
     contract, owner = make_binding_contract(["artifact_io", "operational_hygiene", "evolution"])
     evidence = {
         "profile_runs": [
@@ -273,6 +408,9 @@ def test_methodology_composition_does_not_create_parallel_root_policy():
     assert composition["owner_declaration_contract"]["copy_shared_profile_prose_into_owner_required"] is False
     assert composition["owner_declaration_contract"]["load_only_profiles_required_by_current_action"] is True
     assert composition["owner_declaration_contract"]["profile_applicability_required_for_every_contract_profile"] is True
+    assert composition["operational_profile_run_contract_version"] == "1.1"
+    assert composition["operational_profile_run_contract"]["every_profile_hook_must_be_assessed"] is True
+    assert composition["operational_profile_run_contract"]["at_least_one_hook_must_be_invoked"] is True
     assert composition["executable_validator"] == "runtime/methodology_conformance.py"
     assert not (ROOT / "METHODOLOGY_POLICY.json").exists()
     assert not (ROOT / "METHODOLOGY_PROFILE_POLICY.json").exists()
