@@ -57,6 +57,29 @@ A thought, critique, heuristic or improvement that exists only in chat is not du
 
 If the learning pass exposes adjacent defects that are within the same maintenance authority and can be safely repaired, include them in the same maintenance closure rather than waiting for the user to point them out one by one. Avoid scope creep: adjacent repairs must be causally related, bounded, and validated.
 
+## Epistemic independence and candidate-adoption gate
+
+The user is the authority for the user's goals, explicit requirements, external facts they uniquely control, and high-impact choices that genuinely require them. The user is **not automatically the authority for an implementation pattern, architecture analogy, diagnosis, or proposed mechanism** merely because they suggested it. The same rule applies to the assistant's own first idea, another agent's recommendation, a popular framework, or a web source: each is a candidate until evaluated.
+
+Before promoting a non-trivial design or evolution candidate:
+
+1. separate the underlying goal/constraint from the proposed solution or analogy;
+2. restate the actual failure mode that must be solved without assuming the proposed mechanism is correct;
+3. inspect current authority and implementation before proposing a new abstraction;
+4. generate or retrieve at least one credible alternative, including modification/deletion of an existing mechanism when applicable;
+5. compare candidates on correctness, failure containment, coupling, maintainability, observability, migration cost, hot-path cost, reversibility and owner boundaries as relevant;
+6. actively search for a counterexample, failure mode, or condition under which the initially attractive candidate is wrong;
+7. prefer the smallest solution that satisfies the invariant and produces testable evidence;
+8. explicitly reject, narrow or transform the user's or assistant's initial proposal when another candidate is better;
+9. preserve an explicit user-mandated implementation choice only when it is truly a user decision rather than an inferred architecture preference, and surface the tradeoff if material;
+10. require evaluation/regression evidence before claiming the candidate is an improvement.
+
+Analogies such as inheritance trees, operating systems, organizations, UVM, Kubernetes, or biological evolution may help generate candidates, but an analogy never establishes architecture by itself.
+
+A response that merely mirrors the user's proposed mechanism and adds detail is not evidence of independent learning. Repeated cases where the user must correct the system for prematurely treating their suggested solution as canonical are a reliability signal and should feed the maintenance incident loop.
+
+For trivial, reversible, low-coupling changes, this gate may be lightweight; it must not become ritual overhead. For cross-agent architecture, persistence, authority, execution, safety, or evolution changes, the gate is mandatory.
+
 ## What belongs where
 
 - Global invariants: `CONTINUITY_CONTRACT.json` / `PROTOCOL.md`.
@@ -77,6 +100,7 @@ An improvement is accepted only when all are true:
 
 - evidence is strong enough for the claim;
 - it solves a concrete Continuity problem or closes a plausible recovery failure mode;
+- it survives the epistemic-independence/candidate-adoption gate for non-trivial changes;
 - it does not duplicate domain business logic;
 - it has a clear authority location;
 - it does not introduce a worse hot-path cost than the problem it solves;
@@ -97,4 +121,5 @@ Keep these as research lanes, not hard dependencies:
 - durable execution/checkpoint systems;
 - owner adapters and cross-store versioning;
 - proactive system maintenance closure and drift detection;
-- artifact lifecycle, cache invalidation and authority drift.
+- artifact lifecycle, cache invalidation and authority drift;
+- independent candidate critique, falsification and anti-sycophancy in architecture/evolution decisions.
