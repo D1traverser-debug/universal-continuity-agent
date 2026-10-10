@@ -104,13 +104,18 @@ def test_new_chat_resume_supersedes_old_writer_lease():
         assert_checkpoint_writer(new, lease_id="old-chat", resume_epoch=1)
 
 
-def test_resume_progress_checkpoint_must_bind_same_task_identity():
+def test_resume_progress_checkpoint_uses_selected_task_identity_for_legacy_short_checkpoint_and_rejects_conflicts():
     t = task()
     good = {"task_id":"t1","status":"ACTIVE","current_stage":"DRAFT","next_action":"finish","updated_at":NOW.isoformat()}
     receipt = build_resume_progress_receipt(t, good)
     assert receipt.current_stage == "DRAFT"
-    with pytest.raises(ValueError, match="checkpoint_missing_task_id"):
-        build_resume_progress_receipt(t, {"status":"ACTIVE"})
+
+    # A legacy short checkpoint can omit task_id because it was already loaded through
+    # this exact task's authoritative checkpoint_ref. Absence must not be invented as a
+    # conflicting identity, but an explicit contradictory task_id must fail closed.
+    legacy = build_resume_progress_receipt(t, {"status":"ACTIVE","current_stage":"DRAFT"})
+    assert legacy.task_id == "t1"
+    assert legacy.current_stage == "DRAFT"
     with pytest.raises(ValueError, match="checkpoint_task_id_mismatch"):
         build_resume_progress_receipt(t, {"task_id":"other","status":"ACTIVE"})
 
