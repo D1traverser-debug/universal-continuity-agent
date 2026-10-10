@@ -29,10 +29,9 @@
 
 ## Fresh-chat product E2E — PASS
 - 被测环境：真正全新的普通聊天；首轮只发送裸 `继承`，未附加任务名、测试说明或业务指令。
-- `BARE_INHERIT_DISCOVERY.json` 规定 5 个 required sources，验收时逐一重新核对：Universal generic registry、Financial Writing task index、A-share task index、Novel task index、Video Growth task index。
-- 5/5 来源均可读取且候选集合一致；因此允许报告完整总数。
-- 完整 DEFAULT USER resumable 候选共 4 个：`financial-writing:main`、`ashare:recommendation`、`FQ001_MINGRI_ORDER`、`video-growth:main`。
-- `continuity:universal-continuity-maintenance` 是 `SYSTEM_INFRA + EXPLICIT_ONLY`，被正确排除；A股历史 `ashare:2026-10-09` 是 `PAUSED + EXPLICIT_ONLY`，也未进入裸继承列表。
+- `BARE_INHERIT_DISCOVERY.json` 规定 5 个 required sources；验收时 5/5 均重新读取成功并完成去重/过滤，因此允许报告完整总数。
+- 完整 DEFAULT USER resumable 候选总数为 `4`；公开 Universal harness 只持久化数量与验收结果，不持久化 live candidate names/task ids。
+- `SYSTEM_INFRA + EXPLICIT_ONLY` 与 `PAUSED + EXPLICIT_ONLY` 项均被正确排除。
 - fresh chat 首轮只列候选并要求用户选择；没有对任何业务 task 做 lease takeover，最终为 `NO_MATERIAL_CHANGE`。
 - 结果与 `ENTRYPOINT.md` 的 bare-CONTINUE 规则一致：minimal bootstrap 后进入 discovery；只有选择具体任务后才读 exact task state 并执行 genuine new-chat takeover。
 
