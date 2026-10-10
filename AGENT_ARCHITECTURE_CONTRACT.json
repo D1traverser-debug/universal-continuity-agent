@@ -25,8 +25,9 @@
     },
     "harness": {
       "required_fields": ["ci_workflow_ref", "commands", "suites"],
-      "minimum_suites": ["architecture", "contract", "trajectory"],
-      "principle": "Harness evaluates the Agent; it must not be the same thing as the Skill or a self-authored PASS paragraph."
+      "minimum_owner_local_suites": ["contract", "trajectory"],
+      "architecture_suite_owner": "UNIVERSAL_CONTINUITY_HARNESS",
+      "principle": "Owner Harness evaluates domain contract/trajectory/quality. Universal evaluates the shared Agent architecture contract so owners do not copy the same architecture checker into every repository."
     },
     "references": {
       "required_fields": ["canonical_roots", "mirror_policy"],
