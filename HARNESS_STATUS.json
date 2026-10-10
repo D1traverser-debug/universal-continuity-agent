@@ -1,23 +1,25 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_CI_LIFECYCLE_LIVE_CHAT_RECONCILIATION__FRESH_CHAT_RECEIPT_E2E_PENDING",
+  "status": "PASS_V37_FULL_REGRESSION__OWNER_LAZY_RECONCILIATION__FRESH_CHAT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
+  "latest_regression_audit": "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
   "source_validation": {
-    "github_actions_run_id": 38013299898,
-    "job_id": 114097964032,
-    "validated_head_sha": "81976ef10de07a45656aaa18a70ed8933399c916",
+    "github_actions_run_id": 38014845513,
+    "job_id": 114102722190,
+    "validated_head_sha": "f785db3e0828190f9a8f53422bbe0548760708a2",
     "editable_install": "PASS",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 59,
-    "note": "This HARNESS_STATUS write is metadata-only; the validated executable/policy head is the SHA above."
+    "pytest_count": 66,
+    "note": "Subsequent audit/status/privacy-boundary writes are metadata/conformance documentation and do not alter the validated executable reconciliation behavior."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
     "current_protocol_marker": "CURRENT_PROTOCOL.json",
     "version_lifecycle_policy": "VERSION_LIFECYCLE_POLICY.json",
     "live_chat_reconciliation_policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
+    "protocol_reconciliation_runtime": "runtime/protocol_reconciliation.py",
     "user_is_migration_operator": false,
     "chat_protocol_pinned_at_creation": false,
     "same_chat_protocol_upgrade_preserves_lease": true,
@@ -26,6 +28,7 @@
   "version_lifecycle": {
     "active_protocol": "3.7",
     "active_protocol_count": 1,
+    "core_policy_version_drift_regression_guard": true,
     "superseded_implementation_archive": "GIT_HISTORY_ONLY",
     "completed_library_to_github_migration_archive": "archive/migrations/2026-10-09-library-to-github.md",
     "removed_from_active_root": [
@@ -36,13 +39,25 @@
     ],
     "task_manifest_template_aligned_to_v37": true
   },
+  "same_chat_protocol_reconciliation": {
+    "policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
+    "executable_planner": "runtime/protocol_reconciliation.py",
+    "supported_from": ["3.3", "3.5", "3.6"],
+    "current_writer_lease_verification_required": true,
+    "same_chat_resume_epoch_change": false,
+    "same_chat_active_lease_change": false,
+    "business_state_rewrite": false,
+    "unsupported_or_unknown_state": "FAIL_CLOSED",
+    "owner_cas_persistence_and_authoritative_reread_required": true
+  },
   "owner_protocol_adaptation": {
     "registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json",
-    "financial_writing": "ADAPTER_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
+    "financial_writing": "V37_ADAPTER_AND_HANDOFF_COMPACTION_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER",
     "a_share": "ACTIVE_ENTRY_RECONCILED_V37__HISTORICAL_TASKS_LAZY",
-    "video_growth": "OWNER_ADAPTER_V37__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
-    "novel_os": "ROUTING_ADAPTER_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER_RECONCILIATION",
+    "video_growth": "V37_ADAPTER_AND_CHECKPOINT_COMPACTION_STAGED__ACTIVE_TASK_PENDING_VALID_WRITER",
+    "novel_os": "V37_ROUTING_OVERLAY_STAGED__OWNER_STATE_LAZY_RECONCILIATION",
     "maintenance_may_steal_active_task_lease": false,
+    "maintenance_may_overwrite_active_owner_checkpoint": false,
     "business_state_rewrite_for_protocol_overlay": false
   },
   "startup_trigger": {
@@ -50,28 +65,23 @@
     "account_level_hook_required": true,
     "github_presence_alone_is_not_trigger": true,
     "library_presence_alone_is_not_trigger": true,
-    "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
-    "end_to_end_bare_inherit_claim": true,
-    "acceptance_evidence": {
-      "date": "2026-10-09",
-      "source": "user-supplied fresh-chat acceptance screenshot",
-      "bare_command": "继承",
-      "required_owner_quorum": 5,
-      "required_owner_quorum_succeeded": true,
-      "authoritative_default_candidate_count": 4,
-      "live_candidate_names_persisted_in_public_harness": false
-    }
+    "previous_failure_class": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED"
   },
   "bare_inherit_discovery": {
     "policy": "BARE_INHERIT_DISCOVERY.json",
+    "regression_date": "2026-10-10",
+    "required_source_quorum": 5,
+    "required_sources_succeeded": 5,
+    "authoritative_default_user_candidate_count": 4,
+    "specific_live_task_labels_stored_in_public_harness": false,
     "all_required_sources_must_be_queried": true,
     "partial_failure_result": "INCOMPLETE_DISCOVERY",
     "candidate_count_requires_complete_discovery": true,
-    "dedupe_key": "task_id",
-    "live_user_task_names_not_stored_in_public_harness": true
+    "dedupe_key": "task_id"
   },
   "context_recovery": {
     "policy": "CONTEXT_RECOVERY_POLICY.json",
+    "protocol_aligned_v37": true,
     "progressive_disclosure": true,
     "load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
     "handoff_is_execution_truth_not_transcript": true,
@@ -83,12 +93,12 @@
   },
   "progress_observability": {
     "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
-    "resume_progress_receipt": "IMPLEMENTED_CI_PASS_FRESH_CHAT_E2E_PENDING",
+    "resume_progress_receipt": "IMPLEMENTED_CI_PASS_FRESH_CHAT_PRODUCT_E2E_PENDING",
     "turn_commit_receipt": "IMPLEMENTED_CI_PASS",
     "existing_chat_receipt_scope": "ACCOUNT_HOOK_PLUS_LIVE_CHAT_RECONCILIATION",
     "committed_requires_reread": true,
     "no_material_change_avoids_heartbeat": true,
-    "fresh_chat_e2e_pending_reason": "The pre-resume receipt must be observed in a genuinely new chat after exact task selection; CI cannot substitute for that product-level acceptance."
+    "fresh_chat_e2e_pending_reason": "A repository harness cannot prove that a genuinely new ChatGPT chat received the account-level startup instruction and surfaced the takeover-boundary receipt."
   },
   "runtime_hardening_v37": {
     "runtime_schema_aligned": true,
@@ -96,7 +106,15 @@
     "top_level_resume_epoch_canonical": true,
     "nested_lease_epoch_optional": true,
     "explicit_system_infra_takeover_supported": true,
-    "version_consistency_test_added": true
+    "core_policy_version_consistency_test_expanded": true,
+    "same_chat_protocol_reconciliation_tested": true,
+    "stale_writer_protocol_reconciliation_rejected": true
+  },
+  "privacy_and_authority_boundaries": {
+    "public_universal_audit_stores_live_candidate_names": false,
+    "owner_specific_live_state_stays_with_owner_authority": true,
+    "unverified_cross_domain_preferences_must_not_be_promoted_as_domain_rules": true,
+    "maintenance_force_rewrites_other_active_task_state": false
   },
   "continuous_learning": {
     "policy": "CONTINUOUS_LEARNING_POLICY.md",
@@ -104,11 +122,6 @@
     "latest_learning_pass": "research/LEARNING_PASS_2026-10-10_PROGRESS_OBSERVABILITY.md",
     "proactive_maintenance_scouting": true,
     "ordinary_business_hot_path_scouting": false
-  },
-  "media_distillation": {
-    "policy": "MEDIA_DISTILLATION_PROTOCOL.md",
-    "evidence_levels_kept_distinct": true,
-    "current_learning_pass_video_evidence": "OpenAI DevDay Cursor session original identity confirmed; third-party transcript partial review; visual review not claimed"
   },
   "hardening": {
     "registry_cache_only": true,
@@ -118,6 +131,6 @@
     "same_chat_not_retired_for_protocol_upgrade": true,
     "global_discovery_first_message_only": true,
     "continuity_not_business_single_point_of_failure": true,
-    "live_user_state_not_exposed_in_public_universal_repo": true
+    "live_user_state_not_exposed_in_public_universal_audit": true
   }
 }
