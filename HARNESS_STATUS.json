@@ -1,21 +1,26 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_EPISTEMIC_INDEPENDENCE_GATE_ACTIVE__METHODOLOGY_COMPOSITION_REVIEW_PENDING",
+  "status": "PASS_V37_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
+  "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38034208661,
-    "job_id": 114161174157,
-    "validated_head_sha": "04aebdaa09e80d105f12d2c1d3cfe4c87dca0caf",
+    "github_actions_run_id": 38036023965,
+    "job_id": 114166494334,
+    "validated_head_sha": "f07c3b5a6a746f0adb70ed1878093d659c60b7c9",
     "installed_package_version": "3.7.0",
     "pytest": "PASS",
-    "pytest_count": 94,
-    "note": "Validated the epistemic-independence/candidate-adoption gate on top of the operational-hygiene baseline. The new regression prevents treating user solution proposals, analogies, or the assistant's first idea as architecture authority without alternative comparison, failure-mode search, and evidence-gated promotion. Later checkpoint/status/cache writes are metadata-only."
+    "pytest_count": 102,
+    "note": "Validated composable methodology profiles, executable conformance, minimal bootstrap/event-driven loading, and the slim architecture blueprint. Three intermediate CI failures protected real invariants: existing-chat coverage, mandatory progress receipts, and lifecycle ownership pointers. Later audit/checkpoint/status/cache writes are metadata-only."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
+    "architecture_model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_METHODOLOGY_PROFILES_PLUS_OWNER_LOCAL_BINDINGS",
+    "minimal_repository_bootstrap": ["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],
+    "event_driven_authority_loading": true,
+    "system_blueprint_is_fixed_bootstrap_input": false,
     "system_maintenance_policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "artifact_context_governance_policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
@@ -56,13 +61,46 @@
     "owner_specific_method_specialization_allowed": true,
     "owner_specific_method_may_bypass_cross_agent_evidence_reliability_or_authority_invariants": false
   },
+  "methodology_composition": {
+    "status": "ACTIVE_CI_PASS_UNIVERSAL_SELF_PILOT",
+    "contract": "OWNER_ADAPTER_CONTRACT.json",
+    "profile_contract_version": "1.0",
+    "model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_BINDINGS",
+    "runtime_validator": "runtime/methodology_conformance.py",
+    "profiles": {
+      "artifact_io": "1.0",
+      "operational_hygiene": "1.0",
+      "evolution": "1.0"
+    },
+    "exact_profile_version_pinning_required": true,
+    "floating_latest_allowed": false,
+    "copy_shared_profile_prose_into_owner_required": false,
+    "load_only_profiles_required_by_current_action": true,
+    "universal_self_pilot_complete": true,
+    "business_owner_rollout": "PENDING_INCREMENTAL_VALID_OWNER_MAINTENANCE_OR_WRITER_TURNS",
+    "legacy_owner_must_expose_mirror": "TEMPORARY_COMPATIBILITY_MIRROR_UNTIL_SUPPORTED_OWNERS_MIGRATE",
+    "forbidden_override_keys": [
+      "authority_precedence",
+      "single_writer_lease",
+      "verified_commit_after_authoritative_reread",
+      "candidate_is_not_production_authority",
+      "promotion_requires_evidence",
+      "destructive_mutation_requires_stable_identity_and_dependency_check"
+    ],
+    "domain_specific_method_specialization_allowed": true,
+    "domain_specific_business_truth_stays_owner_local": true,
+    "profile_failure_containment": "AFFECTED_OWNER_CAPABILITY_OR_PROFILE_ONLY",
+    "parallel_methodology_root_policy_exists": false
+  },
   "control_plane_bloat_review": {
-    "status": "PENDING_INDEPENDENT_CANDIDATE_REVIEW",
-    "current_observation": "SYSTEM_BLUEPRINT currently maps 11 architecture layers and OWNER_ADAPTER_CONTRACT is accumulating multiple cross-cutting conformance domains. The system is not yet declared structurally collapsed, but additional horizontal policy growth is considered a maintainability risk.",
-    "inheritance_tree_preselected": false,
-    "candidate_direction_only": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_METHODOLOGY_MODULES_OR_BUNDLES_PLUS_OWNER_HOOKS_OR_OVERRIDES_PLUS_CENTRAL_CONFORMANCE",
-    "candidate_is_production_authority": false,
-    "decision_requires": ["alternative comparison","coupling analysis","upgrade propagation analysis","owner autonomy","failure containment","context cost","versioning","testability","migration/deprecation path"]
+    "status": "SELF_PILOT_REFACTOR_ACCEPTED_WITH_OWNER_ROLLOUT_PENDING",
+    "giant_parent_agent_inheritance_tree_rejected": true,
+    "copy_common_policy_into_every_owner_rejected": true,
+    "universal_owns_all_domain_evolution_rejected": true,
+    "accepted_direction": "SMALL_STABLE_KERNEL_PLUS_VERSIONED_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_HOOKS_PLUS_EXECUTABLE_CONFORMANCE_PLUS_EVENT_DRIVEN_LOADING",
+    "old_fixed_repo_read_next_list_removed": true,
+    "ownership_pointers_preserved": true,
+    "intermediate_regression_failures_used_as_counterevidence": 3
   },
   "operational_hygiene": {
     "status": "BASELINE_ACTIVE_CI_PASS",
@@ -101,22 +139,26 @@
   },
   "owner_operational_hardening": {
     "financial_writing": {
-      "status": "LEARNING_EVIDENCE_CAPTURE_WIRED_CI_PASS",
+      "status": "LEARNING_EVIDENCE_CAPTURE_WIRED_CI_PASS__METHODOLOGY_PROFILE_BINDING_PENDING",
       "profile_version": 2,
       "material_user_feedback_requires_durable_sample_before_durable_learning_claim": true,
       "learning_evidence_capability": "SESSION_EXECUTABLE",
+      "domain_evolution_method_remains_owner_local": true,
+      "methodology_profile_binding": "PENDING_VALID_OWNER_TURN",
       "run_id": 38032299542,
       "job_id": 114155603504,
       "head_sha": "a6e69993787394f1abeef4b5da6e5bb3cb0b5e9d",
       "pytest_count": 50
     },
     "video_growth": {
-      "status": "SCHEDULED_LEARNING_EVIDENCE_PIPELINE_WIRED_CI_PASS",
+      "status": "SCHEDULED_LEARNING_EVIDENCE_PIPELINE_WIRED_CI_PASS__METHODOLOGY_PROFILE_BINDING_PENDING",
       "profile_version": 2,
       "learn_sequence": ["production_methodologist","evolution_engineer","red_team","showrunner"],
       "scheduled_learning_pipeline_assurance": "SESSION_EXECUTABLE",
       "midstage_repeated_failure_sidecar_assurance": "HARNESS_WIRED",
       "learning_artifact_is_production_authority_mutation": false,
+      "domain_evolution_method_remains_owner_local": true,
+      "methodology_profile_binding": "PENDING_VALID_OWNER_TURN",
       "critical_isolated_reviewer_currently_executable": false,
       "enforced_quality_critical_generation_gateway_currently_executable": false,
       "run_id": 38032673305,
@@ -131,8 +173,8 @@
       "valid_owner_cutover_was_reverted": false,
       "stale_tests_reconciled_to_current_authority": true
     },
-    "a_share_operational_hygiene_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN",
-    "novel_operational_hygiene_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN"
+    "a_share_operational_hygiene_and_profile_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN",
+    "novel_operational_hygiene_and_profile_conformance": "PENDING_VALID_OWNER_MAINTENANCE_OR_WRITER_TURN"
   },
   "execution_control_plane": {
     "status": "ACTIVE",
@@ -151,11 +193,14 @@
     "account_continuity_instruction_confirmed_by_user": true,
     "account_execution_readiness_extension_confirmed": false,
     "account_autonomous_maintenance_extension_confirmed": false,
-    "owner_entrypoint_refresh_rule": "Before material execution, refresh current owner entrypoint/Skill plus continuity/EXECUTION_CAPABILITIES.json and handshake only capabilities required by the current action."
+    "account_minimal_bootstrap_extension_confirmed": false,
+    "owner_entrypoint_refresh_rule": "Before material execution, refresh only the current owner entrypoint/Skill plus continuity/EXECUTION_CAPABILITIES.json and methodology profile(s) activated by the current action; handshake only required capabilities."
   },
   "version_lifecycle": {
     "active_protocol": "3.7",
     "active_protocol_count": 1,
+    "methodology_profile_contract": "1.0",
+    "methodology_profiles_float_latest": false,
     "superseded_implementation_archive": "GIT_HISTORY_ONLY",
     "same_chat_resume_epoch_change_for_protocol_upgrade": false,
     "historical_business_evidence_deleted_for_protocol_cleanup": false
@@ -163,6 +208,8 @@
   "startup_trigger": {
     "canonical_ref": "STARTUP_HOOK.md",
     "account_level_hook_required": true,
+    "repository_minimal_bootstrap": ["ENTRYPOINT.md","CURRENT_PROTOCOL.json"],
+    "broad_control_plane_preload_required": false,
     "github_presence_alone_is_not_trigger": true,
     "library_presence_alone_is_not_trigger": true,
     "bootstrap_unavailable_marker": "CONTINUITY_BOOTSTRAP_UNAVAILABLE",
@@ -186,7 +233,7 @@
   "progress_observability": {
     "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
     "committed_requires_authoritative_reread": true,
-    "no_material_change_avoids_heartbeat": true,
+    "no_change_avoids_heartbeat": true,
     "fresh_chat_product_e2e_pending": true
   },
   "continuous_learning": {
@@ -195,6 +242,10 @@
     "chat_only_idea_counts_as_durable_evolution": false,
     "raw_learning_evidence_auto_promotes": false,
     "epistemic_independence_gate_active": true,
-    "broader_self_evolution_design": "PARTIAL_BASELINE_ACTIVE__CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_PENDING"
+    "user_proposed_mechanism_is_candidate": true,
+    "assistant_first_solution_is_candidate": true,
+    "independent_alternative_comparison_required": true,
+    "failure_mode_search_required": true,
+    "broader_self_evolution_design": "COMPOSABLE_METHODOLOGY_BASELINE_ACTIVE__DOMAIN_OWNER_PROFILE_ROLLOUT_PENDING"
   }
 }
