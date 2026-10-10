@@ -102,16 +102,17 @@ Durable learning artifact：`audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AU
 
 ## Regression / counterevidence
 
-- Universal recovery hardening current-main regression：run `38074724886`, job `114279195145`, **149 passed**。
-- 中间 CI 红灯被保留作 counterevidence：
+- Universal recovery hardening regression：run `38074724886`, job `114279195145`, **149 passed**。
+- 最终高风险 Harness/control-plane 验证：head `cb59db200327784f28afc4648272f91e2fbadbbf`; run `38075216873`; job `114280659147`; **PASS**：changed path 被识别为 HIGH，实际进入 `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`，22 个 fault case 全 PASS，full pytest **149 passed**；输出明确 remote owner evidence 仍需 maintenance runner，未把 local CI 冒充 remote sweep。
+- checkpoint/cache 最终同步 head `6e04f049c7176bd8a99bdcb0dff1c5a0caff0b4a`; run `38075288082`: **PASS**。
+- 中间 CI 红灯保留作 counterevidence：
   - checkpoint identity 第一版收得过严，破坏合法 legacy short checkpoint；改为“存在则必须匹配，缺失由 exact selected authority 提供 identity”。
   - Financial 1.3 emitter 第一版与 MCP 1.2 public schema 冲突；同步 public contract 后再回归。
   - Financial 后续旧测试仍断言 profile 6 / receipt 1.2；更新 stale expectation，而不是回滚 1.3。
-- 最终中央 high-risk status/registry/checkpoint sync 仍必须由最新 GitHub Actions 再验证后才可对用户报告 `COMMITTED`。
 
 ## Second-order challenge
 
-- plan 是否真的执行？→ selected synthetic faults 现在会执行，且 CI 输入真实 changed paths。
+- plan 是否真的执行？→ selected synthetic faults 现在会执行，且 CI 输入真实 changed paths；最终高风险 run 已实证。
 - 验证器输入是不是自己伪造的？→ expectation/replay-history/attestation 增加独立边界。
 - 是否只修 triggering example？→ 保留历史 fault corpus + 新 fault class；跨 owner 推广。
 - 是否有逃逸路径？→ side-channel、partial discovery autoresume、terminal lease、truthy-string、duplicate observation/task-id、stale derived metadata 都被检查。
