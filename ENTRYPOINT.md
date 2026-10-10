@@ -79,6 +79,8 @@ Before a material owner action:
 5. validate any receipt against the exact current task/stage/action/subject/input before using it as proof;
 6. block only the exact unavailable hard gate.
 
+Operational methodology gate evaluation is delegated to `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action operational proof.
+
 `DECLARED_ONLY` is not execution. CI/regression wiring is not current-session proof. Role-switching is not attested isolation. A real proof object for another action is not proof for this action.
 
 ## Agent product architecture
@@ -104,7 +106,7 @@ Every final response on an active durable task emits exactly one:
 - `进度提交：COMMIT_FAILED` — intended persistence failed or could not be verified;
 - `进度提交：STALE_WRITER` — this chat lost its lease.
 
-`COMMITTED` is a **durable-persistence receipt**. It means durable persistence only and does not imply execution, methodology, review, quality or outcome PASS.
+`COMMITTED` is a **durable-persistence receipt**. It means durable persistence only and does not imply execution, methodology, review, quality or outcome PASS. Report assurance/gate state separately from commit status.
 
 ## Performance invariant
 
