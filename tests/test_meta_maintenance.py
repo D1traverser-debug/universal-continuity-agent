@@ -288,12 +288,13 @@ def test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record
     assert result.status == "PASS", result.errors
 
 
-def test_entrypoint_tracks_current_methodology_receipt_contract_and_does_not_retain_1_2():
+def test_entrypoint_delegates_current_methodology_contract_without_version_duplication():
     entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
     adapter = load_json("OWNER_ADAPTER_CONTRACT.json")
-    current = adapter["methodology_composition"]["operational_profile_run_contract_version"]
-    assert f"receipt-contract-{current}" in entrypoint
-    assert f"Under receipt contract {current}" in entrypoint
-    if current != "1.2":
-        assert "receipt-contract-1.2" not in entrypoint
-        assert "Under receipt contract 1.2" not in entrypoint
+    current = str(adapter["methodology_composition"]["operational_profile_run_contract_version"])
+
+    assert "OWNER_ADAPTER_CONTRACT.json" in entrypoint
+    assert "runtime/methodology_conformance.py" in entrypoint
+    assert f"receipt-contract-{current}" not in entrypoint
+    assert f"Under receipt contract {current}" not in entrypoint
+    assert "apply the current receipt/action-binding contract there rather than copying it into this bootstrap" in entrypoint
