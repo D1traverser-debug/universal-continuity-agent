@@ -5,6 +5,7 @@ from pathlib import Path
 
 from runtime.owner_topology import business_owner_names
 from runtime.system_audit import (
+    CORE_CHECKS,
     FAULT_INJECTION_SCENARIOS,
     audit_local_control_plane,
     evaluate_owner_protocol_observation,
@@ -30,6 +31,7 @@ def test_routine_change_does_not_scan_every_business_pipeline():
     assert plan["run_all_owner_business_pipelines"] is False
     assert plan["owner_metadata_scope"] == []
     assert plan["fault_injection_scenarios"] == []
+    assert "maintenance_meta_governance_alignment" in CORE_CHECKS
 
 
 def test_explicit_global_audit_escalates_to_all_current_business_owner_metadata_and_fault_injection():
@@ -41,6 +43,21 @@ def test_explicit_global_audit_escalates_to_all_current_business_owner_metadata_
     assert plan["owner_metadata_scope"] == sorted(business_owner_names(owners))
     assert plan["run_all_owner_business_pipelines"] is False
     assert set(plan["fault_injection_scenarios"]) == set(FAULT_INJECTION_SCENARIOS)
+
+
+def test_user_challenge_to_maintenance_completeness_is_a_full_fault_injected_audit_trigger():
+    owners = load("OWNER_REGISTRY.json")
+    plan = plan_audit(
+        [],
+        "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
+        owner_registry=owners,
+    )
+
+    assert plan["trigger"] == "user_challenges_maintenance_method_or_global_completeness"
+    assert "FULL_CONTROL_PLANE" in plan["modes"]
+    assert "SYNTHETIC_FAULT_INJECTION" in plan["modes"]
+    assert plan["owner_metadata_scope"] == sorted(business_owner_names(owners))
+    assert "maintenance_meta_governance_alignment" in plan["checks"]
 
 
 def test_high_risk_control_plane_change_forces_dynamic_full_control_plane_sweep():
@@ -191,6 +208,20 @@ def test_local_audit_detects_stale_protocol_registry_and_owner_cache(tmp_path):
     assert any("VIDEO_GROWTH_AGENT" in error for error in result["errors"])
 
 
+def test_local_audit_detects_missing_or_invalid_meta_governance_record(tmp_path):
+    repo = tmp_path / "repo"
+    shutil.copytree(ROOT, repo)
+
+    manifest_path = repo / "tasks/universal-continuity-maintenance/TASK_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["latest_meta_maintenance_run_ref"] = "audits/DOES_NOT_EXIST.json"
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    result = audit_local_control_plane(repo)
+    assert result["status"] == "FAIL"
+    assert "maintenance latest_meta_maintenance_run_ref is missing" in result["errors"]
+
+
 def test_live_owner_observation_detects_stale_registry_and_dangling_remote_ref():
     entry = {
         "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
@@ -221,3 +252,5 @@ def test_fault_injection_suite_targets_unknown_unknown_boundaries():
     assert "destructive_mutation_has_unknown_identity_or_dependency" in scenarios
     assert "external_reference_is_promoted_to_authority_by_presence" in scenarios
     assert "declared_executor_is_treated_as_session_execution_proof" in scenarios
+    assert "meta_maintenance_outline_omitted_after_systemic_correction" in scenarios
+    assert "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade" in scenarios
