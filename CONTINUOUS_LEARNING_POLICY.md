@@ -92,11 +92,13 @@ The second-order review must ask, as applicable:
 3. **Negative space:** What relevant profile, hook, path, role, input, counterexample or failure class could be silently omitted because the validator only inspects declared/present items?
 4. **Self-reference:** Is the same actor generating the result, writing the receipt, grading the result and verifying the evidence? If yes, do not call that independent evidence.
 5. **Post-hoc provenance:** Could receipts, timestamps, summaries or role records be generated after the fact without proving the claimed execution chronology? More files or role names do not create attestation.
-6. **Escape path:** Can the new guard be bypassed through another entrypoint, stale cache, compatibility layer, optional path or lower-authority artifact?
-7. **Test realism:** Does CI/synthetic regression prove only executable mechanics, or does the claim require a real product/business trajectory, held-out case, external outcome or independent judge?
-8. **Generalization:** Did the fix improve only the triggering example, or is there a held-out/counterexample check that prevents overfitting and collateral regression?
-9. **Supersession:** Did the accepted mechanism actually replace/demote the contradictory or weaker active mechanism, or are both still live?
-10. **Closure boundary:** What remains OPEN, and what new evidence would be sufficient to advance it without asking the user to manufacture internal proof?
+6. **Exact proof binding:** Is the proof bound to this exact task, stage, capability, action, subject/candidate/brief/replay set, immutable inputs and claimed result, or could a real but stale/foreign receipt be replayed to satisfy a different claim? When the claim requires distinct executions, are the relevant execution/provider/work-order identities checked for reuse?
+7. **Obligation derivation:** If a canonical machine-readable plan declares required work, does the runtime derive proof obligations from that plan, or is there a separately maintained stage/role allowlist that can silently omit newly configured work?
+8. **Escape path:** Can the new guard be bypassed through another entrypoint, stale cache, compatibility layer, optional path or lower-authority artifact?
+9. **Test realism:** Does CI/synthetic regression prove only executable mechanics, or does the claim require a real product/business trajectory, held-out case, external outcome or independent judge?
+10. **Generalization:** Did the fix improve only the triggering example, or is there a held-out/counterexample check that prevents overfitting and collateral regression?
+11. **Supersession:** Did the accepted mechanism actually replace/demote the contradictory or weaker active mechanism, or are both still live?
+12. **Closure boundary:** What remains OPEN, and what new evidence would be sufficient to advance it without asking the user to manufacture internal proof?
 
 A second-order challenge is not a requirement to keep redesigning forever. If the accepted fix survives these questions, relevant regression/eval passes, and the remaining uncertainty is correctly bounded, stop changing the mechanism and proceed with normal owner work.
 
@@ -107,11 +109,11 @@ Do not collapse the following levels into each other:
 1. **DECLARED** — rule/capability/profile is documented.
 2. **WIRED** — executable path/hook/guard exists and is connected.
 3. **REGRESSION_VERIFIED** — deterministic or synthetic tests/CI show the mechanism behaves as intended on covered cases.
-4. **ACTION_LEVEL_SELF_ATTESTED** — a real action produced structured receipts bound to artifacts/inputs, but evidence is produced within the same execution context and is not independently attested.
-5. **ACTION_LEVEL_INDEPENDENTLY_VERIFIED** — the real action has evidence verified through an independent execution identity, trace, verifier or equivalent non-self-reporting surface appropriate to the claim.
+4. **ACTION_LEVEL_SELF_ATTESTED** — a real action produced structured receipts bound to the exact action/subject/inputs, but evidence is produced within the same execution context and is not independently attested.
+5. **ACTION_LEVEL_INDEPENDENTLY_VERIFIED** — the real action has exact-action evidence verified through an independent execution identity, trace, verifier or equivalent non-self-reporting surface appropriate to the claim.
 6. **LIVE_OUTCOME_VERIFIED** — real user/business/product outcome evidence supports the promoted outcome claim (for example quality improvement, publication performance, or held-out product behavior).
 
-Higher levels require their own evidence. A CI PASS cannot be promoted directly to action-level execution proof; a structured same-session receipt cannot be promoted to independent attestation; an independently verified action cannot by itself prove a long-run quality or business outcome.
+Higher levels require their own evidence. A CI PASS cannot be promoted directly to action-level execution proof; a structured same-session receipt cannot be promoted to independent attestation; an independently verified action cannot by itself prove a long-run quality or business outcome. A receipt that is not bound to the exact claim/action does not qualify even for action-level self-attestation merely because the receipt is real.
 
 When a level is unavailable, record the exact ceiling and keep only the corresponding gate OPEN. Do not downgrade the whole owner if unrelated capabilities remain healthy, and do not fabricate a higher assurance level to make the architecture look complete.
 
@@ -125,6 +127,8 @@ The following are general failure classes, not owner-specific rules:
 - **CI-to-product overclaim** — unit/synthetic/regression success is described as real product or quality improvement;
 - **single-example overfit** — the triggering failure improves without held-out or collateral-regression evidence;
 - **post-hoc receipt illusion** — more receipts/timestamps/files increase apparent ceremony without adding execution identity or chronological provenance;
+- **unbound-proof replay / wrong-subject evidence** — a real receipt, trace or evidence ref exists but is not cryptographically or structurally bound to the exact action, subject, input version and claimed result, so stale or foreign proof can be reused;
+- **shadow obligation list / configured-obligation drift** — a canonical plan/config declares required work but runtime enforcement depends on a separately maintained stage/role list, allowing new configured obligations to bypass execution proof;
 - **cache/authority circularity** — two derived surfaces agree with each other and are mistaken for independent truth;
 - **patch-without-distillation** — a local defect is fixed but the reusable failure class is not encoded into a guard/eval/methodology.
 
@@ -153,6 +157,8 @@ An improvement is accepted only when all are true:
 - it survives the epistemic-independence/candidate-adoption gate for non-trivial changes;
 - it survives the second-order challenge / closure calibration for non-trivial evolution or systemic repair;
 - its claimed assurance level does not exceed the evidence ceiling;
+- action-level execution proof is bound to the exact action/subject/inputs and satisfies any owner-required anti-replay constraints;
+- machine-readable configured obligations are enforced from their canonical declaration rather than a parallel shadow list when such a declaration exists;
 - it does not duplicate domain business logic;
 - it has a clear authority location;
 - it does not introduce a worse hot-path cost than the problem it solves;
@@ -175,4 +181,4 @@ Keep these as research lanes, not hard dependencies:
 - proactive system maintenance closure and drift detection;
 - artifact lifecycle, cache invalidation and authority drift;
 - independent candidate critique, falsification and anti-sycophancy in architecture/evolution decisions;
-- second-order challenge of accepted fixes, evidence-ceiling calibration and self-attestation detection.
+- second-order challenge of accepted fixes, evidence-ceiling calibration, exact-proof binding, anti-replay and self-attestation detection.
