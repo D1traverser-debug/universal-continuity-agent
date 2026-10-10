@@ -1,136 +1,101 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "status": "ACTIVE",
-  "scope": "CROSS_AGENT_ARTIFACT_CONTEXT_AND_CACHE_GOVERNANCE",
-  "purpose": "Prevent stale chat context, caches, Library files, connected-app content, duplicate artifacts, and superseded implementations from silently overriding current durable agent authority while keeping recovery efficient.",
+  "scope": "CROSS_AGENT_ARTIFACT_CONTEXT_FILE_AND_CACHE_GOVERNANCE",
+  "purpose": "Provide one cross-agent authority and lifecycle model for durable state, artifacts, files, caches, external references and chat-only context, including verified file operations without creating parallel policy surfaces.",
   "ownership_split": {
     "universal_control_plane_owns": [
-      "cross-agent storage classes",
-      "authority classes",
-      "promotion and invalidation rules",
-      "minimum lifecycle metadata",
-      "cross-agent cleanup invariants",
-      "conflict detection between durable authority and lower-authority context"
+      "cross-agent authority/storage classes",
+      "minimum artifact identity and provenance rules",
+      "promotion/invalidation/cleanup invariants",
+      "verified read/write/move/delete transaction semantics",
+      "conflict handling between authority and lower-authority context"
     ],
     "domain_owner_owns": [
       "business-specific schema and retention requirements",
-      "exact business-evidence storage location",
+      "exact business-evidence/artifact storage location",
       "runtime database implementation",
-      "artifact format and business invalidation graph",
+      "artifact formats and business invalidation graph",
       "promotion of domain learning into domain rules"
     ]
   },
   "storage_classes": {
-    "ENGINEERING_AUTHORITY": {
-      "examples": ["GitHub main code", "current contracts", "current Skills", "current policy files"],
-      "rebuildable": false,
-      "may_drive_execution": true,
-      "cleanup": "Keep one current active implementation; superseded implementation belongs in Git history unless still required by an explicit migration edge."
-    },
-    "DURABLE_TASK_STATE": {
-      "examples": ["owner task manifest", "authoritative checkpoint", "hosted durable runtime state", "writer lease"],
-      "rebuildable": false,
-      "may_drive_execution": true,
-      "cleanup": "Never delete or rewrite merely because the protocol or Skill changed; migrate through owner/Continuity compatibility rules."
-    },
-    "BUSINESS_EVIDENCE": {
-      "examples": ["source documents", "accepted deliverables", "published outputs", "audit evidence", "decision evidence"],
-      "rebuildable": false,
-      "may_drive_execution": "ONLY_WHEN_REFERENCED_BY_OWNER_CONTRACT",
-      "cleanup": "Owner-defined retention. Never delete evidence still required for causality, audit, accepted outputs, publication, or an active next_action."
-    },
-    "LEARNING_EVIDENCE": {
-      "examples": ["user edits", "accept/reject feedback", "performance observations", "research notes", "candidate heuristics"],
-      "rebuildable": false,
-      "may_drive_execution": false,
-      "cleanup": "Retain provenance while relevant. Raw evidence must not become a durable rule without an explicit owner promotion step."
-    },
-    "REBUILDABLE_CACHE": {
-      "examples": ["indexes", "derived summaries", "search caches", "render cache", "registry mirrors", "temporary extraction"],
-      "rebuildable": true,
-      "may_drive_execution": false,
-      "cleanup": "Delete or rebuild when stale, schema-mismatched, source-version-mismatched, or superseded. Cache content is never commit proof."
-    },
-    "SESSION_SCRATCH": {
-      "examples": ["temporary analysis", "intermediate local files", "uncommitted chat reasoning", "one-turn tool outputs not promoted"],
-      "rebuildable": true,
-      "may_drive_execution": false,
-      "cleanup": "Ephemeral by default. It is not a recovery source unless intentionally promoted into a durable class."
-    },
-    "EXTERNAL_REFERENCE": {
-      "examples": ["ChatGPT Library", "Google Drive", "Notion", "Slack", "other connected apps", "project sources"],
-      "rebuildable": "SOURCE_DEPENDENT",
-      "may_drive_execution": "ONLY_IF_CURRENT_OWNER_CONTRACT_EXPLICITLY_DESIGNATES_THE_SOURCE_OR_THE_USER_EXPLICITLY_SUPPLIES_IT_FOR_THE_TASK",
-      "cleanup": "Do not treat presence as authority. Stale copies or duplicates should be removed from active project/reference surfaces when they can cause ambiguity, while preserving required source evidence at its true owner."
-    },
-    "CHAT_PERSONALIZATION_CONTEXT": {
-      "examples": ["Custom Instructions", "Project instructions", "Memory", "past chats", "chat history"],
-      "rebuildable": "PRODUCT_MANAGED",
-      "may_drive_execution": false,
-      "cleanup": "Use for routing, preferences, and scoped instructions; never treat remembered business state as authoritative checkpoint truth."
-    }
+    "ENGINEERING_AUTHORITY": {"examples":["GitHub main code","current contracts","current Skills","current policy files"],"may_drive_execution":true,"cleanup":"Keep one current active implementation; superseded implementations belong in Git history unless an explicit migration edge still requires them."},
+    "DURABLE_TASK_STATE": {"examples":["owner task manifest","authoritative checkpoint","hosted durable runtime state","writer lease"],"may_drive_execution":true,"cleanup":"Never delete or rewrite merely because protocol/Skill changed; migrate through owner/Continuity compatibility rules."},
+    "BUSINESS_EVIDENCE": {"examples":["source documents","accepted deliverables","published outputs","audit/decision evidence"],"may_drive_execution":"ONLY_WHEN_REFERENCED_BY_OWNER_CONTRACT","cleanup":"Owner-defined retention; never delete evidence required for causality, audit, publication, accepted output, migration or active next_action."},
+    "LEARNING_EVIDENCE": {"examples":["user edits","accept/reject feedback","performance observations","research notes","candidate heuristics"],"may_drive_execution":false,"cleanup":"Retain provenance while relevant; raw evidence cannot silently become a durable rule."},
+    "REBUILDABLE_CACHE": {"examples":["indexes","derived summaries","search/render caches","registry mirrors","temporary extraction"],"may_drive_execution":false,"cleanup":"Delete or rebuild when stale, schema/source-version mismatched or superseded; cache is never commit proof."},
+    "SESSION_SCRATCH": {"examples":["temporary analysis","intermediate local files","uncommitted chat decisions","one-turn tool outputs not promoted"],"may_drive_execution":false,"cleanup":"Ephemeral by default; not a recovery source until intentionally promoted."},
+    "EXTERNAL_REFERENCE": {"examples":["ChatGPT Library","Google Drive","Notion","Slack","other connected apps","Project sources"],"may_drive_execution":"ONLY_WHEN_CURRENT_OWNER_CONTRACT_OR_CURRENT_USER_TASK_EXPLICITLY_DESIGNATES_IT_WITH_PROVENANCE","cleanup":"Presence does not imply authority; stale/duplicate active references should be removed or quarantined when safe."},
+    "CHAT_PERSONALIZATION_CONTEXT": {"examples":["Custom Instructions","Project instructions","Memory","past chats","chat history"],"may_drive_execution":false,"cleanup":"Use for routing/preferences/scoped instructions; never substitute for authoritative task state."}
   },
-  "behavioral_instruction_vs_data_authority": {
-    "rule": "Instruction precedence and business-data authority are separate concepts.",
-    "account_custom_instructions": "Global routing/UX guard surface; not durable business state.",
-    "project_instructions": "Scope-local behavioral instructions that may override global Custom Instructions inside that Project; they do not silently mutate GitHub/owner durable task state.",
-    "explicit_current_user_instruction": "May create or change a business requirement, but material durable changes must be persisted by the valid owner writer before later chats treat them as authority.",
+  "authority_rules": {
+    "instruction_precedence_is_separate_from_business_data_authority": true,
+    "account_custom_instructions": "Global routing/UX guard surface, not durable business state.",
+    "project_instructions": "Scope-local behavioral instructions may override global Custom Instructions inside the Project but do not mutate owner durable state by themselves.",
+    "explicit_current_user_instruction": "May change a requirement; material durable change must be persisted by the valid owner writer before future sessions treat it as authority.",
     "memory_library_connected_apps": "Context/evidence by default, not executable checkpoint authority.",
-    "conflict_behavior": "If lower-authority context contradicts current durable owner state or current engineering authority, do not silently merge. Resolve through the valid owner/Continuity path and persist the accepted change before treating it as durable."
+    "conflict_behavior": "Do not silently merge lower-authority context over fresher engineering or owner authority; reconcile through the valid owner/Continuity path."
   },
-  "minimum_metadata_for_durable_or_reusable_artifacts": [
-    "owner_or_domain",
-    "task_id_or_system_scope when applicable",
-    "artifact_class",
-    "source_or_authority_refs",
-    "schema_or_contract_version when applicable",
-    "created_or_updated_at",
-    "supersedes_or_invalidates relation when applicable"
-  ],
-  "promotion_rules": [
-    "SESSION_SCRATCH -> durable class requires an intentional write to an authoritative owner-controlled surface.",
-    "REBUILDABLE_CACHE -> DURABLE_TASK_STATE is forbidden; regenerate from authority instead of promoting a cache mirror.",
-    "LEARNING_EVIDENCE -> ENGINEERING_AUTHORITY requires explicit owner maintenance/evolution acceptance plus tests or acceptance evidence when mechanically testable.",
-    "EXTERNAL_REFERENCE -> BUSINESS_EVIDENCE or owner input requires explicit task reference/provenance; connected availability alone is insufficient.",
-    "CHAT_PERSONALIZATION_CONTEXT -> DURABLE_TASK_STATE requires owner persistence; memory of a decision is not the decision record."
-  ],
+  "minimum_identity_and_metadata": {
+    "durable_or_reusable_artifact_fields": ["owner_or_domain","task_id_or_system_scope_when_applicable","artifact_class","stable_identity_or_canonical_ref","source_or_authority_refs","schema_or_contract_version_when_applicable","created_or_updated_at","supersedes_or_invalidates_relation_when_applicable"],
+    "preferred_stable_identity": ["provider stable id","repository path plus git blob/commit sha","owner artifact id plus task id","durable runtime object id"],
+    "weak_identity": ["filename only","chat-described location","search title without stable id","cached local path after session boundary"],
+    "rule": "Do not perform destructive or conflict-sensitive mutation using weak identity when stable identity can be resolved."
+  },
+  "verified_file_operation_transaction": {
+    "applies_to": ["READ_FOR_MATERIAL_DECISION","CREATE","UPDATE","PATCH","MOVE","COPY","DELETE","PUBLISH_OR_UPLOAD_DELIVERABLE"],
+    "steps": ["RESOLVE_OWNER_AND_ARTIFACT_CLASS","LOCATE_CANONICAL_OR_INTENDED_TARGET","VERIFY_STABLE_IDENTITY_AND_CURRENT_VERSION_WHEN_MATERIAL","READ_CURRENT_CONTENT_OR_METADATA_AS_REQUIRED","CHECK_WRITE_AUTHORITY_CONFLICT_AND_DEPENDENCIES","EXECUTE_OPERATION","VERIFY_POSTCONDITION_BY_REREAD_OR_PROVIDER_METADATA","INVALIDATE_OR_REBUILD_DEPENDENTS","CLEAN_OR_DEMOTE_SUPERSEDED_ACTIVE_COPIES_WHEN_SAFE","PERSIST_STABLE_REFERENCE_OR_RECEIPT_WHEN_MATERIAL"],
+    "read_freshness": "A prior-chat read, cached summary or remembered content does not satisfy a current authority read when freshness is material; a partial excerpt cannot prove unseen content.",
+    "write_commit_semantics": "Tool success alone is not postcondition proof. A material file mutation is committed only after reread or provider version/metadata verifies the intended result.",
+    "copy_move_semantics": "Copying does not create authority. Moving/canonicalizing requires stable-reference reconciliation and removal/demotion of stale active copies.",
+    "delete_semantics": "Before deletion, classify identity and check active-task, audit, publication, accepted-output and migration dependencies. If dependency/retention is unknown, do not delete.",
+    "local_or_sandbox_path_is_not_durable_reference": true
+  },
+  "external_storage": {
+    "chatgpt_library": {"default_role":"NOT_SYSTEM_AUTHORITY","durable_control_plane_dependency_allowed":false,"note":"User may clear Library; durable owners must remain recoverable without it."},
+    "notion": {"default_role":"NON_AUTHORITATIVE_REFERENCE_ONLY_UNLESS_OWNER_EXPLICITLY_DESIGNATES","durable_control_plane_dependency_allowed":false},
+    "google_drive": {"default_role":"OPTIONAL_ARTIFACT_VAULT_OR_EXPLICIT_REFERENCE","durable_control_plane_dependency_allowed":false,"allowed_for":["user-facing Word/PDF/slides/spreadsheets","explicit source documents","owner-designated business evidence with stable Drive reference"],"not_allowed_as":["implicit runtime checkpoint","implicit engineering rule truth","automatic replacement for GitHub main or owner task manifest"],"artifact_vault_minimum":["stable provider id/canonical ref","owner/task association","artifact kind","version/update metadata when available","verified upload/write receipt"]},
+    "other_connected_apps": {"default_role":"EXTERNAL_REFERENCE","durable_control_plane_dependency_allowed":false}
+  },
+  "promotion_and_cleanup": {
+    "SESSION_SCRATCH_to_durable": "Requires intentional write to an owner-controlled durable surface.",
+    "REBUILDABLE_CACHE_to_DURABLE_TASK_STATE": "FORBIDDEN; regenerate from authority instead.",
+    "LEARNING_EVIDENCE_to_ENGINEERING_AUTHORITY": "Requires explicit owner maintenance/evolution acceptance and tests/eval/acceptance evidence when testable.",
+    "EXTERNAL_REFERENCE_to_BUSINESS_EVIDENCE": "Requires explicit task reference/provenance; connected availability alone is insufficient.",
+    "CHAT_PERSONALIZATION_CONTEXT_to_DURABLE_TASK_STATE": "Requires owner persistence; remembered decision is not decision record.",
+    "superseded_engineering_file": "Remove from active tree when replacement authority exists and no supported migration depends on it; Git history is archive.",
+    "stale_cache": "Delete/rebuild.",
+    "duplicate_active_docs": "Consolidate to one authority; replace duplicates with references or remove from hot path.",
+    "old_task_state": "Preserve/migrate by owner and Continuity rules; do not delete for cleanliness.",
+    "published_or_accepted_business_artifacts": "Preserve unless owner retention explicitly permits deletion and no audit/recovery dependency remains.",
+    "unknown_or_unclassified_file": "Quarantine from authority until classified."
+  },
   "chat_only_material_change_rule": {
-    "principle": "A material idea, requirement, fix, learning, or decision that exists only in chat is not durable system evolution.",
-    "before_claiming_committed": "Persist the accepted material change, or persist it explicitly as an unpromoted hypothesis/pending item with a stable reference.",
-    "otherwise": "Use NO_MATERIAL_CHANGE or COMMIT_FAILED as appropriate; do not imply future chats will inherit it."
-  },
-  "invalidation_and_cleanup": {
-    "superseded_engineering_files": "Remove from the active tree when current authority exists; Git history is the implementation archive.",
-    "stale_cache": "Delete/rebuild, never migrate as authority.",
-    "duplicate_active_docs": "Consolidate to one authority and replace duplicates with references or remove them from the hot path.",
-    "old_task_state": "Preserve or migrate according to owner/Continuity rules; do not delete merely for cleanliness.",
-    "published_or_accepted_business_artifacts": "Preserve unless the owner retention policy explicitly permits deletion and no audit/recovery dependency remains.",
-    "external_stale_copies": "Delete/archive from active Library/Project/Drive/Notion surfaces when safe and when they materially risk drift; do not delete the true source merely because a copy is stale."
-  },
-  "recovery_rule": {
-    "preferred_order": [
-      "authoritative task metadata",
-      "short authoritative checkpoint/handoff",
-      "exact current authority and artifact refs",
-      "business evidence required by next_action",
-      "external references",
-      "past chats last"
-    ],
-    "cache_never_satisfies_authority_read": true
+    "principle": "A material idea, requirement, fix, learning or decision that exists only in chat is not durable system evolution.",
+    "before_claiming_committed": "Persist the accepted change, or persist it as an unpromoted hypothesis/pending item with a stable reference.",
+    "otherwise": "Use NO_MATERIAL_CHANGE or COMMIT_FAILED as appropriate; never imply future chats inherit it."
   },
   "owner_conformance": {
-    "owners_should_expose": [
-      "where durable task state lives",
-      "which artifacts are authoritative business evidence",
-      "which stores are cache/reference only",
-      "how upstream changes invalidate downstream artifacts",
-      "how superseded artifacts are removed from the active path"
-    ],
+    "owners_must_expose": ["durable_task_state_location","authoritative_business_evidence_classes","canonical_artifact_or_file_stores","cache_or_reference_only_stores","stable_identity_strategy","read_freshness_requirements","mutation_conflict_strategy","post_write_verification_method","upstream_to_downstream_invalidation_rule","delete_and_retention_rules","superseded_artifact_cleanup_rule","external_artifact_vault_if_any"],
     "universal_may_stage_conformance_without_stealing_business_lease": true,
-    "business_state_rewrite_requires_valid_owner_writer": true
+    "business_state_rewrite_requires_valid_owner_writer": true,
+    "universal_controls_protocol_not_domain_retention": true
+  },
+  "failure_semantics": {
+    "cannot_resolve_stable_identity": "BLOCK_DESTRUCTIVE_OR_CONFLICT_SENSITIVE_MUTATION",
+    "cannot_verify_current_version": "BLOCK_CONFLICT_SENSITIVE_MUTATION",
+    "write_postcondition_not_verified": "COMMIT_FAILED_OR_OWNER_EQUIVALENT",
+    "delete_dependency_unknown": "DO_NOT_DELETE",
+    "stale_copy_conflicts_with_authority": "IGNORE_OR_QUARANTINE_STALE_COPY_AND_USE_CURRENT_AUTHORITY",
+    "external_store_unavailable": "KEEP_CONTROL_PLANE_INDEPENDENT_AND_REPORT_EXACT_ARTIFACT_DELIVERY_BLOCKER"
+  },
+  "recovery_rule": {
+    "preferred_order": ["authoritative task metadata","short authoritative checkpoint/handoff","exact current engineering authority and artifact refs","business evidence required by next_action","explicit external references","past chats last"],
+    "cache_never_satisfies_authority_read": true
   },
   "product_surface_facts_are_not_protocol_invariants": {
-    "rule": "Current ChatGPT product behavior for Custom Instructions, Projects, Memory, Library, and connected apps must be reverified from first-party documentation when it materially affects a maintenance decision.",
+    "rule": "Current ChatGPT behavior for Custom Instructions, Projects, Memory, Library and connected apps must be reverified from first-party documentation when it materially affects a maintenance decision.",
     "verified_on": "2026-10-10"
   }
 }
