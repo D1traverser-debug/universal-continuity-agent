@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "continuity_protocol": "3.7",
+  "purpose": "Allow already-open durable-task chats to adopt the current Universal Continuity protocol without user-managed migration or unnecessary lease takeover.",
+  "applies_to": [
+    "already-open chats with an active durable task",
+    "tasks inherited under an older Continuity protocol",
+    "owner manifests whose Universal protocol metadata is older than the current protocol"
+  ],
+  "trigger": "before the next material checkpoint or final durable-task response when current protocol/owner authority is available",
+  "flow": [
+    "Read the current Universal Continuity protocol and reconciliation policy.",
+    "Read the task's authoritative manifest and owner checkpoint without relying on chat memory.",
+    "Determine the persisted Continuity protocol version, including legacy contract_version conventions.",
+    "Classify compatibility using VERSION_LIFECYCLE_POLICY.json plus owner compatibility evidence.",
+    "If COMPATIBLE and metadata is current, continue normally.",
+    "If MIGRATABLE through an additive supported edge, update protocol metadata/adaptation record in place without changing business state or replaying work.",
+    "Preserve the existing active_lease and resume_epoch when the same chat remains the valid writer.",
+    "Re-read the authoritative manifest/checkpoint and verify the reconciliation write.",
+    "Apply the current PROGRESS_OBSERVABILITY_POLICY.json to the final response.",
+    "If INCOMPATIBLE or UNKNOWN, fail closed for durable mutation and route through an explicit migration/fresh-handoff path."
+  ],
+  "lease_rules": {
+    "same_chat_protocol_upgrade_increments_resume_epoch": false,
+    "same_chat_protocol_upgrade_replaces_active_lease": false,
+    "new_chat_takeover_increments_resume_epoch": true,
+    "new_chat_takeover_replaces_active_lease": true,
+    "stale_writer_may_reconcile_or_checkpoint": false
+  },
+  "user_responsibility": {
+    "manual_owner_migration": false,
+    "manual_checkpoint_rewrite": false,
+    "manual_version_selection": false,
+    "manual_old_chat_restart": false
+  },
+  "adaptation_record": {
+    "required_on_material_protocol_migration": true,
+    "fields": [
+      "from_protocol",
+      "to_protocol",
+      "classification",
+      "strategy",
+      "business_state_rewritten",
+      "lease_changed",
+      "applied_by",
+      "reconciled_at"
+    ]
+  },
+  "progress_receipt_in_existing_chats": {
+    "turn_commit_receipt_required": true,
+    "resume_progress_receipt_required_again_for_same_open_chat": false,
+    "reason": "Resume Progress Receipt is a takeover boundary receipt. Existing chats adopt the new per-turn commit receipt without pretending a new resume occurred."
+  },
+  "degraded_mode": {
+    "current_protocol_unavailable": "Continue read-only/explanatory work when safe, but do not claim migration or COMMITTED durable progress.",
+    "owner_authority_unavailable": "COMMIT_FAILED for material durable change; do not use a cache as proof.",
+    "unsupported_old_protocol": "UNKNOWN_OR_INCOMPATIBLE; fail closed and require an explicit migration path, not user reconstruction."
+  }
+}
