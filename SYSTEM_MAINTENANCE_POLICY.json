@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.4",
+  "schema_version": "1.5",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
-  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, or premature solution canonicalization is detected, the active maintenance writer owns the repair loop by default.",
+  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal is detected, the active maintenance writer owns the repair loop by default.",
   "triggers": [
     "ASSISTANT_DETECTS_SYSTEMIC_GAP",
     "USER_REPORT_REVEALS_SYSTEMIC_GAP",
@@ -15,7 +15,8 @@
     "ARTIFACT_CONTEXT_OR_CACHE_DRIFT",
     "CHAT_ONLY_MATERIAL_CHANGE_NOT_PERSISTED",
     "REPEATED_OWNER_FAILURE_OR_REGRESSION",
-    "PREMATURE_SOLUTION_CANONICALIZATION_OR_USER_CORRECTION_SIGNAL"
+    "PREMATURE_SOLUTION_CANONICALIZATION_OR_USER_CORRECTION_SIGNAL",
+    "EXPLICIT_GLOBAL_SYSTEM_AUDIT_OR_RELEASE_BOUNDARY"
   ],
   "default_autonomy": {
     "diagnose_root_cause": true,
@@ -26,6 +27,8 @@
     "challenge_user_and_assistant_initial_solution": true,
     "compare_credible_alternatives_for_nontrivial_design": true,
     "seek_counterexample_or_failure_mode_before_adoption": true,
+    "select_audit_depth_by_change_risk": true,
+    "use_synthetic_fault_injection_for_unknown_unknowns_when_justified": true,
     "apply_smallest_safe_fix": true,
     "prefer_modify_existing_authority_over_new_parallel_surface": true,
     "remove_or_demote_superseded_active_mechanisms_when_safe": true,
@@ -59,7 +62,7 @@
       "load/read trigger",
       "non-overlap rationale",
       "testable invariant where applicable",
-      "deprecation_or_merge path"
+      "deprecation_or merge path"
     ],
     "anti_pattern": "User reports a symptom -> create another policy/prompt/role without architecture classification.",
     "failed_admission_behavior": "Consolidate into the existing authority or implement the missing executable/test mechanism; do not accumulate parallel documentation."
@@ -92,6 +95,89 @@
     "user_manages_incident_backlog": false,
     "chat_only_apology_or_reminder_counts_as_fix": false
   },
+  "system_audit_strategy": {
+    "owner": "SYSTEM_MAINTENANCE_POLICY.json",
+    "runtime": "runtime/system_audit.py",
+    "principle": "Audit depth is selected by risk and change impact. Do not run every owner business pipeline on every maintenance turn; do not use a light targeted check when a cross-cutting change makes wider uncertainty material.",
+    "layers": {
+      "CORE_ALWAYS": {
+        "activation": "every control-plane CI run and every material maintenance closure",
+        "checks": [
+          "protocol/version alignment",
+          "local authority reference reachability",
+          "owner-set consistency across registries",
+          "maintenance manifest/cache alignment",
+          "product-E2E status alignment",
+          "owner protocol-registry state consistency"
+        ]
+      },
+      "IMPACT_SCOPED": {
+        "activation": "every material change",
+        "checks": [
+          "changed authority surface",
+          "direct dependents",
+          "affected runtime/tests",
+          "affected owner adapters or capability pointers"
+        ]
+      },
+      "OWNER_SENTINEL_ROTATION": {
+        "activation": "owner-related maintenance or active maintenance turns where additional confidence is useful without a full sweep",
+        "checks": [
+          "metadata/index/manifest pointer freshness",
+          "adapter and execution-capability reachability",
+          "no business execution or lease takeover"
+        ]
+      },
+      "FULL_CONTROL_PLANE": {
+        "activation": [
+          "explicit global audit",
+          "Continuity protocol change",
+          "authority-precedence or writer-lease model change",
+          "startup/discovery routing change",
+          "artifact/storage authority change",
+          "methodology profile contract change",
+          "execution-readiness contract change",
+          "cross-owner migration",
+          "systemic reliability incident",
+          "major release boundary"
+        ],
+        "checks": [
+          "all control-plane contracts/policies/registries",
+          "all durable-owner metadata surfaces",
+          "cross-surface contradiction scan",
+          "dangling remote pointer scan",
+          "stale derived-cache/status scan",
+          "relevant owner-specific regressions without stealing owner leases"
+        ]
+      },
+      "SYNTHETIC_FAULT_INJECTION": {
+        "activation": "explicit global audit, systemic incident, or high-risk architecture/reliability boundary where negative evidence is needed",
+        "production_mutation_allowed_by_default": false,
+        "checks": [
+          "required discovery source unavailable",
+          "stale registry tries to override owner authority",
+          "same-chat refresh changes lease/epoch",
+          "new-chat takeover fails to change lease",
+          "floating/missing/forbidden methodology profile state",
+          "COMMITTED without authoritative reread",
+          "destructive mutation with unknown identity/dependency",
+          "external reference promoted to authority by presence",
+          "declared executor treated as current-session proof"
+        ],
+        "safety": "Use deterministic fixtures or non-production experiments by default; define stop/fail-closed conditions before any real-system fault experiment."
+      }
+    },
+    "decision_rules": [
+      "Routine low-risk changes run CORE_ALWAYS + IMPACT_SCOPED.",
+      "A change to protocol, authority, registry, startup/discovery, storage/artifact governance, methodology contract, or execution contract escalates to FULL_CONTROL_PLANE.",
+      "Explicit deep audit or systemic incident also activates SYNTHETIC_FAULT_INJECTION.",
+      "Full owner business pipelines are not a default audit primitive; invoke an owner-specific business regression only when the changed invariant or incident actually depends on it.",
+      "A full control-plane sweep may read all owner metadata/pointers but must not steal active owner leases or mutate business truth.",
+      "Unknown-unknown coverage comes from negative scenarios, contradiction scans, stale/dangling reference checks and boundary tests, not from an unbounded checklist."
+    ],
+    "full_business_pipeline_every_audit": false,
+    "no_background_scheduler_claim": true
+  },
   "maintenance_loop": [
     "DETECT",
     "CLASSIFY_SCOPE_AND_AUTHORITY",
@@ -100,10 +186,12 @@
     "ASSESS_RELIABILITY_GUARD",
     "CHALLENGE_INITIAL_SOLUTION_CANDIDATES",
     "RUN_AUTHORITY_SURFACE_ADMISSION_GATE",
+    "SELECT_RISK_TIERED_AUDIT_DEPTH",
     "PATCH_MINIMUM_AUTHORITY_SURFACE",
     "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
     "ADD_OR_UPDATE_GUARD",
     "RUN_OR_OBSERVE_VALIDATION",
+    "RUN_SELECTED_CROSS_SURFACE_OR_FAULT_AUDIT",
     "UPDATE_CHANGE_RECORD_AND_TASK_STATE",
     "REREAD_AUTHORITATIVE_STATE",
     "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
@@ -164,6 +252,8 @@
     "external_user_action_required": "PERSIST_EXACT_PENDING_ACTION_AND_STOP_AT_BOUNDARY",
     "new_authority_surface_without_admission": "REJECT_AND_CONSOLIDATE",
     "repeated_owner_failure_without_durable_incident_or_regression": "RELIABILITY_GUARD_NOT_SATISFIED",
-    "nontrivial_solution_adopted_without_independent_candidate_critique": "EVOLUTION_GATE_NOT_SATISFIED"
+    "nontrivial_solution_adopted_without_independent_candidate_critique": "EVOLUTION_GATE_NOT_SATISFIED",
+    "required_global_audit_not_run": "AUDIT_CLOSURE_NOT_SATISFIED",
+    "cross_surface_drift_detected": "KEEP_TASK_ACTIVE_UNTIL_RECONCILED_AND_REGRESSION_GUARDED"
   }
 }
