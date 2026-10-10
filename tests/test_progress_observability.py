@@ -13,6 +13,7 @@ from runtime.universal_continuity import (
 )
 
 NOW = datetime(2026, 10, 10, 0, 0, tzinfo=timezone.utc)
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def make_task(**overrides):
@@ -130,7 +131,7 @@ def test_turn_commit_receipt_distinguishes_no_change_and_stale_writer():
 
 
 def test_progress_policy_requires_both_user_receipts_and_separates_assurance():
-    policy = json.loads((Path(__file__).resolve().parents[1] / "PROGRESS_OBSERVABILITY_POLICY.json").read_text(encoding="utf-8"))
+    policy = json.loads((ROOT / "PROGRESS_OBSERVABILITY_POLICY.json").read_text(encoding="utf-8"))
     assert policy["continuity_contract"] == "3.7"
     assert policy["resume_progress_receipt"]["user_label_zh"] == "继承前进度"
     assert policy["turn_commit_receipt"]["user_label_zh"] == "进度提交"
@@ -144,3 +145,11 @@ def test_progress_policy_requires_both_user_receipts_and_separates_assurance():
     assert separation["committed_is_execution_quality_pass"] is False
     assert separation["blocked_or_unverified_gate_may_be_persisted"] is True
     assert policy["anti_false_positive"]["committed_must_not_be_used_as_execution_or_methodology_attestation"] is True
+
+
+def test_entrypoint_does_not_overload_committed_with_methodology_or_quality_assurance():
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+    assert "`COMMITTED` is a **durable-persistence receipt**" in entrypoint
+    assert "not an execution, methodology, review, quality or outcome attestation" in entrypoint
+    assert "A truthful OPEN/BLOCKED gate must itself be checkpointable" in entrypoint
+    assert "does not forbid persisting that blocker" in entrypoint
