@@ -11,89 +11,135 @@
 - execution-readiness contract: `1.0`
 
 ## Current truth
-- 工程真源：`D1traverser-debug/universal-continuity-agent@main`。同聊天 lease 仍是 `lease-f266a907-aaf1-4b6a-a283-0e64b979d652`，`resume_epoch=1`；本轮没有 takeover。
-- 产品传播链已完成双路径真实 E2E：existing-chat refresh PASS；fresh-chat bare-inherit discovery PASS。
-- Universal composable methodology self-pilot 已完成；Video 已合法绑定 `artifact_io@1.0 + operational_hygiene@1.0` 且 owner regression PASS，但 central executable methodology conformance 仍待补。
-- canonical bootstrap 仍为 `ENTRYPOINT.md -> CURRENT_PROTOCOL.json -> event-specific authority -> exact owner state`；`PROTOCOL.md` 是人类可读参考，不是固定热路径输入。
-- 新的全局审计基线已进入 `SYSTEM_MAINTENANCE_POLICY.json` v1.5，并由 `runtime/system_audit.py` + CI preflight 机械执行；没有创建平行 `GLOBAL_AUDIT_POLICY`。
 
-## Product E2E — PASS
+- 工程真源：`D1traverser-debug/universal-continuity-agent@main`。
+- 当前 maintenance chat 仍持有原 lease：`lease-f266a907-aaf1-4b6a-a283-0e64b979d652`；`resume_epoch=1`；本轮没有 takeover。
+- 产品传播链 existing-chat / fresh-chat 双路径 E2E 均已 PASS。
+- risk-tiered global audit 已常驻 CI preflight。
+- 新增的 operator-dependence reliability incident 仍为 `PARTIALLY_REMEDIATED__PRODUCT_BEHAVIOR_EVAL_PENDING`；不能因为代码层 hardening 已完成就宣称总控已经能稳定自主识别所有 systemic signal。
 
-### Existing chat
-- 被测 owner/task：`VIDEO_GROWTH_AGENT` / `video-growth:main`，使用升级前已存在旧对话。
-- 旧对话从当前 GitHub authority 重新读取 manifest/checkpoint、Skill 与 execution capabilities；不是根据聊天记忆猜测。
-- task 从 legacy marker `3.5` 原地 reconcile 到 canonical `continuity_protocol_version=3.7`。
-- `resume_epoch` 刷新前后均为 `2`；active lease 均为 `8e1bc149-5371-4476-ad94-66c8bee07d94`；没有制造 new-chat takeover。
-- `current_stage=VISUAL_PREVIEW_PROCESS_REENTRY` 和业务 `next_action` 均未推进。
-- Video owner CI：run `38037773281` / job `114171705917` / head `a6c1894667088f533771f3b0972aa1ae00ac0a1b`，84 tests + installed CLI smoke PASS。
+## Operator-dependence reliability incident
 
-### Fresh chat
-- 真正全新的普通聊天首轮只发送裸 `继承`。
-- `BARE_INHERIT_DISCOVERY.json` 规定的 5/5 required sources 均读取成功，完整 DEFAULT USER resumable 候选总数为 4。
-- `SYSTEM_INFRA + EXPLICIT_ONLY` 与 `PAUSED + EXPLICIT_ONLY` 被正确排除。
-- 首轮只列候选，没有选择业务 task、没有 takeover，回执 `NO_MATERIAL_CHANGE`。
-- 公开 harness 只持久化数量/验收结果，不持久化 live candidate names/task ids。
+真实故障：用户再次需要提醒 Universal，不应等待用户提出架构机制或枚举后续内部问题，而应自己诊断、反驳初始方案、识别系统性/重复失败并推进修复。
 
-## Global system audit — risk-tiered model ACTIVE
+这不是缺少 policy 文案。`SYSTEM_MAINTENANCE_POLICY.json` 原本已经写明：用户不是系统维护员、重复纠正属于 reliability signal、非平凡方案必须挑战初始候选、内部维护不应等待用户枚举。
 
-本轮明确拒绝“每次全跑所有项目/业务流水线”作为默认总控检查方案。原因：它会把 Continuity 变成巨型业务编排器，引入实时数据/模型/provider 假失败、增加 owner/lease 干扰和上下文成本，而且并不能更好覆盖 unknown-unknown。
+因此根因属于 enforcement / product behavior，而不是“再补一句提示词”。详细 incident：`audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md`。
 
-采用五层模型：
+## Verified remediation completed this turn
 
-1. `CORE_ALWAYS`：每次 CI/物质维护闭环必跑核心跨表面一致性。
-2. `IMPACT_SCOPED`：按本次改动面检查直接依赖、runtime/tests、owner 指针。
-3. `OWNER_SENTINEL_ROTATION`：需要额外置信度时轮换读 owner 元数据，不执行业务、不抢 lease。
-4. `FULL_CONTROL_PLANE`：协议、authority、startup/discovery、storage/artifact、methodology/execution contract、跨 owner 迁移、系统事故、重大 release 或显式深审计时触发。
-5. `SYNTHETIC_FAULT_INJECTION`：高风险边界用 deterministic/non-production 负向 fixture；默认不在生产业务状态上注入破坏。
+### 1. Declaration conformance 与 operational conformance 已在 runtime 分离
 
-语义权威：`SYSTEM_MAINTENANCE_POLICY.json` v1.5。执行器：`runtime/system_audit.py`。详细审计证据：`audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md`。
+`runtime/methodology_conformance.py` 当前有两个不同层级：
 
-## Concrete defects found and repaired
+- `evaluate_methodology_conformance(...)`：只证明 owner 声明的 profile/version/hooks/overrides 结构合法；
+- `evaluate_operational_methodology_conformance(...)`：证明当前 action 激活的 profile 有实际 profile-run、required hooks 被观察到，并且 evidence refs 经过 caller-supplied independent verifier 验证。
 
-1. `OWNER_PROTOCOL_ADAPTATION_REGISTRY.json` 漂移：Financial/Video 已实际 v3.7，registry 仍写历史协议 pending；已拆分 historical protocol 与 current observed protocol 并同步为 compatible。
-2. Financial 悬空引用：registry 指向不存在的 `continuity/HANDOFF_COMPACTION_PLAN.json`；已换成实际当前 `continuity/tasks/financial-writing-main/HANDOFF.md`。
-3. `OWNER_REGISTRY.json` reconciliation status 漂移；已同步。一次无结构变化的 3.1 schema bump 被回归测试拒绝，最终保持 schema 3.0。
-4. README 漂移：旧文档仍写 `ENTRYPOINT -> PROTOCOL` 和 Library bootstrap pointer；已改成 `ENTRYPOINT + CURRENT_PROTOCOL` minimal bootstrap，并明确外部 store 非隐式 control-plane authority。
-5. system-maintenance policy 升到 1.5 后 task manifest 仍写 1.4；新的 CI preflight 主动打红并阻断 pytest，状态已同步。
-6. 初版 local audit 存在“两个 stale cache 互相证明”的循环验证缺口；负向 fixture 打红后，现改为利用已验证 existing-chat product E2E 作为独立 witness，不能再仅靠两个派生缓存相互认证。
+硬边界：
 
-## Regression / audit evidence
+- declaration PASS 不等于 operational PASS；
+- receipt 本身只是 evidence index，不是 evidence；
+- 没有 independent verifier 时 operational 必须 FAIL；
+- evidence ref 验证失败必须 FAIL；
+- 声明了 hook 但运行证据没有观察到 required hook 必须 FAIL；
+- 只要求本次 action 激活的 profile，不能为了“统一”每次运行全部 profiles。
 
-- run `38039484874` / job `114176702308` / head `00781136f9d729efbd07b0171d09ae90ddb7be10`：system-audit preflight FAIL，准确抓到 task manifest 的 `system_maintenance_policy_version` 仍为 1.4。检查未被弱化。
-- run `38039596056` / job `114177014133` / head `cb503dc17133ee6a8c01fd7c7ca03034ce2b934c`：preflight PASS，但 pytest 2 failures，分别暴露无必要 schema bump 与 circular cache validation。测试未被删改来“求绿”。
-- run `38039769573` / job `114177507423` / head `fc6de3b4d43b81b68a3df43974fd7c3ba4019204`：system-audit preflight PASS，`110 passed in 0.18s`。
-- 本 Handoff、HARNESS_STATUS、审计记录和最终 stage 更新属于 closure metadata；当前 turn 结束前仍必须在最终 current-main 再跑一次 CI，才能报告 `COMMITTED`。
+### 2. 该边界已进入 CORE_ALWAYS CI preflight
 
-## Full owner metadata sweep
+`runtime/system_audit.py` 新增核心不变量：
 
-本次显式深审计已读 4 个 durable business owner 的当前 metadata/authority pointers，没有执行其业务流水线，也没有抢 lease：
+`methodology_declaration_operational_separation`
 
-- Financial Writing：active v3.7 manifest、compact Handoff、Universal adapter、execution capabilities 均可达；旧悬空 compaction ref 已清理。
-- A-share：recommendation manifest v3.7、task index、adapter、execution capabilities 可达；未跑 market-day/live-data 业务动作。
-- Novel：active project manifest v3.7、task index、adapter、artifact governance、execution capabilities 可达；未修改小说业务状态。
-- Video Growth：active task canonical 3.7、owner adapter、execution capabilities、checkpoint compaction plan 可达；profile refs=`artifact_io@1.0 + operational_hygiene@1.0`，`overrides={}`；checkpoint compaction 仍 defer 到合法 owner scope。
+每次 CI 在 pytest 前都会跑 synthetic negative check，证明：
 
-## Synthetic negative coverage boundary
+- declaration-only owner 不能被当成 operational；
+- self-reported receipt 没有 independent verifier 不能 operational PASS。
 
-已有 executable negative evidence：same-chat lease preservation、stale-writer rejection、unsupported protocol fail-closed、floating/missing/forbidden methodology profile rejection、COMMITTED-without-reread rejection、declared-only/session-unobserved executor blocking、isolated review cannot be same-chat roleplay、stale registry/circular-cache fixture。
+Fault inventory 也新增：
 
-仍属于 owner/provider boundary 的检查：具体 destructive file mutation transaction、具体 external artifact provider authority/identity、owner-local business artifact invalidation。Universal 只拥有 shared invariant/profile conformance，不能为了“全局测试”接管各 owner 的实际文件/业务操作；这些必须随 owner profile rollout 用 owner-specific regression/eval 验证。
+- `declared_methodology_is_treated_as_operational_proof`
+- `self_reported_methodology_receipt_lacks_independent_evidence_verification`
 
-## Remaining owner rollout
-- Video Growth：`artifact_io@1.0 + operational_hygiene@1.0` 已绑定且 owner regression PASS；central `runtime/methodology_conformance.py` executable conformance 待补。
-- Financial Writing：durable feedback capture 已 wired；methodology profile binding 待合法 owner turn。
-- A股、Novel：profile/operational-hygiene conformance 待各自合法 maintenance/writer turn。
-- legacy `owner_must_expose` compatibility mirrors 暂保留，直到所有支持 owner 迁移且 regression 证明无旧 reader。
+### 3. CI evidence
+
+当前 behavioral head：`0692cd6929370507e8a4d09b2715515520618af5`
+
+- GitHub Actions run: `38042185203`
+- job: `114184468600`
+- `runtime.system_audit`: PASS
+- pytest: `116 passed in 0.20s`
+
+所以这一部分是实际 executable evidence，不是管理文字。
+
+## Enforcement assurance boundary
+
+当前必须区分三件事：
+
+1. **Owner business runtime gate**：当 owner 的所有相关业务 mutation 都经过 controller/dispatcher 时，可以达到真正的 write-path enforcement。
+2. **Universal repository CI gate**：Universal 当前 GitHub Actions 会在 branch write 后运行 `system_audit + pytest`，因此当前可信等级是 `CI_ENFORCED_POST_WRITE`。
+3. **Arbitrary ChatGPT GitHub maintenance write**：当前 GitHub connector 写操作并不先经过 Universal-owned pre-write dispatcher，所以 Universal 现在不能声称 arbitrary maintenance mutation 已 `WRITE_PATH_ENFORCED`。
+
+因此本轮明确拒绝先造一个 `maintenance_admission.py` 然后假装所有 GitHub writes 都会经过它。
+
+如果以后需要 hard pre-write enforcement，必须先建立真实 choke point，例如受控 maintenance dispatcher / PR gate / equivalent mutation path，然后再做绕过测试。
+
+## Product-behavior gap still open
+
+代码层 hardening 没有自动证明下面这个行为：
+
+> 当用户只暴露症状、重复失败或给出一个可能错误的机制时，live Universal 是否会自己识别 systemic signal、检查 authority、生成替代方案并升级到 maintenance，而不是等待用户再次提醒。
+
+当前 repo 没有 live-agent trace/eval runner。不能用关键词 detector 或静态 JSON fixture 冒充这个能力已经验证。
+
+本 incident 的下一关闭条件必须包含真实 agent trajectory / product run：
+
+- signal classification 不依赖固定关键词；
+- 能区分普通一次性 revision 与 repeated/systemic defect；
+- user / assistant / framework 的机制只作为 candidate；
+- 会主动检查当前 authority；
+- 至少比较可信替代方案并找反例；
+- 不让用户承担内部迁移/recordkeeping；
+- 不越过 owner lease 改写业务 truth；
+- 最终 evidence 能被独立 grader / human calibration 复核。
+
+外部 agent-eval 实践也支持这个方向：真正的 agent harness 应看 end-to-end trace、tool calls、handoffs 和最终环境状态，而不是只读自述 receipt；但外部资料只是 candidate evidence，不能代替本仓库实际验证。
+
+## Financial Writing implication
+
+Financial Writing 的判断中有三点已被当前代码事实证实：
+
+- 当前 Universal methodology validator 过去确实只有 declaration-level semantics；本轮已修中央 validator；
+- Financial 当前 `continuity/UNIVERSAL_PROTOCOL_ADAPTER.json` 尚未声明 methodology profile bindings；
+- Financial 自己的 runtime business workflow 已有 controller choke point，因此其文章 stage/gate 比系统工程 maintenance write 更接近真正 hard enforcement。
+
+但本轮没有从 Universal 直接重写 Financial 的 task state、checkpoint、active lease，也没有为了“看起来接入了”立刻给 Financial 塞 profile fields。
+
+Financial 将作为严格 operational-conformance rollout 的重点 owner，但只有在合法 owner maintenance/writer 边界下，且必须同时有 owner-local executable evidence / quality eval；不能把 declaration PASS 叫 integration complete。
+
+## Global audit baseline remains active
+
+- `CORE_ALWAYS`
+- `IMPACT_SCOPED`
+- `OWNER_SENTINEL_ROTATION`
+- `FULL_CONTROL_PLANE`
+- `SYNTHETIC_FAULT_INJECTION`
+
+普通维护不机械执行所有业务流水线；协议、authority、startup/storage/methodology/execution contract 等横切变化才升级 full sweep。
 
 ## Current stage
-`V3_7_PRODUCT_E2E_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE_CI_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
+
+`V3_7_PRODUCT_E2E_PASS__OPERATIONAL_CONFORMANCE_CI_ENFORCED__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_MIGRATION_IN_PROGRESS`
 
 ## Next action
-1. 先保持 `runtime/system_audit.py` CI preflight 为常驻核心门；普通变更不机械全跑 owner business pipelines。
-2. 补 Video central methodology conformance，并保持 Video owner regression PASS。
-3. 在 Financial Writing / A股 / Novel 合法 owner turn 做 thin exact-version profile binding + owner-specific regression/eval。
-4. owner rollout 时补 artifact-operation 的 owner-local executable evidence；如果 profile 只增加配置/重复而未降低漂移与上下文负担，则拒绝推广或回退。
-5. 无 scheduler/event-watch infrastructure 时，不声称聊天关闭后的离线持续自维护。
+
+1. 不新增 root management policy；保持当前 incident OPEN。
+2. 在可获得真实 live-agent trajectory / product-run harness 时，建立并运行 maintenance-decision/escalation eval；没有真实 runner 前不伪造“自动 eval PASS”。
+3. 保持 declaration-vs-operational separation 为 CI `CORE_ALWAYS`。
+4. 下一 owner rollout 时优先验证 Video 当前绑定能否达到 operational conformance，而不只 declaration conformance。
+5. Financial Writing / A股 / Novel 只在各自合法 owner turn 做 thin binding + owner-local regression/eval；不能从 Universal 抢 lease 或重写业务状态。
+6. 若未来要求 GitHub maintenance pre-write hard enforcement，先建立真实 mutation choke point，再谈 `WRITE_PATH_ENFORCED`。
+7. 无 scheduler/event-watch infrastructure 时，不声称聊天关闭后的离线持续自维护。
 
 ## Recovery rule
-恢复本系统任务时先读 `TASK_MANIFEST.json` + 本 Handoff，再按 `ENTRYPOINT.md` 的事件驱动矩阵加载所需 authority；不要机械预读全部 policy/audit，也不要从聊天记忆重建执行真相。
+
+恢复本系统任务时先读 `TASK_MANIFEST.json` + 本 Handoff，再按 `ENTRYPOINT.md` 的 event-driven matrix 加载所需 authority。不要从旧聊天记忆重建执行真相，也不要因为看到 profile declaration 就假定 operational integration 已成立。
