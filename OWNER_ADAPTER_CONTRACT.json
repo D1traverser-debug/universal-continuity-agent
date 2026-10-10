@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.3",
+  "schema_version": "3.7",
   "continuity_contract": "3.7",
   "required_metadata": [
     "task_id",
@@ -16,6 +16,12 @@
     "checkpoint_ref",
     "contract_version"
   ],
+  "recommended_protocol_metadata": [
+    "continuity_protocol_version",
+    "domain_contract_version",
+    "last_protocol_reconciled_at",
+    "protocol_migration"
+  ],
   "user_task_metadata": {
     "display_name_zh": "required after first naming handshake",
     "missing_behavior": "PROMPT_ONCE_THEN_PERSIST_AND_CONTINUE",
@@ -30,8 +36,18 @@
     "provide_stable_artifact_refs_for_next_action",
     "provide_pre_takeover_progress_state",
     "persist_material_progress_with_owner_version_guard",
-    "reread_authoritative_state_after_write"
+    "reread_authoritative_state_after_write",
+    "reconcile_supported_older_continuity_protocol_without_user_migration"
   ],
+  "live_chat_reconciliation": {
+    "policy": "LIVE_CHAT_RECONCILIATION_POLICY.json",
+    "user_migration_required": false,
+    "same_chat_protocol_upgrade_preserves_resume_epoch": true,
+    "same_chat_protocol_upgrade_preserves_active_lease": true,
+    "new_chat_takeover_changes_lease": true,
+    "maintenance_task_must_not_overwrite_another_active_task_writer_manifest": true,
+    "supported_additive_edges": ["3.3->3.7", "3.5->3.7", "3.6->3.7"]
+  },
   "progress_observability": {
     "policy": "PROGRESS_OBSERVABILITY_POLICY.json",
     "resume_progress_source": "authoritative task manifest plus short owner checkpoint",
@@ -77,7 +93,8 @@
     "missing_contract_version": "legacy-unclassified",
     "missing_display_name_zh": "ASK_USER_ONCE; do not invent a permanent user-facing name",
     "missing_checkpoint_or_next_action": "UNKNOWN; do not reconstruct executable state from chat memory",
-    "material_write_not_verified": "COMMIT_FAILED; do not claim the next chat can recover the new state"
+    "material_write_not_verified": "COMMIT_FAILED; do not claim the next chat can recover the new state",
+    "unsupported_old_protocol": "UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state"
   },
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
