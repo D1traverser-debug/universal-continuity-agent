@@ -1,22 +1,23 @@
 {
   "schema_version": "3.7",
-  "updated_at": "2026-10-10",
-  "status": "PASS_V37_PRODUCT_E2E__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+  "updated_at": "2026-10-11",
+  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
   "latest_global_system_audit": "audits/GLOBAL_SYSTEM_AUDIT_2026-10-10.md",
+  "latest_cold_start_topology_audit": "audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md",
   "source_validation": {
     "status": "PASS",
     "github_actions_run_id": 38039769573,
     "job_id": 114177507423,
     "validated_head_sha": "fc6de3b4d43b81b68a3df43974fd7c3ba4019204",
-    "validation_scope": "LAST_BEHAVIORAL_AUDIT_RUNTIME_AND_TEST_HEAD_BEFORE_METADATA_ONLY_AUDIT_CLOSURE",
+    "validation_scope": "HISTORICAL_BEHAVIORAL_AUDIT_RUNTIME_AND_TEST_HEAD_BEFORE_DYNAMIC_OWNER_TOPOLOGY_HARDENING",
     "installed_package_version": "3.7.0",
     "system_audit_preflight": "PASS",
     "pytest": "PASS",
     "pytest_count": 110,
-    "note": "Historical behavioral validation receipt for the risk-tiered audit runtime. Do not interpret this field as the latest repository head; current-turn material changes use their own owner and current-main CI receipts in the relevant status sections to avoid self-referential CI metadata loops."
+    "note": "Historical behavioral validation receipt for the risk-tiered audit runtime. It is not the latest repository head and does not prove future-owner cold-start product behavior. Current material changes use their own current-main CI receipts and explicit evidence ceilings."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -27,6 +28,9 @@
     "system_maintenance_policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "artifact_context_governance_policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
     "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
+    "owner_membership_authority": "OWNER_REGISTRY.json",
+    "owner_topology_runtime": "runtime/owner_topology.py",
+    "parallel_hard_coded_owner_lists_allowed": false,
     "user_is_system_maintenance_operator": false,
     "same_chat_protocol_upgrade_preserves_lease": true,
     "new_chat_takeover_changes_lease": true
@@ -54,16 +58,20 @@
     "audit_layers": ["CORE_ALWAYS","IMPACT_SCOPED","OWNER_SENTINEL_ROTATION","FULL_CONTROL_PLANE","SYNTHETIC_FAULT_INJECTION"],
     "full_business_pipeline_every_audit": false,
     "synthetic_fault_injection_production_mutation_by_default": false,
-    "explicit_global_audit_owner_metadata_sweep": "PASS_4_DURABLE_BUSINESS_OWNERS",
+    "explicit_global_audit_owner_metadata_sweep": "PASS_DYNAMIC_DERIVED_BUSINESS_OWNER_SET",
+    "historical_explicit_global_audit_owner_count": 4,
+    "dynamic_owner_membership_regression": "PASS_SYNTHETIC_UNKNOWN_OWNER_AUTO_SCOPE_AND_FAIL_CLOSED_CACHE_CONVERGENCE",
     "global_audit_findings_reconciled": [
       "STALE_OWNER_PROTOCOL_ADAPTATION_REGISTRY",
       "DANGLING_FINANCIAL_CONFORMANCE_REF",
       "STALE_OWNER_REGISTRY_RECONCILIATION_STATUS",
       "README_BOOTSTRAP_AUTHORITY_DRIFT",
       "SYSTEM_MAINTENANCE_POLICY_MANIFEST_VERSION_DRIFT",
-      "CIRCULAR_CACHE_VALIDATION_GAP"
+      "CIRCULAR_CACHE_VALIDATION_GAP",
+      "DUPLICATED_OWNER_TOPOLOGY_MEMBERSHIP",
+      "KNOWN_TOPOLOGY_E2E_OVERGENERALIZED_TO_NEW_OWNER_ADMISSION"
     ],
-    "intermediate_global_audit_failures_used_as_counterevidence": 2
+    "intermediate_global_audit_failures_used_as_counterevidence": 3
   },
   "epistemic_independence": {
     "status": "ACTIVE_CI_PASS",
@@ -76,6 +84,8 @@
     "nontrivial_candidate_requires_credible_alternative_comparison": true,
     "nontrivial_candidate_requires_counterexample_or_failure_mode_search": true,
     "promotion_requires_eval_or_regression_evidence": true,
+    "second_order_challenge_required_for_nontrivial_closure": true,
+    "closed_world_evidence_may_be_generalized_to_open_world_claim_without_new_evidence": false,
     "analogy_alone_can_establish_architecture": false,
     "owner_specific_method_specialization_allowed": true,
     "owner_specific_method_may_bypass_cross_agent_evidence_reliability_or_authority_invariants": false
@@ -211,7 +221,8 @@
   "execution_control_plane": {
     "status": "ACTIVE",
     "contract": "EXECUTION_READINESS_CONTRACT.json",
-    "owner_registry": "OWNER_EXECUTION_REGISTRY.json",
+    "owner_registry": "OWNER_REGISTRY.json",
+    "execution_registry": "OWNER_EXECUTION_REGISTRY.json",
     "evaluator": "runtime/execution_readiness.py",
     "repository_configuration_is_execution_proof": false,
     "current_session_handshake_required": true,
@@ -230,12 +241,14 @@
     "account_confirmation_date": "2026-10-10",
     "account_confirmation_source": "USER_EXPLICIT_CONFIRMATION_IN_ACTIVE_MAINTENANCE_CHAT",
     "existing_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE",
-    "fresh_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE",
+    "fresh_chat_product_e2e": "PASS_REAL_CHAT_EVIDENCE__KNOWN_TOPOLOGY_ONLY",
+    "new_owner_cold_start_product_e2e": "PENDING_REAL_CHAT_EVIDENCE",
     "owner_entrypoint_refresh_rule": "Before material execution, refresh only the current owner entrypoint/Skill plus continuity/EXECUTION_CAPABILITIES.json and methodology profile(s) activated by the current action; handshake only required capabilities."
   },
   "product_e2e": {
     "existing_chat": {
       "status": "PASS",
+      "scope": "OBSERVED_EXISTING_OWNER_AND_CHAT_TRAJECTORY",
       "owner": "VIDEO_GROWTH_AGENT",
       "task_id": "video-growth:main",
       "preexisting_chat": true,
@@ -256,16 +269,25 @@
     },
     "fresh_chat": {
       "status": "PASS",
+      "scope": "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME",
+      "proves_future_new_owner_admission": false,
       "first_turn": "继承",
       "new_chat": true,
       "required_discovery_sources": 5,
       "required_discovery_sources_succeeded": 5,
+      "historical_observed_quorum_only": true,
       "authoritative_default_candidate_count": 4,
       "live_candidate_names_persisted_in_public_harness": false,
       "system_infra_explicit_only_excluded": true,
       "business_task_selected_on_first_turn": false,
       "business_takeover_performed": false,
       "progress_receipt": "NO_MATERIAL_CHANGE"
+    },
+    "new_owner_cold_start": {
+      "status": "PENDING_REAL_PRODUCT_EVIDENCE",
+      "mechanical_membership_assurance": "REGRESSION_VERIFIED",
+      "synthetic_fixture_is_product_e2e": false,
+      "required_real_evidence": "newly admitted real BUSINESS owner + genuinely fresh ChatGPT product chat + registry-derived discovery/routing + exact action handshakes if material work is attempted"
     }
   },
   "version_lifecycle": {
@@ -286,17 +308,21 @@
     "library_presence_alone_is_not_trigger": true,
     "bootstrap_unavailable_marker": "CONTINUITY_BOOTSTRAP_UNAVAILABLE",
     "end_to_end_bare_inherit_claim": true,
+    "end_to_end_bare_inherit_claim_scope": "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME",
+    "new_owner_cold_start_end_to_end_claim": false,
     "latest_account_hook_confirmed": true,
     "acceptance_evidence": {
       "date": "2026-10-10",
-      "source": "real fresh-chat first-turn response independently cross-checked against all required current discovery sources",
+      "source": "historical real fresh-chat first-turn response independently cross-checked against every owner/source required by the topology observed at that time",
+      "scope": "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME",
       "bare_command": "继承",
       "required_owner_quorum": 5,
       "required_owner_quorum_succeeded": true,
+      "historical_observed_quorum_only": true,
       "authoritative_default_candidate_count": 4,
       "live_candidate_names_persisted_in_public_harness": false
     },
-    "latest_hook_product_revalidation": "FULL_PASS_EXISTING_AND_FRESH_CHAT"
+    "latest_hook_product_revalidation": "KNOWN_TOPOLOGY_FULL_PASS__NEW_OWNER_COLD_START_PENDING"
   },
   "context_recovery": {
     "policy": "CONTEXT_RECOVERY_POLICY.json",
@@ -309,7 +335,8 @@
     "committed_requires_authoritative_reread": true,
     "no_change_avoids_heartbeat": true,
     "existing_chat_product_e2e_pending": false,
-    "fresh_chat_product_e2e_pending": false
+    "known_topology_fresh_chat_product_e2e_pending": false,
+    "new_owner_cold_start_product_e2e_pending": true
   },
   "continuous_learning": {
     "policy": "CONTINUOUS_LEARNING_POLICY.md",
@@ -317,6 +344,8 @@
     "chat_only_idea_counts_as_durable_evolution": false,
     "raw_learning_evidence_auto_promotes": false,
     "epistemic_independence_gate_active": true,
+    "second_order_challenge_active": true,
+    "closed_world_to_open_world_claim_requires_new_evidence": true,
     "user_proposed_mechanism_is_candidate": true,
     "assistant_first_solution_is_candidate": true,
     "independent_alternative_comparison_required": true,
