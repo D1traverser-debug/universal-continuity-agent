@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 10,
+  "manifest_version": 11,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T01:28:00Z",
-  "current_stage": "V3_7_ARCHITECTURE_LIFECYCLE_AND_LIVE_CHAT_RECONCILIATION_ACTIVE",
-  "next_action": "验收下一次真实 fresh-chat 的 继承前进度/协议适配/takeover/进度提交 UX；同时观察 Financial Writing、Video Growth、NOVEL_OS 旧聊天下一次 durable turn 是否按 owner adapter 在保持原 lease/resume_epoch 的情况下原地 reconcile 到 v3.7。继续完成 Financial Writing handoff 与 Video Growth checkpoint 瘦身；A股 authority ref 已修复。",
+  "updated_at": "2026-10-10T01:58:00Z",
+  "current_stage": "V3_7_FULL_SYSTEM_REGRESSION_PASS__PRODUCT_E2E_AND_LAZY_OWNER_RECONCILIATION_PENDING",
+  "next_action": "完成一次真实 fresh-chat 产品级验收：账户级 Continuity startup/backstop 规则存在后，新聊天先仅发送‘继承’验证 5-source discovery；随后明确恢复‘跨对话继承系统建设与维护’，验证继承前进度 -> compatibility -> takeover -> 进度提交。其他活跃 owner 的 v3.7 reconciliation 由各自合法 writer 在下一次 durable turn lazy 执行，不由维护任务抢 lease。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
@@ -27,7 +27,7 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲"],
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲", "系统回归"],
   "artifact_refs": [
     "ENTRYPOINT.md",
     "SYSTEM_BLUEPRINT.md",
@@ -46,8 +46,10 @@
     "NEW_CHAT_BOOTSTRAP.json",
     "OWNER_REGISTRY.json",
     "HARNESS_STATUS.json",
+    "runtime/protocol_reconciliation.py",
     "skills/universal-continuity/SKILL.md",
     "archive/migrations/2026-10-09-library-to-github.md",
-    "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md"
+    "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md",
+    "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md"
   ]
 }
