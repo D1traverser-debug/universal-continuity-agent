@@ -1,5 +1,6 @@
 {
   "schema_version": "1.6",
+  "continuity_protocol_version": "3.7",
   "updated_at": "2026-10-10",
   "applies": "first explicit continuation or first substantive user message after account-level routing",
   "startup_hook": {
