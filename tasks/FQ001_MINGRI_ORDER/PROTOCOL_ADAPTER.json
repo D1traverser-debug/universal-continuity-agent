@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "task_id": "FQ001_MINGRI_ORDER",
+  "owner": "NOVEL_OS",
+  "current_universal_protocol": "3.7",
+  "observed_task_protocol": "3.3",
+  "classification": "MIGRATABLE",
+  "strategy": "UNIVERSAL_ROUTING_OVERLAY_WITH_LAZY_OWNER_RECONCILIATION",
+  "user_migration_required": false,
+  "business_state_authority": "NOVEL_OS",
+  "business_state_rewrite": false,
+  "same_chat_preserve_resume_epoch": true,
+  "same_chat_preserve_active_lease": true,
+  "universal_manifest_update_authority": "CURRENT_VALID_TASK_WRITER_OR_NEW_CHAT_TAKEOVER",
+  "owner_checkpoint_update_authority": "NOVEL_OS_ONLY",
+  "required_current_behaviors": [
+    "use v3.7 progress observability in future replies on the active durable task",
+    "do not change CH8 publication fact or CH9 readiness merely because Continuity protocol changed",
+    "reconcile Universal protocol metadata before the next material durable write by the valid task writer",
+    "do not acquire a new lease unless a genuinely new chat takes over"
+  ],
+  "universal_policy_refs": [
+    "CURRENT_PROTOCOL.json",
+    "LIVE_CHAT_RECONCILIATION_POLICY.json",
+    "PROGRESS_OBSERVABILITY_POLICY.json"
+  ]
+}
