@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
-      "next_action": "Universal self-pilot now uses exact-version composable artifact_io/operational_hygiene/evolution profiles, executable methodology conformance, and ENTRYPOINT+CURRENT_PROTOCOL minimal bootstrap with event-driven loading. Incrementally bind real owner hooks on valid owner turns and reject rollout if it adds duplication rather than reducing drift; continue product-level account/existing/fresh-chat E2E separately.",
+      "current_stage": "V3_7_COMPOSABLE_METHODOLOGY_KERNEL_ACTIVE__ACCOUNT_HOOK_CONFIRMED__OWNER_PROFILE_MIGRATION_AND_PRODUCT_E2E_PENDING",
+      "next_action": "Latest account Custom Instructions hook is explicitly confirmed saved by the user, replacing the legacy Continuity block. Now validate existing-chat in-place refresh/handshake without lease churn and fresh-chat bare-inherit minimal bootstrap/complete discovery without selecting a business task; continue thin owner methodology-profile rollout only on valid owner turns.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T07:55:00Z"
+      "updated_at": "2026-10-10T08:05:00Z"
     }
   ]
 }
