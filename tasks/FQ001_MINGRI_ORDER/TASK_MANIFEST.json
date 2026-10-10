@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 4,
+  "manifest_version": 5,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-10T06:26:00Z",
+  "updated_at": "2026-10-10T06:51:08Z",
   "current_stage": "CH0008_FINAL_ACCEPTED_PUBLISH_READY_AWAITING_EXTERNAL_PUBLICATION_CONFIRMATION",
   "next_action": "Wait for the user to confirm CH8 has been published; then sync CH8 external publication state in the GitHub owner and continue CH9 from the existing READY contract without replaying completed CH8 work.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
@@ -20,12 +20,12 @@
   "skill_version": "Novel Writing Agent 2.0.0-github",
   "runtime_version": "github-owner-2.1",
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
-  "resume_epoch": 1,
+  "resume_epoch": 2,
   "active_lease": {
-    "lease_id": "41f8ef0a-9d9b-4288-b377-813d2488d32d",
-    "resume_epoch": 1,
-    "acquired_at": "2026-10-09T10:37:25Z",
-    "supersedes_lease_id": null
+    "lease_id": "da43a1ba-46f7-47b0-a674-3ff557494be1",
+    "resume_epoch": 2,
+    "acquired_at": "2026-10-10T06:51:08Z",
+    "supersedes_lease_id": "41f8ef0a-9d9b-4288-b377-813d2488d32d"
   },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
