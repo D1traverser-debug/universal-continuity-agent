@@ -20,8 +20,8 @@
       "filter": "Default USER candidates only"
     },
     {
-      "owner": "NOVEL_OS",
-      "source": "/NOVEL_OS_小说系统/99_RECOVERY/TASK_INDEX.json",
+      "owner": "NOVEL_WRITING_AGENT",
+      "source": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
       "filter": "USER + DEFAULT + resumable only"
     },
     {
