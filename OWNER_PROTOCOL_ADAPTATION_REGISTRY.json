@@ -73,7 +73,7 @@
         "run_id": 38056303743,
         "job_id": 114225426230
       },
-      "remote_sweep": "ADAPTER_CAPABILITIES_TASK_INDEX_REACHABLE__NO_NEW_METADATA_DRIFT_FOUND",
+      "remote_sweep": "ADAPTER_CAPABILITIES_TASK_INDEX_REACHABLE__NO_NEW_METADATA_DRIFT_FOUND_AT_SWEEP_TIME",
       "methodology_operational_boundary": "FUTURE_ACTION_REQUIRES_RECEIPT_1_3_OR_EQUIVALENT_EXACT_ACTION_BINDING_AND_INDEPENDENT_VERIFICATION_FOR_UNIVERSAL_OPERATIONAL_PASS"
     },
     {
@@ -88,20 +88,26 @@
       "force_lease_takeover": false,
       "adapter_ref": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
       "conformance_ref": "D1traverser-debug/novel-writing-agent@main:continuity/ARTIFACT_CONTEXT_GOVERNANCE.json",
-      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_DECLARATION_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_BINDING_HARDENED__CHAT_BRIDGED_SELF_ATTESTED__DISCOVERY_VERSION_METADATA_REFRESHED__CH9_PRODUCTION_PROOF_PENDING",
+      "status": "RECONCILED_V37__GITHUB_OWNER_ACTIVE__METHODOLOGY_DECLARATION_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_BINDING_HARDENED__CHAT_BRIDGED_SELF_ATTESTED__SIGNING_FEEDBACK_REPAIR_ACTIVE__OWNER_METADATA_REFRESHED_2_2_0_2_3",
       "historical_methodology_regression_evidence": {
         "behavioral_head": "ced06cec1a2201135d32c7f9d8c8c32c43b83507",
         "run_id": 38065144178,
         "job_id": 114251164978
       },
-      "skill_version": "2.1.1-github",
-      "runtime_version": "github-owner-2.2.1",
+      "skill_version": "Novel Writing Agent 2.2.0-github",
+      "runtime_version": "github-owner-2.3",
       "release_evidence_contract_version": "1.0",
       "release_evidence_strength": "STRUCTURED_SELF_ATTESTED_CHAT_BRIDGED_UNLESS_EXTERNAL_TRACE_PRESENT",
       "current_owner_metadata_validation": {
-        "head": "44a7a83b7327d5ec650d192650fffb7c473df863",
-        "run_id": 38074843270,
-        "result": "PASS"
+        "head": "3cf6be4eb09a0ae34c042f40a472d323664bc140",
+        "source": "current owner adapter + continuity/TASK_INDEX.json reread",
+        "result": "METADATA_POINTERS_AND_VERSIONS_CURRENT__BUSINESS_STATE_NOT_MUTATED_BY_UNIVERSAL"
+      },
+      "current_owner_regression_evidence": {
+        "validated_behavioral_head": "fb97395df5d7028360edf7138d161ab190390ae8",
+        "run_id": 38075873129,
+        "job_id": 114282590528,
+        "result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_ALL_OWNER_TESTS_WITH_SIGNING_FEEDBACK_RECOVERY"
       },
       "release_evidence_boundary": "CHAT_BRIDGED receipts are not independent attestation of model cognition or non-post-hoc chronology; true attestation requires distinct execution identity/provider trace.",
       "methodology_operational_boundary": "FUTURE_ACTION_REQUIRES_RECEIPT_1_3_OR_EQUIVALENT_EXACT_ACTION_BINDING_AND_INDEPENDENT_VERIFICATION_FOR_UNIVERSAL_OPERATIONAL_PASS"
