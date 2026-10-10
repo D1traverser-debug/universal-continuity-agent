@@ -17,10 +17,23 @@ def load_contract():
 def make_binding_contract(profile_ids):
     contract = load_contract()
     composition = contract["methodology_composition"]
+    requested = set(profile_ids)
     profile_refs = {}
+    profile_applicability = {}
     hook_bindings = {}
-    for profile_id in profile_ids:
-        profile = composition["profiles"][profile_id]
+    for profile_id, profile in composition["profiles"].items():
+        applies = profile_id in requested
+        profile_applicability[profile_id] = {
+            "status": "APPLIES" if applies else "NOT_APPLICABLE",
+            "reason": (
+                f"synthetic fixture exposes {profile_id} activation surface"
+                if applies
+                else f"synthetic fixture intentionally omits {profile_id} activation surface"
+            ),
+            "evidence_refs": [f"owner://surface/{profile_id}"],
+        }
+        if not applies:
+            continue
         profile_refs[profile_id] = profile["version"]
         hook_set_name = profile["required_hooks_from"].split(".")[-1]
         for hook in composition["hook_sets"][hook_set_name]:
@@ -28,6 +41,7 @@ def make_binding_contract(profile_ids):
     return contract, {
         "methodology": {
             "profile_refs": profile_refs,
+            "profile_applicability": profile_applicability,
             "hook_bindings": hook_bindings,
             "overrides": {"domain_taxonomy": "owner://taxonomy"},
         }
@@ -91,6 +105,55 @@ def test_owner_cannot_override_kernel_invariant():
 
     assert result.status == "FAIL"
     assert "forbidden_override:candidate_is_not_production_authority" in result.errors
+
+
+def test_every_contract_profile_requires_explicit_applicability_assessment():
+    contract, owner = make_binding_contract(["operational_hygiene", "evolution"])
+    owner["methodology"]["profile_applicability"].pop("artifact_io")
+
+    result = evaluate_methodology_conformance(owner, contract)
+
+    assert result.status == "FAIL"
+    assert "missing_profile_applicability:artifact_io" in result.errors
+
+
+def test_applicable_profile_cannot_be_silently_omitted():
+    contract, owner = make_binding_contract(["operational_hygiene", "evolution"])
+    owner["methodology"]["profile_applicability"]["artifact_io"] = {
+        "status": "APPLIES",
+        "reason": "owner creates and renders persistent publication artifacts",
+        "evidence_refs": ["owner://runtime/delivery"],
+    }
+
+    result = evaluate_methodology_conformance(owner, contract)
+
+    assert result.status == "FAIL"
+    assert "applicable_profile_not_declared:artifact_io" in result.errors
+
+
+def test_not_applicable_profile_requires_reason_and_evidence():
+    contract, owner = make_binding_contract(["operational_hygiene"])
+    owner["methodology"]["profile_applicability"]["artifact_io"] = {
+        "status": "NOT_APPLICABLE",
+        "reason": "",
+        "evidence_refs": [],
+    }
+
+    result = evaluate_methodology_conformance(owner, contract)
+
+    assert result.status == "FAIL"
+    assert "missing_profile_applicability_reason:artifact_io" in result.errors
+    assert "missing_profile_applicability_evidence_refs:artifact_io" in result.errors
+
+
+def test_declared_profile_cannot_be_marked_not_applicable():
+    contract, owner = make_binding_contract(["artifact_io"])
+    owner["methodology"]["profile_applicability"]["artifact_io"]["status"] = "NOT_APPLICABLE"
+
+    result = evaluate_methodology_conformance(owner, contract)
+
+    assert result.status == "FAIL"
+    assert "profile_declared_but_marked_not_applicable:artifact_io" in result.errors
 
 
 def test_declaration_pass_is_not_operational_pass():
@@ -209,6 +272,7 @@ def test_methodology_composition_does_not_create_parallel_root_policy():
     assert composition["model"] == "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_BINDINGS"
     assert composition["owner_declaration_contract"]["copy_shared_profile_prose_into_owner_required"] is False
     assert composition["owner_declaration_contract"]["load_only_profiles_required_by_current_action"] is True
+    assert composition["owner_declaration_contract"]["profile_applicability_required_for_every_contract_profile"] is True
     assert composition["executable_validator"] == "runtime/methodology_conformance.py"
     assert not (ROOT / "METHODOLOGY_POLICY.json").exists()
     assert not (ROOT / "METHODOLOGY_PROFILE_POLICY.json").exists()
