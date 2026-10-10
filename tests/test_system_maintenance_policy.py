@@ -15,16 +15,24 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     assert policy["status"] == "ACTIVE"
     assert "ASSISTANT_DETECTS_SYSTEMIC_GAP" in policy["triggers"]
     assert "USER_REPORT_REVEALS_SYSTEMIC_GAP" in policy["triggers"]
+    assert "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS" in policy["triggers"]
     assert "REPEATED_OWNER_FAILURE_OR_REGRESSION" in policy["triggers"]
     assert "PREMATURE_SOLUTION_CANONICALIZATION_OR_USER_CORRECTION_SIGNAL" in policy["triggers"]
 
     autonomy = policy["default_autonomy"]
     assert autonomy["diagnose_root_cause"] is True
     assert autonomy["assess_reliability_guard_before_feature_expansion"] is True
+    assert autonomy["classify_user_feedback_before_adoption"] is True
     assert autonomy["separate_user_goal_from_user_proposed_mechanism"] is True
     assert autonomy["challenge_user_and_assistant_initial_solution"] is True
     assert autonomy["compare_credible_alternatives_for_nontrivial_design"] is True
     assert autonomy["seek_counterexample_or_failure_mode_before_adoption"] is True
+    assert autonomy["run_meta_maintenance_outline_before_nontrivial_patch"] is True
+    assert autonomy["assess_learning_scout_need"] is True
+    assert autonomy["assess_instruction_surface_impact"] is True
+    assert autonomy["assess_cross_subsystem_inheritance_and_propagation"] is True
+    assert autonomy["assess_complexity_and_efficiency_budget"] is True
+    assert autonomy["perform_global_claim_scope_check"] is True
     assert autonomy["apply_smallest_safe_fix"] is True
     assert autonomy["prefer_modify_existing_authority_over_new_parallel_surface"] is True
     assert autonomy["add_or_update_regression_guard_when_testable"] is True
@@ -34,6 +42,87 @@ def test_system_maintenance_policy_requires_autonomous_closure():
     assert autonomy["reread_authority_before_claiming_committed"] is True
     assert autonomy["ask_user_to_manage_internal_migration_or_recordkeeping"] is False
     assert autonomy["wait_for_user_to_notice_related_internal_followups"] is False
+    assert autonomy["claim_global_perfection_or_all_future_failures_preconsidered"] is False
+
+
+def test_meta_maintenance_outline_is_default_nontrivial_governance_path():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    outline = policy["meta_maintenance_outline"]
+    stages = outline["stages"]
+
+    assert stages[0] == "M0_INTAKE_AND_SIGNAL_CLASSIFICATION"
+    assert "M2_FULL_SYSTEM_IMPACT_MAP" in stages
+    assert "M3_LEARNING_AND_EVIDENCE_SCOUT" in stages
+    assert "M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION" in stages
+    assert "M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET" in stages
+    assert "M9_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION" in stages
+    assert "M10_SECOND_ORDER_REVIEW_AND_GLOBAL_CLAIM_CALIBRATION" in stages
+    assert stages[-1] == "M11_DURABLE_LEARNING_AND_CHECKPOINT"
+    questions = "\n".join(outline["mandatory_questions"])
+    assert "GPT/account/startup instructions" in questions
+    assert "child owners/subsystems inherit" in questions
+    assert "startup context, tool calls, latency" in questions
+
+
+def test_user_correction_is_signal_not_direct_implementation_order():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    feedback = policy["user_feedback_assimilation"]
+
+    assert feedback["material_correction_triggers_system_impact_review_after_first_occurrence"] is True
+    assert feedback["repetition_required_before_systemic_review"] is False
+    assert feedback["goal_or_constraint_is_high_authority"] is True
+    assert feedback["proposed_mechanism_is_canonical_by_default"] is False
+    assert feedback["testable_correction_should_feed_regression_or_eval"] is True
+    assert feedback["do_not_require_user_to_restate_accepted_requirement"] is True
+    assert "PROPOSED_MECHANISM" in feedback["classify_each_material_correction_as"]
+    assert "COUNTEREXAMPLE_OR_FAILURE_REPORT" in feedback["classify_each_material_correction_as"]
+
+
+def test_instruction_surface_review_prevents_prompt_patching_every_defect():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    review = policy["instruction_surface_review"]
+
+    assert review["required_for_systemic_behavior_gap"] is True
+    assert review["prompt_or_account_instruction_change_is_default_fix"] is False
+    assert review["repository_write_proves_account_instruction_propagated"] is False
+    assert review["no_instruction_change_requires_reason"] is True
+    assert "RUNTIME_OR_SCHEMA" in review["root_cause_layers"]
+    assert "ACCOUNT_OR_PRODUCT_INSTRUCTION" in review["root_cause_layers"]
+    assert any("runtime/schema/test" in item for item in review["do_not_change_instruction_when"])
+
+
+def test_learning_inheritance_and_efficiency_are_first_class_review_dimensions():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+
+    learning = policy["learning_evolution_review"]
+    assert learning["systemic_or_architecture_change_default"] == "SCOUT_REQUIRED"
+    assert learning["citation_without_behavioral_integration_is_learning"] is False
+    assert learning["accepted_user_corrections_feed_future_eval_corpus"] is True
+
+    inheritance = policy["cross_subsystem_inheritance_review"]
+    assert inheritance["required_for_shared_control_plane_change"] is True
+    assert inheritance["kernel_or_profile_change_requires_impacted_owner_derivation_from_registry"] is True
+    assert inheritance["shared_invariant_should_propagate_by_contract_profile_or_runtime_not_copied_prose"] is True
+    assert inheritance["check_for_stale_owner_override_or_shadow_logic"] is True
+
+    budget = policy["complexity_efficiency_budget"]
+    assert budget["required_for_nontrivial_control_plane_change"] is True
+    assert budget["prefer_deletion_or_consolidation_over_addition"] is True
+    assert budget["increase_in_startup_preload_requires_explicit_justification"] is True
+    assert budget["full_global_audit_on_every_business_turn"] is False
+    assert "steady_state_latency" in budget["dimensions"]
+
+
+def test_closure_claims_must_not_assert_global_perfection():
+    policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
+    limits = policy["closure_claim_limits"]
+
+    assert limits["claim_global_system_is_error_free"] is False
+    assert limits["claim_all_future_problem_classes_have_been_preconsidered"] is False
+    assert limits["claim_no_inappropriate_mechanism_remains_without_evidence"] is False
+    assert "unknown/open-world boundary" in limits["required_closure_fields"]
+    assert policy["scope_boundaries"]["do_not_claim_global_flawlessness"] is True
+    assert policy["failure_semantics"]["global_perfection_claim"] == "CLAIM_SCOPE_INVALID"
 
 
 def test_new_authority_surface_requires_architecture_admission_gate():
@@ -54,11 +143,13 @@ def test_repeated_owner_failure_activates_scoped_reliability_guard():
 
     assert "same defect class materially recurs after an accepted fix" in guard["incident_triggers"]
     assert "the user repeatedly has to restate the same durable requirement" in guard["incident_triggers"]
+    assert "a single material user correction exposes a plausible shared control-plane failure class" in guard["incident_triggers"]
     assert "the user repeatedly has to correct the system for treating the user's suggested mechanism or analogy as canonical architecture" in guard["incident_triggers"]
     assert "PERSIST_INCIDENT_OR_FAILURE_EVIDENCE" in guard["required_response"]
     assert "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM" in guard["required_response"]
     assert "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA" in guard["required_response"]
     assert "ADD_OR_UPDATE_REGRESSION_OR_EVAL" in guard["required_response"]
+    assert "VERIFY_CROSS_SUBSYSTEM_PROPAGATION" in guard["required_response"]
     assert guard["affected_owner_non_reliability_expansion"] == "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY"
     assert guard["freeze_scope"] == "AFFECTED_OWNER_OR_CAPABILITY_ONLY"
     assert guard["unrelated_healthy_owners_are_frozen"] is False
@@ -66,6 +157,9 @@ def test_repeated_owner_failure_activates_scoped_reliability_guard():
     assert guard["chat_only_apology_or_reminder_counts_as_fix"] is False
     assert "ASSESS_RELIABILITY_GUARD" in policy["maintenance_loop"]
     assert "CHALLENGE_INITIAL_SOLUTION_CANDIDATES" in policy["maintenance_loop"]
+    assert "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW" in policy["maintenance_loop"]
+    assert "ASSESS_COMPLEXITY_AND_EFFICIENCY_BUDGET" in policy["maintenance_loop"]
+    assert "RUN_SECOND_ORDER_CHALLENGE_AND_CLAIM_CALIBRATION" in policy["maintenance_loop"]
 
 
 def test_learning_policy_requires_epistemic_independence_before_nontrivial_adoption():
@@ -141,6 +235,8 @@ def test_system_maintenance_policy_preserves_owner_boundaries():
     assert boundaries["do_not_rewrite_domain_business_truth_from_maintenance_task"] is True
     assert boundaries["do_not_add_permanent_agent_without_invocation_executor_evidence_contract"] is True
     assert boundaries["do_not_treat_repo_write_as_proof_old_chats_received_update"] is True
+    assert boundaries["do_not_treat_autonomous_maintenance_as_permission_to_skip_user_signal_analysis"] is True
+    assert boundaries["do_not_use_prompt_growth_to_mask_missing_runtime_or_eval_enforcement"] is True
 
 
 def test_blueprint_and_learning_policy_wire_maintenance_policy():
@@ -162,10 +258,17 @@ def test_material_maintenance_change_requires_durable_record():
     assert {
         "problem",
         "root_cause",
+        "user_signal_classification",
+        "system_impact_map",
+        "learning_scout_disposition",
+        "instruction_surface_disposition",
+        "inheritance_propagation_effect",
+        "complexity_efficiency_effect",
         "changed_authority_surfaces",
         "validation_or_ci_result",
         "behavioral_effect",
         "remaining_risks_or_external_dependencies",
+        "assurance_ceiling",
         "current_stage",
         "next_action",
     }.issubset(required_fields)
