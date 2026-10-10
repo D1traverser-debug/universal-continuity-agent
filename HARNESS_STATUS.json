@@ -2,7 +2,7 @@
   "schema_version": "3.7",
   "role": "REBUILDABLE_STATUS_CACHE_NOT_AUTHORITY",
   "updated_at": "2026-10-11",
-  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__FULL_CONTROL_PLANE_LOCAL_FAULT_EXECUTION_HARDENED__META_GOVERNANCE_HARNESS_1_1_ACTIVE__METHODOLOGY_RECEIPT_1_3_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
+  "status": "PASS_V37_KNOWN_TOPOLOGY_PRODUCT_E2E__NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING__DYNAMIC_OWNER_MEMBERSHIP_REGRESSION_PASS__FULL_CONTROL_PLANE_LOCAL_FAULT_EXECUTION_HARDENED__META_GOVERNANCE_HARNESS_1_1_REGRESSION_VERIFIED__METHODOLOGY_RECEIPT_1_3_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_full_control_plane_learning_audit": "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md",
   "latest_meta_maintenance_run": "audits/META_MAINTENANCE_SYSTEM_SELF_AUDIT_2026-10-11.json",
@@ -12,14 +12,15 @@
   "latest_cold_start_topology_audit": "audits/COLD_START_NEW_OWNER_TOPOLOGY_INCIDENT_2026-10-11.md",
   "source_validation": {
     "status": "PASS",
-    "github_actions_run_id": 38077334862,
-    "validated_head_sha": "3d98d5d78518ecaeda8171c440b7799bbd94510b",
-    "validation_scope": "PRIOR_META_GOVERNANCE_1_0_BEHAVIORAL_REGRESSION_BEFORE_1_1_SELF_AUDIT_HARDENING",
+    "github_actions_run_id": 38084028371,
+    "job_id": 114306630234,
+    "validated_head_sha": "30c730123c26dd48c521ad86f77880675353a677",
+    "validation_scope": "META_GOVERNANCE_HARNESS_1_1__POLICY_TO_VERIFIER_ALIGNMENT__TOPOLOGY_BOUND_PROPAGATION__RUNTIME_MANIFEST_STATUS_VERSION_BINDING__BEHAVIORAL_REGRESSION_BEFORE_FINAL_HANDOFF_STATUS_SYNC",
     "installed_package_version": "3.7.0",
     "system_audit_preflight": "PASS",
     "pytest": "PASS",
     "pytest_count": null,
-    "note": "This persisted validation receipt is historical baseline evidence. Meta-Governance Harness 1.1 is current in repository authority and requires current-main CI observation before user-facing closure; the status cache itself does not upgrade assurance by declaration."
+    "note": "Behavioral Harness 1.1 stack passed at the cited head. Final Handoff/status-only sync still requires current-main CI observation before user-facing COMMITTED; this cache does not upgrade semantic independence."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -39,7 +40,7 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE__META_MAINTENANCE_1_1__RISK_TIERED_AUDIT_EXECUTION_WIRED__LOCAL_SYNTHETIC_FAULT_EXECUTION_REAL__REMOTE_OWNER_SWEEP_SEPARATE__NO_CHANGE_CLOSURE_SUPPORTED__TOPOLOGY_BOUND_PROPAGATION_REQUIRED__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
+    "status": "ACTIVE__META_MAINTENANCE_1_1_REGRESSION_VERIFIED__RISK_TIERED_AUDIT_EXECUTION_WIRED__LOCAL_SYNTHETIC_FAULT_EXECUTION_REAL__REMOTE_OWNER_SWEEP_SEPARATE__NO_CHANGE_CLOSURE_SUPPORTED__TOPOLOGY_BOUND_PROPAGATION_REQUIRED__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "policy_version": "1.6",
     "self_detected_systemic_gap_is_trigger": true,
@@ -66,7 +67,7 @@
     "synthetic_fault_injection_production_mutation_by_default": false
   },
   "meta_governance": {
-    "status": "HARNESS_1_1_ACTIVE__STRUCTURAL_REGRESSION_PENDING_CURRENT_MAIN_CI__INDEPENDENT_SEMANTIC_REVIEW_OPEN",
+    "status": "HARNESS_1_1_REGRESSION_VERIFIED__INDEPENDENT_SEMANTIC_REVIEW_OPEN",
     "authority": "SYSTEM_MAINTENANCE_POLICY.json",
     "policy_version": "1.6",
     "runtime": "runtime/meta_maintenance.py",
