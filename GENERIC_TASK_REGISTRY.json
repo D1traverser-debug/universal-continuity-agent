@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_PRODUCT_E2E_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE_CI_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
-      "next_action": "Keep the risk-tiered audit preflight always on; complete Video central methodology conformance, then migrate Financial Writing/A-share/Novel profiles only on valid owner turns with owner-specific regression/eval.",
+      "current_stage": "V3_7_PRODUCT_E2E_PASS__OPERATIONAL_CONFORMANCE_CI_ENFORCED__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+      "next_action": "Keep declaration-vs-operational methodology separation as a CORE_ALWAYS CI invariant; close the operator-dependence incident only with real live-agent trajectory/product eval, then continue owner operational-conformance rollout without stealing business leases.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T09:00:00Z"
+      "updated_at": "2026-10-10T09:44:00Z"
     }
   ]
 }
