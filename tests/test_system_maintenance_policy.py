@@ -92,6 +92,42 @@ def test_learning_policy_requires_epistemic_independence_before_nontrivial_adopt
     assert policy["failure_semantics"]["nontrivial_solution_adopted_without_independent_candidate_critique"] == "EVOLUTION_GATE_NOT_SATISFIED"
 
 
+def test_learning_policy_requires_second_order_challenge_before_nontrivial_closure():
+    learning = (ROOT / "CONTINUOUS_LEARNING_POLICY.md").read_text(encoding="utf-8")
+
+    assert "Second-order challenge / closure calibration" in learning
+    assert "challenge the **accepted fix itself**" in learning
+    assert "**Evidence ceiling:**" in learning
+    assert "**Negative space:**" in learning
+    assert "**Self-reference:**" in learning
+    assert "**Post-hoc provenance:**" in learning
+    assert "**Test realism:**" in learning
+    assert "**Closure boundary:**" in learning
+    assert "### Evidence assurance ladder" in learning
+    assert "**DECLARED**" in learning
+    assert "**WIRED**" in learning
+    assert "**REGRESSION_VERIFIED**" in learning
+    assert "**ACTION_LEVEL_SELF_ATTESTED**" in learning
+    assert "**ACTION_LEVEL_INDEPENDENTLY_VERIFIED**" in learning
+    assert "**LIVE_OUTCOME_VERIFIED**" in learning
+    assert "A CI PASS cannot be promoted directly to action-level execution proof" in learning
+    assert "structured same-session receipt cannot be promoted to independent attestation" in learning
+
+
+def test_learning_policy_distills_reusable_failure_patterns_not_owner_business_rules():
+    learning = (ROOT / "CONTINUOUS_LEARNING_POLICY.md").read_text(encoding="utf-8")
+
+    assert "silent applicable-item omission / negative-space blind spot" in learning
+    assert "declaration-to-operation gap" in learning
+    assert "self-attestation inflation" in learning
+    assert "CI-to-product overclaim" in learning
+    assert "single-example overfit" in learning
+    assert "post-hoc receipt illusion" in learning
+    assert "cache/authority circularity" in learning
+    assert "patch-without-distillation" in learning
+    assert "Do not copy the triggering owner's business rule into Universal" in learning
+
+
 def test_system_maintenance_policy_preserves_owner_boundaries():
     policy = load_json(ROOT / "SYSTEM_MAINTENANCE_POLICY.json")
     boundaries = policy["scope_boundaries"]
