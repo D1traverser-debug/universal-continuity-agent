@@ -1,7 +1,7 @@
 {
   "schema_version": "3.7",
   "updated_at": "2026-10-10",
-  "status": "PASS_V37_PRODUCT_E2E__RISK_TIERED_GLOBAL_AUDIT_ACTIVE_CI_PASS__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
+  "status": "PASS_V37_PRODUCT_E2E__OPERATOR_DEPENDENCE_INCIDENT_ACTIVE__FINANCIAL_OWNER_HARNESS_REPAIRED__OWNER_PROFILE_MIGRATION_IN_PROGRESS",
   "engineering_authority": "D1traverser-debug/universal-continuity-agent@main",
   "latest_operational_hygiene_audit": "audits/CROSS_AGENT_OPERATIONAL_HYGIENE_REVIEW_2026-10-10.md",
   "latest_methodology_composition_audit": "audits/CROSS_AGENT_METHODOLOGY_COMPOSITION_REVIEW_2026-10-10.md",
@@ -16,7 +16,7 @@
     "system_audit_preflight": "PASS",
     "pytest": "PASS",
     "pytest_count": 110,
-    "note": "Risk-tiered audit runtime and regressions passed at this behavioral head. Audit/status/handoff closure commits are metadata/evidence changes and still require a final current-main CI before the active maintenance turn may report COMMITTED."
+    "note": "Historical behavioral validation receipt for the risk-tiered audit runtime. Do not interpret this field as the latest repository head; current-turn material changes use their own owner and current-main CI receipts in the relevant status sections to avoid self-referential CI metadata loops."
   },
   "system_blueprint": {
     "canonical_ref": "SYSTEM_BLUEPRINT.md",
@@ -32,7 +32,7 @@
     "new_chat_takeover_changes_lease": true
   },
   "system_maintenance": {
-    "status": "ACTIVE_CI_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE",
+    "status": "ACTIVE_CI_PASS__RISK_TIERED_GLOBAL_AUDIT_ACTIVE__OPERATOR_DEPENDENCE_INCIDENT_OPEN",
     "policy": "SYSTEM_MAINTENANCE_POLICY.json",
     "policy_version": "1.5",
     "self_detected_systemic_gap_is_trigger": true,
@@ -81,7 +81,7 @@
     "owner_specific_method_may_bypass_cross_agent_evidence_reliability_or_authority_invariants": false
   },
   "methodology_composition": {
-    "status": "ACTIVE_CI_PASS_UNIVERSAL_SELF_PILOT__VIDEO_FIRST_OWNER_BINDING_IN_PROGRESS",
+    "status": "ACTIVE_CI_PASS_UNIVERSAL_SELF_PILOT__VIDEO_AND_FINANCIAL_OWNER_ROLLOUT_IN_PROGRESS",
     "contract": "OWNER_ADAPTER_CONTRACT.json",
     "profile_contract_version": "1.0",
     "model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_BINDINGS",
@@ -96,7 +96,7 @@
     "copy_shared_profile_prose_into_owner_required": false,
     "load_only_profiles_required_by_current_action": true,
     "universal_self_pilot_complete": true,
-    "business_owner_rollout": "VIDEO_BOUND_OWNER_REGRESSION_PASS__VIDEO_CENTRAL_CONFORMANCE_PENDING__OTHER_OWNERS_PENDING_VALID_TURNS",
+    "business_owner_rollout": "VIDEO_BOUND_OWNER_REGRESSION_PASS__CENTRAL_CONFORMANCE_PENDING__FINANCIAL_BOUND_OWNER_HARNESS_REGRESSION_PASS__LIVE_QUALITY_EVIDENCE_PENDING__A_SHARE_NOVEL_PENDING_VALID_TURNS",
     "legacy_owner_must_expose_mirror": "TEMPORARY_COMPATIBILITY_MIRROR_UNTIL_SUPPORTED_OWNERS_MIGRATE",
     "forbidden_override_keys": [
       "authority_precedence",
@@ -158,16 +158,26 @@
   },
   "owner_operational_hardening": {
     "financial_writing": {
-      "status": "LEARNING_EVIDENCE_CAPTURE_WIRED_CI_PASS__METHODOLOGY_PROFILE_BINDING_PENDING",
-      "profile_version": 2,
-      "material_user_feedback_requires_durable_sample_before_durable_learning_claim": true,
+      "status": "METHODOLOGY_DECLARATION_BOUND__OWNER_HARNESS_REGRESSION_PASS__GENERAL_QUALITY_CORPUS_READY__LIVE_QUALITY_EVIDENCE_PENDING",
+      "profile_version": 3,
+      "methodology_profile_refs": {"operational_hygiene":"1.0","evolution":"1.0"},
+      "material_user_feedback_requires_durable_sample_before_personalized_learning_claim": true,
       "learning_evidence_capability": "SESSION_EXECUTABLE",
+      "quality_regression_promotion_gate": "HARNESS_WIRED",
+      "general_editorial_quality_corpus": "PROMOTION_READY_CORPUS_ONLY",
+      "personalized_writing_dna": "NOT_READY_POSITIVE_USER_OR_PERFORMANCE_EVIDENCE_MISSING",
+      "real_rejection_artifact": "D1traverser-debug/financial-writing-agent@main:evals/artifacts/offshore-wind-2026-10-10-rejected-deep-v071.md",
+      "cross_topic_heldout_artifact": "D1traverser-debug/financial-writing-agent@main:evals/artifacts/rutile-2026-10-06-heldout-baseline.md",
+      "mechanical_numbering_quota_removed": true,
+      "live_quality_improvement_proven": false,
+      "business_state_rewritten": false,
+      "business_lease_stolen": false,
       "domain_evolution_method_remains_owner_local": true,
-      "methodology_profile_binding": "PENDING_VALID_OWNER_TURN",
-      "run_id": 38032299542,
-      "job_id": 114155603504,
-      "head_sha": "a6e69993787394f1abeef4b5da6e5bb3cb0b5e9d",
-      "pytest_count": 50
+      "owner_regression_run_id": 38045054149,
+      "owner_regression_job_id": 114192795282,
+      "owner_regression_behavioral_head_sha": "a52249967db7745ebf322e3c9696ef5a03c85f37",
+      "current_main_metadata_ci_run_id": 38045176283,
+      "current_main_metadata_head_sha": "a65a6955e7fc40c59b78d782d4671fcf548921c7"
     },
     "video_growth": {
       "status": "METHODOLOGY_PROFILES_BOUND_VALID_OWNER_TURN__OWNER_REGRESSION_PASS__CENTRAL_CONFORMANCE_PENDING",
