@@ -1,0 +1,18 @@
+{
+  "signal_id": "sig-20261011-agent-productization-drift",
+  "signal_type": "USER_REPORTED_SYSTEMIC_FAILURE",
+  "source": "current-chat-user-correction",
+  "observed_at": "2026-10-11T05:10:00+08:00",
+  "subject": "UNIVERSAL_AGENT_CONTROL_PLANE",
+  "summary": "GitHub migration and Agent mode lacked an explicit productization contract, thin-hot-path enforcement, architecture monitoring and a non-authoritative signal plane; user had to repeatedly prompt the control plane to examine those dimensions.",
+  "evidence_refs": [
+    "AGENT_ARCHITECTURE_CONTRACT.json",
+    "audits/AGENT_ARCHITECTURE_ROLLOUT_2026-10-11.json",
+    "ENTRYPOINT.md",
+    "STARTUP_HOOK.md"
+  ],
+  "severity": "HIGH",
+  "authoritative_state_mutation": false,
+  "consumption_status": "IN_PROGRESS_BY_ACTIVE_MAINTENANCE_WRITER",
+  "active_lease": "lease-ada3389a-6b09-4713-bc2a-ae7391582224"
+}
