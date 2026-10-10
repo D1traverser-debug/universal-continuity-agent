@@ -7,15 +7,20 @@ Applies to: Universal Continuity maintenance/evolution
 
 Universal Continuity should proactively learn from relevant agent systems, Skills, harnesses, durable-execution frameworks, official product documentation, engineering write-ups, videos and high-signal community evidence. Learning is not permission to accumulate instructions indefinitely. The goal is to discover missing capabilities, verify them, distill only scope-relevant improvements, and leave mechanical evidence when the system changes.
 
+System maintenance autonomy is governed by `SYSTEM_MAINTENANCE_POLICY.json`. Learning is one input to that maintenance loop, not a reason to wait for the user to notice or enumerate adjacent system defects.
+
 ## Trigger model
 
 Proactive scouting is allowed and expected when any of these are true:
 
 1. the user explicitly asks Continuity to learn/evolve;
 2. a real recovery exposes a capability gap, drift or weak owner conformance;
-3. OpenAI/agent-runtime authority materially changes;
-4. the maintenance task reaches a learning/audit stage;
-5. a new owner integration requires a pattern not covered by the current contract.
+3. the assistant itself detects a systemic gap, propagation failure, stale authority assumption, duplicated mechanism or weak maintenance boundary;
+4. OpenAI/agent-runtime authority materially changes;
+5. the maintenance task reaches a learning/audit stage;
+6. a new owner integration requires a pattern not covered by the current contract.
+
+When a trigger reveals a concrete maintenance defect, do not stop at diagnosis or a user-facing explanation. Continue through the autonomous maintenance loop in `SYSTEM_MAINTENANCE_POLICY.json` unless the exact boundary requires external account/UI action, permission, credential, irreversible user choice, or a fact that cannot be safely inferred/retrieved.
 
 Do not put broad web/video scouting on the steady-state path of ordinary business turns. Continuity exists to reduce context and latency, not to make every response a research project.
 
@@ -47,9 +52,12 @@ For each candidate improvement:
 9. record the accepted/rejected disposition in a learning-pass artifact;
 10. checkpoint the maintenance task only after authoritative writes are verified.
 
+If the learning pass exposes adjacent defects that are within the same maintenance authority and can be safely repaired, include them in the same maintenance closure rather than waiting for the user to point them out one by one. Avoid scope creep: adjacent repairs must be causally related, bounded, and validated.
+
 ## What belongs where
 
 - Global invariants: `CONTINUITY_CONTRACT.json` / `PROTOCOL.md`.
+- System-maintenance autonomy and recordkeeping: `SYSTEM_MAINTENANCE_POLICY.json`.
 - Narrow reusable procedure: a Skill or focused policy file.
 - Owner business behavior: owner repository, never duplicated into Universal Continuity.
 - Current task progress: short handoff/checkpoint.
@@ -82,4 +90,5 @@ Keep these as research lanes, not hard dependencies:
 - long-running agent harnesses and incremental progress artifacts;
 - multi-agent delegation and independent verification;
 - durable execution/checkpoint systems;
-- owner adapters and cross-store versioning.
+- owner adapters and cross-store versioning;
+- proactive system maintenance closure and drift detection.
