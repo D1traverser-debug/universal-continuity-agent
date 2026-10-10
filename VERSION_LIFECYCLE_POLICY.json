@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "continuity_protocol": "3.7",
+  "purpose": "Keep one active Continuity protocol while preserving business history and providing explicit migration edges.",
+  "active_working_tree": {
+    "active_protocol_count": 1,
+    "active_protocol": "3.7",
+    "superseded_protocol_implementation_storage": "GIT_HISTORY_ONLY",
+    "historical_business_state_storage": "OWNER_AUTHORITY_AND_REFERENCED_ARTIFACTS",
+    "completed_migration_artifacts": "ARCHIVE_OR_DELETE_FROM_ACTIVE_ROOT_AFTER_CONSOLIDATION"
+  },
+  "versioning": {
+    "patch_hardening_requires_protocol_bump": false,
+    "minor_semantic_change_requires_protocol_bump": true,
+    "breaking_semantic_change_requires_protocol_bump": true,
+    "examples_patch": ["tests", "owner conformance", "documentation", "cleanup", "compatible adapters"],
+    "principle": "Do not create a new protocol version for every internal improvement."
+  },
+  "chat_behavior": {
+    "protocol_version_pinned_at_chat_creation": false,
+    "user_migration_required": false,
+    "same_chat_protocol_reconciliation_preserves_lease": true,
+    "new_chat_takeover_increments_resume_epoch": true
+  },
+  "metadata": {
+    "canonical_new_field": "continuity_protocol_version",
+    "legacy_compatibility_field": "contract_version",
+    "domain_contract_should_be_separate": true,
+    "last_reconciliation_field": "last_protocol_reconciled_at"
+  },
+  "supported_migration_edges": [
+    {
+      "from": "3.3",
+      "to": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY",
+      "business_state_rewrite": false,
+      "lease_takeover_required": false
+    },
+    {
+      "from": "3.5",
+      "to": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY",
+      "business_state_rewrite": false,
+      "lease_takeover_required": false
+    },
+    {
+      "from": "3.6",
+      "to": "3.7",
+      "classification": "MIGRATABLE",
+      "strategy": "ADDITIVE_PROTOCOL_OVERLAY",
+      "business_state_rewrite": false,
+      "lease_takeover_required": false
+    }
+  ],
+  "migration_invariants": [
+    "Preserve task_id, owner business state, current_stage, next_action, business artifacts and valid active lease unless the business owner itself requires a migration.",
+    "Protocol migration may add observability, metadata and compatibility fields without replaying completed business work.",
+    "Unknown or unsupported old state fails closed instead of being guessed from chat memory.",
+    "Historical paused/archived tasks may be migrated lazily when explicitly resumed; they do not need eager writes merely because the protocol changed."
+  ],
+  "cleanup": {
+    "delete_superseded_root_runtime_docs_when_current_authority_exists": true,
+    "git_history_is_implementation_archive": true,
+    "never_delete_business_evidence_for_protocol_cleanup": true,
+    "never_keep_parallel_active_protocol_copies_for_convenience": true
+  }
+}
