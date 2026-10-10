@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
-  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, or maintainability issue is detected, the active maintenance writer owns the repair loop by default.",
+  "principle": "The user is not the system maintenance operator. When a system-level defect, drift, propagation gap, regression, lifecycle ambiguity, or maintainability issue is detected, the active maintenance writer owns the repair loop by default.",
   "triggers": [
     "ASSISTANT_DETECTS_SYSTEMIC_GAP",
     "USER_REPORT_REVEALS_SYSTEMIC_GAP",
@@ -11,12 +11,16 @@
     "OWNER_ENTRYPOINT_OR_CAPABILITY_DRIFT",
     "AUTHORITY_OR_PERSISTENCE_INCONSISTENCY",
     "DUPLICATE_OR_SUPERSEDED_MECHANISM_FOUND",
-    "EXECUTION_EVIDENCE_OR_PROPAGATION_GAP"
+    "EXECUTION_EVIDENCE_OR_PROPAGATION_GAP",
+    "ARTIFACT_CONTEXT_OR_CACHE_DRIFT",
+    "CHAT_ONLY_MATERIAL_CHANGE_NOT_PERSISTED"
   ],
   "default_autonomy": {
     "diagnose_root_cause": true,
     "inspect_authoritative_state_before_write": true,
+    "classify_artifact_context_and_cache_authority": true,
     "apply_smallest_safe_fix": true,
+    "remove_or_demote_superseded_active_mechanisms_when_safe": true,
     "add_or_update_regression_guard_when_testable": true,
     "run_or_observe_relevant_ci": true,
     "update_authoritative_status_and_handoff": true,
@@ -37,6 +41,14 @@
     "REREAD_AUTHORITATIVE_STATE",
     "REPORT_EXACT_RESULT_AND_REMAINING_BOUNDARY"
   ],
+  "artifact_context_governance": {
+    "policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+    "stale_cache_is_authority": false,
+    "chat_only_material_change_is_durable": false,
+    "external_reference_presence_implies_authority": false,
+    "superseded_engineering_implementation_kept_active_by_default": false,
+    "owner_business_evidence_retention_is_domain_owned": true
+  },
   "required_durable_record": {
     "when_material_change_occurs": true,
     "fields": [
@@ -70,6 +82,7 @@
   "scope_boundaries": {
     "do_not_steal_other_active_owner_lease": true,
     "do_not_rewrite_domain_business_truth_from_maintenance_task": true,
+    "do_not_delete_business_evidence_without_owner_retention_authority": true,
     "do_not_add_permanent_agent_without_invocation_executor_evidence_contract": true,
     "do_not_bump_protocol_for_compatible_internal_hardening": true,
     "do_not_claim_product_e2e_without_real_product_evidence": true,
