@@ -40,7 +40,7 @@ Everything else is event-driven. Load an authority only when the current action 
 - **Recovery gap** -> `CONTEXT_RECOVERY_POLICY.json`, then exact artifact refs, then selective history only if still needed.
 - **Material GitHub-backed business execution** -> `OWNER_REGISTRY.json` for current owner membership/pointers, `EXECUTION_READINESS_CONTRACT.json`, exact owner Skill/entrypoint, exact owner `continuity/EXECUTION_CAPABILITIES.json`, then current-session handshake only for required capabilities. `OWNER_EXECUTION_REGISTRY.json` is a rebuildable pointer/status cache, not membership authority.
 - **Artifact/file/storage operation** -> `artifact_io@1.0` profile from `OWNER_ADAPTER_CONTRACT.json`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when its semantics are needed.
-- **Maintenance/repeated failure/drift/cleanup** -> `operational_hygiene@1.0`; load `SYSTEM_MAINTENANCE_POLICY.json`.
+- **Maintenance/repeated failure/drift/cleanup, including a material user correction that challenges maintenance method or global completeness** -> `operational_hygiene@1.0`; load `SYSTEM_MAINTENANCE_POLICY.json` and use its current meta-maintenance depth rules before adopting a proposed mechanism.
 - **Durable learning/evolution claim** -> `evolution@1.0`; load `CONTINUOUS_LEARNING_POLICY.md`.
 - **Media evidence/distillation** -> `MEDIA_DISTILLATION_PROTOCOL.md`.
 - **Architecture/control-plane review** -> `SYSTEM_BLUEPRINT.md` plus only the implicated contracts/policies.
@@ -111,10 +111,10 @@ Before a material owner action:
 5. evaluate the owner's methodology declaration with `runtime/methodology_conformance.py:evaluate_methodology_conformance`; every contract profile must have explicit applicability evidence, and any `APPLIES` profile must be exact-version bound before execution proceeds;
 6. determine which bound methodology profiles are activated by the concrete action/event and load only those profiles;
 7. route via owner-native, permitted CHAT_BRIDGED, deterministic, or attested-isolated execution as allowed;
-8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.2 `profile_runs` evidence with profile version, activation id/trigger, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
+8. for every activated methodology profile that supports or constrains the material action, assemble receipt-contract-1.3 `profile_runs` evidence with profile version, activation id/trigger, exact task/stage/action plus subject/input binding, explicit `INVOKED`/`NOT_APPLICABLE_FOR_ACTION` assessment for every profile hook, and stable evidence refs;
 9. require an independent evidence verifier for referenced evidence **and** a separate independent hook-assessment verifier that judges whether the verified refs and stated reason actually support each hook assessment; a real but irrelevant ref is not proof;
-10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` before claiming the profile-dependent gate or action is operationally complete;
-11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
+10. evaluate the activated subset with `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance` against an external action expectation before claiming the profile-dependent gate or action is operationally complete;
+11. if declaration applicability is missing/inconsistent, fail closed before the action; if an activated profile lacks a current receipt, exact action binding, complete hook assessment, verified evidence ref, semantic assessment verification, or independent verifier, fail closed only for that profile-dependent action/gate; declaration conformance, owner regression or CI must not substitute for missing operational proof;
 12. block only the exact hard capability/profile-dependent gate that is unavailable;
 13. require execution/artifact/review receipts for gates that claim completion;
 14. when an execution receipt is used as proof, validate its exact task/stage/capability/action plus owner-required subject/input bindings through `runtime/execution_receipt.py`; apply owner-required anti-replay identities for distinct/single-use executions.
@@ -133,11 +133,13 @@ Shared cross-agent methodology is composed rather than inherited as a giant pare
 
 Owners pin exact profile versions and bind local hooks. Floating `latest` is forbidden. Every current contract profile also has a mandatory applicability assessment. `APPLIES` requires binding; `NOT_APPLICABLE` requires a concrete reason and owner-local evidence refs. Domain specialization may change implementation, taxonomy, thresholds or evaluator selection inside allowed boundaries; it may not weaken authority precedence, single-writer semantics, verified commit, candidate-vs-production separation, evidence-gated promotion, or destructive-mutation safety.
 
-Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete. Under receipt contract 1.2, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
+Operational methodology conformance is event/action scoped. It must be evaluated only for profiles activated by the current action, but for those activated profiles it is mandatory before the profile-dependent action can be represented as operationally complete. Under receipt contract 1.3, exact action binding, reference verification and semantic hook-claim verification are distinct requirements; evidence existence alone cannot establish that a hook ran or was genuinely inapplicable.
 
 ## Learning and maintenance
 
 External advice, user analogies, assistant first ideas and other Agent/framework proposals are candidates, not architecture authority. For nontrivial adoption: inspect current authority, separate goal from proposed mechanism, compare a credible alternative, actively seek a failure mode/counterexample, then require relevant eval/regression evidence before production promotion.
+
+A material user correction or challenge to maintenance completeness is itself a maintenance/evolution signal; it must be classified and reviewed through the current `SYSTEM_MAINTENANCE_POLICY.json` rather than being treated as a direct implementation command. The policy decides whether external learning, instruction-surface change, cross-subsystem propagation and full-depth audit are required. Do not add prompt/instruction text merely because a runtime/schema/eval defect was discovered.
 
 When a systemic defect or repeated owner failure is inside the current maintenance writer's authority, follow the maintenance closure instead of stopping at explanation. The user does not maintain the internal defect backlog.
 
@@ -167,7 +169,7 @@ Continuity stays off the steady-state business hot path:
 - methodology profiles loaded only when their activation event occurs;
 - operational methodology validation only for the profiles activated by the current material action;
 - exact receipt-binding validation only when an execution receipt is being used to satisfy a gate/claim;
-- maintenance/research/audits are cold path;
+- meta-maintenance learning/research/harness work is cold path and activated only for systemic/nontrivial maintenance, not ordinary business turns;
 - old chat history is last resort;
 - no material change means no heartbeat write.
 
