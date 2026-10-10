@@ -40,13 +40,29 @@ def test_historical_fresh_chat_acceptance_is_real_but_not_an_open_world_owner_co
     bootstrap = load("NEW_CHAT_BOOTSTRAP.json")
 
     assert status["schema_version"] == "3.7"
+    assert "KNOWN_TOPOLOGY_PRODUCT_E2E" in status["status"]
+    assert "NEW_OWNER_COLD_START_PRODUCT_E2E_PENDING" in status["status"]
     assert trigger["account_level_hook_required"] is True
     assert trigger["end_to_end_bare_inherit_claim"] is True
+    assert trigger["end_to_end_bare_inherit_claim_scope"] == "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME"
+    assert trigger["new_owner_cold_start_end_to_end_claim"] is False
     assert evidence["bare_command"] == "继承"
     assert evidence["required_owner_quorum"] >= 1
     assert evidence["required_owner_quorum_succeeded"] is True
+    assert evidence["historical_observed_quorum_only"] is True
+    assert evidence["scope"] == "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME"
     assert evidence["authoritative_default_candidate_count"] >= 0
     assert evidence["live_candidate_names_persisted_in_public_harness"] is False
+
+    fresh = status["product_e2e"]["fresh_chat"]
+    new_owner = status["product_e2e"]["new_owner_cold_start"]
+    assert fresh["status"] == "PASS"
+    assert fresh["scope"] == "KNOWN_OWNER_TOPOLOGY_AT_EVIDENCE_TIME"
+    assert fresh["proves_future_new_owner_admission"] is False
+    assert new_owner["status"] == "PENDING_REAL_PRODUCT_EVIDENCE"
+    assert new_owner["mechanical_membership_assurance"] == "REGRESSION_VERIFIED"
+    assert new_owner["synthetic_fixture_is_product_e2e"] is False
+    assert status["execution_propagation"]["new_owner_cold_start_product_e2e"] == "PENDING_REAL_CHAT_EVIDENCE"
 
     # Historical observed counts are evidence about that trajectory, not the current
     # membership contract. The current quorum must be re-derived from OWNER_REGISTRY.
