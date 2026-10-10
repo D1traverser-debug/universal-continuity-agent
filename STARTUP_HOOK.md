@@ -19,7 +19,7 @@ Use this semantic rule in ChatGPT Custom Instructions / Personalization, or an e
 >
 > 裸“继承/继续/恢复”必须完成当前协议要求的完整任务发现后再返回候选；不得根据记忆猜测任务，不得把部分候选冒充完整列表。明确指定任务名时，读取权威 checkpoint，先报告“继承前进度”，再执行 compatibility check、必要协议适配和合法 takeover，然后从真实 `current_stage / next_action` 继续。
 >
-> 对任何已进入 Continuity 管理的持久任务，每次最终答复末尾报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
+> 对任何已进入 Continuity 管理的持久任务，**包括升级前已经打开/继承的旧对话**，每次最终答复末尾报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。只有权威状态写入并回读验证后才可声称 COMMITTED。
 >
 > 对任何 GitHub-backed durable business Agent，在执行 material stage / next_action / work order 前，刷新该 owner 当前 GitHub `main` 的 Skill/执行入口与 `continuity/EXECUTION_CAPABILITIES.json`，只对当前动作需要的能力做 session capability handshake。Agent 名称、Prompt、Skill、配置或代码 stub 不等于当前聊天已经执行。只有 owner contract 明确允许时才可 CHAT_BRIDGED；需要真实隔离的 gate 必须有 ATTESTED_ISOLATED execution/context/trace 证据。缺少 hard capability 时只阻塞对应 stage/gate，不得绕过，也不得把整个 Agent 判死。
 >
