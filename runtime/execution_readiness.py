@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 
 class Assurance(str, Enum):
@@ -64,6 +64,8 @@ class CapabilitySpec:
         evidence = raw.get("evidence_contract")
         if not isinstance(evidence, (list, tuple)) or not evidence:
             raise ValueError(f"{raw.get('capability_id')}: evidence_contract must be non-empty")
+        if not isinstance(raw.get("side_channel_allowed"), bool):
+            raise ValueError(f"{raw.get('capability_id')}: side_channel_allowed must be boolean")
         return cls(
             capability_id=str(raw["capability_id"]),
             scope=str(raw["scope"]),
@@ -71,7 +73,7 @@ class CapabilitySpec:
             invocation_path=str(raw["invocation_path"]).strip(),
             executor_type=str(raw["executor_type"]).strip(),
             evidence_contract=tuple(str(item) for item in evidence if str(item).strip()),
-            side_channel_allowed=bool(raw["side_channel_allowed"]),
+            side_channel_allowed=raw["side_channel_allowed"],
             safe_degraded_modes=tuple(str(item) for item in raw.get("safe_degraded_modes", ()) if str(item).strip()),
         )
 
@@ -84,6 +86,7 @@ class SessionObservation:
     execution_mode: str
     executor_identity: str | None = None
     proof_ref: str | None = None
+    route_ref: str | None = None
 
     @classmethod
     def from_mapping(cls, raw: Mapping[str, Any]) -> "SessionObservation":
@@ -94,6 +97,7 @@ class SessionObservation:
             execution_mode=str(raw["execution_mode"]),
             executor_identity=(str(raw["executor_identity"]) if raw.get("executor_identity") else None),
             proof_ref=(str(raw["proof_ref"]) if raw.get("proof_ref") else None),
+            route_ref=(str(raw["route_ref"]) if raw.get("route_ref") else None),
         )
 
 
@@ -114,6 +118,9 @@ class RouteDecision:
     execution_modes: tuple[str, ...]
 
 
+AttestationVerifier = Callable[[SessionObservation], bool]
+
+
 def validate_owner_profile(raw: Mapping[str, Any]) -> list[str]:
     problems: list[str] = []
     if not str(raw.get("owner") or "").strip():
@@ -127,7 +134,7 @@ def validate_owner_profile(raw: Mapping[str, Any]) -> list[str]:
     for idx, item in enumerate(capabilities):
         try:
             spec = CapabilitySpec.from_mapping(item)
-        except Exception as exc:  # validation surface, not execution path
+        except Exception as exc:
             problems.append(f"capability[{idx}]:{exc}")
             continue
         if not spec.invocation_path:
@@ -138,10 +145,7 @@ def validate_owner_profile(raw: Mapping[str, Any]) -> list[str]:
             problems.append(f"duplicate_capability:{spec.capability_id}")
         seen.add(spec.capability_id)
         if spec.assurance_ceiling != Assurance.DECLARED_ONLY and spec.invocation_path.lower() in {
-            "prompt only",
-            "prompt-only",
-            "documentation only",
-            "docs only",
+            "prompt only", "prompt-only", "documentation only", "docs only",
         }:
             problems.append(f"{spec.capability_id}:non_declared_assurance_without_real_invocation")
     return problems
@@ -169,19 +173,27 @@ def evaluate_execution(
     owner_profile: Mapping[str, Any],
     requirements: Sequence[CapabilityRequirement],
     session_observations: Iterable[Mapping[str, Any] | SessionObservation],
+    *,
+    attestation_verifier: AttestationVerifier | None = None,
 ) -> RouteDecision:
-    """Evaluate whether the current execution window can satisfy an owner's next action.
+    """Evaluate current-session execution readiness without trusting self-asserted assurance.
 
-    Repository declarations establish only a maximum assurance ceiling. Current-session
-    observations are required to claim actual execution readiness. This prevents a Skill,
-    agent registry row, or code path from being mistaken for a currently runnable executor.
+    Repository declarations are ceilings. Session observations are control inputs: duplicate
+    observations fail closed, owner-forbidden side channels require the observed route to bind
+    the owner invocation path, and ATTESTED_ISOLATED additionally requires a caller-supplied
+    verifier for the asserted executor/proof identity. The verifier contract is separate from
+    the observation so a non-empty proof_ref cannot attest itself.
     """
 
     capabilities = load_capabilities(owner_profile)
     observations: dict[str, SessionObservation] = {}
+    duplicate_observations: set[str] = set()
     for raw in session_observations:
         obs = raw if isinstance(raw, SessionObservation) else SessionObservation.from_mapping(raw)
-        observations[obs.capability_id] = obs
+        if obs.capability_id in observations:
+            duplicate_observations.add(obs.capability_id)
+        else:
+            observations[obs.capability_id] = obs
 
     ready: list[str] = []
     degraded: list[str] = []
@@ -190,53 +202,68 @@ def evaluate_execution(
 
     for req in requirements:
         spec = capabilities.get(req.capability_id)
+        target = blockers if req.hard else degraded
         if spec is None:
-            message = f"missing_owner_capability:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
+            target.append(f"missing_owner_capability:{req.capability_id}")
             continue
-
+        if req.capability_id in duplicate_observations:
+            target.append(f"duplicate_session_observation:{req.capability_id}")
+            continue
         if spec.assurance_ceiling == Assurance.DECLARED_ONLY:
-            message = f"declared_only:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
+            target.append(f"declared_only:{req.capability_id}")
             continue
 
         obs = observations.get(req.capability_id)
         if obs is None:
-            message = f"session_capability_unobserved:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
+            target.append(f"session_capability_unobserved:{req.capability_id}")
+            continue
+        if obs.availability in {Availability.BLOCKED, Availability.UNKNOWN}:
+            target.append(f"session_{obs.availability.value.lower()}:{req.capability_id}")
             continue
 
-        if obs.availability in {Availability.BLOCKED, Availability.UNKNOWN}:
-            message = f"session_{obs.availability.value.lower()}:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
-            continue
+        if not spec.side_channel_allowed:
+            if not obs.route_ref:
+                target.append(f"owner_route_unobserved:{req.capability_id}")
+                continue
+            if obs.route_ref != spec.invocation_path:
+                target.append(f"owner_route_mismatch:{req.capability_id}")
+                continue
 
         effective = _effective_assurance(spec, obs)
         if ASSURANCE_RANK[effective] < ASSURANCE_RANK[req.min_assurance]:
-            message = (
-                f"insufficient_assurance:{req.capability_id}:"
-                f"required={req.min_assurance.value}:effective={effective.value}"
+            target.append(
+                f"insufficient_assurance:{req.capability_id}:required={req.min_assurance.value}:effective={effective.value}"
             )
-            (blockers if req.hard else degraded).append(message)
             continue
 
         if req.accepted_modes and obs.execution_mode not in req.accepted_modes:
-            message = f"execution_mode_not_allowed:{req.capability_id}:{obs.execution_mode}"
-            (blockers if req.hard else degraded).append(message)
+            target.append(f"execution_mode_not_allowed:{req.capability_id}:{obs.execution_mode}")
             continue
 
-        if req.min_assurance == Assurance.ATTESTED_ISOLATED and (not obs.executor_identity or not obs.proof_ref):
-            message = f"isolated_execution_missing_attestation:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
-            continue
+        if req.min_assurance == Assurance.ATTESTED_ISOLATED:
+            if obs.execution_mode != "ISOLATED_EXTERNAL":
+                target.append(f"isolated_execution_mode_invalid:{req.capability_id}:{obs.execution_mode}")
+                continue
+            if not obs.executor_identity or not obs.proof_ref:
+                target.append(f"isolated_execution_missing_attestation:{req.capability_id}")
+                continue
+            if attestation_verifier is None:
+                target.append(f"isolated_execution_attestation_verifier_required:{req.capability_id}")
+                continue
+            try:
+                attested = bool(attestation_verifier(obs))
+            except Exception:
+                attested = False
+            if not attested:
+                target.append(f"isolated_execution_attestation_unverified:{req.capability_id}")
+                continue
 
         if obs.availability == Availability.PARTIAL:
             if spec.safe_degraded_modes and obs.execution_mode in spec.safe_degraded_modes:
                 degraded.append(f"safe_degraded:{req.capability_id}:{obs.execution_mode}")
                 modes.append(obs.execution_mode)
                 continue
-            message = f"partial_without_safe_degraded_path:{req.capability_id}"
-            (blockers if req.hard else degraded).append(message)
+            target.append(f"partial_without_safe_degraded_path:{req.capability_id}")
             continue
 
         ready.append(req.capability_id)
