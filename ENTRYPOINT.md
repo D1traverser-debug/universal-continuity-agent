@@ -14,6 +14,8 @@ If required Continuity resources cannot actually be accessed, fail closed with `
 
 Universal Continuity owns discovery, routing, compatibility, takeover lease semantics, progress observability, recovery pointers and cross-agent control-plane invariants. Domain owners retain business rules, business state machines, evidence and business artifacts. The sibling execution plane owns capability handshake/routing evidence, not business state.
 
+`OWNER_REGISTRY.json` is the **sole control-plane owner-membership authority**. Business-owner membership, bare-inherit participation and the source pointers needed to derive discovery/audit scope are declared there. `BARE_INHERIT_DISCOVERY.json`, execution/adaptation registries and audit outputs may derive or cache owner information; they must not become parallel owner-name authorities.
+
 ## Intent precedence
 
 `学习继承，任务不继承` applies to **NEW_TASK**. Explicit continuation intent (`继承`, `继续`, `恢复`, `接着上次`, or a named continuation) is `CONTINUE` first.
@@ -31,11 +33,12 @@ Everything else is event-driven. Load an authority only when the current action 
 
 ## Event-driven authority loading matrix
 
-- **Bare CONTINUE** -> `BARE_INHERIT_DISCOVERY.json` + owner metadata/index sources required for complete discovery.
+- **Bare CONTINUE** -> `BARE_INHERIT_DISCOVERY.json`, then derive the current required owner/source quorum from `OWNER_REGISTRY.json`; never use a remembered/copied owner list or historical owner count.
 - **Named CONTINUE** -> exact owner/task manifest + short owner checkpoint first; skip global discovery unless resolution is ambiguous.
+- **New owner admission / owner-topology change** -> `OWNER_REGISTRY.json` + only the derived discovery/adaptation/execution conformance surfaces required to prove convergence. Registration must not require editing a second owner-name allowlist.
 - **Protocol mismatch** -> `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
 - **Recovery gap** -> `CONTEXT_RECOVERY_POLICY.json`, then exact artifact refs, then selective history only if still needed.
-- **Material GitHub-backed business execution** -> `OWNER_EXECUTION_REGISTRY.json`, `EXECUTION_READINESS_CONTRACT.json`, exact owner Skill/entrypoint, exact owner `continuity/EXECUTION_CAPABILITIES.json`, then current-session handshake only for required capabilities.
+- **Material GitHub-backed business execution** -> `OWNER_REGISTRY.json` for current owner membership/pointers, `EXECUTION_READINESS_CONTRACT.json`, exact owner Skill/entrypoint, exact owner `continuity/EXECUTION_CAPABILITIES.json`, then current-session handshake only for required capabilities. `OWNER_EXECUTION_REGISTRY.json` is a rebuildable pointer/status cache, not membership authority.
 - **Artifact/file/storage operation** -> `artifact_io@1.0` profile from `OWNER_ADAPTER_CONTRACT.json`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when its semantics are needed.
 - **Maintenance/repeated failure/drift/cleanup** -> `operational_hygiene@1.0`; load `SYSTEM_MAINTENANCE_POLICY.json`.
 - **Durable learning/evolution claim** -> `evolution@1.0`; load `CONTINUOUS_LEARNING_POLICY.md`.
@@ -57,7 +60,7 @@ A rename never changes `task_id`. Same goal/same work keeps the same task. A mat
 After routing to Continuity:
 
 1. classify CONTINUE vs NEW_TASK;
-2. resolve exact task or complete bare candidates;
+2. resolve exact task or, for bare CONTINUE, derive the **current** discovery quorum from `OWNER_REGISTRY.json` and complete all derived sources;
 3. read authoritative manifest + short checkpoint;
 4. capture and show **继承前进度** before takeover mutation;
 5. reconcile compatibility only if needed;
@@ -67,7 +70,20 @@ After routing to Continuity:
 
 Same-chat protocol/control-plane refresh preserves the current lease and `resume_epoch`. Only a genuine new-chat takeover changes them.
 
-If a required bare-discovery source fails, return `INCOMPLETE_DISCOVERY`; never present a partial list as authoritative total.
+If a derived required bare-discovery source fails, return `INCOMPLETE_DISCOVERY`; never present a partial list as authoritative total.
+
+## Owner admission and topology
+
+A durable business owner is admitted by one canonical membership declaration in `OWNER_REGISTRY.json` with `owner_kind=BUSINESS` plus its checkpoint/protocol/execution pointers. A bare-inherit participant additionally declares `bare_inherit_participant=true` and a `bare_inherit_source`.
+
+After that declaration:
+
+1. `runtime/owner_topology.py` derives the current business-owner and bare-discovery sets;
+2. bare discovery and system-audit scope must include the new owner without another name-list edit;
+3. rebuildable protocol-adaptation and execution registries must converge to the derived BUSINESS set;
+4. until convergence, owner-admission conformance fails closed rather than silently omitting the owner.
+
+A historical E2E run over the previous owner set does not prove this admission path works in a genuinely fresh product chat for a later owner. Dynamic membership mechanics may be regression-verified synthetically; open-world new-owner product support requires a real post-admission fresh-chat trajectory.
 
 ## Bare inherit eligibility
 
@@ -122,6 +138,8 @@ External advice, user analogies, assistant first ideas and other Agent/framework
 
 When a systemic defect or repeated owner failure is inside the current maintenance writer's authority, follow the maintenance closure instead of stopping at explanation. The user does not maintain the internal defect backlog.
 
+Before declaring a nontrivial repair "done", apply `evolution@1.0` second-order challenge / closure calibration to the **accepted fix itself**. In particular, distinguish closed-world evidence (known owners/cases at test time) from open-world claims (future owner admission/generalization). A green CI on a synthetic new owner is not a real fresh-product-chat trajectory.
+
 ## Progress observability
 
 For every final response on an active durable task, emit exactly one `进度提交` state:
@@ -138,6 +156,7 @@ A tool-success response, cache write or model memory is never commit proof.
 
 Continuity stays off the steady-state business hot path:
 - global discovery only for bare continuation or unresolved routing;
+- current owner topology derived from `OWNER_REGISTRY.json`, never a fixed copied owner list;
 - metadata before content;
 - short checkpoint before deep artifacts;
 - targeted execution handshake only for current action;
@@ -152,7 +171,7 @@ Continuity stays off the steady-state business hot path:
 
 1. compatible authoritative domain runtime/checkpoint;
 2. authoritative task/system manifest for routing/lease/protocol metadata;
-3. current GitHub `main` engineering authority for code/contracts/profiles;
+3. current GitHub `main` engineering authority for code/contracts/profiles, including `OWNER_REGISTRY.json` for owner membership;
 4. explicitly owner-referenced business evidence required now;
 5. rebuildable registries/caches;
 6. external references unless explicitly designated by owner contract;
