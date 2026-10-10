@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 11,
+  "manifest_version": 12,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,12 +10,13 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-10T01:58:00Z",
-  "current_stage": "V3_7_FULL_SYSTEM_REGRESSION_PASS__PRODUCT_E2E_AND_LAZY_OWNER_RECONCILIATION_PENDING",
-  "next_action": "完成一次真实 fresh-chat 产品级验收：账户级 Continuity startup/backstop 规则存在后，新聊天先仅发送‘继承’验证 5-source discovery；随后明确恢复‘跨对话继承系统建设与维护’，验证继承前进度 -> compatibility -> takeover -> 进度提交。其他活跃 owner 的 v3.7 reconciliation 由各自合法 writer 在下一次 durable turn lazy 执行，不由维护任务抢 lease。",
+  "updated_at": "2026-10-10T02:18:00Z",
+  "current_stage": "V3_7_UNIVERSAL_EXECUTION_CONTROL_PLANE_ACTIVE__PRODUCT_E2E_AND_OWNER_RUNTIME_HANDSHAKES_PENDING",
+  "next_action": "后续 GitHub-backed business Agent 的 material next_action 统一执行 owner EXECUTION_CAPABILITIES -> targeted session capability handshake -> execution_readiness route -> owner executor/gateway -> receipt -> owner checkpoint；在 Financial Writing、A股、Video Growth 的真实下一轮分别验 owner runtime handshake，不新增无 invocation/executor/evidence 的永久角色。Continuity 仍待一次真正 fresh-chat 产品级继承前进度/takeover/进度提交 E2E；其他 active owner 的 v3.7 protocol reconcile 由各自合法 writer lazy 完成。",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
+  "execution_readiness_contract_version": "1.0",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 1,
@@ -27,10 +28,13 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲", "系统回归"],
+  "keywords": ["继承系统", "跨对话继承", "Continuity", "Universal Continuity", "系统维护", "总调度", "GitHub Agent", "execution harness", "execution readiness", "capability handshake", "任务接入", "候选一致性", "启动钩子", "Custom Instructions", "handoff", "上下文恢复", "媒体蒸馏", "继承前进度", "进度提交", "持续学习", "版本生命周期", "旧对话适配", "系统大纲", "系统回归"],
   "artifact_refs": [
     "ENTRYPOINT.md",
     "SYSTEM_BLUEPRINT.md",
+    "ORCHESTRATION_BLUEPRINT.md",
+    "EXECUTION_READINESS_CONTRACT.json",
+    "OWNER_EXECUTION_REGISTRY.json",
     "CURRENT_PROTOCOL.json",
     "STARTUP_HOOK.md",
     "PROTOCOL.md",
@@ -47,9 +51,11 @@
     "OWNER_REGISTRY.json",
     "HARNESS_STATUS.json",
     "runtime/protocol_reconciliation.py",
+    "runtime/execution_readiness.py",
     "skills/universal-continuity/SKILL.md",
     "archive/migrations/2026-10-09-library-to-github.md",
     "audits/OWNER_HANDOFF_AUDIT_2026-10-09.md",
-    "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md"
+    "audits/SYSTEM_REGRESSION_AUDIT_2026-10-10.md",
+    "audits/CROSS_AGENT_EXECUTION_READINESS_2026-10-10.md"
   ]
 }
