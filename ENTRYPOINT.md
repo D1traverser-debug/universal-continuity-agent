@@ -18,6 +18,8 @@ Chat is an ephemeral execution window. Task is the durable object.
 
 Universal Continuity owns task discovery, routing, resume eligibility, compatibility, takeover lease semantics, human-readable task labels, progress observability and recovery pointers. It does not duplicate domain business logic or domain state machines.
 
+For GitHub-backed business agents, task routing is followed by the sibling Universal Execution Harness. That execution layer owns capability handshake and routing evidence, not business state. See `ORCHESTRATION_BLUEPRINT.md` and `EXECUTION_READINESS_CONTRACT.json`.
+
 ## Intent precedence
 
 The durable principle `学习继承，任务不继承` applies to **NEW_TASK** only.
@@ -142,6 +144,25 @@ Every resumed task must be classified as one of:
 - `INCOMPATIBLE`: do not replay obsolete execution semantics; preserve only still-valid requirements/evidence/artifacts.
 - `UNKNOWN`: fail closed until authority is resolved.
 
+## GitHub-backed owner execution
+
+After the exact task/owner and valid writer state are known, do **not** assume the owner is executable merely because its repository contains Skills, agents, roles, workflow JSON or code.
+
+For a GitHub-backed business owner:
+
+1. read `OWNER_EXECUTION_REGISTRY.json` and the owner's `continuity/EXECUTION_CAPABILITIES.json`;
+2. identify only the capabilities needed by the authoritative `next_action`;
+3. perform a current-session capability handshake;
+4. evaluate with `runtime/execution_readiness.py`;
+5. route through the owner-native runtime, a permitted `CHAT_BRIDGED` path, deterministic tools, or an attested isolated executor;
+6. if a hard requirement is unavailable or below required assurance, block that exact capability rather than pretending the specialist executed;
+7. never bypass an owner-declared `side_channel_allowed=false` path with an ad-hoc conversational tool call;
+8. require execution/artifact/review receipts before the corresponding owner gate can count as complete.
+
+`DECLARED_ONLY` is not execution. `HARNESS_WIRED` is not proof that the current session can run it. `SESSION_EXECUTABLE` requires observed current-session capability. `ATTESTED_ISOLATED` requires distinct execution identity/context/proof when the domain gate demands real independence.
+
+This execution-readiness system is a sibling control plane with contract version `1.0`; it does not change the Continuity protocol version by itself.
+
 ## Continuous learning
 
 Follow `CONTINUOUS_LEARNING_POLICY.md` and `MEDIA_DISTILLATION_PROTOCOL.md`.
@@ -164,6 +185,8 @@ Continuity must stay off the steady-state business hot path:
 - old chat history is a last resort;
 - one-shot questions do not create durable tasks or trigger task-name prompts.
 
+Execution readiness also stays targeted: handshake only the capabilities required by the current owner `next_action`, not every tool/agent in every repository.
+
 ## Authority order
 
 1. Compatible authoritative domain runtime/checkpoint.
@@ -173,3 +196,5 @@ Continuity must stay off the steady-state business hot path:
 5. Chat memory is never execution authority.
 
 Read next: `STARTUP_HOOK.md`, `PROTOCOL.md`, `CONTINUITY_CONTRACT.json`, `BARE_INHERIT_DISCOVERY.json`, `CONTEXT_RECOVERY_POLICY.json`, `PROGRESS_OBSERVABILITY_POLICY.json`, `CONTINUOUS_LEARNING_POLICY.md`, `MEDIA_DISTILLATION_PROTOCOL.md`, `OWNER_ADAPTER_CONTRACT.json`, `OWNER_REGISTRY.json`, `NEW_CHAT_BOOTSTRAP.json`.
+
+For GitHub-backed business execution after owner resolution, read: `ORCHESTRATION_BLUEPRINT.md`, `EXECUTION_READINESS_CONTRACT.json`, `OWNER_EXECUTION_REGISTRY.json`, then the exact owner `continuity/EXECUTION_CAPABILITIES.json`.
