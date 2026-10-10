@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_EXECUTION_PROPAGATION_WIRED__ACCOUNT_BROADCAST_CONFIRMATION_AND_OWNER_HANDSHAKES_PENDING",
-      "next_action": "用户一次性确认账户 Custom Instructions 广播层；随后在现有 GitHub-backed business chats 的 material turn 验最新 owner Skill + EXECUTION_CAPABILITIES refresh 与 targeted session handshake，并继续 fresh-chat Continuity E2E。",
+      "current_stage": "V3_7_AUTONOMOUS_SYSTEM_MAINTENANCE_ACTIVE__ACCOUNT_EXECUTION_EXTENSION_AND_OWNER_HANDSHAKES_PENDING",
+      "next_action": "系统维护默认自治闭环，不等待用户逐项指出；当前仅保留账户级 Custom Instructions 增量这一外部边界，随后验 owner targeted session handshake 与 fresh-chat Continuity E2E。",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-10T02:32:00Z"
+      "updated_at": "2026-10-10T02:50:00Z"
     }
   ]
 }
