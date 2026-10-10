@@ -93,6 +93,30 @@ Do not delete:
 
 For every active durable task, every final response follows `PROGRESS_OBSERVABILITY_POLICY.json`. `COMMITTED` is only valid after authoritative re-read verification. The outer account instruction is a routing/UX backstop; owner persistence remains the proof.
 
+## Sibling universal execution control plane
+
+Universal Continuity is intentionally **not** the business executor. GitHub-backed business agents use the sibling execution control plane defined by:
+
+- `ORCHESTRATION_BLUEPRINT.md`
+- `EXECUTION_READINESS_CONTRACT.json`
+- `OWNER_EXECUTION_REGISTRY.json`
+- `runtime/execution_readiness.py`
+
+After Continuity has resolved an exact owner/task, the execution control plane determines whether the next action is merely declared, actually wired, executable in the current session, or requires attested isolated execution.
+
+This separation prevents two opposite failures:
+
+1. treating a repository full of Skills/roles/configuration as if every specialist had actually run;
+2. declaring an entire GitHub agent unusable merely because one strict capability (for example isolated multimodal review) is unavailable.
+
+The execution dispatcher should maximize valid work under current capabilities, use CHAT_BRIDGED execution only where owner assurance permits, and fail closed at the exact missing hard capability. It may never rewrite domain business state except through the domain owner's own runtime/checkpoint contract.
+
+The execution-readiness contract has its own version (`1.0`) and does **not** require a Continuity protocol bump merely because execution orchestration hardening changes.
+
 ## Read order
 
 `ENTRYPOINT.md` -> `SYSTEM_BLUEPRINT.md` -> `STARTUP_HOOK.md` -> `CONTINUITY_CONTRACT.json` -> `VERSION_LIFECYCLE_POLICY.json` -> `LIVE_CHAT_RECONCILIATION_POLICY.json` -> domain-specific policy/artifacts as needed.
+
+For GitHub-backed business execution after owner/task resolution, continue with:
+
+`ORCHESTRATION_BLUEPRINT.md` -> `EXECUTION_READINESS_CONTRACT.json` -> owner `continuity/EXECUTION_CAPABILITIES.json` -> current-session capability handshake -> owner runtime/gateway.
