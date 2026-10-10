@@ -1,10 +1,24 @@
 {
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "continuity_protocol_version": "3.7",
-  "updated_at": "2026-10-10",
+  "updated_at": "2026-10-11",
+  "membership_authority": {
+    "role": "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY",
+    "business_owner_selector": "owners[*].owner_kind == BUSINESS",
+    "bare_inherit_selector": "owners[*].bare_inherit_participant == true",
+    "bare_inherit_source_field": "bare_inherit_source",
+    "derived_surfaces": [
+      "BARE_INHERIT_DISCOVERY quorum",
+      "runtime/system_audit business-owner scope",
+      "owner metadata sweep scope"
+    ],
+    "parallel_hard_coded_owner_lists_allowed": false,
+    "admission_rule": "Adding or removing an owner must not require editing a second owner-name allowlist. BUSINESS membership is declared here; discovery and audit topology are derived from this registry. Rebuildable execution/adaptation registries must converge to the derived BUSINESS set and fail closed while incomplete."
+  },
   "resolver": {
     "owner": "UNIVERSAL_CONTINUITY_HARNESS",
     "module": "runtime/universal_continuity.py",
+    "owner_topology": "runtime/owner_topology.py",
     "bare_inherit_policy": "BARE_INHERIT_DISCOVERY.json",
     "protocol_adaptation_registry": "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json",
     "execution_readiness_contract": "EXECUTION_READINESS_CONTRACT.json",
@@ -15,6 +29,7 @@
   "owners": [
     {
       "name": "GENERIC_HANDOFF",
+      "owner_kind": "FALLBACK",
       "domains": ["*"],
       "priority": 0,
       "adapter_status": "READY_V37_NATIVE",
@@ -25,6 +40,7 @@
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "owner_kind": "BUSINESS",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 100,
       "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_ALL_PROFILES_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS__ACTION_RECEIPT_EMISSION_WIRED__INDEPENDENT_OPERATIONAL_VERIFICATION_PENDING__FINANCE_DEEP_LIVE_QUALITY_EVIDENCE_PENDING",
@@ -37,6 +53,7 @@
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_ENGINEERING",
+      "owner_kind": "ENGINEERING",
       "domains": ["FINANCIAL_WRITING_SITE_RUNTIME"],
       "priority": 100,
       "adapter_status": "READY_EXPLICIT_ONLY_DOMAIN_INDEX",
@@ -46,6 +63,7 @@
     },
     {
       "name": "FINANCIAL_WRITING_AGENT_STANDALONE",
+      "owner_kind": "STANDALONE",
       "domains": ["FINANCIAL_WRITING"],
       "priority": 90,
       "adapter_status": "CONTRACT_READY_PERSISTENCE_CONDITIONAL",
@@ -54,6 +72,7 @@
     },
     {
       "name": "A_SHARE_MARKET_AGENT",
+      "owner_kind": "BUSINESS",
       "aliases": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW"],
       "domains": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW", "A_SHARE_MARKET"],
       "priority": 100,
@@ -67,6 +86,7 @@
     },
     {
       "name": "NOVEL_WRITING_AGENT",
+      "owner_kind": "BUSINESS",
       "aliases": ["NOVEL_OS"],
       "domains": ["NOVEL"],
       "priority": 100,
@@ -82,6 +102,7 @@
     },
     {
       "name": "VIDEO_GROWTH_AGENT",
+      "owner_kind": "BUSINESS",
       "domains": ["VIDEO_GROWTH"],
       "priority": 100,
       "adapter_status": "READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_BOUND__APPLICABILITY_EVIDENCE_RECORDED__OWNER_REGRESSION_PASS",
@@ -95,7 +116,8 @@
   ],
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",
-    "task_discovery": "bare inherit requires complete discovery quorum across all bare_inherit_participant owners; explicit task hints may route directly to the named owner",
-    "github_owner_execution": "after exact owner/task routing, consult OWNER_EXECUTION_REGISTRY.json and the owner execution_capability_ref before claiming an agent capability is executable; methodology declaration must explicitly assess every current contract profile as APPLIES or NOT_APPLICABLE with owner-local evidence, APPLIES requires exact-version binding, and activated profiles additionally require action-level operational conformance evidence before a profile-dependent gate or COMMITTED claim"
+    "task_discovery": "bare inherit derives the complete discovery quorum from current OWNER_REGISTRY entries where bare_inherit_participant=true; explicit task hints may route directly to the named owner",
+    "new_owner_admission": "Register membership once in OWNER_REGISTRY. BUSINESS owners must declare checkpoint_authority + protocol_adapter + execution_capability_ref. Central adaptation/execution registries are rebuildable conformance caches and must converge to the derived BUSINESS set before control-plane audit can PASS.",
+    "github_owner_execution": "after exact owner/task routing, consult the owner execution_capability_ref and current execution-readiness evidence before claiming an agent capability is executable; OWNER_EXECUTION_REGISTRY is a rebuildable pointer/status cache, not membership authority. Methodology declaration must explicitly assess every current contract profile as APPLIES or NOT_APPLICABLE with owner-local evidence, APPLIES requires exact-version binding, and activated profiles additionally require action-level operational conformance evidence before a profile-dependent gate or COMMITTED claim"
   }
 }
