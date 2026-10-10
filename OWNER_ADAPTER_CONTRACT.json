@@ -47,7 +47,7 @@
   "methodology_composition": {
     "profile_contract_version": "1.0",
     "owner_declaration_contract_version": "1.1",
-    "operational_profile_run_contract_version": "1.1",
+    "operational_profile_run_contract_version": "1.2",
     "model": "SMALL_STABLE_KERNEL_PLUS_COMPOSABLE_PROFILES_PLUS_OWNER_LOCAL_BINDINGS",
     "principle": "Reuse cross-agent invariants and narrow hook contracts. Do not copy a giant parent-agent behavior bundle into each owner and do not let a domain override replace cross-agent authority, evidence, reliability, or destructive-mutation safety.",
     "kernel_invariants": [
@@ -120,19 +120,23 @@
       "domain_owner_keeps_business_implementation_and_evidence": true
     },
     "operational_profile_run_contract": {
-      "required_profile_fields": ["profile_id", "profile_version", "activation_id", "trigger", "evidence_refs"],
+      "required_profile_fields": ["receipt_contract_version", "profile_id", "profile_version", "activation_id", "trigger", "evidence_refs"],
+      "receipt_contract_version_required": "1.2",
       "hook_assessment_mode": "ACTION_SCOPED_NEGATIVE_SPACE",
-      "hook_assessments_required_for_new_receipts": true,
+      "hook_assessments_required": true,
       "hook_assessment_status": ["INVOKED", "NOT_APPLICABLE_FOR_ACTION"],
       "every_profile_hook_must_be_assessed": true,
       "not_applicable_requires_reason_and_verified_evidence": true,
       "invoked_requires_reason_and_verified_evidence": true,
       "at_least_one_hook_must_be_invoked": true,
-      "invoked_hooks_must_match_invoked_assessments_when_present": true,
+      "invoked_hooks_must_match_invoked_assessments": true,
       "unknown_hook_assessments_fail_closed": true,
-      "legacy_invoked_hooks_only_receipt": "SUPPORTED_ONLY_AS_ALL_PROFILE_HOOKS_INVOKED_COMPATIBILITY",
-      "independent_evidence_verification_required": true,
-      "principle": "Activating a profile does not mean every hook is executed in every action. Each hook must be explicitly assessed for the current action so silent omission fails closed, while hooks that genuinely do not apply are recorded as NOT_APPLICABLE_FOR_ACTION with reason and independently verifiable evidence."
+      "legacy_invoked_hooks_only_receipt": "NOT_ADMISSIBLE_FOR_OPERATIONAL_PASS_UNDER_1_2",
+      "independent_evidence_ref_verification_required": true,
+      "independent_hook_assessment_verification_required": true,
+      "evidence_ref_existence_alone_is_sufficient_for_hook_claim": false,
+      "assessment_verifier_input": ["profile_id", "hook_id", "status", "reason", "verified_evidence_refs"],
+      "principle": "Activating a profile does not mean every hook is executed in every action. Every hook must be explicitly assessed for the current action so silent omission fails closed. Evidence refs must first be independently verified, and a separate independent hook-assessment verifier must then judge whether those refs and the stated reason actually support INVOKED or NOT_APPLICABLE_FOR_ACTION. A real but irrelevant evidence ref is not operational proof."
     },
     "allowed_override_keys": [
       "implementation_binding",
@@ -162,7 +166,7 @@
   "bare_inherit_predicate": {"task_class":["USER"],"resume_eligible":true,"resume_visibility":["DEFAULT"],"status":["ACTIVE","WAITING","BLOCKED"]},
   "explicit_system_infra": {"bare_inherit_eligible":false,"explicit_resume_allowed_when":"task_class=SYSTEM_INFRA + resume_eligible=true + resume_visibility=EXPLICIT_ONLY + explicit user selection"},
   "lease_epoch": {"canonical":"top-level resume_epoch","nested_active_lease_resume_epoch_required":false,"rule":"When nested active_lease.resume_epoch is absent, use top-level resume_epoch. When both exist and conflict, fail closed."},
-  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context","file_identity_or_dependency_unknown_for_destructive_mutation":"BLOCK_MUTATION_OR_DELETE","declared_learning_without_invocation_or_receipt":"DECLARED_ONLY_NOT_OPERATIONAL","repeated_material_failure_without_durable_evidence":"OWNER_RELIABILITY_UNKNOWN_OR_UNHEALTHY","nontrivial_evolution_candidate_without_independent_comparison_or_failure_mode_search":"EVOLUTION_CANDIDATE_NOT_ADMISSIBLE","methodology_profile_version_or_hook_mismatch":"OWNER_METHODOLOGY_CONFORMANCE_FAILED","methodology_profile_applicability_missing_or_inconsistent":"OWNER_METHODOLOGY_CONFORMANCE_FAILED","methodology_action_hook_assessment_missing_or_inconsistent":"OWNER_OPERATIONAL_METHODOLOGY_CONFORMANCE_FAILED","forbidden_methodology_override":"OWNER_METHODOLOGY_CONFORMANCE_FAILED"},
+  "fail_closed": {"missing_task_class":"MIGRATION","missing_resume_eligible":false,"missing_resume_visibility":"EXPLICIT_ONLY","missing_contract_version":"legacy-unclassified","missing_display_name_zh":"ASK_USER_ONCE; do not invent a permanent user-facing name","missing_checkpoint_or_next_action":"UNKNOWN; do not reconstruct executable state from chat memory","material_write_not_verified":"COMMIT_FAILED; do not claim the next chat can recover the new state","unsupported_old_protocol":"UNKNOWN_OR_INCOMPATIBLE; do not ask the user to reconstruct migration state","unclassified_cache_or_external_reference_conflict":"FAIL_CLOSED_OR_RESOLVE_THROUGH_OWNER; do not silently promote lower-authority context","file_identity_or_dependency_unknown_for_destructive_mutation":"BLOCK_MUTATION_OR_DELETE","declared_learning_without_invocation_or_receipt":"DECLARED_ONLY_NOT_OPERATIONAL","repeated_material_failure_without_durable_evidence":"OWNER_RELIABILITY_UNKNOWN_OR_UNHEALTHY","nontrivial_evolution_candidate_without_independent_comparison_or_failure_mode_search":"EVOLUTION_CANDIDATE_NOT_ADMISSIBLE","methodology_profile_version_or_hook_mismatch":"OWNER_METHODOLOGY_CONFORMANCE_FAILED","methodology_profile_applicability_missing_or_inconsistent":"OWNER_METHODOLOGY_CONFORMANCE_FAILED","methodology_action_hook_assessment_missing_or_inconsistent":"OWNER_OPERATIONAL_METHODOLOGY_CONFORMANCE_FAILED","methodology_hook_claim_not_independently_supported":"OWNER_OPERATIONAL_METHODOLOGY_CONFORMANCE_FAILED","forbidden_methodology_override":"OWNER_METHODOLOGY_CONFORMANCE_FAILED"},
   "terminal_visibility_rule": "COMPLETE/ARCHIVED/ABANDONED must not be DEFAULT",
   "generic_fallback_owner": "GENERIC_HANDOFF"
 }
