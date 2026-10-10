@@ -1,8 +1,9 @@
 {
   "schema_version": "1.0",
-  "purpose": "Define the minimum product architecture for a durable BUSINESS owner without requiring one specific agent framework.",
-  "applies_to_owner_kind": ["BUSINESS"],
-  "default_manifest_path": "continuity/AGENT_MANIFEST.json",
+  "purpose": "Define the minimum product architecture for a durable Agent owner or the Universal SYSTEM_INFRA control plane without requiring one specific agent framework.",
+  "applies_to_owner_kind": ["BUSINESS", "SYSTEM_INFRA"],
+  "default_business_manifest_path": "continuity/AGENT_MANIFEST.json",
+  "universal_manifest_path": "AGENT_MANIFEST.json",
   "model": "THIN_SKILL_ROUTER__EXECUTABLE_RUNTIME__AUTHORITATIVE_WORKFLOW__INDEPENDENT_HARNESS_SURFACE__PROGRESSIVE_REFERENCES__DURABLE_CONTINUITY",
   "required_layers": {
     "skill": {
