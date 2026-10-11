@@ -5,7 +5,7 @@
 - owner: `UNIVERSAL_CONTINUITY_HARNESS`
 - status: `ACTIVE`
 - contract: `CONTINUITY_V3_7`
-- current writer: `lease-d5136fdf-0661-4cd9-aeba-74db63c4dc3dc3f`
+- current writer: `lease-d5136fdf-0661-4cd9-aeba-74db63c4dc3f`
 - resume_epoch: `7`
 - manifest_version: `59`
 - meta-maintenance: `1.2`
