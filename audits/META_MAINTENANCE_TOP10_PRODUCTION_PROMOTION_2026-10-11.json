@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.2",
+  "run_id": "meta-top10-production-promotion-2026-10-11",
+  "scope": "SYSTEMIC",
+  "trigger": "USER_REQUESTED_CONTINUE_FROM_COMPLETE_TOP10_LIBRARY_INTO_REAL_PRODUCTION_PROMOTION",
+  "target_manifest_version": 49,
+  "user_signal": {
+    "classifications": ["GOAL_OR_CONSTRAINT"],
+    "goal_or_constraint": "Do not stop at distillation and selection; apply the useful architecture, workflow, methodology and execution primitives to the real control plane with regression-backed changes."
+  },
+  "authority_inspection": {
+    "refs": [
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "CONTINUOUS_LEARNING_POLICY.md",
+      "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+      "AGENT_MANIFEST.json",
+      "runtime/meta_maintenance.py",
+      "research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md",
+      "research/skill-library/2026-global-ai-skills-top10/CROSS_SKILL_PRIMITIVE_MATRIX.md"
+    ]
+  },
+  "failure_model": {
+    "root_cause_layers": ["REPOSITORY_POLICY", "RUNTIME_OR_SCHEMA", "TEST_OR_EVAL", "EVIDENCE_OR_PROPAGATION"],
+    "failure_classes": [
+      "learning-without-production-integration",
+      "build-before-reuse",
+      "retrievable-facts-escalated-as-user-decisions",
+      "architecture-addition-without-payoff-or-deletion-test",
+      "transport-ambiguity-misclassified-as-mutation-failure"
+    ],
+    "system_impact_map": [
+      "Universal systemic maintenance workflow",
+      "Meta-Governance Harness structural run contract",
+      "artifact/file/external mutation safety",
+      "all current BUSINESS owners through shared operational_hygiene/evolution/artifact_io semantics"
+    ],
+    "falsification_checks": [
+      "A systemic meta-run that omits existing-capability inspection must fail closed.",
+      "A systemic meta-run that asks for decisions without a fact-resolution frontier must fail closed.",
+      "A systemic architecture run that omits deletion/simplification and payoff accounting must fail closed.",
+      "A non-idempotent mutation that may have been dispatched without verified final state must classify OUTCOME_UNKNOWN, not CONFIRMED_FAILURE.",
+      "An idempotency key may permit retry but must not upgrade OUTCOME_UNKNOWN to commit proof.",
+      "Local low-coupling maintenance must remain able to use a lighter path without ritual global overhead."
+    ]
+  },
+  "learning_scout": {
+    "disposition": "SCOUT_DONE",
+    "sources": [
+      {
+        "ref": "research/skill-library/2026-global-ai-skills-top10/01-find-skills.md",
+        "observation": "Capability acquisition should prefer discovery/reuse before building a new mechanism.",
+        "disposition": "ADOPT",
+        "rationale": "Directly reduces duplicate agents, policies, prompts and tools in the control plane."
+      },
+      {
+        "ref": "research/skill-library/2026-global-ai-skills-top10/02-grill-me.md",
+        "observation": "Facts and genuine decisions should be separated; retrievable facts should be resolved before consuming user decision bandwidth.",
+        "disposition": "ADOPT",
+        "rationale": "Directly addresses repeated unnecessary user questioning and operator dependence."
+      },
+      {
+        "ref": "research/skill-library/2026-global-ai-skills-top10/04-improve-codebase-architecture.md",
+        "observation": "Architecture work should weight payoff and explicitly test deletion/simplification before adding another layer.",
+        "disposition": "ADOPT",
+        "rationale": "Fits the existing anti-bloat and authority-admission goals while making them mechanically reviewable."
+      },
+      {
+        "ref": "research/skill-library/2026-global-ai-skills-top10/05-agent-browser.md",
+        "observation": "A mutation that may have crossed the execution boundary but lacks final-state evidence has an unknown outcome; blind retry of non-idempotent actions is unsafe.",
+        "disposition": "ADOPT",
+        "rationale": "This is a cross-agent execution-safety primitive for GitHub, publishing, external apps and provider mutations."
+      }
+    ]
+  },
+  "capability_reuse": {
+    "decision": "EXTEND_EXISTING",
+    "inspected_existing_capabilities": [
+      "SYSTEM_MAINTENANCE_POLICY meta-maintenance outline and authority-surface admission gate",
+      "runtime/meta_maintenance.py deterministic process verifier",
+      "ARTIFACT_CONTEXT_GOVERNANCE_POLICY verified mutation transaction semantics",
+      "AGENT_MANIFEST existing runtime/harness declaration"
+    ],
+    "rejected_existing_candidates": [],
+    "rationale": "All four primitives have existing semantics owners; adding a Top10 root policy or supervisory agent would duplicate authority."
+  },
+  "decision_frontier": {
+    "verified_facts": [
+      "The Top10 library and cross-Skill selection are already complete and pinned.",
+      "Existing maintenance policy already owns systemic workflow and anti-bloat semantics.",
+      "Existing artifact governance already owns write verification and mutation conflict semantics.",
+      "The current user request is to continue integration, not to choose among internal implementation details."
+    ],
+    "unresolved_facts": [
+      "Real long-run reduction in operator reminders requires later live/held-out trajectories.",
+      "Owner-specific mutation runtimes may need local adapters before action-level use."
+    ],
+    "user_decisions_required": [],
+    "autonomous_next_steps": [
+      "Strengthen the existing meta-maintenance harness instead of asking the user how to structure it.",
+      "Add deterministic mutation-outcome semantics and tests under the existing artifact governance authority.",
+      "Run full control-plane regression and propagate only compatible shared semantics."
+    ],
+    "facts_resolved_before_user_decision": true
+  },
+  "alternatives": [
+    {
+      "id": "A_DOCUMENT_ONLY",
+      "decision": "REJECTED",
+      "rationale": "Would repeat the learning-without-integration failure: prose changes with no execution or regression behavior."
+    },
+    {
+      "id": "B_EXTEND_EXISTING_AUTHORITIES_AND_HARNESSES",
+      "decision": "ACCEPTED",
+      "rationale": "Places each primitive in its current semantics owner and adds mechanical tests without new root authority."
+    },
+    {
+      "id": "C_NEW_TOP10_SUPERVISORY_AGENT_OR_POLICY",
+      "decision": "REJECTED",
+      "rationale": "Adds coordination and prompt surfaces while duplicating existing maintenance/artifact authorities."
+    }
+  ],
+  "architecture_payoff": {
+    "current_failure_cost": "Repeated user reminders, unnecessary architecture additions, and unsafe ambiguity around external mutation retries.",
+    "change_cost": "One compatible maintenance-policy hardening, one meta-harness schema increment, one artifact-policy hardening, one narrow deterministic runtime and bounded tests.",
+    "expected_payoff": "Fewer duplicate mechanisms and user questions, explicit deletion pressure, and safer cross-agent mutation retry behavior.",
+    "deletion_or_simplification_considered": true,
+    "deletion_or_simplification_result": "Reuse the existing maintenance and artifact authorities; do not add a Top10 policy, capability-acquisition agent, decision agent, or mutation policy.",
+    "net_complexity_decision": "NET_NEUTRAL"
+  },
+  "instruction_surface": {
+    "decision": "NO_CHANGE",
+    "reason": "The existing startup hook already routes systemic maintenance to repository authority. These primitives are enforceable in runtime/policy/harness and should not enlarge account or startup prompts."
+  },
+  "propagation": {
+    "scope": "ALL_BUSINESS_OWNERS",
+    "classification": "COMPOSABLE_PROFILE_METHOD",
+    "mechanism": "Operational-hygiene/evolution semantics become stricter through existing shared maintenance authority; artifact_io semantics gains OUTCOME_UNKNOWN retry safety without adding a new owner hook. No owner business state or lease is mutated by this promotion.",
+    "stale_override_scan": "PASS",
+    "impacted_business_owners": [
+      "A_SHARE_MARKET_AGENT",
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ]
+  },
+  "complexity_efficiency": {
+    "new_authority_surfaces": 0,
+    "mandatory_startup_context_delta": 0,
+    "tool_or_remote_read_delta": "SYSTEMIC_MAINTENANCE_ONLY; mutation classifier is local deterministic runtime",
+    "steady_state_latency_effect": "NONE_FOR_ORDINARY_BUSINESS_TURNS",
+    "duplicate_rule_effect": "REDUCED_BY_REUSE_BEFORE_BUILD_AND_DELETION_TEST",
+    "cross_owner_touch_count": 4,
+    "migration_compatibility_effect": "NO_CONTINUITY_PROTOCOL_BUMP; existing owner hooks remain unchanged",
+    "test_observability_effect": "ADDS_META_1_2_NEGATIVE_TESTS_AND_MUTATION_OUTCOME_TESTS",
+    "decision": "ACCEPTABLE"
+  },
+  "authority_surface_admission": "PASS",
+  "implementation": {
+    "decision": "CHANGE_APPLIED",
+    "inspected_paths": [
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "runtime/meta_maintenance.py",
+      "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+      "AGENT_MANIFEST.json",
+      "tests/test_meta_maintenance.py",
+      "tests/test_artifact_context_governance.py"
+    ],
+    "changed_paths": [
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "runtime/meta_maintenance.py",
+      "tests/test_meta_maintenance.py",
+      "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json",
+      "runtime/mutation_outcome.py",
+      "tests/test_mutation_outcome.py",
+      "tests/test_artifact_context_governance.py",
+      "AGENT_MANIFEST.json",
+      "audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json"
+    ],
+    "superseded_or_demoted_surfaces": [
+      "Top10 selection remains learning evidence; it is no longer the terminal state for these four selected primitives because they now have production authority/runtime targets."
+    ]
+  },
+  "validation": {
+    "regression_or_eval_refs": [
+      "tests/test_meta_maintenance.py",
+      "tests/test_mutation_outcome.py",
+      "tests/test_artifact_context_governance.py"
+    ],
+    "second_order_challenge": "PASS",
+    "second_order_findings": [
+      "Reuse-before-build is systemic-only in Meta 1.2, so trivial local fixes do not incur unnecessary capability scans.",
+      "The decision frontier records unresolved facts and genuine user decisions separately but does not pretend a structural field proves the semantic classification is correct.",
+      "Payoff/deletion review reuses the existing complexity budget rather than creating a second architecture authority.",
+      "OUTCOME_UNKNOWN permits retry only with idempotence support but never upgrades retry safety into commit proof.",
+      "No claim is made that all four BUSINESS owners have action-level mutation adapters wired yet."
+    ],
+    "cross_surface_or_fault_audit": "PASS"
+  },
+  "closure": {
+    "assurance_ceiling": "REGRESSION_VERIFIED",
+    "global_flawlessness_claimed": false,
+    "open_gates": [
+      "Final current-main CI must pass after manifest/status alignment.",
+      "Owner-local action-level adoption of OUTCOME_UNKNOWN semantics remains event-driven and must not be fabricated.",
+      "Live evidence that the new decision-frontier/reuse gates reduce operator dependence remains open."
+    ],
+    "unknown_or_open_world_boundary": "The promoted primitives are mechanically enforced for the Universal maintenance harness and generic mutation classifier. Future tool/provider semantics and owner-specific action paths may require additional adapters or evidence."
+  }
+}
