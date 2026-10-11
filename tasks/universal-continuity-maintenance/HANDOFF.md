@@ -26,6 +26,21 @@
 - v53 初版曾错误收窄为 `LOCAL / NOT_APPLICABLE propagation`；CI `38130917787` 继续暴露两个真实约束：`HARNESS_STATUS` 的 latest-meta 指针必须同步，而且最新 meta closure 必须绑定完整 BUSINESS owner topology，否则 synthetic new-owner admission 会被错误放行。没有修改测试，而是把当前 v53 closure 提升为 topology-bound `FULL_CONTROL_PLANE`，并同步现有 rebuildable Harness cache。
 - 修复不增加 root policy/Agent，不改变 Continuity v3.7，不触碰任何 BUSINESS owner lease/state，也不降低 version-binding、Harness alignment 或 new-owner fail-closed regressions。
 
+## 中途安全 checkpoint 缺口与修复
+
+用户再次追问“是否边工作边存，以防对话突然上限终止后还要重新继承”后，重新核对 `PROGRESS_OBSERVABILITY_POLICY.json` 与 `ENTRYPOINT.md`：历史规则严格要求最终答复前持久化与回读，但没有把长任务中的中途安全点写成硬性 invariant。
+
+这不等于此前完全没有中途保存：本聊天 takeover、Handoff、meta closure、Harness 修复本身都曾在最终答复前分阶段写入 GitHub；但这种行为此前缺少跨任务、跨聊天的一致规则保证。
+
+现已修复为事件驱动的 interruption-resilient checkpointing：
+
+- 长任务一旦到达稳定、可恢复的 material safe point，必须先持久化最小充分 checkpoint 并回读验证，再进入后续实质工作；不能故意把第一次 durable write 拖到最终答复。
+- safe point 包括：稳定的 stage/next_action/blocker/authority 决策、已验证的 material mutation、后续依赖的外部 side effect、进入下一段长/高风险工作前已有可保留成果、以及错误恢复后的稳定 partial state。
+- 纯读取、临时诊断、可逆 scratch、未验证假设和 unchanged state 不写 heartbeat。
+- 中途 checkpoint 不替代最终 `进度提交`；最终回复仍必须给唯一 Turn Commit Receipt。
+- 新聊天恢复必须能够只依赖最新 verified safe checkpoint 继续，而不要求读取已终止聊天 transcript 来重建已经完成的实质工作。
+- 规则已同时落入 `PROGRESS_OBSERVABILITY_POLICY.json` 与最小启动面 `ENTRYPOINT.md`，并新增回归测试防止未来退化。
+
 ## v51 已完成的控制面工作
 
 - Universal Continuity v3.7 Agent control plane / Agent Architecture contract 1.1 已回归验证。
@@ -68,9 +83,9 @@
 
 ## Next action
 
-保持小时级 architecture watch、membership/cache separation 与 fail-closed shared architecture semantics。未来 owner HEAD 漂移时重新观测并刷新 non-authoritative signal；只有唯一 authority 与 compatibility 结论明确时才做 metadata-only repair，绝不借 Universal maintenance 接管业务 lease 或重写业务状态。
+保持小时级 architecture watch、membership/cache separation、fail-closed shared architecture semantics，以及新加入的 intra-turn safe checkpoint invariant。未来 owner HEAD 漂移时重新观测并刷新 non-authoritative signal；只有唯一 authority 与 compatibility 结论明确时才做 metadata-only repair，绝不借 Universal maintenance 接管业务 lease 或重写业务状态。
 
-真实新 owner、真实 owner action、operator-dependence heldout/live trajectory 或新的系统缺陷出现时，再按 `SYSTEM_MAINTENANCE_POLICY.json` 进入相应维护闭环；没有新证据/缺陷时遵守 stop rule，不制造额外层。
+真实新 owner、真实 owner action、operator-dependence heldout/live trajectory、新的系统缺陷或 checkpoint regression 出现时，再按 `SYSTEM_MAINTENANCE_POLICY.json` 进入相应维护闭环；没有新证据/缺陷时遵守 stop rule，不制造额外层。
 
 ## Recovery refs
 
