@@ -43,7 +43,7 @@
     "D1traverser-debug/universal-continuity-agent#4"
   ],
   "meta_governance_assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
-  "latest_meta_maintenance_run_ref": "audits/META_MAINTENANCE_SYSTEM_SELF_AUDIT_2026-10-11.json",
+  "latest_meta_maintenance_run_ref": "audits/META_MAINTENANCE_TOP10_SKILL_LIBRARY_2026-10-11.json",
   "latest_agent_architecture_live_drift_audit_ref": "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
   "independent_meta_semantic_review": "OPEN_OPERATOR_DEPENDENCE_LIVE_HELDOUT_GRADER_REQUIRED",
   "external_account_instruction_delta": "NO_ACCOUNT_WRITE_CLAIM__REPOSITORY_CONTROL_PLANE_CHANGED__REAL_PRODUCT_PROPAGATION_REMAINS_SEPARATE",
