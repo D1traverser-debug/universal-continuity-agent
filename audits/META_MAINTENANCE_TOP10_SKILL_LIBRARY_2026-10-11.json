@@ -97,12 +97,16 @@
     "reason": "The gap was the research/evolution process and evidence normalization, not ChatGPT account/startup routing. The library is cold-path research and must not enlarge the startup prompt."
   },
   "propagation": {
-    "scope": "NOT_APPLICABLE_WITH_REASON",
-    "classification": "LEARNING_EVIDENCE_AND_SELECTION_ONLY",
-    "mechanism": "No owner business rule or shared production invariant is changed by creating/selecting the library; later promotions require their own owner/control-plane change and regressions.",
-    "stale_override_scan": "NOT_APPLICABLE",
-    "impacted_business_owners": [],
-    "reason": "This run records research and selection; production promotion is intentionally separate."
+    "scope": "ALL_BUSINESS_OWNERS",
+    "classification": "COMPOSABLE_PROFILE_METHOD",
+    "mechanism": "Topology-bound impact review covered every current BUSINESS owner. No owner business rule or state was mutated: cross-agent selections remain production-promotion candidates, frontend-design is explicitly owner-local, and later promotion requires its own control-plane/owner regression.",
+    "stale_override_scan": "PASS_RESEARCH_ONLY_NO_OWNER_MUTATION",
+    "impacted_business_owners": [
+      "A_SHARE_MARKET_AGENT",
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ]
   },
   "complexity_efficiency": {
     "new_authority_surfaces": 0,
@@ -110,7 +114,7 @@
     "tool_or_remote_read_delta": "COLD_PATH_RESEARCH_ONLY",
     "steady_state_latency_effect": "NONE",
     "duplicate_rule_effect": "REDUCED_BY_NORMALIZED_LIBRARY_AND_CROSS_SKILL_MATRIX",
-    "cross_owner_touch_count": 0,
+    "cross_owner_touch_count": 4,
     "migration_compatibility_effect": "NONE_UNTIL_SEPARATE_PROMOTION",
     "test_observability_effect": "ADDED_LIBRARY_COMPLETENESS_REGRESSION",
     "decision": "ACCEPTABLE"
