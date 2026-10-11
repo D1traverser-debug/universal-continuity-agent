@@ -16,7 +16,7 @@ Use the following text, or a semantically equivalent minimal account-level instr
 >
 > **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
 >
-> 该规则覆盖包括升级前已经打开/继承的旧对话；选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。
+> 该规则覆盖包括升级前已经打开/继承的旧对话；不要求我手动迁移旧对话。选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。每次最终答复末尾必须报告“进度提交”，具体状态语义以当前仓库 authority 为准。
 >
 > 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
 >
@@ -25,8 +25,9 @@ Use the following text, or a semantically equivalent minimal account-level instr
 ## Thin-hook invariant
 
 - Account-level Custom Instructions only activate the current repository authority. Bare/named routing details, owner discovery, lease/takeover, capability readiness, methodology, learning, progress receipts and version compatibility remain in the repository and must not be copied into the account hook.
+- Bare discovery uses current `OWNER_REGISTRY.json`; this hook never pins a copied owner list or historical owner count.
 - Change account-level Custom Instructions only when **pre-repository activation/routing/fail-closed semantics** change. Compatible internal protocol/profile/policy evolution must not force account-instruction churn.
-- Existing/open chats reconcile through current repository authority. True takeover semantics remain in `ENTRYPOINT.md` and the task authority.
+- Existing/open chats reconcile through current repository authority; only a real new chat takeover replaces the writer. 只有真正的新聊天 takeover 才替换 writer lease / `resume_epoch`。
 - This repository cannot prove that the account-level text is actually installed. Product-surface propagation requires product evidence when relevant.
 - 只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才按 `ENTRYPOINT.md` 加载对应 profile/semantics owner；不要把这些规则复制进固定启动 prompt。
 
