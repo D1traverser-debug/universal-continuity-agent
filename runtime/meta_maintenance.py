@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
-CURRENT_META_MAINTENANCE_SCHEMA = "1.1"
-SUPPORTED_META_MAINTENANCE_SCHEMAS = {"1.0", CURRENT_META_MAINTENANCE_SCHEMA}
+CURRENT_META_MAINTENANCE_SCHEMA = "1.2"
+SUPPORTED_META_MAINTENANCE_SCHEMAS = {"1.0", "1.1", CURRENT_META_MAINTENANCE_SCHEMA}
 SYSTEMIC_SCOPES = {"SYSTEMIC", "ARCHITECTURE", "FULL_CONTROL_PLANE"}
 USER_SIGNAL_CLASSES = {
     "GOAL_OR_CONSTRAINT",
@@ -19,6 +19,8 @@ LEARNING_SOURCE_DISPOSITIONS = {"ADOPT", "NARROW", "REJECT"}
 INSTRUCTION_DECISIONS = {"CHANGE", "NO_CHANGE", "EXTERNAL_ACTION_REQUIRED"}
 PROPAGATION_SCOPES = {"ALL_BUSINESS_OWNERS", "SUBSET_WITH_REASON", "NOT_APPLICABLE_WITH_REASON"}
 IMPLEMENTATION_DECISIONS = {"CHANGE_APPLIED", "NO_CHANGE_REQUIRED"}
+CAPABILITY_REUSE_DECISIONS = {"REUSE_EXISTING", "EXTEND_EXISTING", "BUILD_NEW", "NOT_APPLICABLE_WITH_REASON"}
+NET_COMPLEXITY_DECISIONS = {"NET_SIMPLER", "NET_NEUTRAL", "NET_MORE_COMPLEX_WITH_JUSTIFICATION"}
 ASSURANCE_ORDER = {
     "DECLARED": 1,
     "WIRED": 2,
@@ -43,6 +45,10 @@ def _nonempty(value: Any) -> bool:
 
 def _nonempty_str_list(value: Any) -> bool:
     return isinstance(value, list) and bool(value) and all(_nonempty(item) for item in value)
+
+
+def _string_list(value: Any) -> bool:
+    return isinstance(value, list) and all(_nonempty(item) for item in value)
 
 
 def _mapping(value: Any) -> Mapping[str, Any]:
@@ -78,7 +84,10 @@ def evaluate_meta_maintenance_run(
         "signal",
         "authority_and_failure_model",
         "learning",
+        "capability_reuse",
+        "decision_frontier",
         "alternatives_and_falsification",
+        "architecture_payoff",
         "instruction_surface",
         "propagation",
         "complexity_efficiency",
@@ -113,7 +122,7 @@ def evaluate_meta_maintenance_run(
         errors.append("user_goal_or_constraint_required")
     if "PROPOSED_MECHANISM" in (classes or []) and "proposed_mechanism" not in signal:
         errors.append("proposed_mechanism_field_required_when_classified")
-    if current_schema and "COUNTEREXAMPLE_OR_FAILURE_REPORT" in (classes or []) and not _nonempty(signal.get("counterexample")):
+    if schema_version in {"1.1", "1.2"} and "COUNTEREXAMPLE_OR_FAILURE_REPORT" in (classes or []) and not _nonempty(signal.get("counterexample")):
         errors.append("counterexample_required_when_failure_report_classified")
 
     authority = _mapping(run.get("authority_inspection"))
@@ -131,7 +140,7 @@ def evaluate_meta_maintenance_run(
         errors.append("failure_classes_required")
     if not isinstance(failure.get("system_impact_map"), list) or not failure.get("system_impact_map"):
         errors.append("system_impact_map_required")
-    if current_schema and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
+    if schema_version in {"1.1", "1.2"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
         errors.append("systemic_falsification_checks_required")
 
     learning = _mapping(run.get("learning_scout"))
@@ -150,10 +159,35 @@ def evaluate_meta_maintenance_run(
                 for field in ("ref", "observation", "disposition", "rationale"):
                     if not _nonempty(source.get(field)):
                         errors.append(f"learning_source_{idx}_{field}_required")
-                if current_schema and source.get("disposition") not in LEARNING_SOURCE_DISPOSITIONS:
+                if schema_version in {"1.1", "1.2"} and source.get("disposition") not in LEARNING_SOURCE_DISPOSITIONS:
                     errors.append(f"learning_source_{idx}_disposition_invalid")
     elif disposition == "NOT_REQUIRED_WITH_REASON" and not _nonempty(learning.get("reason")):
         errors.append("learning_not_required_reason_required")
+
+    if current_schema and scope in SYSTEMIC_SCOPES:
+        reuse = _mapping(run.get("capability_reuse"))
+        reuse_decision = reuse.get("decision")
+        if reuse_decision not in CAPABILITY_REUSE_DECISIONS:
+            errors.append("capability_reuse_decision_required")
+        if not _nonempty(reuse.get("rationale")):
+            errors.append("capability_reuse_rationale_required")
+        inspected = reuse.get("inspected_existing_capabilities")
+        if reuse_decision != "NOT_APPLICABLE_WITH_REASON" and not _nonempty_str_list(inspected):
+            errors.append("capability_reuse_existing_capability_scan_required")
+        if reuse_decision == "BUILD_NEW" and not _nonempty_str_list(reuse.get("rejected_existing_candidates")):
+            errors.append("build_new_requires_rejected_existing_candidates")
+
+        frontier = _mapping(run.get("decision_frontier"))
+        if not _nonempty_str_list(frontier.get("verified_facts")):
+            errors.append("decision_frontier_verified_facts_required")
+        if not _string_list(frontier.get("unresolved_facts")):
+            errors.append("decision_frontier_unresolved_facts_must_be_list")
+        if not _string_list(frontier.get("user_decisions_required")):
+            errors.append("decision_frontier_user_decisions_must_be_list")
+        if not _nonempty_str_list(frontier.get("autonomous_next_steps")):
+            errors.append("decision_frontier_autonomous_next_steps_required")
+        if frontier.get("facts_resolved_before_user_decision") is not True:
+            errors.append("decision_frontier_requires_fact_resolution_before_user_decision")
 
     alternatives = run.get("alternatives")
     if not isinstance(alternatives, list) or len(alternatives) < 2:
@@ -171,6 +205,19 @@ def evaluate_meta_maintenance_run(
                 errors.append(f"alternative_{idx}_decision_invalid")
         if accepted != 1:
             errors.append("exactly_one_alternative_must_be_accepted")
+
+    if current_schema and scope in SYSTEMIC_SCOPES:
+        payoff = _mapping(run.get("architecture_payoff"))
+        for field in ("current_failure_cost", "change_cost", "expected_payoff", "deletion_or_simplification_result"):
+            if not _nonempty(payoff.get(field)):
+                errors.append(f"architecture_payoff_{field}_required")
+        if payoff.get("deletion_or_simplification_considered") is not True:
+            errors.append("architecture_payoff_deletion_or_simplification_must_be_considered")
+        net = payoff.get("net_complexity_decision")
+        if net not in NET_COMPLEXITY_DECISIONS:
+            errors.append("architecture_payoff_net_complexity_decision_required")
+        if net == "NET_MORE_COMPLEX_WITH_JUSTIFICATION" and not _nonempty(payoff.get("complexity_justification")):
+            errors.append("net_more_complex_requires_justification")
 
     instruction = _mapping(run.get("instruction_surface"))
     if instruction.get("decision") not in INSTRUCTION_DECISIONS:
@@ -226,7 +273,7 @@ def evaluate_meta_maintenance_run(
     if not isinstance(changed_paths, list) or any(not _nonempty(item) for item in changed_paths):
         errors.append("changed_paths_must_be_string_list")
         changed_paths = []
-    if current_schema:
+    if schema_version in {"1.1", "1.2"}:
         implementation_decision = implementation.get("decision")
         if implementation_decision not in IMPLEMENTATION_DECISIONS:
             errors.append("implementation_decision_required")
@@ -250,7 +297,7 @@ def evaluate_meta_maintenance_run(
         errors.append("regression_or_eval_refs_required")
     if validation.get("second_order_challenge") != "PASS":
         errors.append("second_order_challenge_required")
-    if current_schema and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(validation.get("second_order_findings")):
+    if schema_version in {"1.1", "1.2"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(validation.get("second_order_findings")):
         errors.append("systemic_second_order_findings_required")
     if scope in SYSTEMIC_SCOPES and validation.get("cross_surface_or_fault_audit") != "PASS":
         errors.append("systemic_change_requires_cross_surface_or_fault_audit")
