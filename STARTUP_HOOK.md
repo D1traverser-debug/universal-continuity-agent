@@ -1,57 +1,37 @@
 # Universal Continuity — Account Startup Hook
 
 Status: REQUIRED_FOR_BARE_INHERIT_ACCOUNT_LEVEL_ROUTING  
+Hook: ACCOUNT_ROUTER_V2  
 Updated: 2026-10-11
 
 ## Purpose
 
-GitHub and ChatGPT Library are durable storage/discovery surfaces, **not automatic event listeners**. This hook only routes explicit continuation intent into Universal Continuity; it is not business authority, task storage, execution proof, or a copy of the full control plane.
+GitHub and ChatGPT Library are durable storage/discovery surfaces, **not automatic event listeners**. This file defines only the account-level trigger into current repository authority. It is not business authority, task storage, execution proof, or a copy of the evolving control plane.
 
-## Account-level semantic rule
+## Canonical Custom Instructions
 
-Use the following meaning in ChatGPT Custom Instructions / Personalization, or an equivalent account-level instruction surface:
+Use the following text, or a semantically equivalent minimal account-level instruction:
 
-> 当我明确发送“继承”“继续”“恢复”“接着上次”，或明确指定“继承/继续/恢复：<任务名>”时，优先判定为 CONTINUE，并启动 `D1traverser-debug/universal-continuity-agent@main`。
+> 当我明确发送“继承”“继续”“恢复”“接着上次”，或“继承/继续/恢复：<任务名>”时，优先按 CONTINUE 处理并启动 `D1traverser-debug/universal-continuity-agent@main`。
 >
-> **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，随后按 `ENTRYPOINT.md` 的 Event-driven authority loading 只加载当前动作真正需要的 authority。`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天历史都是 cold-path。
+> **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
 >
-> 裸 CONTINUE 必须从当前 `OWNER_REGISTRY.json` 动态推导完整 discovery quorum，不能使用记忆、复制名单或 historical owner count。明确任务名则直接读取该任务权威 manifest/checkpoint，先报告“继承前进度”，再做必要 compatibility / takeover，并从真实 `current_stage / next_action` 继续。
+> 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
 >
-> 对 material GitHub-backed owner action，刷新该 owner 当前 Skill/入口与 `continuity/EXECUTION_CAPABILITIES.json`，只握手当前动作需要的 capability。Prompt、Skill、配置、角色名或代码 stub 都不等于执行证据；缺 hard capability 时只阻塞对应 gate。
->
-> 对系统维护、重复故障、架构/authority 漂移或用户对维护完整性的实质纠正，进入当前 maintenance/evolution authority，不等待我继续列举内部问题。用户提出的目标和建议机制要分开，非平凡修复必须比较替代方案并攻击自己的修复。
->
-> 每次最终答复末尾必须报告“进度提交”：COMMITTED / NO_MATERIAL_CHANGE / COMMIT_FAILED / STALE_WRITER。COMMITTED 只表示权威状态已写入并回读，不表示质量、审核或执行保证已通过。
->
-> 若无法访问 Continuity 必需资源，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得从 Memory/旧聊天猜恢复状态。
+> 若 Continuity authority 无法访问，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得猜测。
 
-该路由/兼容规则也覆盖**包括升级前已经打开/继承的旧对话**；已有合法 writer 先做 in-place reconciliation，不因为协议升级伪造 takeover，**不要求我手动迁移旧对话**。只有真正的新聊天 takeover 才替换 writer lease / `resume_epoch`。
+## Thin-hook invariant
 
-This repository cannot prove that account-level Custom Instructions were changed merely because this file changed. Product-surface propagation needs real product evidence when relevant.
+- Account-level Custom Instructions only activate the current repository authority. Bare/named routing details, owner discovery, lease/takeover, capability readiness, methodology, learning, progress receipts and version compatibility remain in the repository and must not be copied into the account hook.
+- Change account-level Custom Instructions only when **pre-repository activation/routing/fail-closed semantics** change. Compatible internal protocol/profile/policy evolution must not force account-instruction churn.
+- Existing/open chats reconcile through current repository authority. True takeover semantics remain in `ENTRYPOINT.md` and the task authority.
+- This repository cannot prove that the account-level text is actually installed. Product-surface propagation requires product evidence when relevant.
+- 只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才按 `ENTRYPOINT.md` 加载对应 profile/semantics owner；不要把这些规则复制进固定启动 prompt。
 
 ## Event-driven authority loading
 
-After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`:
+After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`, follow only the current `ENTRYPOINT.md` routing map. The account hook does not maintain a second owner list, capability list, profile list, receipt algorithm or protocol migration table.
 
-- bare CONTINUE → current `OWNER_REGISTRY.json` + `BARE_INHERIT_DISCOVERY.json`;
-- named CONTINUE → exact owner/task manifest + short checkpoint;
-- protocol mismatch → version/reconciliation authority;
-- material owner execution → exact owner Skill/capability + execution-readiness authority;
-- owner admission / architecture drift → `OWNER_REGISTRY.json` + `AGENT_ARCHITECTURE_CONTRACT.json` + architecture observations;
-- artifact/file work → `artifact_io@1.0` only when activated;
-- maintenance/drift/repeated failure → `operational_hygiene@1.0` + `SYSTEM_MAINTENANCE_POLICY.json`;
-- durable learning/evolution → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`;
-- media evidence → media distillation authority;
-- recovery gap → recovery authority, then selective history only if still needed.
+## Cold-start and writer boundary
 
-只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才加载对应 profile/semantics owner；不要把它们复制成固定启动 prompt。
-
-## Cold-start evidence boundary
-
-Historical fresh-chat evidence proves only the owner topology actually observed at that time. It is not open-world proof for a future owner.
-
-A real **new-owner cold-start** claim requires, after admission, a genuinely fresh product chat that routes/discovers that owner from current authority. Synthetic regression can prove registry/discovery mechanics but cannot impersonate that product trajectory.
-
-## Single-writer boundary
-
-An active writer refreshes compatible control metadata in place. A legal takeover supersedes the old lease according to the task contract; stale writers stop authoritative mutation. Maintenance authority does not permit stealing another business task lease or rewriting owner business truth.
+Historical fresh-chat evidence does not prove a future owner. A real new-owner cold-start still requires a genuinely fresh product chat after admission. An active writer reconciles supported changes in place; only a legal new-chat takeover replaces the writer lease. System maintenance never grants permission to take a BUSINESS lease or rewrite owner business truth.
