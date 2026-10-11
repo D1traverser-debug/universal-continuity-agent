@@ -86,6 +86,20 @@
       "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state, and SYSTEM_INFRA must not invent business-only adapter fields."
     }
   },
+  "context_footprint": {
+    "runtime": "runtime/context_footprint.py",
+    "principle": "Claims that a router/bootstrap/tool exposure is thin or more efficient require measured context footprint evidence rather than line-count or prose claims alone.",
+    "measurement_unit": "UTF8_BYTES",
+    "token_measurement": "APPROXIMATE_ONLY__UTF8_BYTES_DIVIDED_BY_4",
+    "exact_model_token_count_claimed": false,
+    "efficiency_claim_requires_measurement": true,
+    "universal_hot_path_budgets": {
+      "minimal_repo_bootstrap_paths": ["ENTRYPOINT.md", "CURRENT_PROTOCOL.json"],
+      "minimal_repo_bootstrap_max_bytes": 9216,
+      "startup_hook_max_bytes": 8192
+    },
+    "owner_rule": "Existing Skill target_max_bytes remains the shared owner budget. Broader owner context/tool-surface comparisons are measured when an owner claims an efficiency improvement or when drift indicates context growth; no owner must preload a new global context bundle merely to satisfy measurement."
+  },
   "freshness": {
     "manifest_is_static_architecture_description": true,
     "manifest_must_not_self_record_current_repo_head": true,
@@ -101,6 +115,11 @@
     "business_owner_registry_requires_agent_manifest_ref": true,
     "missing_manifest_result": "OWNER_AGENT_ARCHITECTURE_UNDECLARED",
     "invalid_manifest_blocks_global_architecture_conformance_claim": true,
-    "does_not_block_unrelated_healthy_owners": true
+    "does_not_block_unrelated_healthy_owners": true,
+    "new_owner_or_uncertain_runtime_integration_requires_tracer_bullet_before_broad_rollout": true,
+    "tracer_bullet_definition": "Prove one narrow end-to-end path through the real discovery/routing/runtime/state/evidence boundary before expanding the integration. Use the smallest path that can falsify the architecture, then grow coverage from observed evidence.",
+    "tracer_bullet_must_use_real_or_production_equivalent_execution_boundary_when_claiming_live_readiness": true,
+    "tracer_bullet_is_full_owner_quality_or_outcome_proof": false,
+    "broad_pipeline_construction_before_first_real_path_is_required": false
   }
 }
