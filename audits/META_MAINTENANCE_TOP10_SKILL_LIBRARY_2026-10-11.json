@@ -100,7 +100,7 @@
     "scope": "ALL_BUSINESS_OWNERS",
     "classification": "COMPOSABLE_PROFILE_METHOD",
     "mechanism": "Topology-bound impact review covered every current BUSINESS owner. No owner business rule or state was mutated: cross-agent selections remain production-promotion candidates, frontend-design is explicitly owner-local, and later promotion requires its own control-plane/owner regression.",
-    "stale_override_scan": "PASS_RESEARCH_ONLY_NO_OWNER_MUTATION",
+    "stale_override_scan": "PASS",
     "impacted_business_owners": [
       "A_SHARE_MARKET_AGENT",
       "FINANCIAL_WRITING_AGENT_RUNTIME",
