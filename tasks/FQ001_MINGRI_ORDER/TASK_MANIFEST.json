@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 13,
+  "manifest_version": 14,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T12:09:00Z",
+  "updated_at": "2026-10-11T12:12:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
   "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU is ACTIVE and must be read sequentially from the beginning. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
@@ -22,12 +22,12 @@
   "release_evidence_contract_version": "1.0",
   "release_evidence_strict_from_chapter": 9,
   "manifest_ref": "tasks/FQ001_MINGRI_ORDER/TASK_MANIFEST.json",
-  "resume_epoch": 2,
+  "resume_epoch": 3,
   "active_lease": {
-    "lease_id": "da43a1ba-46f7-47b0-a674-3ff557494be1",
-    "resume_epoch": 2,
-    "acquired_at": "2026-10-10T06:51:08Z",
-    "supersedes_lease_id": "41f8ef0a-9d9b-4288-b377-813d2488d32d"
+    "lease_id": "1b0bc7df-c0b7-47e4-b054-40a98e887ba1",
+    "resume_epoch": 3,
+    "acquired_at": "2026-10-11T12:12:00Z",
+    "supersedes_lease_id": "da43a1ba-46f7-47b0-a674-3ff557494be1"
   },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "NEW_CHAT_RESUME_SUPERSEDES_OLD_CHAT",
@@ -84,7 +84,7 @@
     "front_arc_frozen_architecture_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
     "project_benchmark_ref": "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
     "competency_count": 20,
-    "mastery_levels": ["L0_UNMAPPED","L1_CONCEPTUAL","L2_OPERATIONAL_WITH_SCAFFOLD","L3_PROJECT_READY","L4_TRANSFER_VERIFIED"],
+    "mastery_levels": ["L0_UNMAPPED", "L1_CONCEPTUAL", "L2_OPERATIONAL_WITH_SCAFFOLD", "L3_PROJECT_READY", "L4_TRANSFER_VERIFIED"],
     "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS__HISTORICAL_CANDIDATE",
     "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
     "active_masterwork": "GUI_MI_ZHI_ZHU",
@@ -122,7 +122,7 @@
     "CH8 Fanqie publication status remains unconfirmed. This does not block internal masterwork study or story reselection and must not be inferred either way."
   ],
   "blockers": [],
-  "keywords": ["小说","小说系统","小说技能","名作蒸馏","逐本学习","故事重选","诡秘之主","十日终焉","明日订单","番茄小说","FQ001","NOVEL_WRITING_AGENT","NOVEL_OS","签约","连载"],
+  "keywords": ["小说", "小说系统", "小说技能", "名作蒸馏", "逐本学习", "故事重选", "诡秘之主", "十日终焉", "明日订单", "番茄小说", "FQ001", "NOVEL_WRITING_AGENT", "NOVEL_OS", "签约", "连载"],
   "artifact_refs": [
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/STUDY_STATE.json",
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/INDEX.json",
