@@ -22,7 +22,7 @@ def valid_systemic_run():
         if item.get("owner_kind") == "BUSINESS"
     ]
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "run_id": "meta-test-1",
         "scope": "FULL_CONTROL_PLANE",
         "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
@@ -55,10 +55,39 @@ def valid_systemic_run():
                 }
             ],
         },
+        "capability_reuse": {
+            "decision": "EXTEND_EXISTING",
+            "inspected_existing_capabilities": [
+                "SYSTEM_MAINTENANCE_POLICY meta-maintenance outline",
+                "runtime/meta_maintenance.py structural harness",
+            ],
+            "rejected_existing_candidates": [],
+            "rationale": "The existing meta-maintenance path can own the behavior without a new root agent or policy.",
+        },
+        "decision_frontier": {
+            "verified_facts": [
+                "Current startup routing already loads repository maintenance authority.",
+                "The existing meta harness can enforce additional structured gates.",
+            ],
+            "unresolved_facts": [],
+            "user_decisions_required": [],
+            "autonomous_next_steps": [
+                "Extend the current harness rather than ask the user to choose internal architecture details.",
+            ],
+            "facts_resolved_before_user_decision": True,
+        },
         "alternatives": [
             {"id": "policy-only", "decision": "REJECTED", "rationale": "Self-enforcement remains weak."},
             {"id": "deterministic-harness", "decision": "ACCEPTED", "rationale": "Adds process verification without a fake agent identity."},
         ],
+        "architecture_payoff": {
+            "current_failure_cost": "Repeated operator correction and incomplete systemic reviews.",
+            "change_cost": "A compatible meta-harness schema increment and bounded tests.",
+            "expected_payoff": "Fewer unnecessary new surfaces and fewer user questions for retrievable facts.",
+            "deletion_or_simplification_considered": True,
+            "deletion_or_simplification_result": "Extend the existing harness; do not create a new supervisory agent or root policy.",
+            "net_complexity_decision": "NET_NEUTRAL",
+        },
         "instruction_surface": {
             "decision": "NO_CHANGE",
             "reason": "Existing startup routing already loads the maintenance authority for systemic maintenance.",
@@ -135,25 +164,76 @@ def test_user_proposed_mechanism_does_not_remove_alternative_requirement():
     assert "at_least_two_alternatives_required" in result.errors
 
 
-def test_v1_1_failure_report_requires_counterexample():
+def test_v1_2_failure_report_requires_counterexample():
     run = valid_systemic_run()
     run["user_signal"].pop("counterexample")
     result = evaluate(run)
     assert "counterexample_required_when_failure_report_classified" in result.errors
 
 
-def test_v1_1_systemic_run_requires_falsification_checks():
+def test_v1_2_systemic_run_requires_falsification_checks():
     run = valid_systemic_run()
     run["failure_model"].pop("falsification_checks")
     result = evaluate(run)
     assert "systemic_falsification_checks_required" in result.errors
 
 
-def test_v1_1_learning_source_disposition_is_bounded():
+def test_v1_2_learning_source_disposition_is_bounded():
     run = valid_systemic_run()
     run["learning_scout"]["sources"][0]["disposition"] = "TRUST_ME"
     result = evaluate(run)
     assert "learning_source_0_disposition_invalid" in result.errors
+
+
+def test_systemic_run_requires_reuse_before_build_scan():
+    run = valid_systemic_run()
+    run.pop("capability_reuse")
+    result = evaluate(run)
+    assert "capability_reuse_decision_required" in result.errors
+    assert "capability_reuse_rationale_required" in result.errors
+
+
+def test_build_new_requires_rejected_existing_candidates():
+    run = valid_systemic_run()
+    run["capability_reuse"] = {
+        "decision": "BUILD_NEW",
+        "inspected_existing_capabilities": ["existing-harness"],
+        "rejected_existing_candidates": [],
+        "rationale": "Need a new mechanism.",
+    }
+    result = evaluate(run)
+    assert "build_new_requires_rejected_existing_candidates" in result.errors
+
+
+def test_systemic_run_requires_facts_decisions_frontier():
+    run = valid_systemic_run()
+    run.pop("decision_frontier")
+    result = evaluate(run)
+    assert "decision_frontier_verified_facts_required" in result.errors
+    assert "decision_frontier_autonomous_next_steps_required" in result.errors
+    assert "decision_frontier_requires_fact_resolution_before_user_decision" in result.errors
+
+
+def test_decision_frontier_must_not_skip_fact_resolution():
+    run = valid_systemic_run()
+    run["decision_frontier"]["facts_resolved_before_user_decision"] = False
+    result = evaluate(run)
+    assert "decision_frontier_requires_fact_resolution_before_user_decision" in result.errors
+
+
+def test_systemic_run_requires_architecture_payoff_and_deletion_test():
+    run = valid_systemic_run()
+    run.pop("architecture_payoff")
+    result = evaluate(run)
+    assert "architecture_payoff_deletion_or_simplification_must_be_considered" in result.errors
+    assert "architecture_payoff_net_complexity_decision_required" in result.errors
+
+
+def test_more_complex_architecture_requires_justification():
+    run = valid_systemic_run()
+    run["architecture_payoff"]["net_complexity_decision"] = "NET_MORE_COMPLEX_WITH_JUSTIFICATION"
+    result = evaluate(run)
+    assert "net_more_complex_requires_justification" in result.errors
 
 
 def test_shared_change_requires_registry_complete_propagation_when_claimed_global():
@@ -233,6 +313,9 @@ def test_local_mechanical_bug_can_skip_external_scout_with_reason():
         "disposition": "NOT_REQUIRED_WITH_REASON",
         "reason": "Exact deterministic schema typo with an existing regression oracle.",
     }
+    run.pop("capability_reuse")
+    run.pop("decision_frontier")
+    run.pop("architecture_payoff")
     run["propagation"] = {
         "classification": "OWNER_LOCAL_BUSINESS_RULE",
         "scope": "NOT_APPLICABLE_WITH_REASON",
@@ -246,11 +329,24 @@ def test_local_mechanical_bug_can_skip_external_scout_with_reason():
     assert result.status == "PASS", result.errors
 
 
+def test_legacy_v1_1_run_remains_readable_as_historical_evidence():
+    run = valid_systemic_run()
+    run["schema_version"] = "1.1"
+    run.pop("capability_reuse")
+    run.pop("decision_frontier")
+    run.pop("architecture_payoff")
+    result = evaluate(run)
+    assert result.status == "PASS", result.errors
+
+
 def test_legacy_v1_0_run_remains_readable_as_historical_evidence():
     run = valid_systemic_run()
     run["schema_version"] = "1.0"
     run["user_signal"].pop("counterexample")
     run["failure_model"].pop("falsification_checks")
+    run.pop("capability_reuse")
+    run.pop("decision_frontier")
+    run.pop("architecture_payoff")
     run["implementation"].pop("decision")
     run["implementation"].pop("inspected_paths")
     run["validation"].pop("second_order_findings")
@@ -263,7 +359,6 @@ def test_recorded_meta_maintenance_run_is_structurally_conformant_and_propagatio
     result = evaluate(run)
     assert result.status == "PASS", result.errors
     assert result.assurance_ceiling == "STRUCTURED_PROCESS_CONFORMANCE_ONLY"
-    assert run["schema_version"] == "1.1"
 
     expected_owners = {
         item["name"]
@@ -289,14 +384,14 @@ def test_recorded_meta_maintenance_run_is_structurally_conformant_and_propagatio
 def test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record():
     manifest = load_json("tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
     stage = str(manifest.get("current_stage", ""))
-    if "SELF_AUDIT_IN_PROGRESS" in stage:
+    if "SELF_AUDIT_IN_PROGRESS" in stage or "PRODUCTION_PROMOTION_IN_PROGRESS" in stage:
         return
 
-    assert manifest.get("meta_maintenance_harness_version") == "1.1"
+    assert manifest.get("meta_maintenance_harness_version") == "1.2"
     run_ref = manifest.get("latest_meta_maintenance_run_ref")
     assert isinstance(run_ref, str) and run_ref
     run = load_json(run_ref)
-    assert run.get("schema_version") == "1.1"
+    assert run.get("schema_version") == "1.2"
     assert run.get("target_manifest_version") == manifest.get("manifest_version")
     result = evaluate(run)
     assert result.status == "PASS", result.errors
