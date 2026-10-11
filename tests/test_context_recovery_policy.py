@@ -56,8 +56,34 @@ def test_no_fixed_context_token_threshold_becomes_system_invariant():
     contract = load("CONTINUITY_CONTRACT.json")
 
     assert policy["context_health"]["no_fixed_token_threshold"] is True
+    assert policy["context_health"]["exact_chat_thread_limit_or_remaining_tokens_must_not_be_claimed_without_product_telemetry"] is True
     assert contract["context_recovery"]["fixed_context_token_threshold_forbidden"] is True
     assert any("150K" in item for item in policy["context_health"]["signals_not_sufficient_alone"])
+    assert any("API model context-window" in item for item in policy["context_health"]["signals_not_sufficient_alone"])
+
+
+def test_turn_entry_capacity_preflight_stops_heavy_work_on_red():
+    policy = load("CONTEXT_RECOVERY_POLICY.json")
+    preflight = policy["context_health"]["turn_entry_capacity_preflight"]
+
+    assert "each new user turn" in preflight["activation"]
+    assert set(preflight["risk_classes"]) == {"GREEN", "AMBER", "RED"}
+    assert preflight["rules"]["preflight_before_heavy_work"] is True
+    assert preflight["rules"]["red_stops_new_material_work"] is True
+    assert preflight["rules"]["red_requires_verified_handoff_checkpoint_when_state_changed"] is True
+    assert preflight["rules"]["no_fake_numeric_remaining_budget"] is True
+    assert preflight["rules"]["background_monitor_is_not_turn_capacity_guard"] is True
+    assert "do not start new material work" in preflight["risk_classes"]["RED"]
+
+
+def test_turn_entry_preflight_complements_safe_checkpointing():
+    policy = load("CONTEXT_RECOVERY_POLICY.json")
+    preflight = policy["context_health"]["turn_entry_capacity_preflight"]
+
+    assert preflight["rules"]["green_keeps_intra_turn_safe_checkpointing"] is True
+    assert "retaining intra-turn safe checkpoints" in preflight["purpose"]
+    assert any("planned-turn work envelope" in item for item in preflight["inputs"])
+    assert any("maximum length" in item for item in policy["context_health"]["signals_for_fresh_handoff"])
 
 
 def test_verification_is_risk_matched_not_always_full_suite():
