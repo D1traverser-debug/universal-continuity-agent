@@ -39,7 +39,7 @@
   "top10_skill_library_ref": "research/skill-library/2026-global-ai-skills-top10/README.md",
   "top10_skill_library_index_ref": "research/skill-library/2026-global-ai-skills-top10/INDEX.json",
   "top10_skill_library_selection_ref": "research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md",
-  "top10_skill_library_meta_run_ref": "research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md",
+  "top10_skill_library_meta_run_ref": "audits/META_MAINTENANCE_TOP10_SKILL_LIBRARY_2026-10-11.json",
   "top10_skill_library_closure_ref": "audits/TOP10_SKILL_LIBRARY_CLOSURE_2026-10-11.md",
   "top10_skill_library_regression_run": 38110768456,
   "top10_production_promotion_meta_run_ref": "audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_V50_CLOSURE_2026-10-11.json",
