@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "audit_type": "OWNER_EXECUTION_TRACER_BULLET",
+  "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+  "execution_mode": "GITHUB_CHAT",
+  "test_branch": "D1traverser-debug/financial-writing-agent@maintenance/github-chat-runtime-20261012",
+  "synthetic_task_id": "_system_tracer_20261012",
+  "scope": "GITHUB_STATE_MUTATION_AND_CONFLICT_BOUNDARY_ONLY",
+  "steps": [
+    {
+      "step": "CREATE_INITIAL_STATE",
+      "commit": "8332b34e763023464520c11ba2ca3a0adad35202",
+      "readback_blob_sha": "f6410b5de1fbe811abe9c454b1848c9c2f9d7b27",
+      "result": "PASS"
+    },
+    {
+      "step": "CREATE_RESEARCH_STAGE_ARTIFACT",
+      "commit": "8260fb1475c5bcf45af65375cd82d96a779eb1ec",
+      "readback_blob_sha": "f7e3b8b355746aa03c3fab68ddefcd7db76a27a8",
+      "result": "PASS"
+    },
+    {
+      "step": "ADVANCE_STATE_WITH_CURRENT_BLOB_SHA",
+      "commit": "28836c542b269475c2606ccaca80243b5269068c",
+      "new_state_blob_sha": "7f414b11443679757db0bdc39d1650d812ffa5b1",
+      "result": "PASS"
+    },
+    {
+      "step": "ATTEMPT_STALE_WRITER_MUTATION",
+      "input_blob_sha": "f6410b5de1fbe811abe9c454b1848c9c2f9d7b27",
+      "expected": "REJECT",
+      "observed_http_status": 409,
+      "observed_message": "STATE.json blob SHA mismatch",
+      "result": "PASS"
+    },
+    {
+      "step": "PERSIST_NEGATIVE_FEEDBACK_AND_OPEN_SYSTEM_IMPACT_IN_ONE_STATE_MUTATION",
+      "commit": "dabf0f8ab0338c6ecac4fac0b6b7bbe7994802c6",
+      "readback_blob_sha": "7222d1258dc875c80d632200fad4f045aedae245",
+      "result": "PASS"
+    }
+  ],
+  "proves": [
+    "The selected GitHub execution surface can create and reread per-article state and stage artifacts.",
+    "Blob-SHA optimistic concurrency rejects a stale writer rather than silently accepting last-write-wins.",
+    "Negative feedback evidence and an OPEN system-impact item can be persisted in the same durable GitHub state mutation and reread."
+  ],
+  "does_not_prove": [
+    "A real Financial chat will autonomously select this mode on every applicable request.",
+    "Research, editorial, headline, prose, audit or Word quality is good.",
+    "The full Financial owner regression suite passes.",
+    "Same-chat review is independent or owner-native semantic PASS.",
+    "Live user outcome improved."
+  ],
+  "assurance_ceiling": "REAL_GITHUB_EXECUTION_BOUNDARY_TRACER__NOT_REAL_ARTICLE_E2E__NOT_REGRESSION_VERIFIED"
+}
