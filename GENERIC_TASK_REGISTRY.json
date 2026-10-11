@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_CORE_PRIMITIVES_PRODUCTION_PROMOTION_IN_PROGRESS__META_HARNESS_1_2_WIRED__MUTATION_OUTCOME_UNKNOWN_WIRED__FINAL_CI_PENDING__OWNER_DRIFT_SIGNALS_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
-      "next_action": "Run and repair final current-main CI for reuse-before-build, fact/decision frontier, architecture payoff/deletion test and non-idempotent mutation OUTCOME_UNKNOWN semantics; then close only the regression-verified batch and keep owner-local/live evidence gates open.",
+      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_SELECTED_PRIMITIVES_PRODUCTION_PROMOTION_REGRESSION_VERIFIED__META_HARNESS_1_2_REGRESSION_VERIFIED__MUTATION_OUTCOME_UNKNOWN_REGRESSION_VERIFIED__CONTEXT_FOOTPRINT_REGRESSION_VERIFIED__TRACER_BULLET_ADMISSION_REGRESSION_VERIFIED__SIGNAL_VERIFY_FIRST_AND_AGENT_READY_BRIEF_REGRESSION_VERIFIED__EXPECTED_TRUTH_EVIDENCE_SEAM_REGRESSION_VERIFIED__NEGATIVE_DECISION_MEMORY_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
+      "next_action": "Preserve the selected Universal primitives at REGRESSION_VERIFIED; apply owner-local adoption only on genuine owner work under owner leases; keep real new-owner fresh-chat, operator-dependence independent live grading, owner drift signals and prior owner live-quality/outcome gates open without fabricated evidence.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-11T16:29:00+08:00"
+      "updated_at": "2026-10-11T18:20:00+08:00"
     }
   ]
 }
