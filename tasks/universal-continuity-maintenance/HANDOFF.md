@@ -22,8 +22,9 @@
 
 - 正式 runtime `acquire_resume_lease()` 要求真实新聊天 takeover 同时递增 `resume_epoch` 与 `manifest_version`，因此 v52 takeover 本身是合法状态变化。
 - takeover 后首次 CI `38130669491` 的 control-plane audit 与 Agent architecture harness 均通过，但 pytest 发现 1 个真实不一致：`latest_meta_maintenance_run_ref` 仍指向 target manifest v51，而当前 manifest 已为 v52；结果为 `1 failed, 239 passed`。
-- 没有篡改历史 v51 审计，也没有把 manifest_version 回退到 51。新增 `audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json`，并将权威 manifest 升至 v53、绑定当前版本的本地 takeover maintenance closure。
-- 此修复不增加 root policy/Agent，不改变 Continuity v3.7，不触碰任何 BUSINESS owner lease/state，也不降低 `tests/test_meta_maintenance.py` 的 fail-closed 断言。
+- 没有篡改历史 v51 审计，也没有把 manifest_version 回退到 51。新增 `audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json`，并将权威 manifest 升至 v53、绑定当前版本的 takeover maintenance closure。
+- v53 初版曾错误收窄为 `LOCAL / NOT_APPLICABLE propagation`；CI `38130917787` 继续暴露两个真实约束：`HARNESS_STATUS` 的 latest-meta 指针必须同步，而且最新 meta closure 必须绑定完整 BUSINESS owner topology，否则 synthetic new-owner admission 会被错误放行。没有修改测试，而是把当前 v53 closure 提升为 topology-bound `FULL_CONTROL_PLANE`，并同步现有 rebuildable Harness cache。
+- 修复不增加 root policy/Agent，不改变 Continuity v3.7，不触碰任何 BUSINESS owner lease/state，也不降低 version-binding、Harness alignment 或 new-owner fail-closed regressions。
 
 ## v51 已完成的控制面工作
 
@@ -63,7 +64,7 @@
 
 `LIVE_REMOTE_STRUCTURAL_REOBSERVATION + OWNER_CI + UNIVERSAL_REGRESSION_VERIFIED`
 
-不等于 `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`、`LIVE_OUTCOME_VERIFIED`、全系统无缺陷或 account-level 指令已实时核验。本轮 v53 takeover meta closure 自身保守声明 `WIRED`，最终仓库 CI 只作为其回归验证，不升级上述独立语义/业务 assurance。
+不等于 `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`、`LIVE_OUTCOME_VERIFIED`、全系统无缺陷或 account-level 指令已实时核验。本轮 v53 takeover meta closure 自身保守声明 `WIRED`；仓库 CI 可验证结构/回归一致性，但不升级上述独立语义/业务 assurance。
 
 ## Next action
 
