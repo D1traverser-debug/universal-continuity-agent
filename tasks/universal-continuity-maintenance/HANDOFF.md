@@ -48,29 +48,44 @@
    - 初版把 `ENTRYPOINT.md` 推过 hot-path/context-footprint budget，CI `38149091236` 失败；随后压缩入口，保持最小 bootstrap。
    - 压缩时误伤既有 assurance anchor，CI `38149238114` 因 `declaration conformance, owner regression or CI must not substitute` 回归失败；随后恢复该不变量并从其他冗余文字中腾预算。
 6. 最终代码 HEAD `bce5f7e6401bf9b611982334c481232f0c553062`；CI `38149331926` / job `114499269701`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、pytest PASS。
-7. **产品传播边界**：repository 已更新 canonical `ACCOUNT_ROUTER_V2` 文本，但 GitHub 写入不能修改 ChatGPT 账户里的 Custom Instructions，也不能证明实际账户文本已同步。因此本次 repo 修复对“下一次 bootstrap 后的行为”已回归验证；对“所有已打开聊天是否已获得更强 defect-hypothesis trigger”的产品级声明仍需要 account-level hook 实际安装/更新证据。
-8. complexity/efficiency：没有新增 authority surface、Agent、profile 或业务 owner 改动；`ENTRYPOINT.md` 仍满足既有 hot-path 大小预算，健康业务回合不增加 broad scout/full audit。
+7. **产品传播边界**：repository 已更新 canonical `ACCOUNT_ROUTER_V2` 文本；用户于本轮明确确认已更新 ChatGPT Custom Instructions。该用户确认可作为安装状态输入，但 repository 仍无法独立 product-readback 账户文本，不能把用户确认升级为独立产品侧 attestation。
+8. complexity/efficiency：没有新增 root authority、Agent、profile 或业务 owner 改动；`ENTRYPOINT.md` 仍满足既有 hot-path 大小预算，健康业务回合不增加 broad scout/full audit。
+
+## Post-V59：完整自维护轨迹参考推演
+
+1. 用户追问：此前声称 repo 已具备完整机制时，是否真正做过“系统运行推演”。复核后确认：此前证据主要是 contract、静态/结构回归、CI、architecture harness，以及 maintenance-decision escalation eval；**没有执行一条完整的 deterministic self-maintenance/evolution reference trajectory**。因此此前“已经具备”的表述若被理解为“完整运行链已推演验证”，属于 assurance overreach。
+2. 根因：`evals/maintenance_decision_cases.json` + `runtime/maintenance_decision_eval.py` 主要验证是否应 ESCALATE / DO_NOT_ESCALATE，以及真实 product trajectory grading seam；它们没有覆盖 `defect triage → parent reframe → learning decision → candidate falsification → minimum patch → validation → second-order review → propagation/cleanup → durable learning → authority reread` 的完整参考状态转移。
+3. 最小修复：新增窄 harness `runtime/self_maintenance_trajectory.py`，不作为业务 authority、不作为 child owner executor，只做 deterministic reference simulation。它的 assurance ceiling 固定为 `DETERMINISTIC_REFERENCE_SIMULATION_ONLY`，明确禁止外推成 live ChatGPT / remote child-owner execution proof。
+4. 新增/扩展 `tests/test_self_maintenance_evolution.py` 的代表性轨迹：
+   - `CONFIRMED_DEFECT + material + systemic + uncertain + shared change + validation PASS` 必须按序经过 parent reframe、learning scout、candidate challenge、minimum patch、validation、second-order review、shared-method-only propagation、cleanup、durable learning、authority reread；
+   - `NO_DEFECT` 只能解释并停止，不能进入 patch；
+   - `INVESTIGATE` 必须停在继续取证，不能进入 patch；
+   - local/non-material defect 只能 local repair，不跑 full loop；
+   - validation FAIL 必须 keep active with blocker，不能假装 propagation / durable closure；
+   - shared propagation 永远不把 owner business truth 标记为传播对象。
+5. commit `934fc51d874e23bd7455250e70ff60e32fd8968f` 引入可执行轨迹测试；CI `38153628452` / job `114511998218`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、pytest PASS。
+6. 第二序审查结论：该 simulator 只用于“在做 repo/mechanism completeness 声明前先做代表性 dry-run”；不得取代现有 `maintenance_decision_eval` 的真实 product-trace / independent-grader gate，也不得作为“四个子系统已经真实自主进化”的证据。
 
 ## 子系统继承边界
 
 - 当前 BUSINESS owner 集合：`A_SHARE_MARKET_AGENT`、`FINANCIAL_WRITING_AGENT_RUNTIME`、`NOVEL_WRITING_AGENT`、`VIDEO_GROWTH_AGENT`。
 - Shared loop 通过现有 `OWNER_ADAPTER_CONTRACT` + owner `operational_hygiene/evolution` hooks 传播，不复制大段父系统 prose，也不修改子系统业务 state/lease。
 - Financial / A-share / Novel 已有两类 profile 的明确 owner-local hooks；Video 已有 challenge→pollution/bypass→minimum patch→supersession→adversarial regression→CI→reread 的维护方法，但其已知 architecture/assurance drift 仍是 OPEN evidence gate。
-- 因此 V59 能声明 contract-level / regression-level shared-method propagation，不能声称四个子系统都已经在真实业务事故中独立执行过完整自动进化闭环。
+- 因此现在可以声明：**共享机制有 contract/regression + deterministic reference trajectory evidence**；仍不能声称四个子系统都已经在真实业务事故中独立执行过完整自动进化闭环。
 
 ## 当前 Next action
 
-保持 turn-entry capacity preflight 和 unified self-maintenance-evolution loop。任何可信的系统缺陷假设先完成 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT` triage；确认缺陷后同一轮进入维护/进化闭环，不停在“风险”表述。以后出现 material signal 时，先做系统级 preframe，再按证据决定 scout 深度、方案竞争和最小修复；第一轮验证后执行 second-order reframe；只传播共享方法与 invariant，清理 superseded/shadow mechanism，沉淀可复用 failure pattern。没有 material signal 时保持 hot path 精简，不制造学习/审计仪式。
+保持 turn-entry capacity preflight 和 unified self-maintenance-evolution loop。任何可信的系统缺陷假设先完成 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT` triage；确认缺陷后同一轮进入维护/进化闭环，不停在“风险”表述。涉及“系统已经具备完整运行链”的声明时，先用 `runtime/self_maintenance_trajectory.py` 做代表性 reference simulation，再按真实 claim level 区分 contract/regression、reference simulation、action-level proof 与 live product outcome。真实 owner incident 到来时仍必须收集 live trajectory，不能拿 reference simulation 顶替。
 
 ## 仍然 OPEN
 
-1. account-level `ACCOUNT_ROUTER_V2` 当前实际安装文本/产品级 readback：repo 不能自证账户 Custom Instructions 已包含本次 defect-hypothesis delta；
+1. account-level `ACCOUNT_ROUTER_V2`：用户已明确确认完成 Custom Instructions 更新；独立产品侧 readback/attestation 仍不可用；
 2. real child-owner self-triggered incident/action evidence：需要未来真实子系统事故证明它们会在无需用户逐项提醒时启动并完成该闭环；
 3. operator-dependence independent heldout/live trajectory grader；
 4. A-share / Novel / Video 等已确认的 owner-specific architecture / assurance drift；
 5. owner-local action-level independent methodology verification 与 live quality/outcome；
 6. recurring scout / architecture watch 的长期质量与 future remote-owner freshness；
-7. 不得把 contract wiring + CI 外推成“以后不会再犯错”或“所有子系统已经完成 live 自进化证明”。
+7. 不得把 contract wiring + CI + reference simulation 外推成“以后不会再犯错”或“所有子系统已经完成 live 自进化证明”。
 
 ## Recovery refs
 
@@ -81,7 +96,10 @@
 - `OWNER_ADAPTER_CONTRACT.json`
 - `SYSTEM_MAINTENANCE_POLICY.json`
 - `CONTINUOUS_LEARNING_POLICY.md`
+- `runtime/self_maintenance_trajectory.py`
+- `runtime/maintenance_decision_eval.py`
 - `tests/test_self_maintenance_evolution.py`
+- `tests/test_maintenance_decision_eval.py`
 - `audits/META_MAINTENANCE_UNIFIED_SELF_EVOLUTION_V59_2026-10-11.json`
 - `HARNESS_STATUS.json`
 - `GENERIC_TASK_REGISTRY.json`
