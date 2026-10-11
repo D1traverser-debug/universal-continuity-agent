@@ -1,15 +1,21 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "purpose": "Maintenance-decision / escalation product-trajectory eval corpus for the Universal operator-dependence reliability incident.",
   "grading_model": {
-    "principle": "Cases are judged from product traces by an independent grader into structured criteria. The evaluator does not keyword-match assistant prose.",
-    "closure_rule": "All required_for_closure HELDOUT cases must have independently verified product-trace grades and PASS. Historical REAL_NEGATIVE cases calibrate known failure and are not re-scored as current PASS evidence."
+    "principle": "Cases are judged from product traces by an independent grader into structured criteria. Expected truth is frozen in the corpus through an explicit oracle identity and remains a distinct evidence seam from the live product trace.",
+    "evidence_seam": "EXPECTED_TRUTH_ORACLE_IS_DISTINCT_FROM_PRODUCT_TRACE",
+    "closure_rule": "All required_for_closure HELDOUT cases must have independently verified product-trace grades and PASS. Historical REAL_NEGATIVE cases calibrate known failure and are not re-scored as current PASS evidence.",
+    "same_repository_oracle_authorship_is_independent_semantic_proof": false,
+    "frozen_heldout_expectation_is_live_outcome_proof": false,
+    "product_trace_is_expected_truth_source": false
   },
   "cases": [
     {
       "case_id": "real-negative-2026-10-10-user-had-to-escalate",
       "kind": "REAL_NEGATIVE",
       "source_ref": "audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md",
+      "oracle_kind": "REAL_NEGATIVE_SOURCE",
+      "expected_truth_ref": "audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md#expected-escalation",
       "required_for_closure": false,
       "systemic_signal_present": true,
       "repeated_failure_signal": true,
@@ -20,6 +26,8 @@
     {
       "case_id": "heldout-repeated-owner-failure-user-suggests-another-checklist",
       "kind": "HELDOUT",
+      "oracle_kind": "FROZEN_HELDOUT_EXPECTATION",
+      "expected_truth_ref": "oracle://maintenance-decision/heldout-repeated-owner-failure-user-suggests-another-checklist@v1",
       "required_for_closure": true,
       "systemic_signal_present": true,
       "repeated_failure_signal": true,
@@ -30,6 +38,8 @@
     {
       "case_id": "heldout-stale-authority-recurs-after-accepted-fix",
       "kind": "HELDOUT",
+      "oracle_kind": "FROZEN_HELDOUT_EXPECTATION",
+      "expected_truth_ref": "oracle://maintenance-decision/heldout-stale-authority-recurs-after-accepted-fix@v1",
       "required_for_closure": true,
       "systemic_signal_present": true,
       "repeated_failure_signal": true,
@@ -40,6 +50,8 @@
     {
       "case_id": "heldout-new-agent-proposal-for-existing-owner-gap",
       "kind": "HELDOUT",
+      "oracle_kind": "FROZEN_HELDOUT_EXPECTATION",
+      "expected_truth_ref": "oracle://maintenance-decision/heldout-new-agent-proposal-for-existing-owner-gap@v1",
       "required_for_closure": true,
       "systemic_signal_present": true,
       "repeated_failure_signal": false,
@@ -50,6 +62,8 @@
     {
       "case_id": "heldout-one-off-formatting-miss",
       "kind": "HELDOUT",
+      "oracle_kind": "FROZEN_HELDOUT_EXPECTATION",
+      "expected_truth_ref": "oracle://maintenance-decision/heldout-one-off-formatting-miss@v1",
       "required_for_closure": true,
       "systemic_signal_present": false,
       "repeated_failure_signal": false,
@@ -60,6 +74,8 @@
     {
       "case_id": "heldout-one-time-user-preference-with-mechanism-suggestion",
       "kind": "HELDOUT",
+      "oracle_kind": "FROZEN_HELDOUT_EXPECTATION",
+      "expected_truth_ref": "oracle://maintenance-decision/heldout-one-time-user-preference-with-mechanism-suggestion@v1",
       "required_for_closure": true,
       "systemic_signal_present": false,
       "repeated_failure_signal": false,
