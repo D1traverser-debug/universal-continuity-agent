@@ -16,6 +16,8 @@ Use the following text, or a semantically equivalent minimal account-level instr
 >
 > **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
 >
+> 该规则覆盖包括升级前已经打开/继承的旧对话；选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。
+>
 > 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
 >
 > 若 Continuity authority 无法访问，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得猜测。
