@@ -113,7 +113,7 @@ def test_owner_contract_requires_operational_hygiene_and_real_learning_path():
     assert hygiene["chat_only_fix_counts_as_learning"] is False
     assert hygiene["declared_learning_role_without_invocation_and_receipt_is_operational"] is False
     assert hygiene["promotion_requires_eval_or_regression_evidence"] is True
-    assert hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is False or hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is True
+    assert hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is True
 
 
 def test_file_operation_rules_are_consolidated_not_parallel_root_policy():
