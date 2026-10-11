@@ -1,14 +1,15 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "status": "ACTIVE",
   "scope": "CROSS_AGENT_ARTIFACT_CONTEXT_FILE_AND_CACHE_GOVERNANCE",
-  "purpose": "Provide one cross-agent authority and lifecycle model for durable state, artifacts, files, caches, external references and chat-only context, including verified file operations without creating parallel policy surfaces.",
+  "purpose": "Provide one cross-agent authority and lifecycle model for durable state, artifacts, files, caches, external references and chat-only context, including verified file operations and uncertain mutation outcomes without creating parallel policy surfaces.",
   "ownership_split": {
     "universal_control_plane_owns": [
       "cross-agent authority/storage classes",
       "minimum artifact identity and provenance rules",
       "promotion/invalidation/cleanup invariants",
       "verified read/write/move/delete transaction semantics",
+      "non-idempotent mutation outcome and retry-safety semantics",
       "conflict handling between authority and lower-authority context"
     ],
     "domain_owner_owns": [
@@ -45,12 +46,29 @@
   },
   "verified_file_operation_transaction": {
     "applies_to": ["READ_FOR_MATERIAL_DECISION","CREATE","UPDATE","PATCH","MOVE","COPY","DELETE","PUBLISH_OR_UPLOAD_DELIVERABLE"],
-    "steps": ["RESOLVE_OWNER_AND_ARTIFACT_CLASS","LOCATE_CANONICAL_OR_INTENDED_TARGET","VERIFY_STABLE_IDENTITY_AND_CURRENT_VERSION_WHEN_MATERIAL","READ_CURRENT_CONTENT_OR_METADATA_AS_REQUIRED","CHECK_WRITE_AUTHORITY_CONFLICT_AND_DEPENDENCIES","EXECUTE_OPERATION","VERIFY_POSTCONDITION_BY_REREAD_OR_PROVIDER_METADATA","INVALIDATE_OR_REBUILD_DEPENDENTS","CLEAN_OR_DEMOTE_SUPERSEDED_ACTIVE_COPIES_WHEN_SAFE","PERSIST_STABLE_REFERENCE_OR_RECEIPT_WHEN_MATERIAL"],
+    "steps": ["RESOLVE_OWNER_AND_ARTIFACT_CLASS","LOCATE_CANONICAL_OR_INTENDED_TARGET","VERIFY_STABLE_IDENTITY_AND_CURRENT_VERSION_WHEN_MATERIAL","READ_CURRENT_CONTENT_OR_METADATA_AS_REQUIRED","CHECK_WRITE_AUTHORITY_CONFLICT_AND_DEPENDENCIES","EXECUTE_OPERATION","CLASSIFY_OPERATION_OUTCOME_IF_DISPATCH_OR_ACK_IS_AMBIGUOUS","VERIFY_POSTCONDITION_BY_REREAD_OR_PROVIDER_METADATA","INVALIDATE_OR_REBUILD_DEPENDENTS","CLEAN_OR_DEMOTE_SUPERSEDED_ACTIVE_COPIES_WHEN_SAFE","PERSIST_STABLE_REFERENCE_OR_RECEIPT_WHEN_MATERIAL"],
     "read_freshness": "A prior-chat read, cached summary or remembered content does not satisfy a current authority read when freshness is material; a partial excerpt cannot prove unseen content.",
-    "write_commit_semantics": "Tool success alone is not postcondition proof. A material file mutation is committed only after reread or provider version/metadata verifies the intended result.",
+    "write_commit_semantics": "Tool success alone is not postcondition proof. A material file mutation is committed only after reread or provider version/metadata verifies the intended result. A transport timeout or lost acknowledgement after a mutation may be OUTCOME_UNKNOWN rather than failure.",
     "copy_move_semantics": "Copying does not create authority. Moving/canonicalizing requires stable-reference reconciliation and removal/demotion of stale active copies.",
     "delete_semantics": "Before deletion, classify identity and check active-task, audit, publication, accepted-output and migration dependencies. If dependency/retention is unknown, do not delete.",
     "local_or_sandbox_path_is_not_durable_reference": true
+  },
+  "mutation_outcome_semantics": {
+    "runtime": "runtime/mutation_outcome.py",
+    "states": ["CONFIRMED_SUCCESS","CONFIRMED_FAILURE","OUTCOME_UNKNOWN"],
+    "applies_when": "A material write/delete/publish/external mutation may have crossed the execution boundary but final provider or postcondition evidence is unavailable.",
+    "rules": [
+      "Verified applied postcondition or provider-confirmed applied state is CONFIRMED_SUCCESS.",
+      "Verified not-applied postcondition or proof the request was never dispatched is CONFIRMED_FAILURE.",
+      "Timeout, connection loss, cancelled wait, or missing acknowledgement after possible dispatch is OUTCOME_UNKNOWN until reconciliation proves applied or not applied.",
+      "OUTCOME_UNKNOWN is not safe evidence of failure and must not be reported as COMMIT_FAILED merely because the acknowledgement is missing.",
+      "A non-idempotent OUTCOME_UNKNOWN mutation must not be blindly retried. Re-read/reconcile provider state first, or use a provider-supported idempotency key/stable operation identity that makes retry semantics safe.",
+      "Natural idempotence or an idempotency key may make retry permissible, but retry permission is not commit proof; final state still requires verification.",
+      "If reconciliation cannot determine the outcome, persist the exact unknown state and blocker rather than guessing success or failure."
+    ],
+    "blind_retry_non_idempotent_unknown_allowed": false,
+    "outcome_unknown_is_commit_proof": false,
+    "outcome_unknown_is_failure_proof": false
   },
   "external_storage": {
     "chatgpt_library": {"default_role":"NOT_SYSTEM_AUTHORITY","durable_control_plane_dependency_allowed":false,"note":"User may clear Library; durable owners must remain recoverable without it."},
@@ -80,12 +98,14 @@
     "owners_must_expose": ["durable_task_state_location","authoritative_business_evidence_classes","canonical_artifact_or_file_stores","cache_or_reference_only_stores","stable_identity_strategy","read_freshness_requirements","mutation_conflict_strategy","post_write_verification_method","upstream_to_downstream_invalidation_rule","delete_and_retention_rules","superseded_artifact_cleanup_rule","external_artifact_vault_if_any"],
     "universal_may_stage_conformance_without_stealing_business_lease": true,
     "business_state_rewrite_requires_valid_owner_writer": true,
-    "universal_controls_protocol_not_domain_retention": true
+    "universal_controls_protocol_not_domain_retention": true,
+    "artifact_io_profile_semantics_include_outcome_unknown_without_new_owner_hook": true
   },
   "failure_semantics": {
     "cannot_resolve_stable_identity": "BLOCK_DESTRUCTIVE_OR_CONFLICT_SENSITIVE_MUTATION",
     "cannot_verify_current_version": "BLOCK_CONFLICT_SENSITIVE_MUTATION",
-    "write_postcondition_not_verified": "COMMIT_FAILED_OR_OWNER_EQUIVALENT",
+    "write_postcondition_not_verified": "OUTCOME_UNKNOWN_WHEN_MUTATION_MAY_HAVE_BEEN_DISPATCHED; OTHERWISE_COMMIT_FAILED_OR_OWNER_EQUIVALENT",
+    "non_idempotent_mutation_outcome_unknown": "BLOCK_BLIND_RETRY_AND_RECONCILE_OR_PERSIST_EXACT_UNKNOWN_STATE",
     "delete_dependency_unknown": "DO_NOT_DELETE",
     "stale_copy_conflicts_with_authority": "IGNORE_OR_QUARANTINE_STALE_COPY_AND_USE_CURRENT_AUTHORITY",
     "external_store_unavailable": "KEEP_CONTROL_PLANE_INDEPENDENT_AND_REPORT_EXACT_ARTIFACT_DELIVERY_BLOCKER"
