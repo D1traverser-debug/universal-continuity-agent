@@ -99,7 +99,7 @@ Do not create another permanent Agent merely to simulate independent review. Det
 
 ## Progress observability
 
-Long-running durable work must also checkpoint **during the turn** at verified material safe points. Once stable recoverable progress exists, persist the smallest sufficient authoritative checkpoint and re-read it before entering further substantial work; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. If the chat ends abruptly, the next chat resumes from the latest verified safe checkpoint rather than reconstructing completed work from transcript memory. Detailed triggers and guards live in `PROGRESS_OBSERVABILITY_POLICY.json`.
+Long durable work must checkpoint **during the turn** at verified material safe points; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. After interruption, resume from the latest verified safe checkpoint. Details: `PROGRESS_OBSERVABILITY_POLICY.json`.
 
 Every final response on an active durable task emits exactly one:
 
