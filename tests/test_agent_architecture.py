@@ -60,6 +60,22 @@ def test_v11_owner_aliases_normalize_to_shared_semantics():
     assert result.status == ArchitectureStatus.PASS
 
 
+def test_v11_field_shape_aliases_normalize_to_canonical_layers():
+    manifest = valid_manifest()
+    manifest["schema_version"] = "1.1"
+    manifest["architecture_contract_version"] = "1.1"
+    manifest["skill"]["role"] = "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT"
+    manifest["runtime"].pop("entrypoints")
+    manifest["runtime"]["public_entrypoint"] = "synthetic/runtime.py"
+    manifest["runtime"]["internal_components"] = ["synthetic/controller.py"]
+    manifest["runtime"]["judgment_execution"] = "CHAT_BRIDGED_OWNER_GATED"
+    manifest["references"].pop("canonical_roots")
+    manifest["references"]["canonical_root"] = "references"
+    manifest["references"]["mirror_policy"] = "GENERATED_DISTRIBUTION_MIRRORS_ONLY"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.PASS
+
+
 def test_v11_video_aliases_normalize_to_shared_semantics():
     manifest = valid_manifest()
     manifest["schema_version"] = "1.1"
