@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_SKILL_LIBRARY_10_OF_10_COMPLETE__CROSS_SKILL_SELECTION_COMPLETE__PRODUCTION_PROMOTION_PENDING_REGRESSION_BACKED_CHANGE__OWNER_DRIFT_SIGNALS_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
-      "next_action": "Use the completed Top10 Skill library and Phase B selection as cold-path evidence. If production evolution continues, promote only selected net-new primitives through existing authorities with separate regressions; preserve A-share/Novel/Video signals #2-#4 and prior independent/live evidence gates.",
+      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_CORE_PRIMITIVES_PRODUCTION_PROMOTION_IN_PROGRESS__META_HARNESS_1_2_WIRED__MUTATION_OUTCOME_UNKNOWN_WIRED__FINAL_CI_PENDING__OWNER_DRIFT_SIGNALS_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
+      "next_action": "Run and repair final current-main CI for reuse-before-build, fact/decision frontier, architecture payoff/deletion test and non-idempotent mutation OUTCOME_UNKNOWN semantics; then close only the regression-verified batch and keep owner-local/live evidence gates open.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-11T12:20:00+08:00"
+      "updated_at": "2026-10-11T16:29:00+08:00"
     }
   ]
 }
