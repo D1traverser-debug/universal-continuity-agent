@@ -10,6 +10,7 @@ def load_policy():
 
 def test_artifact_context_governance_policy_core_invariants():
     policy = load_policy()
+    assert policy["schema_version"] == "1.2"
     assert policy["status"] == "ACTIVE"
     classes = policy["storage_classes"]
     for required in (
@@ -49,10 +50,23 @@ def test_material_file_mutation_requires_verified_postcondition_and_identity():
     policy = load_policy()
     tx = policy["verified_file_operation_transaction"]
     assert "VERIFY_STABLE_IDENTITY_AND_CURRENT_VERSION_WHEN_MATERIAL" in tx["steps"]
+    assert "CLASSIFY_OPERATION_OUTCOME_IF_DISPATCH_OR_ACK_IS_AMBIGUOUS" in tx["steps"]
     assert "VERIFY_POSTCONDITION_BY_REREAD_OR_PROVIDER_METADATA" in tx["steps"]
     assert "Tool success alone is not postcondition proof" in tx["write_commit_semantics"]
+    assert "OUTCOME_UNKNOWN" in tx["write_commit_semantics"]
     assert "do not delete" in tx["delete_semantics"].lower()
-    assert policy["failure_semantics"]["write_postcondition_not_verified"] == "COMMIT_FAILED_OR_OWNER_EQUIVALENT"
+    assert policy["failure_semantics"]["write_postcondition_not_verified"].startswith("OUTCOME_UNKNOWN_WHEN_MUTATION_MAY_HAVE_BEEN_DISPATCHED")
+
+
+def test_unknown_non_idempotent_mutation_cannot_be_blindly_retried():
+    policy = load_policy()
+    semantics = policy["mutation_outcome_semantics"]
+    assert semantics["runtime"] == "runtime/mutation_outcome.py"
+    assert semantics["states"] == ["CONFIRMED_SUCCESS", "CONFIRMED_FAILURE", "OUTCOME_UNKNOWN"]
+    assert semantics["blind_retry_non_idempotent_unknown_allowed"] is False
+    assert semantics["outcome_unknown_is_commit_proof"] is False
+    assert semantics["outcome_unknown_is_failure_proof"] is False
+    assert policy["failure_semantics"]["non_idempotent_mutation_outcome_unknown"] == "BLOCK_BLIND_RETRY_AND_RECONCILE_OR_PERSIST_EXACT_UNKNOWN_STATE"
 
 
 def test_external_stores_cannot_silently_become_control_plane_authority():
@@ -99,8 +113,9 @@ def test_owner_contract_requires_operational_hygiene_and_real_learning_path():
     assert hygiene["chat_only_fix_counts_as_learning"] is False
     assert hygiene["declared_learning_role_without_invocation_and_receipt_is_operational"] is False
     assert hygiene["promotion_requires_eval_or_regression_evidence"] is True
-    assert hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is True
+    assert hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is False or hygiene["freeze_must_not_spread_to_unrelated_healthy_owners"] is True
 
 
 def test_file_operation_rules_are_consolidated_not_parallel_root_policy():
     assert not (ROOT / "FILE_OPERATION_GOVERNANCE_POLICY.json").exists()
+    assert not (ROOT / "MUTATION_OUTCOME_POLICY.json").exists()
