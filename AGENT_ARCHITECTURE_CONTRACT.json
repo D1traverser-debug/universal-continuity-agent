@@ -8,7 +8,7 @@
   "compatibility": {
     "current_manifest_version": "1.1",
     "supported_manifest_versions": ["1.0", "1.1"],
-    "rule": "A shared contract upgrade may remain backward compatible with explicitly listed prior manifest versions. Unknown future versions fail closed. Owner-local vocabulary must map through central aliases rather than silently redefining shared semantics.",
+    "rule": "A shared contract upgrade may remain backward compatible with explicitly listed prior manifest versions. Unknown future versions fail closed. Owner-local vocabulary or field shapes must map through central compatibility rules rather than silently redefining shared semantics.",
     "aliases_by_manifest_version": {
       "1.1": {
         "skill_role": {
@@ -31,6 +31,20 @@
           "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR",
           "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR",
           "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"
+        }
+      }
+    },
+    "field_shapes_by_manifest_version": {
+      "1.1": {
+        "runtime.entrypoints": {
+          "canonical": "entrypoints",
+          "accepted_alternative": "public_entrypoint + internal_components",
+          "normalization": "combine the non-empty public entrypoint with the internal component list"
+        },
+        "references.canonical_roots": {
+          "canonical": "canonical_roots",
+          "accepted_alternative": "canonical_root",
+          "normalization": "wrap the non-empty scalar root as a one-item list"
         }
       }
     }
