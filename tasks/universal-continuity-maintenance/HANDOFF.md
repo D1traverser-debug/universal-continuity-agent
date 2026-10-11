@@ -7,139 +7,108 @@
 - contract: `CONTINUITY_V3_7`
 - current writer: `lease-2c5946fb-3d78-4a23-9440-2df7d41817ec`
 - resume_epoch: `5`
-- manifest_version: `50`
+- manifest_version: `51`
 - system maintenance policy: `1.7`
 - meta-maintenance harness: `1.2`
-- artifact/context governance: `1.2`
 - Agent architecture contract: `1.1`
-- control signal contract: `1.0`
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_SELECTED_PRIMITIVES_PRODUCTION_PROMOTION_REGRESSION_VERIFIED__META_HARNESS_1_2_REGRESSION_VERIFIED__MUTATION_OUTCOME_UNKNOWN_REGRESSION_VERIFIED__CONTEXT_FOOTPRINT_REGRESSION_VERIFIED__TRACER_BULLET_ADMISSION_REGRESSION_VERIFIED__SIGNAL_VERIFY_FIRST_AND_AGENT_READY_BRIEF_REGRESSION_VERIFIED__EXPECTED_TRUTH_EVIDENCE_SEAM_REGRESSION_VERIFIED__NEGATIVE_DECISION_MEMORY_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
 同聊天继续维护；保持 epoch `5` 与当前 lease，不伪造 takeover。
 
-## 本轮完成：selected primitives 真正晋升生产
+## v51 为什么触发
 
-Top10 Skill 学习库仍位于 `research/skill-library/2026-global-ai-skills-top10/`。本轮没有复制 whole Skill，也没有新增 `Top10 Policy`、Triage Agent、TDD root policy、decision database authority 或 supervisory Agent，而是把净新增机制放入现有 semantics owner。
+用户追问“系统到底运用上没有、有没有全局自检、需不需要改 GPT 个性化”，按 `SYSTEM_MAINTENANCE_POLICY` 属于对维护完整性与 instruction surface 的实质挑战，因此不能只引用 v50 CI。执行了真实的跨仓远端 re-observation，并把“用户再次提醒”继续记为 operator-dependence 负证据。
 
-1. **reuse-before-build**：`SYSTEM_MAINTENANCE_POLICY.json` + Meta Harness 1.2 对 systemic maintenance 强制先检查平台/插件/owner/runtime/policy/harness/Skill 等可复用能力，再决定是否自建。
-2. **facts-vs-decisions / decision frontier**：系统必须区分已验证事实、未解决事实、真正用户决策、自主 next steps；可检索事实不能冒充用户选择题。
-3. **architecture payoff + deletion test**：非平凡架构变更必须比较 failure cost / change cost / payoff，并显式考虑删除、简化、合并、no-change；现有 authority 能承载时拒绝新 root surface。
-4. **non-idempotent mutation `OUTCOME_UNKNOWN`**：`ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` 1.2 + `runtime/mutation_outcome.py` 区分 `CONFIRMED_SUCCESS / CONFIRMED_FAILURE / OUTCOME_UNKNOWN`；可能已 dispatch 但未验证 final state 的非幂等写禁止盲重试，必须 reconcile。幂等性只影响 retry safety，不等于 commit proof。
-5. **measured context-footprint**：`runtime/context_footprint.py` + `AGENT_ARCHITECTURE_CONTRACT.json` 把“thin”从形容词变成 UTF-8 byte budget。token 仅是明确标注的近似值，不冒充真实 tokenizer。
-6. **tracer-bullet admission**：新 owner / 不确定 runtime integration 在 broad rollout 前先证明一条窄的真实或 production-equivalent E2E 路径；只证明该窄路径，不外推为 owner 全局质量。
-7. **verify-before-clarify + Agent-ready brief**：`runtime/control_signal.py` 先 re-observe，再自主补 retrievable facts；只有不可获取事实或真实 human judgment 才打断用户。委派前必须生成稳定 brief，而不是扔 raw chat/history。
-8. **expected-truth evidence seam**：`runtime/maintenance_decision_eval.py` + corpus 1.1 为 expected truth 冻结独立 identity；live product `trace_ref` 不能与 expected-truth ref 相同。同仓 oracle 作者身份仍不等于独立语义正确性。
-9. **searchable negative decision memory**：`runtime/decision_memory.py` 从 durable meta-audit 的 REJECTED alternatives 提取 `concept_key / rationale / rejection_horizon / reconsider_when`，可按概念检索；audit history 仍是 source，不新建第二 authority DB。
+## v51 全局实时检查打出的真实问题
 
-## 明确未全局化
+1. **远端 observation cache 陈旧**：Financial 仍在既有 HEAD；A-share、Novel、Video 的 `main` 都已前进，但 `OWNER_ARCHITECTURE_OBSERVATIONS.json` 仍绑定旧 HEAD。Universal 本地 CI 本来就声明无法自行发现 sibling private repo 的更新，因此旧绿灯不能冒充实时全局 freshness。
+2. **Video 共享架构版本漂移**：Video 当前 owner-local CI 为绿，但 `continuity/AGENT_MANIFEST.json` 宣告 `architecture_contract_version=1.2`；Universal 当前共享合同只支持 `1.0/1.1` 并要求未知未来版本 fail closed。这证明 owner CI ≠ Universal shared-contract conformance。
+3. **membership authority 混入 rebuildable cache**：`OWNER_REGISTRY.json` 的 Novel 行曾嵌入 `observed_skill_version / observed_runtime_version / observed_owner_head`，而这些字段已经变旧；这违反“OWNER_REGISTRY 只拥有 membership，远端 observation 属于 rebuildable cache”的 authority 边界。
+4. **主动监测太慢**：已有 `Agent Architecture Watch` 是 daily condition watch，在 owner 活跃开发期会留下数小时盲区。
 
-- P4 inline crystallization：不新建机制；现有 chat-only material change / durable record 规则更强。
-- P6 runtime-served versioned operating knowledge：保留 owner-optional，不以当前证据强推 Universal。
-- P11 inspect-default / ask-only-choices：已被 decision frontier + Signal verify-first 覆盖。
-- P12 evidence-gated complexity：已被 payoff/deletion + authority admission 覆盖。
-- frontend-design：留给 Video/UI 等 owner-local quality harness，不污染 Universal kernel。
+## 已执行修复
 
-## 验证证据
+- Video：只把共享 `architecture_contract_version` 从不受支持的 `1.2` 调回中央支持的 `1.1`；保留 owner-local `schema_version=1.2`、runtime 0.5.2、项目/任务/lease/业务证据不动。
+  - commit `977ad5329b1ffb1f971db922fac3e17bf91a412a`
+  - owner CI `38129311234` = SUCCESS。
+- Universal：`runtime/owner_topology.py` 新增 fail-closed guard，禁止 `observed_*` / `architecture_validation_*` rebuildable 远端 observation 重新进入 `OWNER_REGISTRY`。
+- `OWNER_REGISTRY.json` 删除 Novel stale observed fields，并显式声明 `rebuildable_remote_observations_allowed=false`、专用 cache=`OWNER_ARCHITECTURE_OBSERVATIONS.json`。
+- 新增 `tests/test_owner_registry_authority.py`，覆盖当前态与 adversarial reintroduction。
+- 刷新 `OWNER_ARCHITECTURE_OBSERVATIONS.json` 到四个 owner 的当前真实 HEAD/CI；A-share、Novel、Video 的 acknowledged drift 继续保留，不假装 PASS。
+- 更新 #2/#3/#4 control signals 到当前 owner HEAD；signal 仍是 non-authoritative，不是 task authority/lease。
+- `Agent Architecture Watch` 从 daily 提升为 **hourly condition watch**；仍禁止业务状态 mutation/lease takeover。平台用户通知 delivery 目前 disabled 或未证明，所以不声称能主动弹通知，但 durable GitHub signal emission 已有证据。
 
-闭环证据：`audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`。
+## 当前 live owner observation
 
-### 原始行为整合高风险验证
+- Financial: `a76c83c917ae6c81ec398ef99749125131e6be2c`，Skill 5540B，architecture PASS，CI `38108186593` SUCCESS。
+- A-share: `f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c`，Skill 8272B，仍高于 8192B 目标 80B，CI `38108652297` SUCCESS，状态 `PASS_WITH_DRIFT`。
+- Novel: `7988b96c8be661a2f92bad96daac6322bcf664ef`，Skill 19540B，CHAT_BRIDGED assurance 未升级，CI `38110065043` SUCCESS，状态 `PASS_WITH_DRIFT`。
+- Video: `977ad5329b1ffb1f971db922fac3e17bf91a412a`，Skill 9310B，共享 architecture contract 已重新对齐 1.1，strict isolated-review assurance 仍 OPEN，CI `38129311234` SUCCESS，状态 `PASS_WITH_DRIFT`。
 
-- behavioral integration commit: `aa0d6da1a8e36fcaba6559770d0bf621f506ea22`
-- Actions run: `38126896565`
-- job: `114433021349`
-- risk: `HIGH`
+## Universal 验证
+
+v51 预 checkpoint HIGH-risk integrated run：
+
+- Universal HEAD: `940b7a5e76a0f178ac40dfbc90438e1050706a18`
+- Actions run: `38129508719`
+- job: `114440713163`
 - modes: `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`
-- all current BUSINESS owner metadata in scope
-- synthetic fault suite: PASS, zero failed
-- Agent Architecture harness: PASS（保留既有 A-share / Novel / Video drift warnings）
-- pytest: `234 passed`
+- local system audit: PASS
+- synthetic fault injection: PASS, zero failed
+- Agent Architecture harness: PASS with only acknowledged A-share / Novel / Video drift warnings
+- all current BUSINESS owners in metadata scope
+- pytest: `240 passed in 0.69s`
 
-### v50 closure 过程中发现并修复的真实反证
+注意：这个 CI 自己仍明确写着 remote freshness boundary；实时远端 HEAD 是由本轮 maintenance runner 额外 re-observe 后写入 audit/cache 的，不能反过来说“CI 自动扫描所有 private sibling repos”。
 
-第一次 v50 HIGH-risk closure：
+本轮完整 meta-run：`audits/META_MAINTENANCE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`。实时结构审计：`audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`。
 
-- HEAD: `713e242c87b0bf978a12defe9581036427537234`
-- Actions run: `38128049693`
-- job: `114436418691`
-- system audit: PASS
-- synthetic fault suite: PASS
-- Agent Architecture harness: PASS
-- pytest: `233 passed, 1 failed`
-- 失败原因：`latest_meta_maintenance_run_ref` 仍指向 target_manifest_version `49` 的历史 run，而当前 manifest 已是 `50`。
+## GPT Personality / Custom Instructions 边界
 
-没有放宽测试，也没有把旧 v49 run post-hoc 改写成 v50。新增独立 current run：
+- **Personality 不是 control plane。** 本轮根据用户对回复方式的反馈，ChatGPT Personality 已切换为官方预设 `高效务实`；它只影响表达风格，不承担 CONTINUE routing、Agent execution 或 evidence authority。
+- **真正影响新聊天裸“继承/继续”的是 account-level Custom Instructions / 等价 product routing surface。** `STARTUP_HOOK.md` 仍是 canonical compact rule，本轮没有理由继续膨胀它。
+- 历史状态记录表明该 account hook 曾由用户确认过；但当前可用设置接口不能实时读取/改写 Custom Instructions 文本，所以 v51 不重新声称“当前账户里的文字已经核验”。若产品侧文本被用户/平台改过，需要重新对照 `STARTUP_HOOK.md`；仓库本身不能证明传播。
 
-`audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_V50_CLOSURE_2026-10-11.json`
+## 当前 assurance ceiling
 
-旧 run `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json` 保留为历史生产晋升轨迹。
+本轮达到：**LIVE REMOTE STRUCTURAL RE-OBSERVATION + OWNER CI + UNIVERSAL REGRESSION VERIFIED**。
 
-### 最终 v50 HIGH-risk closure
-
-- HEAD: `2c101244a7399c7c75ebe56e09ab3aa3443175c7`
-- Actions run: `38128234320`
-- job: `114436961188`
-- risk: `HIGH`
-- modes: `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`
-- system audit: PASS
-- synthetic fault suite: PASS, zero failed
-- Agent Architecture harness: PASS，仍仅有已承认的 A-share / Novel / Video drift warnings
-- all current BUSINESS owner metadata in scope
-- pytest: `234 passed in 0.59s`
-
-`OUTCOME_UNKNOWN` 有专门 deterministic regression，并包含在上述 234-test integrated suite 中。当前 system synthetic-fault collection 没有再复制一个同义 mutation classifier scenario；因此 fault-suite PASS 不被计作该项的独立第二份证明。
-
-## 当前 assurance
-
-Selected Universal production-promotion primitives：**REGRESSION_VERIFIED**。
-
-这不等于：
+仍不等于：
 
 - `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`；
 - `LIVE_OUTCOME_VERIFIED`；
-- 四个 BUSINESS owner 每条真实动作路径都已经接入；
-- operator-dependence 已经长期解决；
+- account-level Custom Instructions 当前文本已实时读取；
+- operator-dependence 已解决；
 - 全系统无缺陷。
 
 ## 仍 OPEN
 
-1. **real new-owner fresh-chat product E2E**：必须自然出现一个新 admitted BUSINESS owner + genuinely fresh ChatGPT product chat；不能用 synthetic fixture 冒充。
-2. **Universal operator-dependence**：仍需 independent heldout/live trajectory grader；本轮结构门和 regression 不能替代真实效果证据。
-3. **owner-local action adoption**：共享语义只能在真实 owner action 到来时，在该 owner lease 与 exact evidence gate 下接入；Universal 不偷 business lease。
-4. **owner architecture drift signals**：A-share / Novel / Video 的已记录 drift 继续 OPEN。
-5. **pre-write enforcement**：任意 ChatGPT→GitHub mutation 仍不是通用 `WRITE_PATH_ENFORCED`。
-6. **各业务 owner 原有 live gates**：Novel publication/CH9/independent attestation，Financial action-level methodology/blind pairwise/heldout diversity，A-share replay/live adapters/durability，Video generation gateway/trusted reviewer/live provider proof 等继续 owner-local OPEN。
+1. real new-owner fresh-chat product E2E；
+2. operator-dependence independent heldout/live trajectory grader；
+3. A-share 80B thin-router drift；
+4. Novel thin-router drift + CHAT_BRIDGED ceiling；
+5. Video thin-router drift + strict isolated reviewer / live provider / generation-gateway assurance gaps；
+6. owner-local action-level methodology/evidence 与各业务 live quality/outcome gates；
+7. 通用 ChatGPT→GitHub pre-write `WRITE_PATH_ENFORCED` 仍未成立。
 
 ## Next action
 
-以后只在真实事件上继续：
-
-- 新 owner 自然出现时自动拿它做 cold-start live validation；
-- owner 真实 material action 出现时按 shared invariant 做 action-level adoption，不制造假样本；
-- operator-dependence 有真实 heldout/live trajectory 时再升级 assurance；
-- owner drift signal 有新证据时处理对应 owner，不把 metadata maintenance 变成业务 lease takeover；
-- 若没有新的可执行证据或真实 defect，遵守 stop rule，不为了“持续优化”制造额外层。
+保持小时级 architecture watch 与 membership/cache separation；未来 owner HEAD 漂移时自动 re-observe 并更新 non-authoritative signal。只有唯一 authority 和兼容结论明确时才做 metadata-only repair；绝不借 Universal maintenance 偷 business lease。真实新 owner、真实 owner action、operator-dependence heldout/live trajectory 出现时再升级对应 evidence。没有新证据/缺陷时遵守 stop rule，不制造额外层。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_V50_CLOSURE_2026-10-11.json`
-- `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json`（historical v49 run）
-- `audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`
-- `SYSTEM_MAINTENANCE_POLICY.json`
-- `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`
-- `AGENT_ARCHITECTURE_CONTRACT.json`
-- `CONTROL_SIGNAL_CONTRACT.json`
-- `runtime/meta_maintenance.py`
-- `runtime/mutation_outcome.py`
-- `runtime/context_footprint.py`
-- `runtime/control_signal.py`
-- `runtime/maintenance_decision_eval.py`
-- `runtime/decision_memory.py`
-- `HARNESS_STATUS.json`
+- `audits/META_MAINTENANCE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`
+- `audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`
+- `OWNER_REGISTRY.json`
 - `OWNER_ARCHITECTURE_OBSERVATIONS.json`
+- `runtime/owner_topology.py`
+- `tests/test_owner_registry_authority.py`
+- `AGENT_ARCHITECTURE_CONTRACT.json`
+- `STARTUP_HOOK.md`
+- `HARNESS_STATUS.json`
 
-不要把 `COMMITTED`、CI、结构化 Harness、Skill 热度或 REGRESSION_VERIFIED 外推成 live quality、independent semantic correctness 或 global flawlessness。
+不要把 `COMMITTED`、Personality、owner CI、Universal CI、结构化 Harness 或实时 structural re-observation 外推成 live business quality、independent semantic correctness 或 global flawlessness。
