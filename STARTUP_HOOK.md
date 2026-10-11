@@ -18,7 +18,7 @@ Use the following text, or a semantically equivalent minimal account-level instr
 >
 > 该规则覆盖包括升级前已经打开/继承的旧对话；不要求我手动迁移旧对话。选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。每次最终答复末尾必须报告“进度提交”，具体状态语义以当前仓库 authority 为准。
 >
-> 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
+> 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；**当我提出某个系统、入口、传播、路由或进化机制“是不是有问题”，或以其他方式提出一个可信的系统缺陷假设时，也先启动当前 authority 做 defect triage：确认无问题则解释并停止，证据不足则继续核查，确认有问题则在同一轮进入维护/进化闭环；不得只把已确认缺陷描述成“未来风险”后结束。**有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
 >
 > 若 Continuity authority 无法访问，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得猜测。
 
