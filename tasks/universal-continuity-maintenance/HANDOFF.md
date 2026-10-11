@@ -50,11 +50,12 @@
 
 ## Universal 验证
 
-v51 预 checkpoint HIGH-risk integrated run：
+### 行为/authority 修复的 HIGH-risk 验证
 
 - Universal HEAD: `940b7a5e76a0f178ac40dfbc90438e1050706a18`
 - Actions run: `38129508719`
 - job: `114440713163`
+- risk: HIGH
 - modes: `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`
 - local system audit: PASS
 - synthetic fault injection: PASS, zero failed
@@ -63,6 +64,25 @@ v51 预 checkpoint HIGH-risk integrated run：
 - pytest: `240 passed in 0.69s`
 
 注意：这个 CI 自己仍明确写着 remote freshness boundary；实时远端 HEAD 是由本轮 maintenance runner 额外 re-observe 后写入 audit/cache 的，不能反过来说“CI 自动扫描所有 private sibling repos”。
+
+### v51 checkpoint 的真实红灯与修复
+
+第一次把 v51 manifest/Harness/Handoff 接到新 Meta-run 后，最终 Handoff HEAD `3734cf33fada367ec08847d1584854cbb5442076` 的 CI `38129882567` **FAIL**。失败没有被忽略：`runtime.system_audit` 明确报 `latest meta-maintenance run is not structurally conformant`。
+
+根因是新 Meta-run 的 `failure_model.root_cause_layers` 使用了没有被 `SYSTEM_MAINTENANCE_POLICY` 枚举的自由词汇（如 `AUTHORITY_OR_STATE` / `INSTRUCTION_SURFACE`），违反 Meta Harness 的 fail-closed taxonomy。没有改弱 verifier；而是把 run 对齐到现行 authority taxonomy：`ACCOUNT_OR_PRODUCT_INSTRUCTION / REPOSITORY_POLICY / RUNTIME_OR_SCHEMA / EVIDENCE_OR_PROPAGATION`。
+
+修复 commit：`2366f086b42a44146cd18554d495bdf763d14743`。
+
+修复后 CI：
+
+- run `38129975121`
+- job `114442099188`
+- conclusion: SUCCESS
+- system audit: PASS
+- Agent Architecture harness: PASS with acknowledged owner drift only
+- pytest: `240 passed in 0.85s`
+
+这次 red→green 说明 v51 的 Meta-run 本身也被现有 harness 约束，而不是我给自己写一份审计 JSON 就自动算通过。
 
 本轮完整 meta-run：`audits/META_MAINTENANCE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`。实时结构审计：`audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json`。
 
