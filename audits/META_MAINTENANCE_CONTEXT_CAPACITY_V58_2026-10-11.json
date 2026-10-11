@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.2",
+  "run_id": "meta-context-capacity-v58-2026-10-11",
+  "scope": "FULL_CONTROL_PLANE",
+  "trigger": "CI_REGRESSION_AND_CONTEXT_CAPACITY_PREFLIGHT_CLOSURE",
+  "target_manifest_version": 58,
+  "user_signal": {
+    "classifications": ["GOAL_OR_CONSTRAINT", "COUNTEREXAMPLE_OR_FAILURE_REPORT"],
+    "goal_or_constraint": "Continue the Universal continuity maintenance task from authoritative state and close the turn-entry context-capacity preflight without inventing exact remaining-token telemetry or weakening durable evidence binding.",
+    "counterexample": "The original capacity-preflight CI failed on a stale meta-run target rather than the new capacity tests; the first V57 self-audit checkpoint then failed because GENERIC_TASK_REGISTRY still cached the previous current_stage."
+  },
+  "authority_inspection": {
+    "refs": [
+      "ENTRYPOINT.md",
+      "CURRENT_PROTOCOL.json",
+      "CONTINUITY_CONTRACT.json",
+      "CONTEXT_RECOVERY_POLICY.json",
+      "PROGRESS_OBSERVABILITY_POLICY.json",
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "OWNER_ADAPTER_CONTRACT.json",
+      "OWNER_REGISTRY.json",
+      "HARNESS_STATUS.json",
+      "GENERIC_TASK_REGISTRY.json",
+      "runtime/universal_continuity.py",
+      "runtime/meta_maintenance.py",
+      "runtime/system_audit.py",
+      "tests/test_context_recovery_policy.py",
+      "tests/test_meta_maintenance.py",
+      "tests/test_meta_governance_status_alignment.py",
+      "tests/test_system_audit.py",
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md",
+      "tasks/universal-continuity-maintenance/HANDOFF.md",
+      "audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json"
+    ]
+  },
+  "failure_model": {
+    "root_cause_layers": ["RUNTIME_OR_SCHEMA", "TEST_OR_EVAL", "EVIDENCE_OR_PROPAGATION"],
+    "failure_classes": [
+      "turn-entry-capacity-preflight-change-closed-against-stale-meta-run-target",
+      "maintenance-authority-stage-advanced-without-rebuildable-generic-task-cache-convergence",
+      "context-capacity-risk-misrepresented-as-exact-numeric-remaining-token-telemetry"
+    ],
+    "system_impact_map": [
+      "new-chat takeover continuity and single-writer ownership",
+      "turn-entry context-risk admission before substantive work",
+      "safe checkpoint and fresh-chat handoff behavior",
+      "meta-maintenance current-version evidence binding",
+      "GENERIC_TASK_REGISTRY and HARNESS_STATUS cache convergence",
+      "CI closure for the active SYSTEM_INFRA task"
+    ],
+    "falsification_checks": [
+      "Keep the exact target_manifest_version freshness invariant unchanged.",
+      "Keep GENERIC_TASK_REGISTRY current_stage alignment unchanged.",
+      "Require GREEN/AMBER/RED turn-entry policy tests to pass without adding a fixed numeric model-token threshold.",
+      "Require an explicit product conversation-length warning to be admissible RED evidence.",
+      "Do not treat hourly/background monitors as a substitute for per-turn capacity admission.",
+      "Do not take or mutate any BUSINESS owner lease/state while closing this SYSTEM_INFRA maintenance change."
+    ]
+  },
+  "learning_scout": {
+    "disposition": "SCOUT_DONE",
+    "sources": [
+      {
+        "ref": "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md",
+        "observation": "Exact persistent-chat remaining capacity is not available as reliable telemetry; the accepted design uses qualitative turn-entry evidence plus safe checkpoints.",
+        "disposition": "ADOPT",
+        "rationale": "It directly addresses the observed long-chat failure mode without fabricating numeric certainty."
+      },
+      {
+        "ref": "tests/test_context_recovery_policy.py",
+        "observation": "The new regression suite checks GREEN/AMBER/RED admission, explicit product-warning RED evidence, and prohibition on fake fixed thresholds/background-monitor substitution.",
+        "disposition": "ADOPT",
+        "rationale": "This is the narrow mechanical guard required for the user-visible reliability gap."
+      },
+      {
+        "ref": "audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json",
+        "observation": "Historical takeover maintenance already established that current-version meta evidence and rebuildable cache convergence must be preserved rather than weakening tests or rewriting historical evidence.",
+        "disposition": "ADOPT",
+        "rationale": "Reuse the proven closure pattern rather than adding a takeover-specific mechanism."
+      },
+      {
+        "ref": "runtime/system_audit.py",
+        "observation": "The local control-plane audit compares the maintenance task cache current_stage and contract_version against the authoritative task manifest.",
+        "disposition": "ADOPT",
+        "rationale": "The V57 cache failure was a real convergence guard, not an unrelated false positive."
+      }
+    ]
+  },
+  "capability_reuse": {
+    "decision": "REUSE_EXISTING",
+    "inspected_existing_capabilities": [
+      "CONTEXT_RECOVERY_POLICY turn-entry preflight",
+      "existing safe checkpoint/fresh-chat recovery semantics",
+      "runtime/meta_maintenance.py schema-1.2 verifier",
+      "runtime/system_audit.py task-cache convergence checks",
+      "existing meta-governance and progress-observability contracts"
+    ],
+    "rejected_existing_candidates": [],
+    "rationale": "No new monitor, supervisory agent, token estimator, authority surface, or protocol version is required."
+  },
+  "decision_frontier": {
+    "verified_facts": [
+      "The current chat legally took over this SYSTEM_INFRA task at resume_epoch 7 with a new lease.",
+      "Original CI 38138790729 failed with one stale-meta binding failure while the capacity-preflight tests themselves did not fail.",
+      "V57 self-audit CI 38139581465 then failed only because GENERIC_TASK_REGISTRY cached the prior current_stage.",
+      "After synchronizing the rebuildable task cache, CI 38139715061 passed the control-plane audit, Agent architecture harness, and all 247 pytest tests.",
+      "OWNER_REGISTRY currently derives exactly four BUSINESS owners: A_SHARE_MARKET_AGENT, FINANCIAL_WRITING_AGENT_RUNTIME, NOVEL_WRITING_AGENT, VIDEO_GROWTH_AGENT."
+    ],
+    "unresolved_facts": [
+      "Exact remaining persistent-chat model context capacity is not exposed as trustworthy telemetry and remains intentionally unclaimed.",
+      "Future owner HEAD drift between architecture-watch observations remains open-world.",
+      "Independent operator-dependence grading and owner live-quality/outcome evidence remain open."
+    ],
+    "user_decisions_required": [],
+    "autonomous_next_steps": [
+      "Bind manifest V58 to this current-version meta closure.",
+      "Synchronize HARNESS_STATUS and GENERIC_TASK_REGISTRY rebuildable caches in the same Git tree commit.",
+      "Return the short Handoff to normal ACTIVE recovery authority.",
+      "Run unchanged CI on the final closure commit and stop if green."
+    ],
+    "facts_resolved_before_user_decision": true
+  },
+  "alternatives": [
+    {
+      "id": "A_ADD_FIXED_TOKEN_THRESHOLD_OR_FAKE_REMAINING_CAPACITY_ESTIMATOR",
+      "decision": "REJECTED",
+      "rationale": "The product does not expose reliable exact remaining capacity telemetry; a numeric threshold would manufacture certainty."
+    },
+    {
+      "id": "B_TREAT_BACKGROUND_MONITOR_AS_PER_TURN_CAPACITY_GUARD",
+      "decision": "REJECTED",
+      "rationale": "Hourly or scheduled monitors cannot inspect every turn admission before substantive work and are the wrong mechanism."
+    },
+    {
+      "id": "C_REUSE_TURN_ENTRY_PREFLIGHT_AND_CLOSE_CURRENT_VERSION_EVIDENCE_ATOMICALLY",
+      "decision": "ACCEPTED",
+      "rationale": "It preserves existing recovery architecture, adds only the needed qualitative guard, and closes the exact evidence/cache failures exposed by CI."
+    },
+    {
+      "id": "D_WEAKEN_META_FRESHNESS_OR_TASK_CACHE_ALIGNMENT_TESTS",
+      "decision": "REJECTED",
+      "rationale": "Both failures exposed real stale-evidence/cache states; weakening the tests would hide rather than repair them."
+    }
+  ],
+  "architecture_payoff": {
+    "current_failure_cost": "Long chats can continue into substantive work after explicit capacity-risk evidence, and maintenance closure can become inconsistent if authority and rebuildable status caches advance separately.",
+    "change_cost": "One qualitative turn-entry preflight already added to the existing recovery policy plus current-version closure/cache synchronization; no new runtime service or monitor.",
+    "expected_payoff": "Earlier safe handoff under observable risk, less lost work at conversation limits, and preserved strict evidence/cache convergence.",
+    "deletion_or_simplification_considered": true,
+    "deletion_or_simplification_result": "Reuse the existing context-recovery policy and maintenance harness; do not add a token-estimator service, capacity daemon, or new supervisory agent.",
+    "net_complexity_decision": "NET_NEUTRAL"
+  },
+  "instruction_surface": {
+    "decision": "NO_CHANGE",
+    "reason": "The behavior is correctly enforced by repository recovery/maintenance authority after bootstrap. No account-level prompt expansion or protocol change is needed."
+  },
+  "propagation": {
+    "scope": "ALL_BUSINESS_OWNERS",
+    "classification": "SHARED_CONTINUITY_RECOVERY_AND_META_GOVERNANCE",
+    "mechanism": "The shared context-recovery policy is available to all current BUSINESS owners through Continuity; this closure is topology-bound to the current OWNER_REGISTRY set and does not mutate owner business state or leases.",
+    "stale_override_scan": "PASS",
+    "impacted_business_owners": [
+      "A_SHARE_MARKET_AGENT",
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ]
+  },
+  "complexity_efficiency": {
+    "new_authority_surfaces": 0,
+    "mandatory_startup_context_delta": 0,
+    "tool_or_remote_read_delta": "NONE_ON_NORMAL BUSINESS HOT PATH; turn-entry preflight uses already-observable conversation/product evidence.",
+    "steady_state_latency_effect": "NEGLIGIBLE_QUALITATIVE_ADMISSION_CHECK_ONLY",
+    "duplicate_rule_effect": "NO_NEW_PARALLEL_AUTHORITY; GENERIC_TASK_REGISTRY and HARNESS_STATUS remain rebuildable caches.",
+    "cross_owner_touch_count": 4,
+    "migration_compatibility_effect": "NO_PROTOCOL_CHANGE; CONTINUITY_V3_7 unchanged.",
+    "test_observability_effect": "Adds deterministic capacity-preflight regression while retaining strict meta-version and cache-alignment checks.",
+    "decision": "ACCEPTABLE"
+  },
+  "authority_surface_admission": "PASS",
+  "implementation": {
+    "decision": "CHANGE_APPLIED",
+    "inspected_paths": [
+      "CONTEXT_RECOVERY_POLICY.json",
+      "tests/test_context_recovery_policy.py",
+      "runtime/meta_maintenance.py",
+      "runtime/system_audit.py",
+      "tests/test_meta_maintenance.py",
+      "tests/test_meta_governance_status_alignment.py",
+      "OWNER_REGISTRY.json",
+      "GENERIC_TASK_REGISTRY.json",
+      "HARNESS_STATUS.json",
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md",
+      "tasks/universal-continuity-maintenance/HANDOFF.md",
+      "audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json"
+    ],
+    "changed_paths": [
+      "CONTEXT_RECOVERY_POLICY.json",
+      "tests/test_context_recovery_policy.py",
+      "audits/META_MAINTENANCE_CONTEXT_CAPACITY_V58_2026-10-11.json",
+      "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "tasks/universal-continuity-maintenance/HANDOFF.md",
+      "GENERIC_TASK_REGISTRY.json",
+      "HARNESS_STATUS.json"
+    ],
+    "superseded_or_demoted_surfaces": [
+      "CHECKPOINT_CONTEXT_CAPACITY_V55.md remains historical recovery evidence; the normal HANDOFF resumes as the active short checkpoint after V58 closure."
+    ]
+  },
+  "validation": {
+    "regression_or_eval_refs": [
+      "tests/test_context_recovery_policy.py",
+      "tests/test_meta_maintenance.py::test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record",
+      "tests/test_meta_governance_status_alignment.py",
+      "runtime/system_audit.py",
+      "runtime/agent_architecture_audit.py",
+      "github-actions:38138790729",
+      "github-actions:38139581465",
+      "github-actions:38139715061"
+    ],
+    "second_order_challenge": "PASS",
+    "second_order_findings": [
+      "The first red CI proved the capacity implementation was not the failing unit; stale evidence binding was.",
+      "The V57 audit proved authority/cache convergence must be part of checkpoint transitions, not deferred to prose.",
+      "A fixed token number or background monitor would add false precision or the wrong execution surface.",
+      "The green V57 run proves structural/regression conformance only; it does not reveal exact remaining chat capacity or prove live business outcomes."
+    ],
+    "cross_surface_or_fault_audit": "PASS"
+  },
+  "closure": {
+    "assurance_ceiling": "WIRED",
+    "global_flawlessness_claimed": false,
+    "open_gates": [
+      "Final CI for the atomic V58 meta/manifest/cache/Handoff closure must pass before regression-clean closure is reported.",
+      "Real new-owner fresh-chat product E2E remains open.",
+      "Operator-dependence independent heldout/live trajectory grading remains open.",
+      "A-share/Novel/Video acknowledged architecture or assurance drift remains open.",
+      "Owner-local action-level methodology/evidence and live-quality/outcome gates remain open."
+    ],
+    "unknown_or_open_world_boundary": "This V58 closure can prove deterministic repository policy, evidence binding, cache convergence and CI regression only. It cannot expose exact future conversation capacity, guarantee future remote-owner freshness, establish independent semantic correctness, or prove live business outcomes."
+  }
+}
