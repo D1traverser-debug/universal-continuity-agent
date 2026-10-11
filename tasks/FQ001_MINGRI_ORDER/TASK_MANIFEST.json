@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 16,
+  "manifest_version": 17,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T12:42:20Z",
+  "updated_at": "2026-10-11T14:03:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
-  "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU has completed sequential study of 第一部《小丑》 CH1-CH213 plus the volume summary and 第二部《无面人》 CH1-CH60, and must continue from 第二部《无面人》 CH61. Maintain the single rolling ledger and do not switch books until the active work is complete. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
+  "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU has completed sequential study and volume distillation of 第一部《小丑》 CH1-CH213 plus summary and 第二部《无面人》 CH1-CH269 plus summary, and must continue from 第三部《旅行家》 CH1. Maintain the single rolling ledger and do not switch books until the active work is complete. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
@@ -41,7 +41,7 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study as the active execution priority before story reselection. A recovery gap caused by a frozen initial-state masterwork guard was repaired so sequential progress can be checkpointed with source/ledger identity and hashes. Google Drive masterwork research is explicitly classified as source/learning evidence only, never task-state or rule authority; duplicated dynamic state was removed from AUTHORITY_STATUS. GUI_MI_ZHI_ZHU is now durably checkpointed through 第二部《无面人》CH60 with CH61 next. Historical FQ001 FINALs/Canon/publication facts remain preserved; existing rebase architecture is suspended as a historical candidate, not the next action."
+    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study as the active execution priority before story reselection. GUI_MI_ZHI_ZHU now has durable source-bound coverage through 第二部《无面人》CH269 plus the author volume summary, with 第三部《旅行家》CH1 next. The rolling ledger remains external learning evidence only and is hash-bound from the GitHub owner checkpoint. Historical FQ001 FINALs/Canon/publication facts remain preserved; existing rebase architecture is suspended as a historical candidate, not the next action."
   },
   "continuity_acceptance": {
     "result": "PASS",
@@ -90,8 +90,8 @@
     "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS__HISTORICAL_CANDIDATE",
     "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
     "active_masterwork": "GUI_MI_ZHI_ZHU",
-    "active_masterwork_coverage": "VOLUME_01_COMPLETE__VOLUME_02_CH1_CH60",
-    "active_masterwork_next_location": "VOLUME_02_CH61",
+    "active_masterwork_coverage": "VOLUME_01_COMPLETE__VOLUME_02_COMPLETE",
+    "active_masterwork_next_location": "VOLUME_03_CH1",
     "completed_masterworks": ["SHIRI_ZHONGYAN"]
   },
   "rebase": {
@@ -141,6 +141,6 @@
   "derived_artifact_refs": [
     "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
     "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk",
-    "Google Drive file 1Ixa5xE8iWyrGQjuJDgwBSTAQxO81hcXo /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md#sha256=4da3cdf81fb55a3bad06abce492b84f9893b661db5a142e83099b06eaf31dac8"
+    "Google Drive file 1Ixa5xE8iWyrGQjuJDgwBSTAQxO81hcXo /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md#sha256=f0ee715b5d7d4710e3591448a76901bf4e9f0a9da34bf310c97c809bc935af1a"
   ]
 }
