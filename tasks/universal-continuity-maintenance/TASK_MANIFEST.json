@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 51,
+  "manifest_version": 52,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-11T17:47:00+08:00",
+  "updated_at": "2026-10-11T18:00:00+08:00",
   "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
   "next_action": "Preserve membership/remote-observation separation, fail-closed shared architecture version semantics, and the hourly architecture watch. On future drift, re-observe current owner HEADs and refresh non-authoritative control signals; apply metadata-only repair only when the unique authority and compatibility result are clear, never by taking a business lease or rewriting business state. Keep A-share/Novel/Video acknowledged router/assurance drift, real new-owner fresh-chat E2E, operator-dependence independent heldout/live grading, account-level Custom Instructions propagation, and prior owner live-quality/outcome gates OPEN without fabricated evidence.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
@@ -86,12 +86,12 @@
   "complexity_efficiency_effect": "NO_NEW_ROOT_POLICY_OR_AGENT__DUPLICATE_OBSERVATION_FIELDS_REMOVED_FROM_MEMBERSHIP_AUTHORITY__EXISTING_MONITOR_REUSED_AT_HOURLY_CADENCE__NO_BUSINESS_HOT_PATH_PRELOAD",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-  "resume_epoch": 5,
+  "resume_epoch": 6,
   "active_lease": {
-    "lease_id": "lease-2c5946fb-3d78-4a23-9440-2df7d41817ec",
-    "acquired_at": "2026-10-11T11:15:00+08:00",
-    "supersedes_lease_id": "lease-ada3389a-6b09-4713-bc2a-ae7391582224",
-    "writer": "chatgpt-continuity-v3.7-agent-control-plane-completion"
+    "lease_id": "lease-4812a7a8-83cf-414d-87e9-198a60a9cfeb",
+    "acquired_at": "2026-10-11T18:00:00+08:00",
+    "supersedes_lease_id": "lease-2c5946fb-3d78-4a23-9440-2df7d41817ec",
+    "writer": "chatgpt-universal-continuity-maintenance-2026-10-11-new-chat"
   },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
