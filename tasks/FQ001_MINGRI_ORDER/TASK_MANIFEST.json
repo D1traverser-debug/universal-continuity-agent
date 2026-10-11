@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 12,
+  "manifest_version": 13,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T12:05:00Z",
+  "updated_at": "2026-10-11T12:09:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
   "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU is ACTIVE and must be read sequentially from the beginning. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
@@ -58,7 +58,11 @@
     "series_master_outline_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
     "legacy_arc_supersession_recovery": "PASS",
     "architecture_freeze_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
-    "masterwork_study_recovery": "PENDING_OWNER_GUARD_REFRESH_THIS_COMMIT_SEQUENCE"
+    "masterwork_study_recovery": "PASS",
+    "owner_final_head": "7d241a59b88f7f035b381ec9f53c10f65013e13a",
+    "owner_final_ci_run_id": 38138116257,
+    "owner_final_ci_job_id": 114466104100,
+    "owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_MASTERWORK_GUARD_ALL_OWNER_TESTS"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
