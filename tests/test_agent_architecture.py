@@ -43,9 +43,49 @@ def valid_manifest() -> dict:
     }
 
 
-def test_valid_agent_architecture_passes():
+def test_v10_manifest_remains_compatible_under_v11_contract():
     result = validate_agent_manifest(valid_manifest(), CONTRACT)
+    assert CONTRACT["schema_version"] == "1.1"
     assert result.status == ArchitectureStatus.PASS
+
+
+def test_v11_owner_aliases_normalize_to_shared_semantics():
+    manifest = valid_manifest()
+    manifest["schema_version"] = "1.1"
+    manifest["architecture_contract_version"] = "1.1"
+    manifest["skill"]["role"] = "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT"
+    manifest["runtime"]["judgment_execution"] = "CHAT_BRIDGED_OWNER_GATED"
+    manifest["references"]["mirror_policy"] = "GENERATED_DISTRIBUTION_MIRRORS_ONLY"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.PASS
+
+
+def test_v11_video_aliases_normalize_to_shared_semantics():
+    manifest = valid_manifest()
+    manifest["schema_version"] = "1.1"
+    manifest["architecture_contract_version"] = "1.1"
+    manifest["skill"]["role"] = "ROUTER_AND_OPERATING_CONTRACT"
+    manifest["runtime"]["judgment_execution"] = "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES"
+    manifest["references"]["mirror_policy"] = "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.PASS
+
+
+def test_unknown_v11_shared_alias_fails_closed():
+    manifest = valid_manifest()
+    manifest["architecture_contract_version"] = "1.1"
+    manifest["skill"]["role"] = "SUPER_ROUTER"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("skill.role" in item for item in result.errors)
+
+
+def test_unknown_future_manifest_version_fails_closed():
+    manifest = valid_manifest()
+    manifest["architecture_contract_version"] = "9.9"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.FAIL
+    assert "architecture_contract_version unsupported" in result.errors
 
 
 def test_big_skill_is_drift_not_silent_pass():
