@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "event": "EXPLICIT_GLOBAL_SYSTEM_AUDIT__LIVE_OWNER_REOBSERVATION",
+  "date": "2026-10-11",
+  "trigger": "User challenged whether the system was actually being applied globally and whether GPT personalization was masking missing control-plane behavior.",
+  "scope": {
+    "universal_control_plane": true,
+    "all_current_business_owners": [
+      "A_SHARE_MARKET_AGENT",
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ],
+    "remote_owner_heads_reobserved": true,
+    "business_task_state_mutated": false,
+    "business_leases_taken": false
+  },
+  "learning_decision": {
+    "external_scout": "NOT_REQUIRED_WITH_REASON",
+    "reason": "The defect class was a direct violation of already-authoritative local invariants: OWNER_REGISTRY is membership-only, remote observations are rebuildable cache data, and unknown architecture contract versions fail closed. No new external architecture theory was needed to identify or repair this drift."
+  },
+  "findings": [
+    {
+      "id": "REMOTE_OBSERVATION_CACHE_STALE",
+      "severity": "HIGH_FOR_GLOBAL_FRESHNESS_CLAIMS",
+      "detail": "OWNER_ARCHITECTURE_OBSERVATIONS.json was current for Financial but stale for A-share, Novel and Video relative to their real GitHub main HEADs. Local CI can only validate the cache's internal binding, not discover newer private sibling-repository HEADs."
+    },
+    {
+      "id": "VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT",
+      "severity": "HIGH_FOR_SHARED_ARCHITECTURE_CONFORMANCE",
+      "detail": "Video current AGENT_MANIFEST declared architecture_contract_version=1.2 while Universal AGENT_ARCHITECTURE_CONTRACT supports only 1.0/1.1 and explicitly fails closed on unknown future versions. The current Video manifest introduced no new shared architecture semantics requiring a central 1.2 contract, so widening Universal compatibility would have been the wrong fix."
+    },
+    {
+      "id": "MEMBERSHIP_AUTHORITY_EMBEDDED_REBUILDABLE_OBSERVATION",
+      "severity": "MEDIUM",
+      "detail": "OWNER_REGISTRY's Novel row embedded observed_skill_version, observed_runtime_version and observed_owner_head. This duplicated rebuildable remote observation data inside the sole membership authority and had already become stale."
+    },
+    {
+      "id": "PROACTIVE_MONITOR_CADENCE_TOO_SLOW",
+      "severity": "MEDIUM",
+      "detail": "The existing Agent Architecture Watch was enabled but daily, allowing owner drift to remain undetected for many hours after owner changes."
+    }
+  ],
+  "repairs": [
+    {
+      "surface": "D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json",
+      "action": "Changed only shared architecture_contract_version from unsupported 1.2 back to centrally supported 1.1; owner-local schema_version 1.2 and runtime/business semantics were left untouched.",
+      "commit": "977ad5329b1ffb1f971db922fac3e17bf91a412a",
+      "owner_ci": "github-actions:38129311234",
+      "owner_ci_result": "SUCCESS"
+    },
+    {
+      "surface": "runtime/owner_topology.py",
+      "action": "validate_owner_registry now rejects owner-entry fields beginning observed_ or architecture_validation_, preventing rebuildable remote observations from being embedded in OWNER_REGISTRY.",
+      "commit": "15cee8a34398b1cba23ab176e52108e549275e42"
+    },
+    {
+      "surface": "OWNER_REGISTRY.json",
+      "action": "Removed stale Novel observed_* fields, declared rebuildable_remote_observations_allowed=false, and pointed remote observation data to OWNER_ARCHITECTURE_OBSERVATIONS.json.",
+      "commit": "124e1d4aadf51c1e5bb68432eba23e7c5c6f3910"
+    },
+    {
+      "surface": "tests/test_owner_registry_authority.py",
+      "action": "Added current-state and adversarial regressions preventing remote observation cache fields from re-entering OWNER_REGISTRY.",
+      "commit": "98f8533a8289fe1083eb1e4ebbccbde359d92d76"
+    },
+    {
+      "surface": "Agent Architecture Watch automation",
+      "action": "Increased condition-watch cadence from daily to hourly and made unsupported owner architecture_contract_version an explicit fail-closed drift signal. No business state mutation was authorized.",
+      "automation_id": "6acab16812248191b9f8c8ab52803491"
+    }
+  ],
+  "live_owner_observations": [
+    {
+      "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
+      "manifest_architecture_contract": "1.0",
+      "skill_bytes": 5540,
+      "owner_ci": "github-actions:38108186593",
+      "architecture_result": "PASS",
+      "warnings": []
+    },
+    {
+      "owner": "A_SHARE_MARKET_AGENT",
+      "head": "f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c",
+      "manifest_architecture_contract": "1.1",
+      "skill_bytes": 8272,
+      "owner_ci": "github-actions:38108652297",
+      "architecture_result": "PASS_WITH_DRIFT",
+      "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET_BY_80_BYTES"]
+    },
+    {
+      "owner": "NOVEL_WRITING_AGENT",
+      "head": "7988b96c8be661a2f92bad96daac6322bcf664ef",
+      "manifest_architecture_contract": "1.0",
+      "skill_bytes": 19540,
+      "owner_ci": "github-actions:38110065043",
+      "architecture_result": "PASS_WITH_DRIFT",
+      "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET", "JUDGMENT_CHAT_BRIDGED_NOT_PROVIDER_ATTESTED"]
+    },
+    {
+      "owner": "VIDEO_GROWTH_AGENT",
+      "head": "977ad5329b1ffb1f971db922fac3e17bf91a412a",
+      "manifest_schema_version": "1.2",
+      "manifest_architecture_contract": "1.1",
+      "skill_bytes": 9310,
+      "owner_ci": "github-actions:38129311234",
+      "architecture_result": "PASS_WITH_DRIFT",
+      "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET", "STRICT_ISOLATED_REVIEW_REMAINS_SEPARATE_OPEN_ASSURANCE"]
+    }
+  ],
+  "instruction_surface_decision": {
+    "repository_startup_hook": "CURRENT_SEMANTICS_ADEQUATE",
+    "gpt_personality_required_for_control_plane": false,
+    "account_custom_instructions_required_for_pre_repository_bare_continue_activation": true,
+    "account_custom_instructions_propagation_proven": false,
+    "reason": "Personality is a response-style preference, not a routing or execution authority. Bare CONTINUE activation before repository bootstrap still depends on an account/product-level instruction surface or equivalent product capability; the repository cannot prove that setting is installed."
+  },
+  "assurance_ceiling": "LIVE_REMOTE_STRUCTURAL_REOBSERVATION_PLUS_OWNER_CI_PLUS_CONTROL_PLANE_REGRESSION_AFTER_FINAL_CI; NOT_LIVE_BUSINESS_QUALITY_OR_INDEPENDENT_SEMANTIC_CORRECTNESS",
+  "remaining_open": [
+    "A-share thin-router drift",
+    "Novel thin-router drift and CHAT_BRIDGED assurance ceiling",
+    "Video thin-router drift and strict isolated-review assurance gap",
+    "real new-owner fresh-chat product E2E",
+    "operator-dependence independent heldout/live grading",
+    "owner-local live quality/outcome gates"
+  ]
+}
