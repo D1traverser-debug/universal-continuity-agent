@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 
 from runtime.maintenance_decision_eval import (
@@ -35,8 +36,48 @@ def _all_true_grade(case_id: str, decision: str) -> dict:
     }
 
 
-def test_corpus_has_real_negative_and_balanced_heldout_cases():
+def test_corpus_has_real_negative_balanced_heldout_and_explicit_oracle_seams():
+    assert CORPUS["schema_version"] == "1.1"
     assert validate_corpus(CORPUS) == []
+    assert CORPUS["grading_model"]["product_trace_is_expected_truth_source"] is False
+    assert CORPUS["grading_model"]["same_repository_oracle_authorship_is_independent_semantic_proof"] is False
+    assert all(case.get("expected_truth_ref") for case in CORPUS["cases"])
+    assert all(case.get("oracle_kind") for case in CORPUS["cases"])
+
+
+def test_heldout_case_requires_frozen_expected_truth_identity():
+    corpus = deepcopy(CORPUS)
+    case = next(c for c in corpus["cases"] if c["kind"] == "HELDOUT")
+    case.pop("expected_truth_ref")
+    errors = validate_corpus(corpus)
+    assert any("expected_truth_ref required" in error for error in errors)
+
+
+def test_oracle_kind_must_match_case_kind():
+    corpus = deepcopy(CORPUS)
+    case = next(c for c in corpus["cases"] if c["kind"] == "HELDOUT")
+    case["oracle_kind"] = "REAL_NEGATIVE_SOURCE"
+    errors = validate_corpus(corpus)
+    assert any("HELDOUT requires oracle_kind FROZEN_HELDOUT_EXPECTATION" in error for error in errors)
+
+
+def test_product_trace_cannot_be_same_evidence_identity_as_expected_truth():
+    case = next(c for c in CORPUS["cases"] if c["case_id"] == "heldout-stale-authority-recurs-after-accepted-fix")
+    grade = _all_true_grade(case["case_id"], "ESCALATE")
+    grade["trace_ref"] = case["expected_truth_ref"]
+    result = evaluate_graded_trajectory(case, grade, evidence_verifier=lambda ref: True)
+    assert result.status == "FAIL"
+    assert "expected_truth_and_product_trace_must_be_distinct" in result.errors
+
+
+def test_result_exposes_both_oracle_and_observation_seam():
+    case = next(c for c in CORPUS["cases"] if c["case_id"] == "heldout-stale-authority-recurs-after-accepted-fix")
+    grade = _all_true_grade(case["case_id"], "ESCALATE")
+    result = evaluate_graded_trajectory(case, grade, evidence_verifier=lambda ref: True)
+    assert result.status == "PASS"
+    assert result.expected_truth_ref == case["expected_truth_ref"]
+    assert result.trace_ref == grade["trace_ref"]
+    assert result.expected_truth_ref != result.trace_ref
 
 
 def test_grade_without_independent_verifier_cannot_pass():
