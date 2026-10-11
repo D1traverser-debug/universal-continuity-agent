@@ -77,7 +77,35 @@
   },
   "context_health": {
     "no_fixed_token_threshold": true,
+    "exact_chat_thread_limit_or_remaining_tokens_must_not_be_claimed_without_product_telemetry": true,
+    "turn_entry_capacity_preflight": {
+      "activation": "on each new user turn while a durable task is active, before starting a new substantive or tool-heavy work phase",
+      "purpose": "Prefer an intentional fresh-chat handoff before entering a likely context-exhaustion turn, while retaining intra-turn safe checkpoints for unpredictable interruptions.",
+      "inputs": [
+        "explicit product context/maximum-length warning visible to or relayed into the conversation",
+        "known interruption or context-exhaustion evidence from the immediately preceding turn",
+        "available conversation-health signals such as obsolete branches, repeated recovery summaries, or inability to state next_action compactly",
+        "planned-turn work envelope: LOW, MEDIUM, or HIGH based on expected tool fan-out, artifact volume, long external results, and number of material subphases"
+      ],
+      "risk_classes": {
+        "GREEN": "No concrete capacity-risk signal; proceed normally with material-safe-point checkpointing.",
+        "AMBER": "Conversation-health risk exists and the planned turn is non-trivial; checkpoint before the next long/high-risk subphase, narrow scope, and prefer a fresh handoff before HIGH work.",
+        "RED": "An explicit product maximum-length/near-limit signal exists, a prior turn exhausted context, or the available evidence makes another substantive turn unsafe. Persist/re-read the latest stable checkpoint, do not start new material work, and ask the user to open a fresh chat with the exact continuation intent."
+      },
+      "rules": {
+        "preflight_before_heavy_work": true,
+        "red_stops_new_material_work": true,
+        "red_requires_verified_handoff_checkpoint_when_state_changed": true,
+        "amber_prefers_checkpoint_then_bounded_work_or_fresh_handoff": true,
+        "green_keeps_intra_turn_safe_checkpointing": true,
+        "no_fake_numeric_remaining_budget": true,
+        "background_monitor_is_not_turn_capacity_guard": true,
+        "user_should_not_need_to_manage_internal_token_arithmetic": true
+      }
+    },
     "signals_for_fresh_handoff": [
+      "the product reports that the current conversation reached or is near its maximum length",
+      "the immediately preceding turn was interrupted or truncated by context exhaustion",
       "current chat contains multiple obsolete plans or contradictory branches",
       "next_action cannot be stated compactly without replaying long history",
       "task stage has materially changed and old context is mostly historical",
@@ -86,6 +114,7 @@
     ],
     "signals_not_sufficient_alone": [
       "large theoretical context window",
+      "an API model context-window number that is not product thread telemetry",
       "an external heuristic such as a fixed 150K smart-zone threshold"
     ]
   },
