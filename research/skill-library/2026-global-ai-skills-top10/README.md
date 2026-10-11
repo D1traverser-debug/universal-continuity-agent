@@ -1,43 +1,41 @@
 # 2026 Global AI Skills Top10 — Distillation Library
 
-Status: COLLECTION_AND_DISTILLATION_IN_PROGRESS
-Selection/adoption: FROZEN_UNTIL_10_OF_10_COMPLETE
+Status: **COMPLETE_10_OF_10__PHASE_B_SELECTION_COMPLETE**
+Selection/adoption: **SELECTION_COMPLETE__PRODUCTION_PROMOTION_REQUIRES_SEPARATE_REGRESSION_BACKED_CHANGE**
 Owner: Universal Continuity maintenance / evolution research
 
 ## Purpose
 
-This is a **research library first, architecture input second**. The ten Skills are captured at pinned source revisions, reverse-engineered beyond their marketing descriptions, and normalized into one schema before any cross-skill adoption decision is made.
+This is a **research library first, architecture input second**. The ten Skills were captured at pinned source revisions, reverse-engineered beyond their marketing descriptions, normalized into one schema, and only then compared for selection.
 
-The goal is not to copy prompts. The goal is to recover the underlying **workflow, methodology, control model, state model, tool model, evidence model, failure semantics, context strategy, human/agent decision split, portability constraints, and hidden design assumptions**.
+The goal is not to copy prompts. The goal is to recover the underlying **workflow, methodology, control model, state model, tool model, evidence model, failure semantics, context strategy, human/agent decision split, portability constraints, implementation architecture, Harness model, and hidden design assumptions**.
 
-## Two-phase rule
+## Phase A — complete library
 
-### Phase A — Complete the library
+For every Skill the pass:
 
-For every Skill:
+1. pinned repository + source revision + exact files inspected;
+2. inspected the Skill itself;
+3. followed delegated/shared primitives when the Skill was only a thin wrapper;
+4. inspected implementation/runtime when behavior lived outside Skill text;
+5. inspected tests/evals/workflows/references when available;
+6. captured documented complaints, failure modes and out-of-scope decisions;
+7. normalized findings through `SCHEMA.md`;
+8. recorded evidence gaps explicitly.
 
-1. pin repository + source revision + exact files inspected;
-2. inspect the Skill itself;
-3. follow delegated/shared primitives when the Skill is only a thin wrapper;
-4. inspect implementation/runtime when behavior lives outside the Skill text;
-5. inspect tests/evals/workflows/references when available;
-6. capture documented complaints, failure modes and out-of-scope decisions;
-7. distill into the common schema in `SCHEMA.md`;
-8. record evidence gaps explicitly.
+No final selection was made before 10/10 completion.
 
-During Phase A, **no final ADOPT / REJECT / MERGE decision is allowed**. A local observation may note an interesting primitive, but it is not promoted into Universal authority yet.
+## Phase B — cross-skill comparison and selection
 
-### Phase B — Compare and select
+After all ten entries were complete:
 
-Only after all ten entries are complete:
+- `CROSS_SKILL_PRIMITIVE_MATRIX.md` decomposed the ten Skills into comparable mechanisms;
+- duplicate ideas under different names were merged conceptually;
+- prompt-only methods were separated from mechanically enforced behavior;
+- each mechanism was compared with current Universal/owner architecture;
+- `PHASE_B_SELECTION.md` classified what is worth adapting, what is owner-local, what Universal already does more strongly, and what should be rejected.
 
-- build a cross-skill primitive matrix;
-- detect duplicated ideas under different names;
-- separate complementary mechanisms from mutually exclusive ones;
-- compare against the existing Universal/owner architecture;
-- identify missing capabilities, bloat risks and replacement opportunities;
-- choose what to adopt, adapt, merge, reject, or leave as reference;
-- apply changes only after regression/eval design exists.
+Selection does **not** automatically mutate production authority. Promotion into Universal/owner runtime/policy/harness is a separate engineering change requiring the normal evidence/regression gates.
 
 ## Library entries
 
@@ -52,13 +50,18 @@ Only after all ten entries are complete:
 9. `09-handoff.md`
 10. `10-triage.md`
 
-`INDEX.json` is the machine-readable progress/source manifest.
+Cross-skill outputs:
+
+- `SCHEMA.md`
+- `INDEX.json`
+- `CROSS_SKILL_PRIMITIVE_MATRIX.md`
+- `PHASE_B_SELECTION.md`
 
 ## Evidence discipline
 
 Popularity/install counts are discovery signals only. They do not prove correctness, safety, portability, or suitability.
 
-The strongest source order is:
+The evidence order used for adoption decisions was:
 
 1. original Skill source;
 2. implementation/runtime source;
@@ -68,3 +71,13 @@ The strongest source order is:
 6. leaderboard/community popularity only as context.
 
 A documented behavior is not treated as mechanically enforced unless implementation/test evidence supports it. A test is not treated as live product outcome evidence. A source author's own warning is preserved rather than edited away.
+
+## Key library-level finding
+
+The Top10 does **not** support the simplistic rule “a good Skill is only a few lines.” It supports a more precise rule:
+
+> A Skill can be extremely small **when the missing behavior has a stronger home** — a reusable primitive, executable runtime, workflow/state machine, progressive reference, repository configuration, or Harness.
+
+`grill-me` and `grill-with-docs` demonstrate the upside and the fragility of thin prose delegation; their own documentation reports dependency-loading failures. `agent-browser` demonstrates the stronger form: a thin stable discovery Skill points to version-matched runtime-served instructions and is backed by explicit evals measuring loading, selection, command use and context footprint.
+
+Therefore line count alone is not an architecture goal. **Responsibility placement + observable loading/execution + evidence** is the goal.
