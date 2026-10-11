@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 17,
+  "manifest_version": 18,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T14:03:00Z",
+  "updated_at": "2026-10-11T14:28:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
-  "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU has completed sequential study and volume distillation of 第一部《小丑》 CH1-CH213 plus summary and 第二部《无面人》 CH1-CH269 plus summary, and must continue from 第三部《旅行家》 CH1. Maintain the single rolling ledger and do not switch books until the active work is complete. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
+  "next_action": "GUI_MI_ZHI_ZHU (《诡秘之主》) has completed full sequential study through the user-provided end marker and whole-book single-work distillation. Stop after this completed work exactly as the user requested; do not begin DAO_MU_BI_JI in this run. Keep the masterwork queue and current focus binding durable. On a later explicit continue, activate DAO_MU_BI_JI from its beginning and continue one book at a time. Do not draft the existing FQ001 replacement CH1-CH8 while the masterwork study queue is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
@@ -41,10 +41,10 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study as the active execution priority before story reselection. GUI_MI_ZHI_ZHU now has durable source-bound coverage through 第二部《无面人》CH269 plus the author volume summary, with 第三部《旅行家》CH1 next. The rolling ledger remains external learning evidence only and is hash-bound from the GitHub owner checkpoint. Historical FQ001 FINALs/Canon/publication facts remain preserved; existing rebase architecture is suspended as a historical candidate, not the next action."
+    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study before story reselection. GUI_MI_ZHI_ZHU is now complete through the full user-provided standardized source and whole-book distillation. The completed work remains the current focus binding solely to preserve the stop boundary; DAO_MU_BI_JI remains PENDING and unstarted until a later explicit continue. Historical FQ001 FINALs/Canon/publication facts remain preserved."
   },
   "continuity_acceptance": {
-    "result": "PASS",
+    "result": "PASS_PREVIOUS_BASELINE__LATEST_COMPLETION_CI_NOT_EXECUTED",
     "owner_acceptance_ref": "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json",
     "owner_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/recovery_guard.py",
     "owner_release_evidence_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/release_evidence_guard.py",
@@ -61,10 +61,15 @@
     "legacy_arc_supersession_recovery": "PASS",
     "architecture_freeze_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
     "masterwork_study_recovery": "PASS_PROGRESS_AWARE",
-    "owner_final_head": "449e0fdc81aaa6fa32f4959bc7af59997bdc8552",
-    "owner_final_ci_run_id": 38140259347,
-    "owner_final_ci_job_id": 114472506449,
-    "owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_MASTERWORK_DISTILLATION_GUARD_OWNER_CONTRACT_TESTS"
+    "previous_owner_final_head": "449e0fdc81aaa6fa32f4959bc7af59997bdc8552",
+    "previous_owner_final_ci_run_id": 38140259347,
+    "previous_owner_final_ci_job_id": 114472506449,
+    "previous_owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_MASTERWORK_DISTILLATION_GUARD_OWNER_CONTRACT_TESTS",
+    "latest_completion_owner_head": "37ba938607466ef63fe7bc7078a03c5759db6660",
+    "latest_completion_ci_run_id": 38147240928,
+    "latest_completion_ci_job_id": 114493064111,
+    "latest_completion_ci_observation": "WORKFLOW_COMPLETED_FAILURE_BEFORE_RUNNER_START__runner_id_0__steps_empty__NO_GUARD_OR_TEST_EXECUTION_CLAIM",
+    "latest_completion_validation_ceiling": "PERSISTED_STATE_AND_SOURCE_EVIDENCE_VERIFIED__CI_EXECUTION_NOT_VERIFIED"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
@@ -86,13 +91,27 @@
     "front_arc_frozen_architecture_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
     "project_benchmark_ref": "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
     "competency_count": 20,
-    "mastery_levels": ["L0_UNMAPPED", "L1_CONCEPTUAL", "L2_OPERATIONAL_WITH_SCAFFOLD", "L3_PROJECT_READY", "L4_TRANSFER_VERIFIED"],
+    "mastery_levels": [
+      "L0_UNMAPPED",
+      "L1_CONCEPTUAL",
+      "L2_OPERATIONAL_WITH_SCAFFOLD",
+      "L3_PROJECT_READY",
+      "L4_TRANSFER_VERIFIED"
+    ],
     "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS__HISTORICAL_CANDIDATE",
     "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
     "active_masterwork": "GUI_MI_ZHI_ZHU",
-    "active_masterwork_coverage": "VOLUME_01_COMPLETE__VOLUME_02_COMPLETE",
-    "active_masterwork_next_location": "VOLUME_03_CH1",
-    "completed_masterworks": ["SHIRI_ZHONGYAN"]
+    "active_masterwork_status": "SINGLE_BOOK_DISTILLATION_COMPLETE__REFERENCE_EXTRACTED__CROSS_WORK_PENDING",
+    "active_masterwork_binding_role": "CURRENT_FOCUS_BINDING_AFTER_COMPLETION__NOT_IN_PROGRESS",
+    "active_masterwork_coverage": "ALL_8_VOLUMES__1394_CHAPTER_HEADINGS__THROUGH_FULL_BOOK_END",
+    "active_masterwork_next_location": "STOP_AFTER_GUI_MI_COMPLETION__DO_NOT_BEGIN_NEXT_BOOK",
+    "next_pending_masterwork": "DAO_MU_BI_JI",
+    "next_pending_masterwork_status": "PENDING_NOT_STARTED",
+    "completed_masterworks": [
+      "SHIRI_ZHONGYAN",
+      "GUI_MI_ZHI_ZHU"
+    ],
+    "rolling_ledger_sha256": "4fd257d130a019fcc4cc558377c807fe260c17f5ee10658a97612ddb7f49a7fe"
   },
   "rebase": {
     "mode": "CONTROLLED_FULL_FRONT_ARC_REBASE",
@@ -126,12 +145,28 @@
     "CH8 Fanqie publication status remains unconfirmed. This does not block internal masterwork study or story reselection and must not be inferred either way."
   ],
   "blockers": [],
-  "keywords": ["小说", "小说系统", "小说技能", "名作蒸馏", "逐本学习", "故事重选", "诡秘之主", "十日终焉", "明日订单", "番茄小说", "FQ001", "NOVEL_WRITING_AGENT", "NOVEL_OS", "签约", "连载"],
+  "keywords": [
+    "小说",
+    "小说系统",
+    "小说技能",
+    "名作蒸馏",
+    "逐本学习",
+    "故事重选",
+    "诡秘之主",
+    "十日终焉",
+    "盗墓笔记",
+    "明日订单",
+    "番茄小说",
+    "FQ001",
+    "NOVEL_WRITING_AGENT",
+    "NOVEL_OS",
+    "签约",
+    "连载"
+  ],
   "artifact_refs": [
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/STUDY_STATE.json",
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/INDEX.json",
-    "D1traverser-debug/novel-writing-agent@main:research/masterworks/GUI_MI_ZHI_ZHU/EXECUTION_RECEIPT_2026-10-11_V2_CH31_CH60.json",
-    "D1traverser-debug/novel-writing-agent@main:audits/MASTERWORK_PROGRESS_PERSISTENCE_REPAIR_2026-10-11.md",
+    "D1traverser-debug/novel-writing-agent@main:research/masterworks/GUI_MI_ZHI_ZHU/FULL_BOOK_EXECUTION_RECEIPT_2026-10-11.json",
     "D1traverser-debug/novel-writing-agent@main:protocols/NOVEL_MASTERY_MODEL.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/SERIES_MASTER_OUTLINE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
@@ -141,6 +176,6 @@
   "derived_artifact_refs": [
     "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
     "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk",
-    "Google Drive file 1Ixa5xE8iWyrGQjuJDgwBSTAQxO81hcXo /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md#sha256=f0ee715b5d7d4710e3591448a76901bf4e9f0a9da34bf310c97c809bc935af1a"
+    "Google Drive file 1Ixa5xE8iWyrGQjuJDgwBSTAQxO81hcXo /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md#sha256=4fd257d130a019fcc4cc558377c807fe260c17f5ee10658a97612ddb7f49a7fe"
   ]
 }
