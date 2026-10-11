@@ -83,9 +83,10 @@ def test_plausible_system_defect_hypothesis_is_triaged_before_ordinary_discussio
     assert "不得只把已确认缺陷描述成“未来风险”后结束" in startup
 
     assert "Plausible system-defect hypothesis" in entrypoint
-    assert "signal triage before ordinary discussion" in entrypoint
+    assert "triage before discussion" in entrypoint
     assert "`NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`" in entrypoint
-    assert "A confirmed defect may not be downgraded" in entrypoint
+    assert "Confirmed defects enter maintenance/evolution in the same turn" in entrypoint
+    assert "never close them as an unowned “future risk”" in entrypoint
 
     assert policy["meta_maintenance_outline"]["stages"][0] == "M0_INTAKE_AND_SIGNAL_CLASSIFICATION"
     assert policy["default_autonomy"]["classify_user_feedback_before_adoption"] is True
