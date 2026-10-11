@@ -1,24 +1,55 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "purpose": "Define the minimum product architecture for a durable Agent owner or the Universal SYSTEM_INFRA control plane without requiring one specific agent framework.",
   "applies_to_owner_kind": ["BUSINESS", "SYSTEM_INFRA"],
   "default_business_manifest_path": "continuity/AGENT_MANIFEST.json",
   "universal_manifest_path": "AGENT_MANIFEST.json",
   "model": "THIN_SKILL_ROUTER__EXECUTABLE_RUNTIME__AUTHORITATIVE_WORKFLOW__INDEPENDENT_HARNESS_SURFACE__PROGRESSIVE_REFERENCES__DURABLE_CONTINUITY",
+  "compatibility": {
+    "current_manifest_version": "1.1",
+    "supported_manifest_versions": ["1.0", "1.1"],
+    "rule": "A shared contract upgrade may remain backward compatible with explicitly listed prior manifest versions. Unknown future versions fail closed. Owner-local vocabulary must map through central aliases rather than silently redefining shared semantics.",
+    "aliases_by_manifest_version": {
+      "1.1": {
+        "skill_role": {
+          "ROUTER": "ROUTER",
+          "ROUTER_WITH_HARD_BOUNDARY_ANCHORS": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
+          "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
+          "ROUTER_AND_OPERATING_CONTRACT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"
+        },
+        "judgment_execution": {
+          "EXECUTABLE": "EXECUTABLE",
+          "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES": "EXECUTABLE",
+          "CHAT_BRIDGED": "CHAT_BRIDGED",
+          "CHAT_BRIDGED_OWNER_GATED": "CHAT_BRIDGED",
+          "DECLARED_ONLY": "DECLARED_ONLY",
+          "NOT_APPLICABLE": "NOT_APPLICABLE"
+        },
+        "mirror_policy": {
+          "NONE": "NONE",
+          "GENERATED_PACKAGE_MIRROR": "GENERATED_PACKAGE_MIRROR",
+          "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR",
+          "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR",
+          "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"
+        }
+      }
+    }
+  },
   "required_layers": {
     "skill": {
       "role": "ROUTER",
       "required_fields": ["entrypoint"],
+      "canonical_roles": ["ROUTER", "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"],
       "target_max_bytes": 8192,
       "oversize_result": "ARCHITECTURE_DRIFT_REQUIRES_JUSTIFICATION_OR_REFACTOR",
-      "principle": "Skill should route, load progressive references and state hard boundaries; executable business logic belongs in runtime/workflow/guards rather than duplicated prose."
+      "principle": "Skill should route, progressively load references and retain only compact hard boundaries that must always be visible. Executable business logic and detailed domain policy belong in runtime/workflow/guards/references rather than duplicated prose."
     },
     "runtime": {
       "required_fields": ["runtime_type", "entrypoints", "judgment_execution"],
       "optional_fields": ["tool_surface_refs"],
       "allowed_runtime_type": ["AGENTS_SDK", "DETERMINISTIC_WORKFLOW", "HYBRID", "EXTERNAL_RUNTIME"],
       "judgment_execution_status": ["EXECUTABLE", "CHAT_BRIDGED", "DECLARED_ONLY", "NOT_APPLICABLE"],
-      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime. A formal tool surface is optional when the owner is repository-native or otherwise has no callable API."
+      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime. Owner-local assurance detail may refine a shared execution class but cannot invent a new shared class without a central contract mapping."
     },
     "workflow": {
       "required_fields": ["state_authority_refs", "transition_guard_refs"],
@@ -33,7 +64,7 @@
     "references": {
       "required_fields": ["canonical_roots", "mirror_policy"],
       "allowed_mirror_policy": ["NONE", "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR"],
-      "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill."
+      "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill. Distribution/compatibility mirror details may be owner-local, but their shared class is centrally normalized."
     },
     "continuity": {
       "business_required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"],
@@ -49,7 +80,7 @@
     "rule": "Architecture validation is stale when the externally observed owner HEAD differs from the HEAD validated by the latest architecture receipt."
   },
   "assurance": {
-    "architecture_pass_proves": ["declared layer separation", "required refs structurally present", "configured harness surface", "external observation freshness when evaluated"],
+    "architecture_pass_proves": ["declared layer separation", "required refs structurally present", "configured harness surface", "shared vocabulary compatibility", "external observation freshness when evaluated"],
     "architecture_pass_does_not_prove": ["live model quality", "provider isolation", "tool credentials", "current-session execution", "global correctness"]
   },
   "admission": {
