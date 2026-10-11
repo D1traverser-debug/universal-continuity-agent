@@ -8,7 +8,7 @@ Engineering authority: this repository `main`
 
 Chat is ephemeral; the durable object is the task. GitHub/Library are storage/discovery surfaces, not automatic event listeners.
 
-Universal owns discovery, routing, compatibility, lease/takeover, progress observability, recovery pointers and cross-owner control-plane invariants. Domain owners retain business rules, state machines, evidence and artifacts.
+Universal owns cross-owner control-plane invariants; domain owners retain business rules, state, evidence and artifacts.
 
 If required Continuity resources cannot be accessed, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; never reconstruct execution truth from Memory or old chat.
 
@@ -80,7 +80,7 @@ Before a material owner action:
 5. validate any receipt against exact task/stage/action/subject/input before using it as proof;
 6. block only the exact unavailable hard gate.
 
-Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration/CI is not current-action proof. `DECLARED_ONLY` is not execution; proof for another action is not proof for this action.
+Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action operational proof. `DECLARED_ONLY` is not execution; proof for another action is not proof for this action.
 
 ## Agent product architecture
 
