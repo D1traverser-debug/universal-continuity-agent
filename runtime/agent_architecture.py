@@ -36,6 +36,26 @@ def _require_fields(container: Mapping[str, Any], fields: Sequence[str], prefix:
             errors.append(f"{prefix}.{field} is required")
 
 
+def _manifest_version(manifest: Mapping[str, Any]) -> str:
+    return str(manifest.get("architecture_contract_version", "")).strip()
+
+
+def _normalize_shared_value(contract: Mapping[str, Any], manifest_version: str, category: str, value: Any) -> Any:
+    compatibility = contract.get("compatibility", {})
+    if not isinstance(compatibility, Mapping):
+        return value
+    aliases_by_version = compatibility.get("aliases_by_manifest_version", {})
+    if not isinstance(aliases_by_version, Mapping):
+        return value
+    aliases = aliases_by_version.get(manifest_version, {})
+    if not isinstance(aliases, Mapping):
+        return value
+    category_aliases = aliases.get(category, {})
+    if not isinstance(category_aliases, Mapping):
+        return value
+    return category_aliases.get(value, value)
+
+
 def validate_agent_manifest(
     manifest: Mapping[str, Any],
     contract: Mapping[str, Any],
@@ -46,8 +66,14 @@ def validate_agent_manifest(
     errors: list[str] = []
     warnings: list[str] = []
 
-    if str(manifest.get("architecture_contract_version", "")).strip() != str(contract.get("schema_version", "")).strip():
-        errors.append("architecture_contract_version mismatch")
+    manifest_version = _manifest_version(manifest)
+    compatibility = contract.get("compatibility", {})
+    supported_versions = set(compatibility.get("supported_manifest_versions", ())) if isinstance(compatibility, Mapping) else set()
+    if not supported_versions:
+        supported_versions = {str(contract.get("schema_version", "")).strip()}
+    if manifest_version not in supported_versions:
+        errors.append("architecture_contract_version unsupported")
+
     if not _nonempty_str(manifest.get("owner")):
         errors.append("owner is required")
     owner_kind = manifest.get("owner_kind")
@@ -71,8 +97,10 @@ def validate_agent_manifest(
         _require_fields(layer, fields, layer_name, errors)
 
     skill = manifest.get("skill", {}) if isinstance(manifest.get("skill"), Mapping) else {}
-    if skill and skill.get("role") != "ROUTER":
-        errors.append("skill.role must be ROUTER")
+    skill_role = _normalize_shared_value(contract, manifest_version, "skill_role", skill.get("role"))
+    allowed_skill_roles = set(required_layers.get("skill", {}).get("canonical_roles", ("ROUTER",)))
+    if skill and skill_role not in allowed_skill_roles:
+        errors.append("skill.role is not a supported router role")
     skill_entrypoint = skill.get("entrypoint")
     target_max = int(required_layers.get("skill", {}).get("target_max_bytes", 0) or 0)
     if file_sizes and _nonempty_str(skill_entrypoint) and skill_entrypoint in file_sizes and target_max:
@@ -84,7 +112,7 @@ def validate_agent_manifest(
     allowed_runtime = set(required_layers.get("runtime", {}).get("allowed_runtime_type", ()))
     if runtime and runtime.get("runtime_type") not in allowed_runtime:
         errors.append("runtime.runtime_type is not allowed")
-    judgment = runtime.get("judgment_execution")
+    judgment = _normalize_shared_value(contract, manifest_version, "judgment_execution", runtime.get("judgment_execution"))
     allowed_judgment = set(required_layers.get("runtime", {}).get("judgment_execution_status", ()))
     if runtime and judgment not in allowed_judgment:
         errors.append("runtime.judgment_execution is not allowed")
@@ -97,7 +125,7 @@ def validate_agent_manifest(
         errors.append(f"harness missing minimum owner-local suites: {missing_suites}")
 
     refs = manifest.get("references", {}) if isinstance(manifest.get("references"), Mapping) else {}
-    mirror_policy = refs.get("mirror_policy")
+    mirror_policy = _normalize_shared_value(contract, manifest_version, "mirror_policy", refs.get("mirror_policy"))
     allowed_mirror = set(required_layers.get("references", {}).get("allowed_mirror_policy", ()))
     if refs and mirror_policy not in allowed_mirror:
         errors.append("references.mirror_policy is not allowed")
