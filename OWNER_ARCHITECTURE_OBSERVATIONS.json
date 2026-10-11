@@ -3,17 +3,21 @@
   "role": "REBUILDABLE_REMOTE_AGENT_ARCHITECTURE_OBSERVATION_CACHE",
   "authority_boundary": "This file records observations and validation receipts. It is not owner membership authority, business state authority, or proof of live model quality.",
   "contract_ref": "AGENT_ARCHITECTURE_CONTRACT.json",
-  "refreshed_at": "2026-10-11T17:43:00+08:00",
+  "refreshed_at": "2026-10-12T01:30:00+08:00",
   "owners": [
     {
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
       "agent_manifest_ref": "D1traverser-debug/financial-writing-agent@main:continuity/AGENT_MANIFEST.json",
-      "observed_owner_head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
+      "observed_owner_head": "d50adb726fd1a8671a2bd23bf04105797d6faeab",
       "architecture_validation_head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
       "architecture_validation_result": "PASS",
       "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
-      "owner_ci_ref": "github-actions:38108186593",
-      "warnings": []
+      "owner_ci_ref": "github-actions:38161459081:RUNNER_NOT_EXECUTED",
+      "warnings": [
+        "ARCHITECTURE_VALIDATION_STALE__OBSERVED_HEAD_DIFFERS_FROM_VALIDATED_HEAD",
+        "GITHUB_CHAT_PROFILE_10_LIVE_TRAJECTORY_PENDING",
+        "OWNER_FULL_CI_RUNNER_NOT_EXECUTED"
+      ]
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
