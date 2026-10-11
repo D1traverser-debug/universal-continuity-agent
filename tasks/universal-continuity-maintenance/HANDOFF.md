@@ -14,9 +14,9 @@
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__PROACTIVE_EVOLUTION_OPERATIONALIZATION_REGRESSION_VERIFIED__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
-本聊天已完成真实新聊天 takeover（`resume_epoch 5 -> 6`）；当前 lease 仍是本聊天。v53 takeover 一致性闭环、历史 red->green CI、owner remote re-observation 与 topology-bound meta closure 的详细证据保存在下方 Recovery refs，不在 Handoff 重复审计全文。
+本聊天已完成真实新聊天 takeover（`resume_epoch 5 -> 6`）；当前 lease 仍是本聊天。主 `current_stage` 与权威 `TASK_MANIFEST.json` 保持一致。本轮 `PROACTIVE_EVOLUTION_OPERATIONALIZATION_REGRESSION_VERIFIED` 是该 ACTIVE 主阶段内已经闭环的 maintenance substage，不单独制造 manifest 版本或第二套阶段权威。
 
 ## 本轮主动进化 / Custom Instructions 修复
 
@@ -32,13 +32,16 @@
 6. **持续学习从 policy-only 变成 operational contract**：`CONTINUOUS_LEARNING_POLICY.md` 新增 `Operational scout loop`，将 disabled scout、stale hard-coded version、仅用户提供候选后才学习定义为维护缺陷；规定来源覆盖、候选状态、deep-dive evidence floor、最多五个 unresolved deep dives、quiet-no-change 与 `evolution@1.0` child propagation。
 7. **新增回归**：`tests/test_hot_path_loading.py` 防止账户 hook 再次膨胀/复制详细 capability routing；`tests/test_continuous_learning_policy.py` 验证 operational scout、deep-dive 标准、bounded queue 与 child inheritance。
 8. **第一轮 proactive scout 已落证据**：`research/proactive-learning/2026-10-11-initial-scout.md`。Anthropic `skill-creator` 被分类为 `UNIVERSAL_CANDIDATE`，已追到 pinned Skill + runtime scripts，并抽取 Skill-vs-baseline、trigger precision/recall、repeated runs、train/test holdout、防过拟合与 cost/quality separation。`self-improving-agent` 直接架构采用被拒绝（OpenClaw-specific + markdown-memory authority 弱于现有模型）；`last30days` 与 `Understand Anything` 暂列 owner-local/monitor cold-path 候选。
+9. **回读再发现 rebuildable cache 漂移并修复**：`HARNESS_STATUS.json` 原本仍写 `startup_hook_budget_bytes=8192`，且把最新 account hook 当作已确认；现已对齐为 `4096`，保留旧 hook 的历史产品证据，同时明确 `ACCOUNT_ROUTER_V2` 当前账户安装/实时文本未证明。三个产品自动机制的 `enabled` 与 `post-update first-run` 证据也已拆开，避免 enabled=执行过 的假阳性。
 
 ## 本轮验证闭环
 
-- 薄化 `STARTUP_HOOK.md` 后首次 CI `38134906549`：control-plane audit PASS、Agent architecture harness PASS、pytest `2 failed, 243 passed`。两个失败指出旧对话覆盖与“继承前进度”仍属账户级最小用户可见契约。
+- 薄化 `STARTUP_HOOK.md` 后 CI `38134906549`：control-plane audit PASS、Agent architecture harness PASS、pytest `2 failed, 243 passed`。失败指出旧对话覆盖与“继承前进度”仍属账户级最小用户可见契约。
 - 第一次最小补回后 CI `38134970836`：同样只有 pytest 两个失败，进一步指出“进度提交”、`OWNER_REGISTRY.json`/historical-owner-count 动态边界仍需在薄 hook 保留最小表述。
 - 没有删测试或放宽 hook 预算；只补回必要最小语义，详细算法仍不复制到账户 prompt。
-- 最终 CI `38135016993`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
+- `ACCOUNT_ROUTER_V2` 最终修复 CI `38135016993`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
+- closure Handoff commit CI `38135084642`：control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
+- `HARNESS_STATUS` cache 对齐 commit `04fb412df24b1a0d36abc51a773b26da59b12e84` 的 CI `38135374647`：control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
 - 产品 automation closure 回读：`Agent Architecture Watch`、`Continuity Self Audit`、`Continuity Learning Scout` 三者当前均 `is_enabled=true`。
 - Assurance boundary：enabled/CI-green 证明 wiring 与当前结构回归，不证明新版 automation 已完成首次自然运行或长期质量收益。Learning Scout 尚无首次 run；更新后的 Self Audit/Architecture prompt 也需后续自然运行形成 execution evidence。
 
@@ -73,7 +76,7 @@ Universal 当前共享控制面覆盖：
 ## 当前已知 OPEN gates
 
 1. 三个新版 recurring mechanisms 的 **post-update first-run / repeated-run execution evidence**；
-2. account-level Custom Instructions **实际安装文本** 的 live readback/propagation：仓库维护 canonical hook，但当前可用工具不能把 repo 更新证明成账户设置已同步；
+2. account-level Custom Instructions **实际安装文本** 的 live readback/propagation：仓库维护 canonical `ACCOUNT_ROUTER_V2`，但当前可用工具不能把 repo 更新证明成账户设置已同步；
 3. real new-owner fresh-chat product E2E；
 4. operator-dependence independent heldout/live trajectory grader；
 5. A-share / Novel / Video acknowledged router/assurance drift；
