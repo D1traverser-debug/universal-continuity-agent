@@ -147,6 +147,27 @@ def test_progress_policy_requires_both_user_receipts_and_separates_assurance():
     assert policy["anti_false_positive"]["committed_must_not_be_used_as_execution_or_methodology_attestation"] is True
 
 
+def test_progress_policy_requires_intra_turn_safe_checkpoints_for_recoverable_material_progress():
+    policy = json.loads((ROOT / "PROGRESS_OBSERVABILITY_POLICY.json").read_text(encoding="utf-8"))
+    mid = policy["intra_turn_safe_checkpointing"]
+
+    assert "abrupt context exhaustion" in mid["purpose"]
+    assert len(mid["safe_point_triggers"]) >= 5
+    assert mid["rules"]["write_and_reread_required"] is True
+    assert "do not intentionally defer" in mid["rules"]["checkpoint_before_more_work"].lower()
+    assert "latest verified safe checkpoint" in mid["rules"]["new_chat_recovery"].lower()
+    assert "final Turn Commit Receipt" in mid["rules"]["mid_turn_checkpoint_is_not_final_receipt"]
+    assert policy["performance"]["checkpoint_at_material_safe_points_not_every_low_level_operation"] is True
+
+
+def test_entrypoint_exposes_mid_turn_checkpoint_invariant_without_heartbeat_writes():
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+    assert "checkpoint **during the turn** at verified material safe points" in entrypoint
+    assert "do not intentionally wait until the final answer for the first durable write" in entrypoint
+    assert "Pure reads, transient diagnostics and unchanged state do not create heartbeat writes" in entrypoint
+    assert "latest verified safe checkpoint" in entrypoint
+
+
 def test_entrypoint_does_not_overload_committed_with_methodology_or_quality_assurance():
     entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
     assert "`COMMITTED` is a **durable-persistence receipt**" in entrypoint
