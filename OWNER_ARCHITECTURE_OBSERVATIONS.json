@@ -12,6 +12,8 @@
       "architecture_validation_head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
       "architecture_validation_result": "PASS",
       "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
+      "latest_owner_repair_ref": "audits/FINANCIAL_OWNER_GLOBAL_REPAIR_2026-10-12.json",
+      "latest_owner_repair_status": "WIRED_AND_STRUCTURALLY_REVIEWED__NOT_REGRESSION_VERIFIED__LIVE_TRAJECTORY_OPEN",
       "owner_ci_ref": "github-actions:38161459081:RUNNER_NOT_EXECUTED",
       "warnings": [
         "ARCHITECTURE_VALIDATION_STALE__OBSERVED_HEAD_DIFFERS_FROM_VALIDATED_HEAD",
