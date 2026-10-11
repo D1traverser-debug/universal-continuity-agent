@@ -40,11 +40,13 @@ def _manifest_version(manifest: Mapping[str, Any]) -> str:
     return str(manifest.get("architecture_contract_version", "")).strip()
 
 
+def _compatibility(contract: Mapping[str, Any]) -> Mapping[str, Any]:
+    value = contract.get("compatibility", {})
+    return value if isinstance(value, Mapping) else {}
+
+
 def _normalize_shared_value(contract: Mapping[str, Any], manifest_version: str, category: str, value: Any) -> Any:
-    compatibility = contract.get("compatibility", {})
-    if not isinstance(compatibility, Mapping):
-        return value
-    aliases_by_version = compatibility.get("aliases_by_manifest_version", {})
+    aliases_by_version = _compatibility(contract).get("aliases_by_manifest_version", {})
     if not isinstance(aliases_by_version, Mapping):
         return value
     aliases = aliases_by_version.get(manifest_version, {})
@@ -56,12 +58,33 @@ def _normalize_shared_value(contract: Mapping[str, Any], manifest_version: str, 
     return category_aliases.get(value, value)
 
 
-def _normalized_layer(manifest: Mapping[str, Any], manifest_version: str, layer_name: str) -> dict[str, Any]:
+def _field_shape_declared(contract: Mapping[str, Any], manifest_version: str, dotted_field: str) -> bool:
+    shapes_by_version = _compatibility(contract).get("field_shapes_by_manifest_version", {})
+    if not isinstance(shapes_by_version, Mapping):
+        return False
+    version_shapes = shapes_by_version.get(manifest_version, {})
+    if not isinstance(version_shapes, Mapping):
+        return False
+    declaration = version_shapes.get(dotted_field)
+    return isinstance(declaration, Mapping) and _nonempty_str(declaration.get("accepted_alternative"))
+
+
+def _normalized_layer(
+    manifest: Mapping[str, Any],
+    contract: Mapping[str, Any],
+    manifest_version: str,
+    layer_name: str,
+) -> dict[str, Any]:
     raw = manifest.get(layer_name, {})
     if not isinstance(raw, Mapping):
         return {}
     layer = dict(raw)
-    if manifest_version == "1.1" and layer_name == "runtime" and not _nonempty_list(layer.get("entrypoints")):
+
+    if (
+        layer_name == "runtime"
+        and _field_shape_declared(contract, manifest_version, "runtime.entrypoints")
+        and not _nonempty_list(layer.get("entrypoints"))
+    ):
         combined: list[str] = []
         public_entrypoint = layer.get("public_entrypoint")
         if _nonempty_str(public_entrypoint):
@@ -71,10 +94,16 @@ def _normalized_layer(manifest: Mapping[str, Any], manifest_version: str, layer_
             combined.extend(str(item).strip() for item in internal if _nonempty_str(item))
         if combined:
             layer["entrypoints"] = combined
-    if manifest_version == "1.1" and layer_name == "references" and not _nonempty_list(layer.get("canonical_roots")):
+
+    if (
+        layer_name == "references"
+        and _field_shape_declared(contract, manifest_version, "references.canonical_roots")
+        and not _nonempty_list(layer.get("canonical_roots"))
+    ):
         canonical_root = layer.get("canonical_root")
         if _nonempty_str(canonical_root):
             layer["canonical_roots"] = [str(canonical_root).strip()]
+
     return layer
 
 
@@ -89,8 +118,8 @@ def validate_agent_manifest(
     warnings: list[str] = []
 
     manifest_version = _manifest_version(manifest)
-    compatibility = contract.get("compatibility", {})
-    supported_versions = set(compatibility.get("supported_manifest_versions", ())) if isinstance(compatibility, Mapping) else set()
+    compatibility = _compatibility(contract)
+    supported_versions = set(compatibility.get("supported_manifest_versions", ()))
     if not supported_versions:
         supported_versions = {str(contract.get("schema_version", "")).strip()}
     if manifest_version not in supported_versions:
@@ -111,7 +140,7 @@ def validate_agent_manifest(
             errors.append(f"missing layer: {layer_name}")
             layers[layer_name] = {}
             continue
-        layer = _normalized_layer(manifest, manifest_version, layer_name)
+        layer = _normalized_layer(manifest, contract, manifest_version, layer_name)
         layers[layer_name] = layer
         spec = required_layers.get(layer_name, {}) if isinstance(required_layers, Mapping) else {}
         fields = spec.get("required_fields", ())
