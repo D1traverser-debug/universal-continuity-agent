@@ -46,7 +46,7 @@ Top10 Skill 学习库仍位于 `research/skill-library/2026-global-ai-skills-top
 
 闭环证据：`audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`。
 
-### 高风险行为整合
+### 原始行为整合高风险验证
 
 - behavioral integration commit: `aa0d6da1a8e36fcaba6559770d0bf621f506ea22`
 - Actions run: `38126896565`
@@ -58,16 +58,37 @@ Top10 Skill 学习库仍位于 `research/skill-library/2026-global-ai-skills-top
 - Agent Architecture harness: PASS（保留既有 A-share / Novel / Video drift warnings）
 - pytest: `234 passed`
 
-### 最新 pre-v50 HEAD
+### v50 closure 过程中发现并修复的真实反证
 
-- HEAD: `55a0c4f6d08b307db7f69e604518daabe24f45e2`
-- Actions run: `38126931812`
-- job: `114433127482`
+第一次 v50 HIGH-risk closure：
+
+- HEAD: `713e242c87b0bf978a12defe9581036427537234`
+- Actions run: `38128049693`
+- job: `114436418691`
 - system audit: PASS
+- synthetic fault suite: PASS
 - Agent Architecture harness: PASS
-- pytest: `234 passed`
+- pytest: `233 passed, 1 failed`
+- 失败原因：`latest_meta_maintenance_run_ref` 仍指向 target_manifest_version `49` 的历史 run，而当前 manifest 已是 `50`。
 
-该最新提交只改 `SIGNAL_PLANE.md`，因此 planner 正确判为 LOW；不把它伪装成第二次 HIGH-risk fault proof。高风险行为闭环仍以 `38126896565` 为准。
+没有放宽测试，也没有把旧 v49 run post-hoc 改写成 v50。新增独立 current run：
+
+`audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_V50_CLOSURE_2026-10-11.json`
+
+旧 run `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json` 保留为历史生产晋升轨迹。
+
+### 最终 v50 HIGH-risk closure
+
+- HEAD: `2c101244a7399c7c75ebe56e09ab3aa3443175c7`
+- Actions run: `38128234320`
+- job: `114436961188`
+- risk: `HIGH`
+- modes: `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`
+- system audit: PASS
+- synthetic fault suite: PASS, zero failed
+- Agent Architecture harness: PASS，仍仅有已承认的 A-share / Novel / Video drift warnings
+- all current BUSINESS owner metadata in scope
+- pytest: `234 passed in 0.59s`
 
 `OUTCOME_UNKNOWN` 有专门 deterministic regression，并包含在上述 234-test integrated suite 中。当前 system synthetic-fault collection 没有再复制一个同义 mutation classifier scenario；因此 fault-suite PASS 不被计作该项的独立第二份证明。
 
@@ -105,7 +126,8 @@ Selected Universal production-promotion primitives：**REGRESSION_VERIFIED**。
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
-- `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json`
+- `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_V50_CLOSURE_2026-10-11.json`
+- `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json`（historical v49 run）
 - `audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`
 - `SYSTEM_MAINTENANCE_POLICY.json`
 - `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`
