@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN__CONTEXT_CAPACITY_PREFLIGHT_REGRESSION_VERIFIED",
-      "next_action": "Preserve the turn-entry GREEN/AMBER/RED context-capacity preflight and safe-checkpoint/fresh-chat handoff semantics. On explicit product length warnings or other RED evidence, stop before starting new substantive work and checkpoint first. Continue existing open maintenance gates only when new evidence or signals arrive.",
+      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN__CONTEXT_CAPACITY_PREFLIGHT_REGRESSION_VERIFIED__UNIFIED_SELF_MAINTENANCE_EVOLUTION_LOOP_REGRESSION_VERIFIED",
+      "next_action": "Preserve the turn-entry GREEN/AMBER/RED capacity preflight and the unified self-maintenance-evolution loop. Material user/assistant/CI/drift/inefficiency/state-loss/duplication/complexity signals enter one evidence-backed loop: system-level preframe, authority/impact diagnosis, learning scout when uncertain, candidate comparison/falsification, minimum canonical-owner change, validation, second-order system reframe, method/invariant propagation, superseded-mechanism cleanup and durable pattern distillation. Keep healthy ordinary business turns lean; do not propagate owner-local business truth; checkpoint first on RED context evidence. Continue open owner live-action, architecture, operator-dependence and live-quality gates only on new evidence/signals.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-11T20:37:00+08:00"
+      "updated_at": "2026-10-11T21:44:00+08:00"
     }
   ]
 }
