@@ -9,6 +9,7 @@ EvidenceVerifier = Callable[[str], bool]
 
 ALLOWED_EXPECTED_DECISIONS = {"ESCALATE", "DO_NOT_ESCALATE"}
 ALLOWED_CASE_KINDS = {"REAL_NEGATIVE", "HELDOUT"}
+ALLOWED_ORACLE_KINDS = {"REAL_NEGATIVE_SOURCE", "FROZEN_HELDOUT_EXPECTATION"}
 DISALLOWED_GRADER_KINDS = {"SELF_REPORT", "SAME_RUN_SELF_REVIEW"}
 
 BASE_CRITERIA = (
@@ -43,6 +44,8 @@ class TrajectoryEvalResult:
     checked_criteria: tuple[str, ...]
     expected_decision: str | None
     observed_decision: str | None
+    expected_truth_ref: str | None
+    trace_ref: str | None
 
 
 @dataclass(frozen=True)
@@ -59,11 +62,16 @@ def load_corpus(path: str | Path) -> dict[str, Any]:
 
 def validate_corpus(corpus: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
+    schema_version = str(corpus.get("schema_version", "")).strip()
+    if schema_version not in {"1.0", "1.1"}:
+        errors.append("unsupported corpus schema_version")
+
     cases = corpus.get("cases")
     if not isinstance(cases, list) or not cases:
-        return ["corpus.cases must be a non-empty list"]
+        return [*errors, "corpus.cases must be a non-empty list"]
 
     seen: set[str] = set()
+    seen_truth_refs: set[str] = set()
     has_real_negative = False
     has_heldout_escalate = False
     has_heldout_no_escalate = False
@@ -88,6 +96,22 @@ def validate_corpus(corpus: Mapping[str, Any]) -> list[str]:
         expected = case.get("expected_decision")
         if expected not in ALLOWED_EXPECTED_DECISIONS:
             errors.append(f"{case_id}: unsupported expected_decision {expected!r}")
+
+        if schema_version == "1.1":
+            oracle_kind = str(case.get("oracle_kind", "")).strip()
+            truth_ref = str(case.get("expected_truth_ref", "")).strip()
+            if oracle_kind not in ALLOWED_ORACLE_KINDS:
+                errors.append(f"{case_id}: unsupported oracle_kind {oracle_kind!r}")
+            if not truth_ref:
+                errors.append(f"{case_id}: expected_truth_ref required")
+            elif truth_ref in seen_truth_refs:
+                errors.append(f"duplicate expected_truth_ref: {truth_ref}")
+            else:
+                seen_truth_refs.add(truth_ref)
+            if kind == "REAL_NEGATIVE" and oracle_kind != "REAL_NEGATIVE_SOURCE":
+                errors.append(f"{case_id}: REAL_NEGATIVE requires oracle_kind REAL_NEGATIVE_SOURCE")
+            if kind == "HELDOUT" and oracle_kind != "FROZEN_HELDOUT_EXPECTATION":
+                errors.append(f"{case_id}: HELDOUT requires oracle_kind FROZEN_HELDOUT_EXPECTATION")
 
         signal = case.get("systemic_signal_present")
         if not isinstance(signal, bool):
@@ -135,6 +159,7 @@ def evaluate_graded_trajectory(
 ) -> TrajectoryEvalResult:
     case_id = str(case.get("case_id", "UNKNOWN"))
     expected = case.get("expected_decision")
+    expected_truth_ref = str(case.get("expected_truth_ref", "")).strip() or None
     checked = _required_criteria(case)
     errors: list[str] = []
 
@@ -146,6 +171,8 @@ def evaluate_graded_trajectory(
             checked_criteria=checked,
             expected_decision=str(expected) if expected else None,
             observed_decision=None,
+            expected_truth_ref=expected_truth_ref,
+            trace_ref=None,
         )
 
     grader_kind = str(grade.get("grader_kind", "")).strip().upper()
@@ -163,6 +190,8 @@ def evaluate_graded_trajectory(
         errors.append("self_reported_or_same_run_grade_not_independent")
     if not trace_ref:
         errors.append("product_trace_ref_required")
+    if expected_truth_ref and trace_ref == expected_truth_ref:
+        errors.append("expected_truth_and_product_trace_must_be_distinct")
     if not isinstance(evidence_refs, list) or not evidence_refs or not all(
         isinstance(ref, str) and ref.strip() for ref in evidence_refs
     ):
@@ -206,6 +235,8 @@ def evaluate_graded_trajectory(
         checked_criteria=checked,
         expected_decision=str(expected) if expected else None,
         observed_decision=observed or None,
+        expected_truth_ref=expected_truth_ref,
+        trace_ref=trace_ref or None,
     )
 
 
