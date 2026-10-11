@@ -14,30 +14,33 @@
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__PROACTIVE_EVOLUTION_OPERATIONALIZATION_IN_PROGRESS__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__PROACTIVE_EVOLUTION_OPERATIONALIZATION_REGRESSION_VERIFIED__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
 本聊天已完成真实新聊天 takeover（`resume_epoch 5 -> 6`）；当前 lease 仍是本聊天。v53 takeover 一致性闭环、历史 red->green CI、owner remote re-observation 与 topology-bound meta closure 的详细证据保存在下方 Recovery refs，不在 Handoff 重复审计全文。
 
-## 当前 material safe checkpoint：主动进化 / Custom Instructions 修复
+## 本轮主动进化 / Custom Instructions 修复
 
-用户指出：总控虽然多次升级，但仍需要用户反复提醒其主动学习、全局检查和外部工具蒸馏；前一回复还把“GPT 个性化”错误理解成 Personality，而用户实际指的是 account-level Custom Instructions / startup hook。这被分类为系统性路由理解漂移 + declaration-to-operation gap，而不是单纯措辞问题。
+用户指出：总控多次升级后仍需要用户反复提醒其主动学习、全局检查和外部工具蒸馏；前一回复还把“GPT 个性化”错误理解成 Personality，而用户实际指的是 account-level Custom Instructions / startup hook。这被分类为系统性路由理解漂移 + declaration-to-operation gap，而不是单纯措辞问题。
 
-本轮已完成并持久化以下事实：
+本轮完成并验证：
 
-1. **发现产品层假阳性**：实际读取 automation state 后，`Agent Architecture Watch` 与 `Continuity Self Audit` 均为 disabled；这与仓库中“architecture watch enabled”的声明不一致。不能再用仓库声明替代产品执行事实。
-2. **恢复真实主动监控**：`Agent Architecture Watch` 已重新启用为 hourly condition watch，并改为先读当前 `CURRENT_PROTOCOL.json`、动态推导 BUSINESS owners，不硬编码 owner count/version。
-3. **恢复并升级 Self Audit**：`Continuity Self Audit` 已重新启用；旧 prompt 硬编码 v3.6 已删除，现要求每次先读 current protocol，并检查 thin bootstrap、safe checkpoint、child inheritance、monitor enablement、policy-only mechanism、stale hard-coded versions、contradictory status 与 user-prompt-only learning。
-4. **新增真实 Learning Scout**：已创建并启用 `Continuity Learning Scout`，周期扫描 OpenAI Skills/Agents 文档、`skills.sh` All Time/Trending/Hot、GitHub Agent Skills、MCP/tool catalogs、ChatGPT Plugin Directory 与小众 novelty lane。没有 material change 时不通知；候选不会自动晋升 production authority。
-5. **Custom Instructions 去臃肿**：`STARTUP_HOOK.md` 已改为 `ACCOUNT_ROUTER_V2`。账户级文本只负责 `CONTINUE -> current GitHub authority`、最小 `ENTRYPOINT.md + CURRENT_PROTOCOL.json` 启动、fail-closed 与主动维护触发；bare/named routing、owner discovery、lease、capability、methodology、learning、receipt、migration 等可进化语义不再复制到账户 prompt。
-6. **持续学习从 policy-only 改为 operational contract**：`CONTINUOUS_LEARNING_POLICY.md` 新增 `Operational scout loop`，把 disabled scout、stale hard-coded version、仅用户提供候选后才学习定义为维护缺陷；规定来源覆盖、候选状态、deep-dive evidence floor、最多五个 unresolved deep dives、quiet-no-change 与 `evolution@1.0` child propagation。
-7. **新增回归**：`tests/test_hot_path_loading.py` 将 account startup hook 预算收紧到 `<=4096B`，并禁止重新塞回详细 bare routing / capability prose；新增 `tests/test_continuous_learning_policy.py` 验证 operational scout、deep-dive 标准、bounded queue 与 child inheritance。
-8. **第一轮真实 proactive scout 已落证据**：`research/proactive-learning/2026-10-11-initial-scout.md`。其中 Anthropic `skill-creator` 被分类为 `UNIVERSAL_CANDIDATE`，已追到 pinned Skill + runtime scripts；抽取了 Skill-vs-baseline、trigger precision/recall、repeated runs、train/test holdout、防过拟合与 cost/quality separation。`self-improving-agent` 直接架构采用被拒绝（OpenClaw-specific + markdown memory authority 弱于现有模型）；`last30days` 与 `Understand Anything` 暂列 owner-local/monitor cold-path 候选。
+1. **产品层假阳性被发现**：实际读取 automation state 后，`Agent Architecture Watch` 与 `Continuity Self Audit` 当时均为 disabled；这与仓库声明不一致，证明仓库状态不能替代产品执行事实。
+2. **真实主动监控已恢复**：`Agent Architecture Watch` 已重新启用为 hourly condition watch，并改为先读当前 `CURRENT_PROTOCOL.json`、动态推导 BUSINESS owners，不硬编码 owner count/version。
+3. **Self Audit 已恢复并去旧版本绑定**：`Continuity Self Audit` 已重新启用；旧 prompt 的 v3.6 硬编码已删除，现要求先读 current protocol，并检查 thin bootstrap、safe checkpoint、child inheritance、monitor enablement、policy-only mechanism、stale hard-coded versions、contradictory status 与 user-prompt-only learning。
+4. **Learning Scout 已上线**：新增并启用 `Continuity Learning Scout`，周期扫描 OpenAI Skills/Agents 文档、`skills.sh` All Time/Trending/Hot、GitHub Agent Skills、MCP/tool catalogs、ChatGPT Plugin Directory 与小众 novelty lane。无 material change 不通知；候选不自动晋升 production authority。
+5. **Custom Instructions 已去臃肿**：`STARTUP_HOOK.md` 已改为 `ACCOUNT_ROUTER_V2`，并由测试限制为 `<=4096B`。账户级文本只保留 pre-repository trigger、最小 bootstrap、旧对话覆盖、继承前进度/进度提交用户可见边界、fail-closed 与主动维护触发；owner/capability/methodology/learning/migration 的细节留在 current repository authority。
+6. **持续学习从 policy-only 变成 operational contract**：`CONTINUOUS_LEARNING_POLICY.md` 新增 `Operational scout loop`，将 disabled scout、stale hard-coded version、仅用户提供候选后才学习定义为维护缺陷；规定来源覆盖、候选状态、deep-dive evidence floor、最多五个 unresolved deep dives、quiet-no-change 与 `evolution@1.0` child propagation。
+7. **新增回归**：`tests/test_hot_path_loading.py` 防止账户 hook 再次膨胀/复制详细 capability routing；`tests/test_continuous_learning_policy.py` 验证 operational scout、deep-dive 标准、bounded queue 与 child inheritance。
+8. **第一轮 proactive scout 已落证据**：`research/proactive-learning/2026-10-11-initial-scout.md`。Anthropic `skill-creator` 被分类为 `UNIVERSAL_CANDIDATE`，已追到 pinned Skill + runtime scripts，并抽取 Skill-vs-baseline、trigger precision/recall、repeated runs、train/test holdout、防过拟合与 cost/quality separation。`self-improving-agent` 直接架构采用被拒绝（OpenClaw-specific + markdown-memory authority 弱于现有模型）；`last30days` 与 `Understand Anything` 暂列 owner-local/monitor cold-path 候选。
 
-### 当前验证状态
+## 本轮验证闭环
 
-- 上述文件写入均已成功；这是可恢复的中途 safe checkpoint。
-- **最新完整 CI 尚未在此 checkpoint 时点完成，因此本段不能宣称 REGRESSION_VERIFIED。**
-- 下一步必须跑/观察最新 main CI；若失败，修真实冲突而不是放宽测试。通过后再更新本 Handoff 为 closure 状态并回读。
+- 薄化 `STARTUP_HOOK.md` 后首次 CI `38134906549`：control-plane audit PASS、Agent architecture harness PASS、pytest `2 failed, 243 passed`。两个失败指出旧对话覆盖与“继承前进度”仍属账户级最小用户可见契约。
+- 第一次最小补回后 CI `38134970836`：同样只有 pytest 两个失败，进一步指出“进度提交”、`OWNER_REGISTRY.json`/historical-owner-count 动态边界仍需在薄 hook 保留最小表述。
+- 没有删测试或放宽 hook 预算；只补回必要最小语义，详细算法仍不复制到账户 prompt。
+- 最终 CI `38135016993`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
+- 产品 automation closure 回读：`Agent Architecture Watch`、`Continuity Self Audit`、`Continuity Learning Scout` 三者当前均 `is_enabled=true`。
+- Assurance boundary：enabled/CI-green 证明 wiring 与当前结构回归，不证明新版 automation 已完成首次自然运行或长期质量收益。Learning Scout 尚无首次 run；更新后的 Self Audit/Architecture prompt 也需后续自然运行形成 execution evidence。
 
 ## 当前系统大纲能力边界
 
@@ -54,7 +57,7 @@ Universal 当前共享控制面覆盖：
 9. proactive learning / external Skill-tool discovery / distillation / promotion gates；
 10. child-owner inheritance through shared contracts/profiles while BUSINESS truth remains owner-local。
 
-这些是“防问题的机制覆盖”，不是“已证明能避免 90% 所有未来问题”。目前没有足够 held-out incident corpus 支持一个诚实的 90% 数字；若未来要声称 90%，必须用真实/held-out failure corpus 测得 coverage，而不是凭架构感觉。
+这些是“常见失败类别的控制机制覆盖”，不是“已证明避免 90% 所有未来问题”。目前没有足够 held-out incident corpus 支持一个诚实的 90% 数字；若未来要声称 90%，必须用真实/held-out failure corpus 测得 coverage，而不是凭架构感觉。
 
 ## 当前 owner / assurance 状态
 
@@ -69,8 +72,8 @@ Universal 当前共享控制面覆盖：
 
 ## 当前已知 OPEN gates
 
-1. 本轮 proactive-evolution repo 修改的最新 full CI closure（当前 checkpoint 时点仍待验证）；
-2. account-level Custom Instructions **实际安装文本** 的 live readback/propagation：仓库能维护 canonical hook，但当前可用工具不能把 repo 写入证明成账户设置已更新；
+1. 三个新版 recurring mechanisms 的 **post-update first-run / repeated-run execution evidence**；
+2. account-level Custom Instructions **实际安装文本** 的 live readback/propagation：仓库维护 canonical hook，但当前可用工具不能把 repo 更新证明成账户设置已同步；
 3. real new-owner fresh-chat product E2E；
 4. operator-dependence independent heldout/live trajectory grader；
 5. A-share / Novel / Video acknowledged router/assurance drift；
@@ -80,10 +83,9 @@ Universal 当前共享控制面覆盖：
 
 ## Next action
 
-1. 观察本轮最新 main CI：control-plane audit、Agent architecture harness、完整 pytest；失败则修真实根因，不削弱 guard。
-2. CI 通过后回读 `STARTUP_HOOK.md`、`CONTINUOUS_LEARNING_POLICY.md`、本 Handoff、task manifest 与产品 automation state，确认当前 writer 未丢失且三项 recurring mechanisms 处于真实 enabled。
-3. 若全部一致，记录本轮 closure 并停止继续加层；后续由 architecture/self-audit/learning scouts 产生的新 signal 驱动下一次维护。
-4. `skill-creator` 的 trigger/baseline/holdout primitive 仅保留为 production candidate；只有与现有 harness 对比证明有增益后才实现，避免“看到优秀工具就复制”。
+保持 stop rule，不继续为“主动”制造新层。后续由已启用的 architecture/self-audit/learning scouts 产生的新 signal 驱动维护；首次新版 automation run 到来时，把真实 execution evidence 与当前声明对齐。
+
+`skill-creator` 的 trigger/baseline/holdout primitive 仅保留为 production candidate；只有与现有 harness 对比证明缺口与增益后才实现，避免“看到优秀工具就复制”。跨-owner 通过证据门的机制走既有 `evolution@1.0` inheritance；owner-local candidate 不全局化。
 
 ## Recovery refs
 
