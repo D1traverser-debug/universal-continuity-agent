@@ -58,10 +58,26 @@ def v11_alternate_shape_manifest() -> dict:
     return manifest
 
 
+def v12_video_style_manifest() -> dict:
+    manifest = valid_manifest()
+    manifest["schema_version"] = "1.2"
+    manifest["architecture_contract_version"] = "1.2"
+    manifest["skill"]["role"] = "ROUTER_AND_OPERATING_CONTRACT"
+    manifest["runtime"]["judgment_execution"] = "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES"
+    manifest["references"]["mirror_policy"] = "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK"
+    return manifest
+
+
 def test_v10_manifest_remains_compatible_under_v11_contract():
     result = validate_agent_manifest(valid_manifest(), CONTRACT)
     assert CONTRACT["schema_version"] == "1.1"
     assert result.status == ArchitectureStatus.PASS
+
+
+def test_manifest_compatibility_current_version_is_v12_without_bumping_contract_schema():
+    assert CONTRACT["schema_version"] == "1.1"
+    assert CONTRACT["compatibility"]["current_manifest_version"] == "1.2"
+    assert set(CONTRACT["compatibility"]["supported_manifest_versions"]) == {"1.0", "1.1", "1.2"}
 
 
 def test_v11_owner_aliases_normalize_to_shared_semantics():
@@ -97,6 +113,19 @@ def test_v11_video_aliases_normalize_to_shared_semantics():
     manifest["references"]["mirror_policy"] = "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK"
     result = validate_agent_manifest(manifest, CONTRACT)
     assert result.status == ArchitectureStatus.PASS
+
+
+def test_v12_video_style_aliases_normalize_to_shared_semantics():
+    result = validate_agent_manifest(v12_video_style_manifest(), CONTRACT)
+    assert result.status == ArchitectureStatus.PASS
+
+
+def test_unknown_v12_shared_alias_still_fails_closed():
+    manifest = v12_video_style_manifest()
+    manifest["skill"]["role"] = "SUPER_ROUTER"
+    result = validate_agent_manifest(manifest, CONTRACT)
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("skill.role" in item for item in result.errors)
 
 
 def test_unknown_v11_shared_alias_fails_closed():
