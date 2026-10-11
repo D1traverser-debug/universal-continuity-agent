@@ -59,7 +59,7 @@ Load only when the event occurs:
 - **Material owner execution** → exact owner Skill/entrypoint + `continuity/EXECUTION_CAPABILITIES.json` + `EXECUTION_READINESS_CONTRACT.json`; handshake only the exact next-action capabilities.
 - **Execution/methodology proof used for a gate** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py`; apply the current receipt/action-binding contract there rather than copying it into this bootstrap.
 - **Artifact/file/storage** → `artifact_io@1.0`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when activated.
-- **Plausible system-defect hypothesis / user asks whether an entrypoint, routing, propagation, maintenance or evolution mechanism is broken** → load `SYSTEM_MAINTENANCE_POLICY.json` and perform signal triage before ordinary discussion. A hypothesis is not proof: resolve it to `NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`. `NO_DEFECT` is explained and closed without maintenance; `INVESTIGATE` continues evidence gathering; `CONFIRMED_DEFECT` enters the applicable maintenance/evolution loop in the same turn. A confirmed defect may not be downgraded to an unowned “future risk” and left unresolved.
+- **Plausible system-defect hypothesis** → `SYSTEM_MAINTENANCE_POLICY.json`; triage before discussion as `NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`. Confirmed defects enter maintenance/evolution in the same turn; never close them as an unowned “future risk”.
 - **Maintenance/repeated failure/drift/material user correction** → `operational_hygiene@1.0` + `SYSTEM_MAINTENANCE_POLICY.json`.
 - **Durable learning/evolution** → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`.
 - **Media evidence/distillation** → `MEDIA_DISTILLATION_PROTOCOL.md`.
@@ -80,9 +80,7 @@ Before a material owner action:
 5. validate any receipt against exact task/stage/action/subject/input before using it as proof;
 6. block only the exact unavailable hard gate.
 
-Operational methodology gate evaluation is delegated to `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action operational proof.
-
-`DECLARED_ONLY` is not execution. CI/regression wiring is not current-session proof. Role-switching is not attested isolation. Proof for another action is not proof for this action.
+Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration/CI is not current-action proof. `DECLARED_ONLY` is not execution; proof for another action is not proof for this action.
 
 ## Agent product architecture
 
@@ -90,7 +88,7 @@ Every BUSINESS owner exposes the `agent_manifest_ref` declared by `OWNER_REGISTR
 
 `Skill/router → Runtime/executor → Workflow/state → Harness/eval → References → Continuity`.
 
-Universal validates this through `AGENT_ARCHITECTURE_CONTRACT.json` and `runtime/agent_architecture_audit.py`. Large Skills/bootstrap surfaces are architecture drift, not execution evidence. A static manifest never self-certifies current repository freshness; remote observations are rebuildable evidence.
+Universal validates this through `AGENT_ARCHITECTURE_CONTRACT.json` and `runtime/agent_architecture_audit.py`. Large Skills/bootstrap surfaces are architecture drift. A static manifest cannot certify freshness.
 
 ## Maintenance and learning
 
