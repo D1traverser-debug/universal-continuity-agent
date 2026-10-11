@@ -14,7 +14,8 @@
       "runtime/owner_topology.py",
       "runtime/execution_readiness.py",
       "runtime/methodology_conformance.py",
-      "runtime/meta_maintenance.py"
+      "runtime/meta_maintenance.py",
+      "runtime/mutation_outcome.py"
     ],
     "judgment_execution": "NOT_APPLICABLE",
     "note": "Universal routes, validates and recovers; domain judgment remains owner-local."
@@ -29,7 +30,8 @@
       "runtime/universal_continuity.py",
       "runtime/protocol_reconciliation.py",
       "runtime/execution_readiness.py",
-      "runtime/methodology_conformance.py"
+      "runtime/methodology_conformance.py",
+      "runtime/mutation_outcome.py"
     ]
   },
   "harness": {
@@ -39,7 +41,7 @@
       "python -m runtime.agent_architecture_audit --repo-root .",
       "python -m pytest -q"
     ],
-    "suites": ["architecture", "contract", "trajectory", "fault_injection", "meta_governance"]
+    "suites": ["architecture", "contract", "trajectory", "fault_injection", "meta_governance", "mutation_outcome"]
   },
   "references": {
     "canonical_roots": ["skills/universal-continuity", "tasks", "audits"],
