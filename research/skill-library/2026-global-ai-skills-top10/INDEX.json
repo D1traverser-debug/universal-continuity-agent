@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "library": "2026-global-ai-skills-top10",
+  "status": "DISTILLATION_COMPLETE_10_OF_10__PHASE_B_SELECTION_READY",
+  "selection_was_frozen_until_complete": true,
+  "common_schema_ref": "research/skill-library/2026-global-ai-skills-top10/SCHEMA.md",
+  "source_heads": {
+    "vercel-labs/skills": "13e4063a1cf913f5606d57d42ab83a86f5001e04",
+    "mattpocock/skills": "49dd158d1076134a641b33efb035946536778336",
+    "vercel-labs/agent-browser": "d9570915f4dd6504dee4070379d2c4f79d81dbb2",
+    "anthropics/skills": "dbd4588f9e1033efb41dad4bef2f7947c8993d44"
+  },
+  "entries": [
+    {
+      "rank": 1,
+      "name": "find-skills",
+      "source": "vercel-labs/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/01-find-skills.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "RUNTIME_IMPLEMENTATION", "UNIT_TESTS", "CLI_ARCHITECTURE"]
+    },
+    {
+      "rank": 2,
+      "name": "grill-me",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/02-grill-me.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["THIN_WRAPPER", "DELEGATED_PRIMITIVE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
+    },
+    {
+      "rank": 3,
+      "name": "grill-with-docs",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/03-grill-with-docs.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["THIN_WRAPPER", "GRILLING_PRIMITIVE", "DOMAIN_MODELING_PRIMITIVE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
+    },
+    {
+      "rank": 4,
+      "name": "improve-codebase-architecture",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/04-improve-codebase-architecture.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "SHARED_ARCHITECTURE_METHOD", "REPORT_CONTRACT", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
+    },
+    {
+      "rank": 5,
+      "name": "agent-browser",
+      "source": "vercel-labs/agent-browser",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/05-agent-browser.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["THIN_DISCOVERY_SKILL", "RUNTIME_SERVED_SKILL", "EXECUTABLE_RUNTIME", "TRUST_BOUNDARIES", "SESSION_RUNTIME", "EVAL_HARNESS", "LIVE_SMOKE_EVAL_DESIGN"]
+    },
+    {
+      "rank": 6,
+      "name": "tdd",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/06-tdd.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "TEST_METHOD_REFERENCE", "MOCKING_REFERENCE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
+    },
+    {
+      "rank": 7,
+      "name": "setup-matt-pocock-skills",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/07-setup-matt-pocock-skills.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "REPO_LOCAL_CONFIG_TEMPLATES", "DOWNSTREAM_CONSUMER_CONVENTIONS"]
+    },
+    {
+      "rank": 8,
+      "name": "frontend-design",
+      "source": "anthropics/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/08-frontend-design.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "MODEL_MIGRATION_CONTEXT"],
+      "evidence_gap": "NO_DEDICATED_FRONTEND_DESIGN_EVAL_OBSERVED"
+    },
+    {
+      "rank": 9,
+      "name": "handoff",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/09-handoff.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["PRODUCTION_SKILL", "OPENAI_INVOCATION_POLICY", "COMPARATIVE_IN_PROGRESS_ACTIVE_HANDOFF_VARIANT"],
+      "evidence_gap": "NO_DEDICATED_HANDOFF_EVAL_OBSERVED"
+    },
+    {
+      "rank": 10,
+      "name": "triage",
+      "source": "mattpocock/skills",
+      "entry_ref": "research/skill-library/2026-global-ai-skills-top10/10-triage.md",
+      "status": "COMPLETE_SOURCE_NORMALIZATION",
+      "selection_status": "PENDING_PHASE_B",
+      "evidence": ["SKILL", "AGENT_BRIEF_CONTRACT", "NEGATIVE_KNOWLEDGE_BASE", "GITHUB_STATE_AUTOMATIONS"]
+    }
+  ],
+  "phase_b_rule": "Compare all ten normalized entries before adopting, rejecting, merging, installing, or modifying Universal/owner architecture. Prefer primitive-level selection over whole-skill copying when responsibilities overlap."
+}
