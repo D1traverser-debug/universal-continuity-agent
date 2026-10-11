@@ -3,6 +3,7 @@
   "run_id": "meta-top10-skill-library-2026-10-11",
   "scope": "SYSTEMIC",
   "trigger": "USER_REQUIRED_COMPLETE_TOP10_SKILL_LIBRARY_BEFORE_SELECTION_AFTER_PREMATURE_SINGLE_SKILL_ADOPTION",
+  "target_manifest_version": 48,
   "user_signal": {
     "classifications": [
       "GOAL_OR_CONSTRAINT",
