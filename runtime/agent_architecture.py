@@ -56,6 +56,28 @@ def _normalize_shared_value(contract: Mapping[str, Any], manifest_version: str, 
     return category_aliases.get(value, value)
 
 
+def _normalized_layer(manifest: Mapping[str, Any], manifest_version: str, layer_name: str) -> dict[str, Any]:
+    raw = manifest.get(layer_name, {})
+    if not isinstance(raw, Mapping):
+        return {}
+    layer = dict(raw)
+    if manifest_version == "1.1" and layer_name == "runtime" and not _nonempty_list(layer.get("entrypoints")):
+        combined: list[str] = []
+        public_entrypoint = layer.get("public_entrypoint")
+        if _nonempty_str(public_entrypoint):
+            combined.append(str(public_entrypoint).strip())
+        internal = layer.get("internal_components")
+        if isinstance(internal, list):
+            combined.extend(str(item).strip() for item in internal if _nonempty_str(item))
+        if combined:
+            layer["entrypoints"] = combined
+    if manifest_version == "1.1" and layer_name == "references" and not _nonempty_list(layer.get("canonical_roots")):
+        canonical_root = layer.get("canonical_root")
+        if _nonempty_str(canonical_root):
+            layer["canonical_roots"] = [str(canonical_root).strip()]
+    return layer
+
+
 def validate_agent_manifest(
     manifest: Mapping[str, Any],
     contract: Mapping[str, Any],
@@ -82,11 +104,15 @@ def validate_agent_manifest(
         errors.append("owner_kind is outside AGENT_ARCHITECTURE_CONTRACT scope")
 
     required_layers = contract.get("required_layers", {})
+    layers: dict[str, dict[str, Any]] = {}
     for layer_name in ("skill", "runtime", "workflow", "harness", "references", "continuity"):
-        layer = manifest.get(layer_name)
-        if not isinstance(layer, Mapping):
+        raw = manifest.get(layer_name)
+        if not isinstance(raw, Mapping):
             errors.append(f"missing layer: {layer_name}")
+            layers[layer_name] = {}
             continue
+        layer = _normalized_layer(manifest, manifest_version, layer_name)
+        layers[layer_name] = layer
         spec = required_layers.get(layer_name, {}) if isinstance(required_layers, Mapping) else {}
         fields = spec.get("required_fields", ())
         if layer_name == "continuity":
@@ -96,7 +122,7 @@ def validate_agent_manifest(
             )
         _require_fields(layer, fields, layer_name, errors)
 
-    skill = manifest.get("skill", {}) if isinstance(manifest.get("skill"), Mapping) else {}
+    skill = layers.get("skill", {})
     skill_role = _normalize_shared_value(contract, manifest_version, "skill_role", skill.get("role"))
     allowed_skill_roles = set(required_layers.get("skill", {}).get("canonical_roles", ("ROUTER",)))
     if skill and skill_role not in allowed_skill_roles:
@@ -108,7 +134,7 @@ def validate_agent_manifest(
         if actual > target_max:
             warnings.append(f"skill router exceeds target byte budget: {actual}>{target_max}")
 
-    runtime = manifest.get("runtime", {}) if isinstance(manifest.get("runtime"), Mapping) else {}
+    runtime = layers.get("runtime", {})
     allowed_runtime = set(required_layers.get("runtime", {}).get("allowed_runtime_type", ()))
     if runtime and runtime.get("runtime_type") not in allowed_runtime:
         errors.append("runtime.runtime_type is not allowed")
@@ -117,14 +143,14 @@ def validate_agent_manifest(
     if runtime and judgment not in allowed_judgment:
         errors.append("runtime.judgment_execution is not allowed")
 
-    harness = manifest.get("harness", {}) if isinstance(manifest.get("harness"), Mapping) else {}
+    harness = layers.get("harness", {})
     suites = set(harness.get("suites", ())) if isinstance(harness.get("suites"), list) else set()
     minimum_suites = set(required_layers.get("harness", {}).get("minimum_owner_local_suites", ()))
     missing_suites = sorted(minimum_suites - suites)
     if missing_suites:
         errors.append(f"harness missing minimum owner-local suites: {missing_suites}")
 
-    refs = manifest.get("references", {}) if isinstance(manifest.get("references"), Mapping) else {}
+    refs = layers.get("references", {})
     mirror_policy = _normalize_shared_value(contract, manifest_version, "mirror_policy", refs.get("mirror_policy"))
     allowed_mirror = set(required_layers.get("references", {}).get("allowed_mirror_policy", ()))
     if refs and mirror_policy not in allowed_mirror:
@@ -146,9 +172,7 @@ def validate_agent_manifest(
             ),
         }
         for layer_name, fields in reference_fields.items():
-            layer = manifest.get(layer_name, {})
-            if not isinstance(layer, Mapping):
-                continue
+            layer = layers.get(layer_name, {})
             for field in fields:
                 value = layer.get(field)
                 if isinstance(value, str) and value.strip():
