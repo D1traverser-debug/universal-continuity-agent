@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 54,
+  "manifest_version": 55,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,10 +10,10 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-11T19:55:00+08:00",
+  "updated_at": "2026-10-11T20:17:00+08:00",
   "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
-  "next_action": "Preserve the current control-plane invariants and stop rule. Treat ACCOUNT_ROUTER_V2 installation as USER_CONFIRMED and do not ask the user to reinstall it unless pre-repository activation/routing/fail-closed semantics materially change; independent product readback remains unavailable and must not be fabricated. Let the enabled architecture/self-audit/learning scouts generate new signals and align first-run/repeated-run execution evidence when it arrives. Keep A-share/Novel/Video acknowledged router/assurance drift, real new-owner fresh-chat E2E, operator-dependence independent heldout/live grading, prior owner live-quality/outcome gates, generic pre-write enforcement, and >=90% heldout incident coverage OPEN without fabricated evidence.",
-  "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
+  "next_action": "CURRENT_CHAT_CONTEXT_CAPACITY_RISK_IS_RED_AFTER_EXPLICIT_PRODUCT_LENGTH_LIMIT_WARNING. Do not start another substantive maintenance/research phase in this chat. Continue in a genuinely fresh chat via explicit SYSTEM_INFRA continuation, read CHECKPOINT_CONTEXT_CAPACITY_V55.md, verify CI run 38138790729 for the new turn-entry capacity preflight, then either close the regression-green change into the normal Handoff or repair only the failing scope. Preserve the existing lease until legal new-chat takeover; do not fabricate exact remaining chat tokens or treat background monitors as per-turn capacity guards.",
+  "checkpoint_ref": "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
   "execution_readiness_contract_version": "1.0",
@@ -82,8 +82,10 @@
   "latest_agent_architecture_live_drift_audit_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
   "independent_meta_semantic_review": "OPEN_OPERATOR_DEPENDENCE_LIVE_HELDOUT_GRADER_REQUIRED",
   "external_account_instruction_delta": "ACCOUNT_ROUTER_V2_USER_CONFIRMED_INSTALLED__INDEPENDENT_PRODUCT_READBACK_UNAVAILABLE",
+  "context_capacity_preflight_status": "POLICY_AND_REGRESSION_TESTS_DURABLY_WRITTEN__CI_38138790729_PENDING_AT_SAFE_CHECKPOINT__CURRENT_CHAT_RED_HANDOFF_REQUIRED",
+  "context_capacity_preflight_ci_run": 38138790729,
   "cross_subsystem_propagation": "ALL_CURRENT_BUSINESS_OWNER_HEADS_REOBSERVED__MEMBERSHIP_OBSERVATION_BOUNDARY_SHARED__VIDEO_METADATA_ONLY_COMPATIBILITY_REPAIR__NO_BUSINESS_STATE_OR_LEASE_MUTATION",
-  "complexity_efficiency_effect": "NO_NEW_ROOT_POLICY_OR_AGENT__DUPLICATE_OBSERVATION_FIELDS_REMOVED_FROM_MEMBERSHIP_AUTHORITY__EXISTING_MONITOR_REUSED_AT_HOURLY_CADENCE__NO_BUSINESS_HOT_PATH_PRELOAD",
+  "complexity_efficiency_effect": "NO_NEW_ROOT_POLICY_OR_AGENT__DUPLICATE_OBSERVATION_FIELDS_REMOVED_FROM_MEMBERSHIP_AUTHORITY__EXISTING_MONITOR_REUSED_AT_HOURLY_CADENCE__TURN_CAPACITY_GUARD_ADDED_TO_EXISTING_CONTEXT_RECOVERY_POLICY__NO_NEW_BACKGROUND_MONITOR__NO_BUSINESS_HOT_PATH_PRELOAD",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "resume_epoch": 6,
@@ -103,7 +105,7 @@
     "meta maintenance", "meta governance harness 1.2", "reuse before build", "fact decision frontier", "architecture payoff", "deletion test",
     "mutation outcome unknown", "idempotency", "context footprint", "tracer bullet", "verify before clarify", "agent-ready brief",
     "expected truth seam", "negative decision memory", "Top10 Skill library", "find-skills", "grill-me", "agent-browser", "tdd", "triage", "skill distillation",
-    "remote observation cache", "membership authority", "unsupported architecture contract version", "hourly architecture watch"
+    "remote observation cache", "membership authority", "unsupported architecture contract version", "hourly architecture watch", "turn-entry capacity preflight", "conversation length risk", "fresh handoff"
   ],
   "artifact_refs": [
     "ENTRYPOINT.md", "CURRENT_PROTOCOL.json", "STARTUP_HOOK.md", "AGENT_MANIFEST.json", "AGENT_ARCHITECTURE_CONTRACT.json",
@@ -121,7 +123,7 @@
     "tests/test_startup_hook.py", "tests/test_system_audit.py", "tests/test_meta_maintenance.py", "tests/test_mutation_outcome.py",
     "tests/test_context_footprint.py", "tests/test_decision_memory.py", "tests/test_maintenance_decision_eval.py", "tests/test_owner_registry_authority.py",
     "tests/test_artifact_context_governance.py", "tests/test_methodology_conformance.py", "tests/test_progress_observability.py", "tests/test_universal_continuity.py",
-    "tests/test_top10_skill_distillation_library.py", "skills/universal-continuity/SKILL.md",
+    "tests/test_top10_skill_distillation_library.py", "tests/test_context_recovery_policy.py", "skills/universal-continuity/SKILL.md",
     "research/skill-library/2026-global-ai-skills-top10/README.md", "research/skill-library/2026-global-ai-skills-top10/SCHEMA.md",
     "research/skill-library/2026-global-ai-skills-top10/INDEX.json", "research/skill-library/2026-global-ai-skills-top10/CROSS_SKILL_PRIMITIVE_MATRIX.md",
     "research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md", "audits/TOP10_SKILL_LIBRARY_CLOSURE_2026-10-11.md",
@@ -131,6 +133,7 @@
     "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json", "audits/META_MAINTENANCE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
     "audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json", "audits/CONTROL_SIGNAL_EXAMPLE_2026-10-11.json",
     "audits/META_MAINTENANCE_AGENT_CONTROL_PLANE_2026-10-11.json", "audits/META_MAINTENANCE_SYSTEM_SELF_AUDIT_2026-10-11.json",
-    "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md", "audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md"
+    "audits/FULL_CONTROL_PLANE_EXECUTION_AND_LEARNING_AUDIT_2026-10-11.md", "audits/UNIVERSAL_OPERATOR_DEPENDENCE_RELIABILITY_INCIDENT_2026-10-10.md",
+    "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md"
   ]
 }
