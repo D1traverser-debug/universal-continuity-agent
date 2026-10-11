@@ -7,7 +7,7 @@
 - contract: `CONTINUITY_V3_7`
 - current writer: `lease-4812a7a8-83cf-414d-87e9-198a60a9cfeb`
 - resume_epoch: `6`
-- manifest_version: `53`
+- manifest_version: `54`
 - system maintenance policy: `1.7`
 - meta-maintenance harness: `1.2`
 - Agent architecture contract: `1.1`
@@ -16,7 +16,7 @@
 
 `V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
-本聊天已完成真实新聊天 takeover（`resume_epoch 5 -> 6`）；当前 lease 仍是本聊天。主 `current_stage` 与权威 `TASK_MANIFEST.json` 保持一致。本轮 `PROACTIVE_EVOLUTION_OPERATIONALIZATION_REGRESSION_VERIFIED` 是该 ACTIVE 主阶段内已经闭环的 maintenance substage，不单独制造 manifest 版本或第二套阶段权威。
+本聊天已完成真实新聊天 takeover（`resume_epoch 5 -> 6`）；当前 lease 仍是本聊天。主 `current_stage` 与权威 `TASK_MANIFEST.json` 保持一致。本轮 `PROACTIVE_EVOLUTION_OPERATIONALIZATION_REGRESSION_VERIFIED` 与 `ACCOUNT_ROUTER_V2_USER_CONFIRMED_INSTALLED` 都是该 ACTIVE 主阶段内已经闭环的 maintenance substage，不单独制造第二套阶段权威。
 
 ## 本轮主动进化 / Custom Instructions 修复
 
@@ -29,10 +29,11 @@
 3. **Self Audit 已恢复并去旧版本绑定**：`Continuity Self Audit` 已重新启用；旧 prompt 的 v3.6 硬编码已删除，现要求先读 current protocol，并检查 thin bootstrap、safe checkpoint、child inheritance、monitor enablement、policy-only mechanism、stale hard-coded versions、contradictory status 与 user-prompt-only learning。
 4. **Learning Scout 已上线**：新增并启用 `Continuity Learning Scout`，周期扫描 OpenAI Skills/Agents 文档、`skills.sh` All Time/Trending/Hot、GitHub Agent Skills、MCP/tool catalogs、ChatGPT Plugin Directory 与小众 novelty lane。无 material change 不通知；候选不自动晋升 production authority。
 5. **Custom Instructions 已去臃肿**：`STARTUP_HOOK.md` 已改为 `ACCOUNT_ROUTER_V2`，并由测试限制为 `<=4096B`。账户级文本只保留 pre-repository trigger、最小 bootstrap、旧对话覆盖、继承前进度/进度提交用户可见边界、fail-closed 与主动维护触发；owner/capability/methodology/learning/migration 的细节留在 current repository authority。
-6. **持续学习从 policy-only 变成 operational contract**：`CONTINUOUS_LEARNING_POLICY.md` 新增 `Operational scout loop`，将 disabled scout、stale hard-coded version、仅用户提供候选后才学习定义为维护缺陷；规定来源覆盖、候选状态、deep-dive evidence floor、最多五个 unresolved deep dives、quiet-no-change 与 `evolution@1.0` child propagation。
-7. **新增回归**：`tests/test_hot_path_loading.py` 防止账户 hook 再次膨胀/复制详细 capability routing；`tests/test_continuous_learning_policy.py` 验证 operational scout、deep-dive 标准、bounded queue 与 child inheritance。
-8. **第一轮 proactive scout 已落证据**：`research/proactive-learning/2026-10-11-initial-scout.md`。Anthropic `skill-creator` 被分类为 `UNIVERSAL_CANDIDATE`，已追到 pinned Skill + runtime scripts，并抽取 Skill-vs-baseline、trigger precision/recall、repeated runs、train/test holdout、防过拟合与 cost/quality separation。`self-improving-agent` 直接架构采用被拒绝（OpenClaw-specific + markdown-memory authority 弱于现有模型）；`last30days` 与 `Understand Anything` 暂列 owner-local/monitor cold-path 候选。
-9. **回读再发现 rebuildable cache 漂移并修复**：`HARNESS_STATUS.json` 原本仍写 `startup_hook_budget_bytes=8192`，且把最新 account hook 当作已确认；现已对齐为 `4096`，保留旧 hook 的历史产品证据，同时明确 `ACCOUNT_ROUTER_V2` 当前账户安装/实时文本未证明。三个产品自动机制的 `enabled` 与 `post-update first-run` 证据也已拆开，避免 enabled=执行过 的假阳性。
+6. **ACCOUNT_ROUTER_V2 安装 gate 已由用户确认关闭**：2026-10-11 用户在当前产品会话明确回复“已改”，确认已将账户 Custom Instructions 替换为此前提供的 V2 薄启动指令。该证据等级是 `USER_CONFIRMED_PRODUCT_INSTALLATION`：足以证明用户已执行安装动作并关闭“需要用户修改”的 blocker；当前工具仍不能独立读取账户设置，因此不得升级为 `INDEPENDENT_PRODUCT_READBACK_VERIFIED`，也不得要求用户重复粘贴全文作为常规证明。
+7. **持续学习从 policy-only 变成 operational contract**：`CONTINUOUS_LEARNING_POLICY.md` 新增 `Operational scout loop`，将 disabled scout、stale hard-coded version、仅用户提供候选后才学习定义为维护缺陷；规定来源覆盖、候选状态、deep-dive evidence floor、最多五个 unresolved deep dives、quiet-no-change 与 `evolution@1.0` child propagation。
+8. **新增回归**：`tests/test_hot_path_loading.py` 防止账户 hook 再次膨胀/复制详细 capability routing；`tests/test_continuous_learning_policy.py` 验证 operational scout、deep-dive 标准、bounded queue 与 child inheritance。
+9. **第一轮 proactive scout 已落证据**：`research/proactive-learning/2026-10-11-initial-scout.md`。Anthropic `skill-creator` 被分类为 `UNIVERSAL_CANDIDATE`，已追到 pinned Skill + runtime scripts，并抽取 Skill-vs-baseline、trigger precision/recall、repeated runs、train/test holdout、防过拟合与 cost/quality separation。`self-improving-agent` 直接架构采用被拒绝（OpenClaw-specific + markdown-memory authority 弱于现有模型）；`last30days` 与 `Understand Anything` 暂列 owner-local/monitor cold-path 候选。
+10. **回读再发现 rebuildable cache 漂移并修复**：`HARNESS_STATUS.json` 原本仍写 `startup_hook_budget_bytes=8192`，且把最新 account hook 当作已确认；已对齐为 `4096`。在本次用户确认之前，`ACCOUNT_ROUTER_V2` 安装状态正确保持未证明；现在 authoritative task manifest 已更新为 `ACCOUNT_ROUTER_V2_USER_CONFIRMED_INSTALLED__INDEPENDENT_PRODUCT_READBACK_UNAVAILABLE`。若 rebuildable cache 尚未反映这次最新确认，它不得覆盖 manifest/Handoff。
 
 ## 本轮验证闭环
 
@@ -44,6 +45,7 @@
 - `HARNESS_STATUS` cache 对齐 commit `04fb412df24b1a0d36abc51a773b26da59b12e84` 的 CI `38135374647`：control-plane audit PASS、Agent architecture harness PASS、完整 pytest PASS。
 - 产品 automation closure 回读：`Agent Architecture Watch`、`Continuity Self Audit`、`Continuity Learning Scout` 三者当前均 `is_enabled=true`。
 - Assurance boundary：enabled/CI-green 证明 wiring 与当前结构回归，不证明新版 automation 已完成首次自然运行或长期质量收益。Learning Scout 尚无首次 run；更新后的 Self Audit/Architecture prompt 也需后续自然运行形成 execution evidence。
+- ACCOUNT_ROUTER_V2 当前产品安装：`USER_CONFIRMED_PRODUCT_INSTALLATION`；独立账户设置 readback 仍不可用，不得伪造更高 assurance。
 
 ## 当前系统大纲能力边界
 
@@ -76,7 +78,7 @@ Universal 当前共享控制面覆盖：
 ## 当前已知 OPEN gates
 
 1. 三个新版 recurring mechanisms 的 **post-update first-run / repeated-run execution evidence**；
-2. account-level Custom Instructions **实际安装文本** 的 live readback/propagation：仓库维护 canonical `ACCOUNT_ROUTER_V2`，但当前可用工具不能把 repo 更新证明成账户设置已同步；
+2. ACCOUNT_ROUTER_V2 的**独立产品 readback**不可用：安装动作已由用户确认，不再是用户待办，也不得把 readback 不可用误报成“尚未安装”；
 3. real new-owner fresh-chat product E2E；
 4. operator-dependence independent heldout/live trajectory grader；
 5. A-share / Novel / Video acknowledged router/assurance drift；
@@ -86,7 +88,7 @@ Universal 当前共享控制面覆盖：
 
 ## Next action
 
-保持 stop rule，不继续为“主动”制造新层。后续由已启用的 architecture/self-audit/learning scouts 产生的新 signal 驱动维护；首次新版 automation run 到来时，把真实 execution evidence 与当前声明对齐。
+保持 stop rule，不继续为“主动”制造新层。**不要再要求用户修改或重复粘贴 ACCOUNT_ROUTER_V2**，除非未来 pre-repository activation/routing/fail-closed semantics 本身发生 material change。后续由已启用的 architecture/self-audit/learning scouts 产生的新 signal 驱动维护；首次新版 automation run 到来时，把真实 execution evidence 与当前声明对齐。
 
 `skill-creator` 的 trigger/baseline/holdout primitive 仅保留为 production candidate；只有与现有 harness 对比证明缺口与增益后才实现，避免“看到优秀工具就复制”。跨-owner 通过证据门的机制走既有 `evolution@1.0` inheritance；owner-local candidate 不全局化。
 
