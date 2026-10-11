@@ -1,10 +1,10 @@
 {
-  "schema_version": "1.0",
-  "architecture_contract_version": "1.0",
+  "schema_version": "1.1",
+  "architecture_contract_version": "1.1",
   "owner": "UNIVERSAL_CONTINUITY_HARNESS",
   "owner_kind": "SYSTEM_INFRA",
   "skill": {
-    "role": "ROUTER",
+    "role": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
     "entrypoint": "skills/universal-continuity/SKILL.md"
   },
   "runtime": {
