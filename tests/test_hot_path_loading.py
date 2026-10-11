@@ -18,17 +18,22 @@ def test_entrypoint_is_small_event_driven_kernel():
     assert "Read next:" not in text
 
 
-def test_startup_hook_is_routing_only_and_budgeted():
+def test_startup_hook_is_thin_routing_only_and_budgeted():
     path = ROOT / "STARTUP_HOOK.md"
     text = path.read_text(encoding="utf-8")
 
-    assert path.stat().st_size <= 8192
+    assert path.stat().st_size <= 4096
+    assert "Hook: ACCOUNT_ROUTER_V2" in text
     assert "启动时不要机械预读整个仓库" in text
     assert "`ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`" in text
     assert "Event-driven authority loading" in text
     assert "SYSTEM_BLUEPRINT.md" in text
     assert "cold-path" in text
     assert "只先读取" in text
+    assert "pre-repository activation/routing/fail-closed semantics" in text
+    assert "Bare/named routing details" in text
+    assert "裸 CONTINUE 必须从当前" not in text
+    assert "continuity/EXECUTION_CAPABILITIES.json" not in text
     assert "先读取并严格遵循该仓库当前 `ENTRYPOINT.md`、`SYSTEM_BLUEPRINT.md`、`CURRENT_PROTOCOL.json`、`STARTUP_HOOK.md`" not in text
 
 
