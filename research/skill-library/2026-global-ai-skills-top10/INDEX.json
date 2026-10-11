@@ -1,9 +1,12 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "library": "2026-global-ai-skills-top10",
-  "status": "DISTILLATION_COMPLETE_10_OF_10__PHASE_B_SELECTION_READY",
+  "status": "COMPLETE_10_OF_10__PHASE_B_SELECTION_COMPLETE",
   "selection_was_frozen_until_complete": true,
   "common_schema_ref": "research/skill-library/2026-global-ai-skills-top10/SCHEMA.md",
+  "cross_skill_matrix_ref": "research/skill-library/2026-global-ai-skills-top10/CROSS_SKILL_PRIMITIVE_MATRIX.md",
+  "selection_ref": "research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md",
+  "production_promotion_is_separate_engineering_change": true,
   "source_heads": {
     "vercel-labs/skills": "13e4063a1cf913f5606d57d42ab83a86f5001e04",
     "mattpocock/skills": "49dd158d1076134a641b33efb035946536778336",
@@ -17,7 +20,7 @@
       "source": "vercel-labs/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/01-find-skills.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "ADAPT_METHOD__CAPABILITY_ACQUISITION_AND_REUSE_BEFORE_BUILD",
       "evidence": ["SKILL", "RUNTIME_IMPLEMENTATION", "UNIT_TESTS", "CLI_ARCHITECTURE"]
     },
     {
@@ -26,7 +29,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/02-grill-me.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "ADAPT_BOUNDED_PRIMITIVES__FRONTIER_AND_FACT_DECISION_SPLIT",
       "evidence": ["THIN_WRAPPER", "DELEGATED_PRIMITIVE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
     },
     {
@@ -35,7 +38,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/03-grill-with-docs.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "EXTRACT_INLINE_CRYSTALLIZATION__REJECT_PROSE_ONLY_COMPOSITION_AS_ASSURANCE",
       "evidence": ["THIN_WRAPPER", "GRILLING_PRIMITIVE", "DOMAIN_MODELING_PRIMITIVE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
     },
     {
@@ -44,7 +47,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/04-improve-codebase-architecture.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "ADAPT_MAINTENANCE_HEURISTICS__PAYOFF_WEIGHTING_AND_DELETION_TEST",
       "evidence": ["SKILL", "SHARED_ARCHITECTURE_METHOD", "REPORT_CONTRACT", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
     },
     {
@@ -53,7 +56,7 @@
       "source": "vercel-labs/agent-browser",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/05-agent-browser.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "STRONGEST_ARCHITECTURE_REFERENCE__RUNTIME_VERSIONED_SKILL_CONTEXT_EVAL_ISOLATION_UNKNOWN_OUTCOME_FINAL_STATE_EVAL",
       "evidence": ["THIN_DISCOVERY_SKILL", "RUNTIME_SERVED_SKILL", "EXECUTABLE_RUNTIME", "TRUST_BOUNDARIES", "SESSION_RUNTIME", "EVAL_HARNESS", "LIVE_SMOKE_EVAL_DESIGN"]
     },
     {
@@ -62,7 +65,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/06-tdd.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "ADAPT_EVIDENCE_PRIMITIVES__SEAM_INDEPENDENT_ORACLE_TRACER_BULLET",
       "evidence": ["SKILL", "TEST_METHOD_REFERENCE", "MOCKING_REFERENCE", "ORIGINAL_DOCS", "KNOWN_FAILURES"]
     },
     {
@@ -71,7 +74,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/07-setup-matt-pocock-skills.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "ADAPT_OWNER_ONBOARDING__INSPECT_DEFAULT_ASK_ONLY_TRUE_CHOICES_EVIDENCE_GATED_COMPLEXITY",
       "evidence": ["SKILL", "REPO_LOCAL_CONFIG_TEMPLATES", "DOWNSTREAM_CONSUMER_CONVENTIONS"]
     },
     {
@@ -80,7 +83,7 @@
       "source": "anthropics/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/08-frontend-design.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "OWNER_LOCAL_QUALITY_METHOD__DO_NOT_GLOBALIZE_TO_UNIVERSAL_KERNEL",
       "evidence": ["SKILL", "MODEL_MIGRATION_CONTEXT"],
       "evidence_gap": "NO_DEDICATED_FRONTEND_DESIGN_EVAL_OBSERVED"
     },
@@ -90,7 +93,7 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/09-handoff.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "REFERENCE_ONLY__UNIVERSAL_CONTEXT_RECOVERY_ALREADY_STRONGER",
       "evidence": ["PRODUCTION_SKILL", "OPENAI_INVOCATION_POLICY", "COMPARATIVE_IN_PROGRESS_ACTIVE_HANDOFF_VARIANT"],
       "evidence_gap": "NO_DEDICATED_HANDOFF_EVAL_OBSERVED"
     },
@@ -100,9 +103,9 @@
       "source": "mattpocock/skills",
       "entry_ref": "research/skill-library/2026-global-ai-skills-top10/10-triage.md",
       "status": "COMPLETE_SOURCE_NORMALIZATION",
-      "selection_status": "PENDING_PHASE_B",
+      "selection_status": "STRONG_ADAPT__VERIFY_BEFORE_CLARIFY_AGENT_READY_BRIEF_NEGATIVE_MEMORY",
       "evidence": ["SKILL", "AGENT_BRIEF_CONTRACT", "NEGATIVE_KNOWLEDGE_BASE", "GITHUB_STATE_AUTOMATIONS"]
     }
   ],
-  "phase_b_rule": "Compare all ten normalized entries before adopting, rejecting, merging, installing, or modifying Universal/owner architecture. Prefer primitive-level selection over whole-skill copying when responsibilities overlap."
+  "selection_principle": "Prefer primitive-level adaptation into existing authorities over whole-skill copying. Do not promote popularity heuristics, prose-only delegation, chat-only durable state, prompt-only chronology, or same-actor self-review into higher assurance than their evidence supports."
 }
