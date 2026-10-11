@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from runtime.self_maintenance_trajectory import simulate_self_maintenance_reference
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -91,6 +93,105 @@ def test_plausible_system_defect_hypothesis_is_triaged_before_ordinary_discussio
     assert policy["meta_maintenance_outline"]["stages"][0] == "M0_INTAKE_AND_SIGNAL_CLASSIFICATION"
     assert policy["default_autonomy"]["classify_user_feedback_before_adoption"] is True
     assert policy["default_autonomy"]["wait_for_user_to_notice_related_internal_followups"] is False
+
+
+def test_reference_simulation_runs_confirmed_systemic_defect_through_full_parent_loop():
+    result = simulate_self_maintenance_reference(
+        triage_outcome="CONFIRMED_DEFECT",
+        material=True,
+        systemic=True,
+        solution_uncertain=True,
+        shared_method_change=True,
+        validation_passed=True,
+        policy=load_json("SYSTEM_MAINTENANCE_POLICY.json"),
+        adapter=load_json("OWNER_ADAPTER_CONTRACT.json"),
+    )
+
+    assert result.status == "PASS"
+    assert result.assurance_ceiling == "DETERMINISTIC_REFERENCE_SIMULATION_ONLY"
+    expected = [
+        "DEFECT_TRIAGE",
+        "READ_CURRENT_AUTHORITY",
+        "PARENT_SYSTEM_REFRAME",
+        "DIAGNOSE_ROOT_CAUSE",
+        "LEARNING_SCOUT",
+        "COMPARE_AND_FALSIFY_CANDIDATES",
+        "PATCH_MINIMUM_AUTHORITY_SURFACE",
+        "VALIDATION_PASS",
+        "SECOND_ORDER_REVIEW",
+        "PROPAGATE_SHARED_METHOD_INVARIANTS_ONLY",
+        "CLEAN_SUPERSEDED_MECHANISMS",
+        "DISTILL_DURABLE_LEARNING",
+        "REREAD_AUTHORITY",
+    ]
+    positions = [result.events.index(event) for event in expected]
+    assert positions == sorted(positions)
+    assert result.business_truth_propagated is False
+
+
+def test_reference_simulation_does_not_turn_no_defect_or_investigation_into_mutation():
+    policy = load_json("SYSTEM_MAINTENANCE_POLICY.json")
+    adapter = load_json("OWNER_ADAPTER_CONTRACT.json")
+
+    no_defect = simulate_self_maintenance_reference(
+        triage_outcome="NO_DEFECT",
+        material=True,
+        systemic=True,
+        solution_uncertain=True,
+        shared_method_change=True,
+        validation_passed=True,
+        policy=policy,
+        adapter=adapter,
+    )
+    investigate = simulate_self_maintenance_reference(
+        triage_outcome="INVESTIGATE",
+        material=True,
+        systemic=True,
+        solution_uncertain=True,
+        shared_method_change=True,
+        validation_passed=True,
+        policy=policy,
+        adapter=adapter,
+    )
+
+    assert no_defect.events == ("DEFECT_TRIAGE", "EXPLAIN_AND_STOP")
+    assert "PATCH_MINIMUM_AUTHORITY_SURFACE" not in investigate.events
+    assert investigate.events[-1] == "STOP_PENDING_EVIDENCE"
+
+
+def test_reference_simulation_keeps_local_nonmaterial_defect_off_full_loop():
+    result = simulate_self_maintenance_reference(
+        triage_outcome="CONFIRMED_DEFECT",
+        material=False,
+        systemic=False,
+        solution_uncertain=False,
+        shared_method_change=False,
+        validation_passed=True,
+        policy=load_json("SYSTEM_MAINTENANCE_POLICY.json"),
+        adapter=load_json("OWNER_ADAPTER_CONTRACT.json"),
+    )
+
+    assert result.events == ("DEFECT_TRIAGE", "LOCAL_REPAIR_ONLY")
+    assert "LEARNING_SCOUT" not in result.events
+    assert "SECOND_ORDER_REVIEW" not in result.events
+
+
+def test_reference_simulation_validation_failure_does_not_fake_closure_or_propagation():
+    result = simulate_self_maintenance_reference(
+        triage_outcome="CONFIRMED_DEFECT",
+        material=True,
+        systemic=True,
+        solution_uncertain=True,
+        shared_method_change=True,
+        validation_passed=False,
+        policy=load_json("SYSTEM_MAINTENANCE_POLICY.json"),
+        adapter=load_json("OWNER_ADAPTER_CONTRACT.json"),
+    )
+
+    assert result.status == "PASS"
+    assert result.events[-2:] == ("VALIDATION_FAIL", "KEEP_ACTIVE_WITH_BLOCKER")
+    assert "PROPAGATE_SHARED_METHOD_INVARIANTS_ONLY" not in result.events
+    assert "DISTILL_DURABLE_LEARNING" not in result.events
 
 
 def test_learning_policy_is_an_input_to_maintenance_not_a_parallel_root_system():
