@@ -1,15 +1,14 @@
 {
   "schema_version": "1.1",
-  "run_id": "meta-maintenance-agent-control-plane-v1-1-live-drift-2026-10-11",
+  "run_id": "meta-maintenance-agent-control-plane-v1-1-live-drift-2026-10-11-final",
   "scope": "FULL_CONTROL_PLANE",
   "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
-  "target_manifest_version": 46,
-  "supersedes_record_blob_sha": "a1eaab641d163c5dee2a9c998867505d46266e5b",
+  "target_manifest_version": 47,
   "user_signal": {
     "classifications": ["GOAL_OR_CONSTRAINT", "COUNTEREXAMPLE_OR_FAILURE_REPORT", "PROPOSED_MECHANISM"],
     "goal_or_constraint": "GitHub migration must yield real Agent products and a control plane that proactively detects architecture drift instead of waiting for the user to enumerate missing dimensions.",
     "proposed_mechanism": "Use thin Skill/router plus executable Runtime, authoritative Workflow, owner-local Harness, progressive References, durable Continuity, and a Universal Signal Plane/Architecture Watch rather than a monolithic prompt or another role-only supervisory Agent.",
-    "counterexample": "After the initial rollout every BUSINESS owner HEAD moved, the observation cache became stale, Financial still had a roughly 20KB Skill before slimming, A-share and Video independently invented local architecture-contract 1.1 vocabulary, and the enabled watch had notification delivery disabled."
+    "counterexample": "After the initial architecture rollout all four BUSINESS owner HEADs advanced, the observation cache became stale, Financial still had a roughly 20KB Skill before slimming, A-share and Video independently introduced local architecture-contract 1.1 vocabulary, and the enabled watch had product notification delivery disabled."
   },
   "authority_inspection": {
     "refs": [
@@ -36,11 +35,11 @@
   "failure_model": {
     "root_cause_layers": ["REPOSITORY_POLICY", "RUNTIME_OR_SCHEMA", "TEST_OR_EVAL", "EVIDENCE_OR_PROPAGATION"],
     "failure_classes": [
-      "shared architecture vocabulary was too narrow, causing independent owner-local contract forks",
-      "remote owner observation freshness can drift even while local Universal CI remains green",
-      "Skill/router budget regressions can recreate prompt-centric systems after Agent runtimes already exist",
+      "shared Agent architecture vocabulary was too narrow, causing independent owner-local contract forks",
+      "remote owner observation freshness can drift while local Universal CI remains green",
+      "Skill/router bloat can recreate prompt-centric systems after executable Agent runtimes already exist",
       "watch enabled does not imply user notification delivery enabled",
-      "takeover changes manifest version and can stale the current meta-maintenance closure receipt if checkpoint surfaces are not rebound atomically"
+      "takeover can stale a manifest-bound meta-maintenance receipt unless closure surfaces are rebound consistently"
     ],
     "system_impact_map": [
       "Universal Agent Architecture Contract and validator",
@@ -53,12 +52,12 @@
     "falsification_checks": [
       "Accept explicitly supported v1.0 owner manifests under Universal 1.1 while rejecting an unknown future manifest version.",
       "Normalize only centrally enumerated A-share/Video 1.1 vocabulary and reject an unknown shared alias.",
-      "Normalize only approved v1.1 alternate field shapes and retain required-layer/reference checks.",
+      "Apply alternate v1.1 field-shape normalization only when AGENT_ARCHITECTURE_CONTRACT explicitly declares it; remove the declaration and require FAIL.",
       "Re-observe every current BUSINESS owner HEAD instead of reusing rollout-time observations.",
       "Require oversized Skills to remain explicit PASS_WITH_DRIFT while missing runtime/workflow/harness remains FAIL.",
       "Emit durable non-authoritative signals without taking owner leases and verify they do not mutate business truth.",
       "Treat disabled product notification delivery as unproven rather than inferring it from an enabled condition-watch task.",
-      "Keep takeover/meta-run/manifest/cache version binding fail-closed instead of weakening the regression."
+      "Keep takeover/meta-run/manifest version binding fail-closed instead of weakening the regression."
     ]
   },
   "learning_scout": {
@@ -77,13 +76,13 @@
         "rationale": "Supports separating Harness/observation from Skill and keeping stronger execution assurance evidence-bound."
       },
       {
-        "ref": "Anthropic Agent Skills progressive-disclosure design previously reviewed in this task",
+        "ref": "Anthropic Agent Skills progressive-disclosure design previously reviewed in this maintenance task",
         "observation": "Compact entrypoints should load detailed methods only when relevant.",
         "disposition": "ADOPT",
-        "rationale": "Supports the 8192-byte Skill/bootstrap target and progressive references rather than duplicated manuals."
+        "rationale": "Supports the thin Skill/thin bootstrap architecture and progressive references rather than duplicated manuals."
       },
       {
-        "ref": "DSPy GEPA/MIPROv2 previously reviewed in this task",
+        "ref": "DSPy GEPA/MIPROv2 previously reviewed in this maintenance task",
         "observation": "Automated optimization requires trustworthy evaluators and held-out data; it is not architecture authority by itself.",
         "disposition": "NARROW",
         "rationale": "Do not add an optimizer or new supervisory persona where the current failure is deterministic architecture governance."
@@ -97,42 +96,42 @@
       "rationale": "Two independent owners expressed the same missing distinctions, so blindly reverting them would preserve an underspecified central contract."
     },
     {
-      "id": "let-each-owner-define-its-own-architecture-contract",
+      "id": "let-each-owner-define-its-own-shared-architecture-contract",
       "decision": "REJECTED",
       "rationale": "Shared control-plane vocabulary would fork across repositories and Universal could no longer evaluate owner architecture consistently."
     },
     {
-      "id": "central-compatible-v1-1-plus-thin-router-budget-and-signal-plane",
+      "id": "central-backward-compatible-v1-1-plus-thin-router-budget-and-signal-plane",
       "decision": "ACCEPTED",
-      "rationale": "Central 1.1 explicitly supports 1.0, normalizes only approved owner vocabulary/field shapes, fails closed on unknown future forms, and keeps owner-specific business detail local."
+      "rationale": "Universal 1.1 explicitly supports 1.0, normalizes only approved vocabulary and field shapes, fails closed on unknown forms, and keeps owner-specific business semantics local."
     }
   ],
   "instruction_surface": {
     "decision": "CHANGE",
-    "reason": "Internal architecture contract/validator and the Architecture Watch prompt changed. External ChatGPT account instructions were not modified or claimed modified because the demonstrated gap was repository control-plane semantics, not account routing."
+    "reason": "Repository architecture contract/validator and the Architecture Watch prompt changed. External ChatGPT account instructions were not modified or claimed modified because the demonstrated gap was repository control-plane semantics, not account routing."
   },
   "propagation": {
     "classification": "KERNEL_AGENT_ARCHITECTURE_COMPATIBILITY_AND_REMOTE_OBSERVATION_HARDENING",
     "scope": "ALL_BUSINESS_OWNERS",
     "impacted_business_owners": ["A_SHARE_MARKET_AGENT", "FINANCIAL_WRITING_AGENT_RUNTIME", "NOVEL_WRITING_AGENT", "VIDEO_GROWTH_AGENT"],
-    "mechanism": "Universal owns the shared architecture contract/normalization/remote observation. Owner CI remains domain-local. Drift is delivered through non-authoritative control signals instead of Universal taking owner business leases.",
+    "mechanism": "Universal owns shared architecture vocabulary, normalization and remote observations. Owner CI remains domain-local. Drift is delivered through non-authoritative control signals instead of Universal taking owner business leases.",
     "stale_override_scan": "PASS",
     "override_scan_evidence": [
-      "Financial current head a76c83c917ae6c81ec398ef99749125131e6be2c: Skill 5540 bytes, owner CI 38108186593 SUCCESS, architecture PASS.",
-      "A-share current head 666c77a3ae4b5d266865a2829b63e2497531c69c: Skill 8272 bytes, owner CI 38108315217 SUCCESS, architecture PASS_WITH_DRIFT, signal #2.",
-      "Novel current head df9be9a25b1b9fa7ca6a40a3aaedfcdcc6ece94a: Skill 19540 bytes, owner CI 38108317227 SUCCESS, architecture PASS_WITH_DRIFT, signal #3.",
-      "Video current head ee029fee7ef32ccf9ce485b2261972e8d846df30: Skill 9310 bytes, owner CI 38088627844 SUCCESS, architecture PASS_WITH_DRIFT, signal #4."
+      "Financial head a76c83c917ae6c81ec398ef99749125131e6be2c: Skill 5540 bytes, CI 38108186593 SUCCESS, architecture PASS.",
+      "A-share head 666c77a3ae4b5d266865a2829b63e2497531c69c: Skill 8272 bytes, CI 38108315217 SUCCESS, PASS_WITH_DRIFT, signal #2.",
+      "Novel head df9be9a25b1b9fa7ca6a40a3aaedfcdcc6ece94a: Skill 19540 bytes, CI 38108317227 SUCCESS, PASS_WITH_DRIFT, signal #3.",
+      "Video head ee029fee7ef32ccf9ce485b2261972e8d846df30: Skill 9310 bytes, CI 38088627844 SUCCESS, PASS_WITH_DRIFT, signal #4."
     ]
   },
   "complexity_efficiency": {
     "new_authority_surfaces": 0,
     "mandatory_startup_context_delta": "NO_INCREASE; thin bootstrap remains event-driven and under its existing hard budget.",
-    "tool_or_remote_read_delta": "Cold-path remote watch checks owner HEAD/manifest/Skill/CI once daily; ordinary business turns are unchanged.",
+    "tool_or_remote_read_delta": "Cold-path remote watch checks owner HEAD/manifest/Skill/CI daily; ordinary business turns are unchanged.",
     "steady_state_latency_effect": "NONE_ON_BUSINESS_HOT_PATH",
-    "duplicate_rule_effect": "REDUCED: Financial Skill moved detailed rules back to references/policy; architecture aliases are centralized rather than copied as separate owner contracts.",
+    "duplicate_rule_effect": "REDUCED: Financial detailed rules remain in references/policy; architecture compatibility is centralized rather than forked across owners.",
     "cross_owner_touch_count": 4,
     "migration_compatibility_effect": "Agent Architecture Contract moves from 1.0 to backward-compatible 1.1; owner manifest 1.0 remains supported and no business-state migration is required.",
-    "test_observability_effect": "Adds compatibility/unknown-version/alias/field-shape regressions and records first real post-rollout remote drift signal trajectory.",
+    "test_observability_effect": "Adds compatibility, unknown-version, alias, field-shape and missing-declaration regressions and records a real post-rollout remote drift signal trajectory.",
     "decision": "ACCEPTABLE"
   },
   "authority_surface_admission": "PASS",
@@ -164,48 +163,51 @@
       "Automation Agent Architecture Watch prompt"
     ],
     "superseded_or_demoted_surfaces": [
-      "Exact-equality architecture version matching is superseded by an explicit centrally enumerated compatibility set.",
-      "Owner-local shared enum invention is demoted to owner vocabulary that is admissible only through Universal aliases.",
+      "Exact-equality architecture-version matching is superseded by an explicit centrally enumerated compatibility set.",
+      "Owner-local shared enum invention is demoted to vocabulary admissible only through Universal aliases.",
+      "Runtime-hardcoded v1.1 field-shape exceptions are superseded by contract-declared compatibility.",
       "Rollout-time OWNER_ARCHITECTURE_OBSERVATIONS is superseded by the current remote sweep.",
-      "The claim that an enabled condition watch guarantees user notification delivery is rejected; notifications_enabled=false is preserved as an explicit boundary."
+      "The claim that an enabled condition watch guarantees user notification delivery is rejected; disabled notification delivery remains explicit."
     ]
   },
   "validation": {
     "regression_or_eval_refs": [
-      "tests/test_agent_architecture.py",
-      "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
+      "Universal CI 38109071587 / job 114380651443: HIGH risk -> FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION; 24 fault scenarios PASS; architecture harness PASS; full pytest 197 passed.",
+      "Universal CI 38109089931: explicit fail-closed field-shape declaration regression SUCCESS.",
+      "Universal atomic checkpoint CI 38109034408: system audit, architecture harness and full pytest SUCCESS after meta-run/manifest/cache rebinding.",
       "Financial owner CI 38108186593 SUCCESS",
       "A-share owner CI 38108315217 SUCCESS",
       "Novel owner CI 38108317227 SUCCESS",
       "Video owner CI 38088627844 SUCCESS",
-      "Universal CI 38108771603: local full-control-plane audit and 24 synthetic faults PASS; pytest correctly rejected stale meta-run/manifest binding before this atomic checkpoint",
+      "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
       "control signals #2, #3, #4"
     ],
     "second_order_challenge": "PASS",
     "second_order_findings": [
       "Forcing owner-local 1.1 manifests back to 1.0 would hide a real underspecification in Universal; the shared need was distilled centrally instead.",
       "Accepting arbitrary 1.1 vocabulary would turn compatibility into schema bypass; only explicit aliases and approved field shapes are normalized.",
-      "A watcher that cannot deliver product notifications still has value as a durable GitHub signal emitter, but that narrower guarantee must be stated explicitly.",
-      "Universal should detect/route owner drift, not become a cross-repository business writer; only Financial was safely slimmed during this run, while A-share/Novel/Video receive owner-scoped signals.",
-      "The first post-rollout observation set became stale immediately after owners evolved, proving remote freshness is an ongoing control-plane responsibility rather than a one-time rollout receipt.",
-      "Takeover caused meta-run/manifest version staleness; the fix preserves the strict binding and checkpoints the related surfaces atomically rather than weakening the test."
+      "Hardcoding field-shape exceptions in runtime would recreate policy/runtime drift, so normalization now consults the contract declaration and a missing declaration is a tested FAIL.",
+      "A watcher that cannot deliver product notifications still has value as a durable GitHub signal emitter, but that narrower guarantee is stated explicitly.",
+      "Universal should detect and route owner drift, not become a cross-repository business writer; unresolved Skill bloat remains owner-scoped signals #2-#4.",
+      "The first post-rollout observation set became stale after owners evolved, proving remote freshness is an ongoing control-plane responsibility rather than a one-time rollout receipt.",
+      "Takeover caused meta-run/manifest version staleness; the strict binding was preserved and the related surfaces were atomically rebound instead of weakening the test."
     ],
     "cross_surface_or_fault_audit": "PASS"
   },
   "closure": {
-    "assurance_ceiling": "WIRED",
+    "assurance_ceiling": "REGRESSION_VERIFIED",
     "independent_semantic_assurance": "OPEN",
     "open_gates": [
-      "Final Universal Agent Architecture Contract 1.1 regression/full-control-plane CI is still pending at this intermediate manifest.",
-      "A-share, Novel and Video Skill router size signals #2-#4 remain open until their owner engineering contexts safely slim and revalidate them.",
-      "Architecture Watch notification delivery is disabled/unproven; durable GitHub signal emission is the proven transport.",
+      "A-share, Novel and Video Skill-router signals #2-#4 remain open until their owner engineering contexts safely slim and revalidate them.",
+      "Architecture Watch user-notification delivery is disabled/unproven; durable GitHub signal emission is the proven transport.",
+      "Automatic owner repair and unknown future failure-class completeness are not proven.",
       "Universal operator-dependence still requires independent held-out/live maintenance trajectory grading and a distinct verifier.",
       "A truly fresh product chat with a newly admitted real BUSINESS owner remains unproven.",
       "Owner real actions still require methodology receipt 1.3 exact-action independent verification where applicable.",
-      "Financial live prose-quality/Personalized Writing DNA outcome evidence and Video strict isolated review remain open.",
+      "Financial live prose-quality/Personalized Writing DNA outcome evidence, Novel provider-attested isolation, and Video strict isolated review remain open.",
       "Arbitrary ChatGPT-to-GitHub mutation still lacks universal pre-write WRITE_PATH_ENFORCED semantics."
     ],
-    "unknown_or_open_world_boundary": "This run proves only the covered architecture compatibility, remote re-observation, thin-router and signal-transport mechanisms at their stated evidence levels. It cannot prove global flawlessness, future notification delivery, automatic owner repair, or that every future Agent/model/tool/product failure class has been anticipated.",
+    "unknown_or_open_world_boundary": "This run proves the covered architecture compatibility, contract-driven normalization, remote re-observation, Financial thin-router and durable signal mechanisms at regression/remote-structural evidence levels. It cannot prove global flawlessness, notification delivery, automatic owner repair, or that every future Agent/model/tool/product failure class has been anticipated.",
     "global_flawlessness_claimed": false
   }
 }

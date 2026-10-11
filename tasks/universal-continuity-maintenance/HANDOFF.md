@@ -7,7 +7,7 @@
 - contract: `CONTINUITY_V3_7`
 - current writer: `lease-2c5946fb-3d78-4a23-9440-2df7d41817ec`
 - resume_epoch: `5`
-- manifest_version: `46`
+- manifest_version: `47`
 - system maintenance policy: `1.6`
 - meta-maintenance harness: `1.1`
 - Agent architecture contract: `1.1`
@@ -15,140 +15,93 @@
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_INTEGRATION_VALIDATION_PENDING__FINANCIAL_THIN_ROUTER_PASS__LIVE_DRIFT_SIGNAL_TRAJECTORY_PROVEN__A_SHARE_NOVEL_VIDEO_OWNER_DRIFT_SIGNALS_OPEN`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__FINANCIAL_THIN_ROUTER_PASS__LIVE_DRIFT_SIGNAL_TRAJECTORY_VERIFIED__A_SHARE_NOVEL_VIDEO_OWNER_DRIFT_SIGNALS_OPEN__MONITOR_NOTIFICATION_BOUNDARY_CALIBRATED__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
-本聊天由用户明确要求接管 SYSTEM_INFRA；takeover 已从 epoch 4 合法推进到 epoch 5，并回读确认当前 lease。不得再次在同聊天伪造 takeover。
+本聊天经用户明确要求已合法接管 SYSTEM_INFRA：epoch `4 -> 5`，当前 lease 为 `lease-2c5946fb-3d78-4a23-9440-2df7d41817ec`。同聊天继续维护时保持该 lease/epoch，不再伪造 takeover。
 
-## 本轮不是继续堆规则
+## 这轮完成的主控改造
 
-目标仍是 GitHub Agent 产品化，而不是把 Library/聊天里的大段文字搬成仓库 Markdown：
+GitHub Agent 产品化现在由共享架构约束：
 
 `Skill/router -> Runtime/executor -> Workflow/state -> Harness/eval -> References -> Continuity`
 
-Universal 是 control plane：Registry / Router / shared Architecture Harness / Monitor / Signal Plane。它不应成为跨仓万能业务 writer。
+Universal 是 Registry / Router / shared Architecture Harness / Monitor / Signal Plane，而不是跨仓万能业务 writer。
 
-## 独立复核上一位 writer 的结果
+### Agent Architecture Contract 1.1
 
-上一位 writer 建立的方向成立：
+Universal `AGENT_ARCHITECTURE_CONTRACT.json` 已从 1.0 升到 backward-compatible 1.1：
 
-- `AGENT_ARCHITECTURE_CONTRACT.json` / root `AGENT_MANIFEST.json`；
-- thin bootstrap budget；
-- centralized architecture harness；
-- State Plane vs Signal Plane；
-- daily remote Architecture Watch；
-- BUSINESS owner `agent_manifest_ref` admission。
-
-但本轮重新观察后发现 rollout 后所有四个 BUSINESS owner HEAD 都已前进，旧 `OWNER_ARCHITECTURE_OBSERVATIONS.json` 全部 stale。说明 remote freshness 不是一次性 rollout receipt。
-
-## Agent Architecture Contract 1.1
-
-A-share 与 Video 两个独立 owner 在 rollout 后都引入了 owner-local `architecture_contract_version=1.1` 与新 vocabulary。简单把它们打回 1.0 会掩盖 Universal v1.0 表达能力不足；允许各 owner 自己定义共享语义则会造成 contract fork。
-
-因此 Universal 中央 contract 升级到 backward-compatible `1.1`：
-
-- 显式支持 manifest `1.0` 与 `1.1`；
+- owner manifest 1.0 与 1.1 显式支持；
 - 未知未来版本 fail closed；
-- Skill 仍以 router 为核心，但 1.1 可表达 compact hard-boundary anchors；
-- A-share / Video 已出现的 owner vocabulary 只有在 Universal 显式 alias 下才合法；
-- A-share 的 `public_entrypoint + internal_components`、scalar `canonical_root` 只作为被中央 contract 明确列出的 1.1 field-shape compatibility；
-- 未知 alias/shape 不能借“兼容”绕过 schema；
-- Skill >8192 bytes 仍是 `PASS_WITH_DRIFT`，缺 runtime/workflow/harness 仍是 structural FAIL。
+- Skill 允许 `ROUTER` 或 compact hard-boundary router class；
+- A-share/Video 已出现的 1.1 owner vocabulary 只有被 Universal alias 显式接纳后才合法；
+- A-share 的 `public_entrypoint + internal_components` 与 scalar `canonical_root` 只作为 contract 显式声明的 field-shape compatibility；
+- runtime 不再硬编码 1.1 field-shape 特例，而是从 contract 的 `field_shapes_by_manifest_version` 决定是否允许；
+- 删除对应 contract declaration 时，负向 regression 必须 FAIL；
+- Skill >8192 bytes = `PASS_WITH_DRIFT`，缺 runtime/workflow/harness = structural FAIL。
 
-Tests 已覆盖 v1.0 compatibility、A-share/Video aliases、approved field shapes、unknown alias、future 9.9 version、oversize drift 与 missing-layer negatives。
+## Financial thin router
 
-## Financial thin router 已完成
+Financial 当前 head：`a76c83c917ae6c81ec398ef99749125131e6be2c`。
 
-Financial 当前 owner head：
+`skills/financial-writing-agent/SKILL.md` 已从约 20KB 缩到 `5540` bytes；详细研究/写作/标题/Word/QA 规则仍由 references/policy/runtime/guards 持有，Skill 只保留路由、执行边界与 compact hard-boundary anchors。
 
-`a76c83c917ae6c81ec398ef99749125131e6be2c`
-
-`skills/financial-writing-agent/SKILL.md` 已从约 20KB 压缩到 `5540` bytes，同时保留 compact hard-boundary anchors；详细研究/写作/标题/Word/QA 规则继续由 `references/*`、policy、runtime、guards 负责。
-
-最终 owner CI：`38108186593` SUCCESS。
-
-旧 static audit 首轮曾因要求 Skill 复制业务规则而红；没有把 20KB 手册塞回去，而是保留必要 hard-boundary anchors，使 thin router 与现有 contract regression 同时成立。
-
-Financial business task stage / article state / business lease 未被 Universal 改写。
+Financial owner CI `38108186593` SUCCESS。没有改 Financial business task stage、article state 或 business lease。
 
 ## 第一条真实 post-rollout Signal Plane trajectory
 
-本轮真实 remote sweep：
+所有四个 BUSINESS owner 在初始 rollout 后 HEAD 均发生变化，旧 observation cache 全部 stale。本轮重新观察后：
 
-- Financial `a76c83c...` — architecture `PASS`, Skill 5540, CI `38108186593` SUCCESS。
+- Financial `a76c83c...` — `PASS`, Skill 5540, CI `38108186593` SUCCESS。
 - A-share `666c77a...` — `PASS_WITH_DRIFT`, Skill 8272, CI `38108315217` SUCCESS。
-- Novel `df9be9a...` — `PASS_WITH_DRIFT`, Skill 19540, CI `38108317227` SUCCESS；CHAT_BRIDGED assurance 仍保持边界。
-- Video `ee029fee...` — `PASS_WITH_DRIFT`, Skill 9310, CI `38088627844` SUCCESS；strict isolated review 仍保持 OPEN。
+- Novel `df9be9a...` — `PASS_WITH_DRIFT`, Skill 19540, CI `38108317227` SUCCESS；CHAT_BRIDGED assurance 不变。
+- Video `ee029fee...` — `PASS_WITH_DRIFT`, Skill 9310, CI `38088627844` SUCCESS；strict isolated review 仍 OPEN。
 
 Durable audit：`audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json`。
 
-已创建非权威 control signals：
+非权威 signals：
 
 - #2 A-share Skill budget drift；
 - #3 Novel Skill budget drift；
 - #4 Video Skill budget drift。
 
-Universal 没有为解决这些 drift 去抢 owner business lease。Signal 不是 task authority、不是 checkpoint、不是业务状态。
+这些 signal 不改变 owner business truth，也不授予 Universal business lease。
 
-这证明了 Signal Plane 的一条真实闭环到：
+已证明 Signal Plane：`remote detection -> durable GitHub control signal emission`。
 
-`remote detection -> durable GitHub control signal emission`
+未证明：automatic owner repair、未知 failure-class completeness、用户通知投递。
 
-还没有证明 automatic owner repair 或未知 failure-class completeness。
+## Architecture Watch 边界
 
-## Architecture Watch 的真实边界
+Automation `Agent Architecture Watch` id `6acab16812248191b9f8c8ab52803491` 保持 daily condition watch。
 
-Automation `Agent Architecture Watch` id `6acab16812248191b9f8c8ab52803491` 仍 enabled daily condition watch。
+产品状态显示 `notifications_enabled=false` / `email_enabled=false`，因此不能说“已可靠主动通知用户”。当前 prompt 为 durable-signal-first：meaningful drift 优先 create/update `[CONTROL_SIGNAL]`; 只有产品通知能力实际 enabled 才允许声称通知。
 
-但产品状态显示 `notifications_enabled=false`、`email_enabled=false`。因此不能宣称“已可靠主动通知用户”。Prompt 已改为 durable-signal-first：发现 meaningful drift 时优先 create/update `[CONTROL_SIGNAL]`，只有产品通知能力实际 enabled 时才表述为通知。
+## 验证证据
 
-当前可证明：daily check infrastructure + durable GitHub signal path。
+中间并非一路绿：
 
-当前不可证明：用户通知投递、自动 owner 修复、未来未知 drift recall。
+- takeover 后 Meta-run/manifest binding stale，CI 正确红；没有放宽测试，而是把 Meta-run + manifest + Handoff + Generic cache 原子重绑。
+- Universal atomic checkpoint run `38109034408`：system audit、architecture harness、full pytest PASS。
+- Universal high-risk runtime run `38109071587` / job `114380651443`：变更被识别为 `HIGH`，实际进入 `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`；24 个 synthetic fault case 全 PASS；architecture harness PASS；full pytest `197 passed`。
+- Universal negative compatibility run `38109089931` SUCCESS：field-shape compatibility 未在 contract 声明时 fail closed。
 
-## CI 失败证据保留
+因此 Agent Architecture 1.1 当前 assurance = `REGRESSION_VERIFIED`，不是 independent semantic correctness 或 live business quality。
 
-Universal CI `38108771603`：
+## 当前 OPEN
 
-- risk-tiered local audit PASS；
-- HIGH -> FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION；
-- 24 synthetic fault cases 全 PASS；
-- Agent architecture harness PASS；
-- full pytest 195 PASS / 2 FAIL。
-
-两个失败都来自 takeover 后 meta-run/manifest binding stale：Meta-run 仍 target v44，而当前 manifest 已 v45；HARNESS latest meta-run 与 manifest ref 也不一致。
-
-没有放宽测试。当前 checkpoint 将 Meta-run + manifest v46 + Handoff + Generic cache 原子绑定，随后再跑 clean high-risk CI。
-
-## 当前 assurance ceiling
-
-本轮已经证明：
-
-- shared Agent Architecture Contract 1.1 compatibility/normalization 已实现并有 regression；
-- current four-owner remote re-observation 已完成；
-- Financial thin router owner CI PASS；
-- Signal Plane 已产生真实 post-rollout durable signals；
-- architecture monitor notification boundary 已校准。
-
-尚未证明：
-
-- 最终 Universal 1.1 integration clean CI（当前 next action）；
-- A-share / Novel / Video Skill drift 已关闭；
-- Watch 的用户通知 delivery；
-- automatic owner repair；
-- Universal operator-dependence independent heldout/live grader；
-- real newly admitted BUSINESS owner + genuinely fresh product chat cold-start E2E；
-- universal pre-write `WRITE_PATH_ENFORCED`；
-- owner live quality/isolation gates。
+1. A-share / Novel / Video Skill-router signals #2-#4，等待各 owner engineering context 安全 slimming + owner CI，再由 Universal remote revalidation 关闭。
+2. Architecture Watch 用户通知 delivery disabled/unproven；durable GitHub signal emission 是已证明 transport。
+3. Automatic owner repair 与未知未来 failure-class completeness 未证明。
+4. Universal operator-dependence 仍需 independent held-out/live maintenance trajectory grader + distinct verifier。
+5. real newly admitted BUSINESS owner + genuinely fresh ChatGPT product chat cold-start E2E 仍 OPEN。
+6. owner methodology receipt 1.3 的真实 action independent semantic verification 继续 event-gated。
+7. Financial live prose quality / Personalized Writing DNA outcome、Novel provider-attested isolation、Video strict isolated reviewer 等 owner live assurance 保持 OPEN。
+8. arbitrary ChatGPT -> GitHub mutation 仍不是 universal pre-write `WRITE_PATH_ENFORCED`。
 
 ## Next action
 
-运行并验证当前 Agent Architecture Contract 1.1 高风险整合的 clean Universal CI。若 PASS：
-
-1. 将本轮 architecture stack 升为 `REGRESSION_VERIFIED`；
-2. 保持 Financial `PASS`；
-3. A-share/Novel/Video 继续由各 owner engineering context 消费 #2-#4，再由 Universal remote revalidation 关闭；
-4. Architecture Watch 持续 cold-path 检查，无 drift 时不制造维护工作；
-5. prior independent/live evidence gates 保持 OPEN，不用 CI 冒充。
+保持 daily Architecture Watch 与 Signal Plane。A-share/Novel/Video 在各自 owner engineering context 消费 #2-#4；Universal 只在 owner 修复完成后重新观察 HEAD/Skill/manifest/CI 并关闭相应 signal。没有新 signal 时不制造维护 mutation。
 
 ## Recovery refs
 
@@ -164,4 +117,4 @@ Universal CI `38108771603`：
 - `runtime/agent_architecture_audit.py`
 - `tests/test_agent_architecture.py`
 
-恢复时先读 manifest + 本 Handoff。不要把 architecture PASS、owner CI、control signal、watch task 或 COMMITTED 外推成 live business quality、independent semantic correctness、notification delivery 或 global flawlessness。
+不要把 architecture PASS、owner CI、control signal、watch task 或 COMMITTED 外推成 live quality、独立语义正确性、notification delivery 或 global flawlessness。

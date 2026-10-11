@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_INTEGRATION_VALIDATION_PENDING__FINANCIAL_THIN_ROUTER_PASS__LIVE_DRIFT_SIGNAL_TRAJECTORY_PROVEN__A_SHARE_NOVEL_VIDEO_OWNER_DRIFT_SIGNALS_OPEN",
-      "next_action": "Run and verify a clean high-risk Universal CI on Agent Architecture Contract 1.1 after the atomic meta-run/manifest/cache checkpoint. If PASS, promote to REGRESSION_VERIFIED; keep owner signals #2-#4 open for A-share/Novel/Video safe slimming and preserve all prior independent/live evidence gates.",
+      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__FINANCIAL_THIN_ROUTER_PASS__LIVE_DRIFT_SIGNAL_TRAJECTORY_VERIFIED__A_SHARE_NOVEL_VIDEO_OWNER_DRIFT_SIGNALS_OPEN__MONITOR_NOTIFICATION_BOUNDARY_CALIBRATED__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
+      "next_action": "Keep the daily Architecture Watch and non-authoritative Signal Plane active. A-share/Novel/Video signals #2-#4 are resolved by their owner engineering contexts, then Universal remotely revalidates owner HEAD/Skill/manifest/CI before closing each signal. Do not mutate owner business state or manufacture maintenance when monitoring is clean.",
       "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-11T11:34:00+08:00"
+      "updated_at": "2026-10-11T11:40:00+08:00"
     }
   ]
 }
