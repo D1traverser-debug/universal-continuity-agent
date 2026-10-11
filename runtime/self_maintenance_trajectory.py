@@ -6,11 +6,6 @@ from typing import Any, Mapping
 TRIAGE_OUTCOMES = {"NO_DEFECT", "INVESTIGATE", "CONFIRMED_DEFECT"}
 REFERENCE_ASSURANCE = "DETERMINISTIC_REFERENCE_SIMULATION_ONLY"
 
-_REQUIRED_POLICY_ORDER = (
-    "DETECT",
-    "BUILD_FULL_SYSTEM_IMACT_MAP",
-)
-
 # The simulator intentionally verifies only the control-flow invariants needed to
 # reason about the parent loop. It is not a product-chat or child-owner executor.
 _REQUIRED_FULL_LOOP_STEPS = (
