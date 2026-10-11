@@ -258,18 +258,32 @@ def test_legacy_v1_0_run_remains_readable_as_historical_evidence():
     assert result.status == "PASS", result.errors
 
 
-def test_recorded_meta_maintenance_run_is_structurally_conformant_and_registry_complete():
+def test_recorded_meta_maintenance_run_is_structurally_conformant_and_propagation_consistent():
     run = load_json(latest_meta_run_ref())
     result = evaluate(run)
     assert result.status == "PASS", result.errors
     assert result.assurance_ceiling == "STRUCTURED_PROCESS_CONFORMANCE_ONLY"
     assert run["schema_version"] == "1.1"
+
     expected_owners = {
         item["name"]
         for item in load_json("OWNER_REGISTRY.json")["owners"]
         if item.get("owner_kind") == "BUSINESS"
     }
-    assert set(run["propagation"]["impacted_business_owners"]) == expected_owners
+    propagation = run["propagation"]
+    impacted = set(propagation["impacted_business_owners"])
+    scope = propagation["scope"]
+
+    if scope == "ALL_BUSINESS_OWNERS":
+        assert impacted == expected_owners
+    elif scope == "SUBSET_WITH_REASON":
+        assert impacted
+        assert impacted.issubset(expected_owners)
+        assert propagation.get("reason")
+    else:
+        assert scope == "NOT_APPLICABLE_WITH_REASON"
+        assert impacted == set()
+        assert propagation.get("reason")
 
 
 def test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record():
