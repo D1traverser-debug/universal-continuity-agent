@@ -30,7 +30,7 @@
     ]
   },
   "failure_model": {
-    "root_cause_layers": ["AUTHORITY_OR_STATE", "RUNTIME_OR_ORCHESTRATION", "EVIDENCE_OR_PROPAGATION", "INSTRUCTION_SURFACE"],
+    "root_cause_layers": ["ACCOUNT_OR_PRODUCT_INSTRUCTION", "REPOSITORY_POLICY", "RUNTIME_OR_SCHEMA", "EVIDENCE_OR_PROPAGATION"],
     "failure_classes": [
       "remote-owner-observation-cache-stale-after-owner-main-advanced",
       "owner-local-ci-green-while-shared-architecture-contract-version-is-unsupported",
