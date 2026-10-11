@@ -7,7 +7,7 @@
 - contract: `CONTINUITY_V3_7`
 - current writer: `lease-2c5946fb-3d78-4a23-9440-2df7d41817ec`
 - resume_epoch: `5`
-- manifest_version: `49`
+- manifest_version: `50`
 - system maintenance policy: `1.7`
 - meta-maintenance harness: `1.2`
 - artifact/context governance: `1.2`
@@ -16,97 +16,108 @@
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_CORE_PRIMITIVES_PRODUCTION_PROMOTION_IN_PROGRESS__META_HARNESS_1_2_WIRED__MUTATION_OUTCOME_UNKNOWN_WIRED__FINAL_CI_PENDING__OWNER_DRIFT_SIGNALS_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__TOP10_SELECTED_PRIMITIVES_PRODUCTION_PROMOTION_REGRESSION_VERIFIED__META_HARNESS_1_2_REGRESSION_VERIFIED__MUTATION_OUTCOME_UNKNOWN_REGRESSION_VERIFIED__CONTEXT_FOOTPRINT_REGRESSION_VERIFIED__TRACER_BULLET_ADMISSION_REGRESSION_VERIFIED__SIGNAL_VERIFY_FIRST_AND_AGENT_READY_BRIEF_REGRESSION_VERIFIED__EXPECTED_TRUTH_EVIDENCE_SEAM_REGRESSION_VERIFIED__NEGATIVE_DECISION_MEMORY_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN`
 
 同聊天继续维护；保持 epoch `5` 与当前 lease，不伪造 takeover。
 
-## Top10 Skill 研究与选择
+## 本轮完成：selected primitives 真正晋升生产
 
-完整库仍位于 `research/skill-library/2026-global-ai-skills-top10/`，10/10 source normalization 和 Phase B selection 已完成。该库是 cold-path learning evidence，不进入启动热路径。
+Top10 Skill 学习库仍位于 `research/skill-library/2026-global-ai-skills-top10/`。本轮没有复制 whole Skill，也没有新增 `Top10 Policy`、Triage Agent、TDD root policy、decision database authority 或 supervisory Agent，而是把净新增机制放入现有 semantics owner。
 
-本轮开始把选中机制真正晋升生产；不是 whole-skill copy，也没有新增 `Top10 Policy` 或 supervisory Agent。
+1. **reuse-before-build**：`SYSTEM_MAINTENANCE_POLICY.json` + Meta Harness 1.2 对 systemic maintenance 强制先检查平台/插件/owner/runtime/policy/harness/Skill 等可复用能力，再决定是否自建。
+2. **facts-vs-decisions / decision frontier**：系统必须区分已验证事实、未解决事实、真正用户决策、自主 next steps；可检索事实不能冒充用户选择题。
+3. **architecture payoff + deletion test**：非平凡架构变更必须比较 failure cost / change cost / payoff，并显式考虑删除、简化、合并、no-change；现有 authority 能承载时拒绝新 root surface。
+4. **non-idempotent mutation `OUTCOME_UNKNOWN`**：`ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` 1.2 + `runtime/mutation_outcome.py` 区分 `CONFIRMED_SUCCESS / CONFIRMED_FAILURE / OUTCOME_UNKNOWN`；可能已 dispatch 但未验证 final state 的非幂等写禁止盲重试，必须 reconcile。幂等性只影响 retry safety，不等于 commit proof。
+5. **measured context-footprint**：`runtime/context_footprint.py` + `AGENT_ARCHITECTURE_CONTRACT.json` 把“thin”从形容词变成 UTF-8 byte budget。token 仅是明确标注的近似值，不冒充真实 tokenizer。
+6. **tracer-bullet admission**：新 owner / 不确定 runtime integration 在 broad rollout 前先证明一条窄的真实或 production-equivalent E2E 路径；只证明该窄路径，不外推为 owner 全局质量。
+7. **verify-before-clarify + Agent-ready brief**：`runtime/control_signal.py` 先 re-observe，再自主补 retrievable facts；只有不可获取事实或真实 human judgment 才打断用户。委派前必须生成稳定 brief，而不是扔 raw chat/history。
+8. **expected-truth evidence seam**：`runtime/maintenance_decision_eval.py` + corpus 1.1 为 expected truth 冻结独立 identity；live product `trace_ref` 不能与 expected-truth ref 相同。同仓 oracle 作者身份仍不等于独立语义正确性。
+9. **searchable negative decision memory**：`runtime/decision_memory.py` 从 durable meta-audit 的 REJECTED alternatives 提取 `concept_key / rationale / rejection_horizon / reconsider_when`，可按概念检索；audit history 仍是 source，不新建第二 authority DB。
 
-## 第一批 production promotion
+## 明确未全局化
 
-### 1. reuse-before-build
+- P4 inline crystallization：不新建机制；现有 chat-only material change / durable record 规则更强。
+- P6 runtime-served versioned operating knowledge：保留 owner-optional，不以当前证据强推 Universal。
+- P11 inspect-default / ask-only-choices：已被 decision frontier + Signal verify-first 覆盖。
+- P12 evidence-gated complexity：已被 payoff/deletion + authority admission 覆盖。
+- frontend-design：留给 Video/UI 等 owner-local quality harness，不污染 Universal kernel。
 
-`SYSTEM_MAINTENANCE_POLICY.json` 与 Meta Harness 1.2 现在要求 systemic maintenance 在自建新 capability 前显式检查已有：平台能力、工具/插件、owner/runtime primitive、已有 policy/harness/Skill。`BUILD_NEW` 必须留下已检查且被拒绝的候选。
+## 验证证据
 
-### 2. facts-vs-decisions / decision frontier
+闭环证据：`audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`。
 
-Systemic run 必须区分：
+### 高风险行为整合
 
-- 已验证事实；
-- 尚未解决的事实；
-- 真正需要用户决定的事项；
-- 可以自主继续的 next steps。
+- behavioral integration commit: `aa0d6da1a8e36fcaba6559770d0bf621f506ea22`
+- Actions run: `38126896565`
+- job: `114433021349`
+- risk: `HIGH`
+- modes: `FULL_CONTROL_PLANE + SYNTHETIC_FAULT_INJECTION`
+- all current BUSINESS owner metadata in scope
+- synthetic fault suite: PASS, zero failed
+- Agent Architecture harness: PASS（保留既有 A-share / Novel / Video drift warnings）
+- pytest: `234 passed`
 
-`facts_resolved_before_user_decision=true` 是结构门。可检索/可验证事实不能冒充“需要用户选择”的架构问题。
+### 最新 pre-v50 HEAD
 
-### 3. architecture payoff + deletion test
+- HEAD: `55a0c4f6d08b307db7f69e604518daabe24f45e2`
+- Actions run: `38126931812`
+- job: `114433127482`
+- system audit: PASS
+- Agent Architecture harness: PASS
+- pytest: `234 passed`
 
-任何 systemic architecture maintenance 必须记录 current failure cost、change cost、expected payoff，并显式检查 deletion/simplification/consolidation/no-change。净复杂度增加必须给出理由；现有 authority 能承载时，不新建平行 root surface。
+该最新提交只改 `SIGNAL_PLANE.md`，因此 planner 正确判为 LOW；不把它伪装成第二次 HIGH-risk fault proof。高风险行为闭环仍以 `38126896565` 为准。
 
-### 4. non-idempotent mutation `OUTCOME_UNKNOWN`
+`OUTCOME_UNKNOWN` 有专门 deterministic regression，并包含在上述 234-test integrated suite 中。当前 system synthetic-fault collection 没有再复制一个同义 mutation classifier scenario；因此 fault-suite PASS 不被计作该项的独立第二份证明。
 
-`ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` 1.2 + `runtime/mutation_outcome.py` 已建立三态：
+## 当前 assurance
 
-- `CONFIRMED_SUCCESS`
-- `CONFIRMED_FAILURE`
-- `OUTCOME_UNKNOWN`
+Selected Universal production-promotion primitives：**REGRESSION_VERIFIED**。
 
-请求可能已 dispatch、但 timeout/ack 丢失且最终状态未验证时，不能假装明确失败。非幂等 `OUTCOME_UNKNOWN` 禁止盲重试；必须 reconcile final state，或依赖真实幂等语义/idempotency key。即使 retry-safe，也不等于 commit proof。
+这不等于：
 
-## Meta-Governance 1.2
+- `ACTION_LEVEL_INDEPENDENTLY_VERIFIED`；
+- `LIVE_OUTCOME_VERIFIED`；
+- 四个 BUSINESS owner 每条真实动作路径都已经接入；
+- operator-dependence 已经长期解决；
+- 全系统无缺陷。
 
-`runtime/meta_maintenance.py` 从 1.1 升到 1.2，仅对 SYSTEMIC/ARCHITECTURE/FULL_CONTROL_PLANE 强制新增：
+## 仍 OPEN
 
-- capability reuse scan；
-- fact/decision frontier；
-- architecture payoff/deletion test。
-
-LOCAL、低耦合、可逆维护仍可走轻量路径；1.0/1.1 run 保持历史可读，不自动提升 assurance。
-
-真实本轮 run：`audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json`。
-
-## 当前验证状态
-
-已添加/更新：
-
-- `tests/test_meta_maintenance.py`
-- `tests/test_mutation_outcome.py`
-- `tests/test_artifact_context_governance.py`
-- `AGENT_MANIFEST.json` runtime/harness 声明。
-
-当前只可称 `WIRED`；最终 current-main 高风险 CI 尚未验收。CI 绿后才允许把第一批提升到 `REGRESSION_VERIFIED`。
-
-## 不外推的边界
-
-- Meta Harness 的结构 PASS 不证明语义判断独立正确；operator-dependence live/heldout grader 仍 OPEN。
-- Universal mutation classifier 已有机械语义，不等于四个 BUSINESS owner 每条真实外部写路径都已接入；owner-local adoption 必须由真实 action/event 驱动。
-- Top10 其余候选（context-footprint、evidence seam / tracer bullet、frontend-design owner-local 方法等）尚未完成生产晋升。
-- A-share / Novel / Video architecture drift signals #2–#4 继续 OPEN。
-- real newly admitted BUSINESS owner fresh-chat E2E、methodology action-level independent proof、各 owner live quality/outcome gates 均保持 OPEN。
-- arbitrary ChatGPT → GitHub mutation 仍不是通用 pre-write `WRITE_PATH_ENFORCED`。
+1. **real new-owner fresh-chat product E2E**：必须自然出现一个新 admitted BUSINESS owner + genuinely fresh ChatGPT product chat；不能用 synthetic fixture 冒充。
+2. **Universal operator-dependence**：仍需 independent heldout/live trajectory grader；本轮结构门和 regression 不能替代真实效果证据。
+3. **owner-local action adoption**：共享语义只能在真实 owner action 到来时，在该 owner lease 与 exact evidence gate 下接入；Universal 不偷 business lease。
+4. **owner architecture drift signals**：A-share / Novel / Video 的已记录 drift 继续 OPEN。
+5. **pre-write enforcement**：任意 ChatGPT→GitHub mutation 仍不是通用 `WRITE_PATH_ENFORCED`。
+6. **各业务 owner 原有 live gates**：Novel publication/CH9/independent attestation，Financial action-level methodology/blind pairwise/heldout diversity，A-share replay/live adapters/durability，Video generation gateway/trusted reviewer/live provider proof 等继续 owner-local OPEN。
 
 ## Next action
 
-1. 修齐 v49 cache/version-alignment tests；
-2. 跑 current-main HIGH-risk CI，要求 risk-tiered audit + Agent architecture harness + full pytest；
-3. 红灯按根因修，不降低门；
-4. 绿后更新 final manifest/Harness/Handoff/cache 与本轮 meta-run CI evidence；
-5. 再评估剩余选中 primitives，按归属层逐个晋升，不批量污染 Universal kernel。
+以后只在真实事件上继续：
+
+- 新 owner 自然出现时自动拿它做 cold-start live validation；
+- owner 真实 material action 出现时按 shared invariant 做 action-level adoption，不制造假样本；
+- operator-dependence 有真实 heldout/live trajectory 时再升级 assurance；
+- owner drift signal 有新证据时处理对应 owner，不把 metadata maintenance 变成业务 lease takeover；
+- 若没有新的可执行证据或真实 defect，遵守 stop rule，不为了“持续优化”制造额外层。
 
 ## Recovery refs
 
 - `tasks/universal-continuity-maintenance/TASK_MANIFEST.json`
 - `audits/META_MAINTENANCE_TOP10_PRODUCTION_PROMOTION_2026-10-11.json`
+- `audits/TOP10_PRODUCTION_PROMOTION_CLOSURE_2026-10-11.md`
 - `SYSTEM_MAINTENANCE_POLICY.json`
-- `runtime/meta_maintenance.py`
 - `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json`
+- `AGENT_ARCHITECTURE_CONTRACT.json`
+- `CONTROL_SIGNAL_CONTRACT.json`
+- `runtime/meta_maintenance.py`
 - `runtime/mutation_outcome.py`
-- `research/skill-library/2026-global-ai-skills-top10/PHASE_B_SELECTION.md`
+- `runtime/context_footprint.py`
+- `runtime/control_signal.py`
+- `runtime/maintenance_decision_eval.py`
+- `runtime/decision_memory.py`
+- `HARNESS_STATUS.json`
 - `OWNER_ARCHITECTURE_OBSERVATIONS.json`
-- `SIGNAL_PLANE.md`
 
-不要把 WIRED、CI、Skill 榜单热度或结构化 meta-run 外推成 live quality、独立语义正确性或 global flawlessness。
+不要把 `COMMITTED`、CI、结构化 Harness、Skill 热度或 REGRESSION_VERIFIED 外推成 live quality、independent semantic correctness 或 global flawlessness。
