@@ -13,12 +13,12 @@
       "resume_eligible": true,
       "resume_visibility": "EXPLICIT_ONLY",
       "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN",
-      "next_action": "Preserve membership/remote-observation separation, fail-closed shared architecture version semantics and hourly architecture watch; re-observe current owner HEADs on future drift; never take business leases for metadata maintenance; keep account-hook live readback, real new-owner fresh-chat, operator-dependence independent grading, acknowledged owner drift and owner live-quality/outcome gates open without fabricated evidence.",
-      "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
+      "current_stage": "V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN__CONTEXT_CAPACITY_PREFLIGHT_SELF_AUDIT_IN_PROGRESS",
+      "next_action": "Verify the CI run emitted by this SELF_AUDIT_IN_PROGRESS checkpoint. If green, create a final schema-1.2 meta-maintenance closure bound to manifest V58, atomically synchronize TASK_MANIFEST and HARNESS_STATUS to that run, update the normal HANDOFF, and verify the final closure CI. If red, repair only the failing scope; do not weaken freshness or context-capacity regressions.",
+      "checkpoint_ref": "tasks/universal-continuity-maintenance/CHECKPOINT_CONTEXT_CAPACITY_V55.md",
       "contract_version": "CONTINUITY_V3_7",
       "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-      "updated_at": "2026-10-11T17:48:00+08:00"
+      "updated_at": "2026-10-11T20:29:26+08:00"
     }
   ]
 }
