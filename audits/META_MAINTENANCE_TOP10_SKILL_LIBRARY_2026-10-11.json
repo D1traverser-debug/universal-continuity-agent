@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.1",
+  "run_id": "meta-top10-skill-library-2026-10-11",
+  "scope": "SYSTEMIC",
+  "trigger": "USER_REQUIRED_COMPLETE_TOP10_SKILL_LIBRARY_BEFORE_SELECTION_AFTER_PREMATURE_SINGLE_SKILL_ADOPTION",
+  "user_signal": {
+    "classifications": [
+      "GOAL_OR_CONSTRAINT",
+      "COUNTEREXAMPLE_OR_FAILURE_REPORT",
+      "PROPOSED_MECHANISM"
+    ],
+    "goal_or_constraint": "Completely distill all ten Skills, including workflow, methodology and non-obvious system dimensions, into one normalized Skill library before selecting what to use.",
+    "counterexample": "The first pass selected/adapted find-skills immediately after inspecting only rank #1, creating ordering bias and failing the requested complete-before-selection research process.",
+    "proposed_mechanism": "Build a complete Skill library first, then perform cross-Skill comparison and selection only after 10/10 completion."
+  },
+  "authority_inspection": {
+    "refs": [
+      "SYSTEM_MAINTENANCE_POLICY.json",
+      "CONTINUOUS_LEARNING_POLICY.md",
+      "AGENT_ARCHITECTURE_CONTRACT.json",
+      "CONTEXT_RECOVERY_POLICY.json",
+      "SIGNAL_PLANE.md",
+      "research/skill-library/2026-global-ai-skills-top10/SCHEMA.md"
+    ]
+  },
+  "failure_model": {
+    "root_cause_layers": ["EVIDENCE_OR_PROPAGATION", "REPOSITORY_POLICY"],
+    "failure_classes": [
+      "premature-selection-before-complete-comparison",
+      "leaderboard-order-bias",
+      "skill-text-only-analysis-that-misses-runtime-harness-and-shared-primitives",
+      "prompt-length-as-quality-proxy"
+    ],
+    "system_impact_map": [
+      "learning/evolution evidence quality",
+      "Agent architecture selection",
+      "Skill/runtime/harness responsibility placement",
+      "future owner methodology promotion"
+    ],
+    "falsification_checks": [
+      "inspect delegated primitives for thin wrappers rather than judging wrapper length",
+      "inspect executable runtime and evals where behavior lives outside SKILL.md",
+      "preserve source-authored known failures and evidence gaps",
+      "freeze final selection until all ten normalized entries exist",
+      "compare selected primitives against current Universal authority to prevent duplicate mechanisms"
+    ]
+  },
+  "learning_scout": {
+    "disposition": "SCOUT_DONE",
+    "sources": [
+      {
+        "ref": "vercel-labs/skills@13e4063a1cf913f5606d57d42ab83a86f5001e04",
+        "observation": "find-skills is an executable discovery/acquisition funnel with deterministic non-interactive behavior, not merely a recommendation prompt.",
+        "disposition": "NARROW",
+        "rationale": "Reuse-before-build is useful; fixed popularity thresholds/global installation defaults are not universal quality rules."
+      },
+      {
+        "ref": "mattpocock/skills@49dd158d1076134a641b33efb035946536778336",
+        "observation": "Several top-ranked Skills are intentionally tiny wrappers over shared primitives, while source docs also acknowledge that prose-only cross-Skill loading can fail.",
+        "disposition": "NARROW",
+        "rationale": "Thin routing is valuable only when responsibility has a stronger home and loading/execution is observable or enforced."
+      },
+      {
+        "ref": "vercel-labs/agent-browser@d9570915f4dd6504dee4070379d2c4f79d81dbb2",
+        "observation": "The strongest inspected architecture combines thin discovery Skill, runtime-versioned instructions, executable isolation/state semantics, context-footprint measurement and behavioral/live evals.",
+        "disposition": "ADOPT",
+        "rationale": "Use as an architecture reference for progressive disclosure, context measurement, uncertain mutation outcomes and final-state verification without copying browser-specific implementation."
+      },
+      {
+        "ref": "anthropics/skills@dbd4588f9e1033efb41dad4bef2f7947c8993d44:skills/frontend-design/SKILL.md",
+        "observation": "Frontend-design contains strong brief-grounded creative methodology and anti-default critique but lacks comparable dedicated mechanical quality evidence in the inspected surface.",
+        "disposition": "NARROW",
+        "rationale": "Keep owner-local for visual work rather than globalizing subjective design heuristics into Universal kernel."
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "id": "A_INCREMENTAL_SELECT_AS_EACH_SKILL_IS_READ",
+      "decision": "REJECTED",
+      "rationale": "Creates rank/order anchoring and prevents fair cross-Skill deduplication."
+    },
+    {
+      "id": "B_COMPLETE_NORMALIZED_LIBRARY_THEN_COMPARE",
+      "decision": "ACCEPTED",
+      "rationale": "Pins comparable evidence for all ten first, then permits primitive-level selection against current architecture."
+    },
+    {
+      "id": "C_COPY_OR_INSTALL_ALL_TOP10_WHOLESALE",
+      "decision": "REJECTED",
+      "rationale": "Would import contradictory assumptions, duplicated responsibilities, prompt-only guarantees and owner-local methods into the kernel."
+    }
+  ],
+  "instruction_surface": {
+    "decision": "NO_CHANGE",
+    "reason": "The gap was the research/evolution process and evidence normalization, not ChatGPT account/startup routing. The library is cold-path research and must not enlarge the startup prompt."
+  },
+  "propagation": {
+    "scope": "NOT_APPLICABLE_WITH_REASON",
+    "classification": "LEARNING_EVIDENCE_AND_SELECTION_ONLY",
+    "mechanism": "No owner business rule or shared production invariant is changed by creating/selecting the library; later promotions require their own owner/control-plane change and regressions.",
+    "stale_override_scan": "NOT_APPLICABLE",
+    "impacted_business_owners": [],
+    "reason": "This run records research and selection; production promotion is intentionally separate."
+  },
+  "complexity_efficiency": {
+    "new_authority_surfaces": 0,
+    "mandatory_startup_context_delta": 0,
+    "tool_or_remote_read_delta": "COLD_PATH_RESEARCH_ONLY",
+    "steady_state_latency_effect": "NONE",
+    "duplicate_rule_effect": "REDUCED_BY_NORMALIZED_LIBRARY_AND_CROSS_SKILL_MATRIX",
+    "cross_owner_touch_count": 0,
+    "migration_compatibility_effect": "NONE_UNTIL_SEPARATE_PROMOTION",
+    "test_observability_effect": "ADDED_LIBRARY_COMPLETENESS_REGRESSION",
+    "decision": "ACCEPTABLE"
+  },
+  "implementation": {
+    "decision": "CHANGE_APPLIED",
+    "inspected_paths": [
+      "vercel-labs/skills:skills/find-skills/SKILL.md + src/find.ts + tests",
+      "mattpocock/skills:grill-me/grilling/grill-with-docs/domain-modeling/improve-codebase-architecture/codebase-design/tdd/setup/handoff/triage and related docs/workflows",
+      "vercel-labs/agent-browser:discovery Skill + runtime core Skill + session/trust/snapshot refs + evals",
+      "anthropics/skills:skills/frontend-design/SKILL.md",
+      "current Universal architecture/maintenance/recovery/signal contracts"
+    ],
+    "changed_paths": [
+      "research/skill-library/2026-global-ai-skills-top10/",
+      "tests/test_top10_skill_distillation_library.py",
+      "audits/META_MAINTENANCE_TOP10_SKILL_LIBRARY_2026-10-11.json"
+    ],
+    "superseded_or_demoted_surfaces": [
+      "research/SKILL_DISTILLATION_01_FIND_SKILLS_2026-10-11.md is historical and superseded for current Top10 selection by the normalized library entry + Phase B report"
+    ]
+  },
+  "validation": {
+    "regression_or_eval_refs": [
+      "tests/test_top10_skill_distillation_library.py",
+      "github-actions:38110768456:SUCCESS",
+      "research/skill-library/2026-global-ai-skills-top10/INDEX.json",
+      "research/skill-library/2026-global-ai-skills-top10/CROSS_SKILL_PRIMITIVE_MATRIX.md"
+    ],
+    "second_order_challenge": "PASS",
+    "second_order_findings": [
+      "Popularity ranking was explicitly prevented from becoming quality ranking.",
+      "A short SKILL.md was not treated as evidence of simplicity; delegated runtime/reference/harness surfaces were followed.",
+      "Prompt-specified workflows were separated from mechanical enforcement/eval evidence.",
+      "Selection was delayed until 10/10 completion to remove first-seen/order anchoring.",
+      "Production promotion remains separate so learning evidence does not silently mutate active kernel semantics."
+    ],
+    "cross_surface_or_fault_audit": "PASS"
+  },
+  "closure": {
+    "assurance_ceiling": "REGRESSION_VERIFIED",
+    "global_flawlessness_claimed": false,
+    "open_gates": [
+      "Selected cross-agent primitives have not yet been promoted into production Universal policies/runtime/harness.",
+      "Frontend-design owner-local adoption/eval has not been performed.",
+      "No claim is made that Top10 popularity predicts quality or that every source Skill improves our real outcomes."
+    ],
+    "unknown_or_open_world_boundary": "The library covers the pinned source revisions and inspected implementation/eval surfaces. Future upstream revisions, uninspected private telemetry, and real-world owner outcome effects remain outside current evidence."
+  }
+}
