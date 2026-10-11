@@ -28,6 +28,26 @@
       "If required state is unavailable, fail closed instead of inventing a progress summary."
     ]
   },
+  "intra_turn_safe_checkpointing": {
+    "purpose": "Prevent recoverable material progress from existing only in chat until the final response. Long-running durable work must survive abrupt context exhaustion, disconnects, tool interruption, or chat termination by persisting verified safe points during the turn.",
+    "activation": "while a durable task is active and a stable material progress boundary is reached before the final user-facing response",
+    "safe_point_triggers": [
+      "a durable stage, next_action, blocker, waiting state, authority/version decision, or material requirement becomes stable",
+      "a material artifact or authoritative state mutation succeeds and its postcondition is verified",
+      "an external side effect or irreversible action succeeds and later work depends on it",
+      "before entering another long, high-risk, or tool-heavy subphase when already completed material progress would otherwise be lost",
+      "after recovering from a failure when a truthful stable partial state exists and later work will continue"
+    ],
+    "rules": {
+      "checkpoint_before_more_work": "Once a safe-point trigger is reached, persist the smallest sufficient authoritative checkpoint and re-read/verify it before continuing substantial downstream work. Do not intentionally defer the first durable write until the final response when stable material progress already exists.",
+      "consistent_state_only": "Checkpoint only internally consistent, truthfully recoverable state. Do not publish speculative conclusions, half-applied migrations, or an artifact set whose authority relationships are known to be temporarily contradictory unless the checkpoint explicitly records the truthful BLOCKED/IN_PROGRESS recovery state.",
+      "lease_guard": "Verify the current writer lease/epoch before any checkpoint write. If stale, stop the checkpoint and surface STALE_WRITER rather than overwriting newer authority.",
+      "write_and_reread_required": true,
+      "new_chat_recovery": "A replacement chat must be able to resume from the latest verified safe checkpoint without requiring the terminated chat transcript to reconstruct completed material work.",
+      "mid_turn_checkpoint_is_not_final_receipt": "Mid-turn safe checkpoints do not replace the final Turn Commit Receipt; the final response still reports the current durable state once per active durable task.",
+      "no_micro_heartbeat": "Pure reads, transient diagnostics, reversible scratch work, unchanged state, and unverified hypotheses do not require writes. Group related low-level operations into meaningful safe points."
+    }
+  },
   "turn_commit_receipt": {
     "name": "Turn Commit Receipt",
     "user_label_zh": "进度提交",
@@ -69,6 +89,7 @@
     "do_not_write_every_turn_if_state_unchanged": true,
     "receipts_are_small": true,
     "no_global_discovery_for_turn_receipts": true,
-    "after_owner_selection_use_owner_authority_only": true
+    "after_owner_selection_use_owner_authority_only": true,
+    "checkpoint_at_material_safe_points_not_every_low_level_operation": true
   }
 }
