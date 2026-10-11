@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 18,
+  "manifest_version": 19,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T14:28:00Z",
+  "updated_at": "2026-10-11T16:28:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
-  "next_action": "GUI_MI_ZHI_ZHU (《诡秘之主》) has completed full sequential study through the user-provided end marker and whole-book single-work distillation. Stop after this completed work exactly as the user requested; do not begin DAO_MU_BI_JI in this run. Keep the masterwork queue and current focus binding durable. On a later explicit continue, activate DAO_MU_BI_JI from its beginning and continue one book at a time. Do not draft the existing FQ001 replacement CH1-CH8 while the masterwork study queue is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
+  "next_action": "Continue DAO_MU_BI_JI (《盗墓笔记全集》) sequentially from 《秦岭神树》第一章《老痒出狱》. 《七星鲁王宫》CH1-CH29 and 《怒海潜沙》CH1-CH46 have completed sequential study and volume-level distillation in the single rolling ledger. Keep GUI_CHUI_DENG pending until DAO_MU_BI_JI is complete. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
@@ -41,10 +41,10 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study before story reselection. GUI_MI_ZHI_ZHU is now complete through the full user-provided standardized source and whole-book distillation. The completed work remains the current focus binding solely to preserve the stop boundary; DAO_MU_BI_JI remains PENDING and unstarted until a later explicit continue. Historical FQ001 FINALs/Canon/publication facts remain preserved."
+    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study before story reselection. DAO_MU_BI_JI is active with 《七星鲁王宫》CH1-CH29 and 《怒海潜沙》CH1-CH46 durably checkpointed; 《秦岭神树》第一章《老痒出狱》 is next. The queue transition guard is now work-id dynamic rather than GUI_MI-specific. GUI_CHUI_DENG remains PENDING. Historical FQ001 FINALs/Canon/publication facts remain preserved."
   },
   "continuity_acceptance": {
-    "result": "PASS_PREVIOUS_BASELINE__LATEST_COMPLETION_CI_NOT_EXECUTED",
+    "result": "PASS_PREVIOUS_BASELINE__LATEST_DAO_CHECKPOINT_CI_NOT_EXECUTED",
     "owner_acceptance_ref": "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json",
     "owner_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/recovery_guard.py",
     "owner_release_evidence_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/release_evidence_guard.py",
@@ -52,24 +52,19 @@
     "test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_recovery_contract.py",
     "release_evidence_test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_release_evidence_contract.py",
     "masterwork_test_ref": "D1traverser-debug/novel-writing-agent@main:tests/test_masterwork_distillation.py",
-    "new_chat_recovery": "PASS",
-    "takeover_simulation": "PASS",
+    "new_chat_recovery": "PASS_PREVIOUS_BASELINE",
+    "takeover_simulation": "PASS_PREVIOUS_BASELINE",
     "github_owner_cutover": "PASS",
-    "full_front_arc_rebase_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
-    "novel_mastery_model_recovery": "PASS",
-    "series_master_outline_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
-    "legacy_arc_supersession_recovery": "PASS",
-    "architecture_freeze_recovery": "PASS_AS_HISTORICAL_CANDIDATE_STATE",
-    "masterwork_study_recovery": "PASS_PROGRESS_AWARE",
+    "masterwork_study_recovery": "PASS_PROGRESS_AWARE_BY_PERSISTED_AUTHORITY",
     "previous_owner_final_head": "449e0fdc81aaa6fa32f4959bc7af59997bdc8552",
     "previous_owner_final_ci_run_id": 38140259347,
     "previous_owner_final_ci_job_id": 114472506449,
     "previous_owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_MASTERWORK_DISTILLATION_GUARD_OWNER_CONTRACT_TESTS",
-    "latest_completion_owner_head": "37ba938607466ef63fe7bc7078a03c5759db6660",
-    "latest_completion_ci_run_id": 38147240928,
-    "latest_completion_ci_job_id": 114493064111,
-    "latest_completion_ci_observation": "WORKFLOW_COMPLETED_FAILURE_BEFORE_RUNNER_START__runner_id_0__steps_empty__NO_GUARD_OR_TEST_EXECUTION_CLAIM",
-    "latest_completion_validation_ceiling": "PERSISTED_STATE_AND_SOURCE_EVIDENCE_VERIFIED__CI_EXECUTION_NOT_VERIFIED"
+    "latest_owner_head": "d93479b6a575c4d213050c7b0c29bba1d3671455",
+    "latest_ci_run_id": 38155559770,
+    "latest_ci_job_id": 114517704943,
+    "latest_ci_observation": "WORKFLOW_COMPLETED_FAILURE_BEFORE_RUNNER_START__runner_id_0__steps_empty__NO_GUARD_OR_TEST_EXECUTION_CLAIM",
+    "latest_validation_ceiling": "PERSISTED_SOURCE_LEDGER_STATE_AND_ROUTING_VERIFIED__UPDATED_GUARDS_AND_TESTS_PERSISTED__LATEST_CI_EXECUTION_NOT_VERIFIED"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
@@ -91,27 +86,15 @@
     "front_arc_frozen_architecture_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
     "project_benchmark_ref": "D1traverser-debug/novel-writing-agent@main:audits/FQ001_ARCHITECTURE_MASTERY_BENCHMARK_2026-10-11.md",
     "competency_count": 20,
-    "mastery_levels": [
-      "L0_UNMAPPED",
-      "L1_CONCEPTUAL",
-      "L2_OPERATIONAL_WITH_SCAFFOLD",
-      "L3_PROJECT_READY",
-      "L4_TRANSFER_VERIFIED"
-    ],
+    "mastery_levels": ["L0_UNMAPPED","L1_CONCEPTUAL","L2_OPERATIONAL_WITH_SCAFFOLD","L3_PROJECT_READY","L4_TRANSFER_VERIFIED"],
     "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS__HISTORICAL_CANDIDATE",
     "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
-    "active_masterwork": "GUI_MI_ZHI_ZHU",
-    "active_masterwork_status": "SINGLE_BOOK_DISTILLATION_COMPLETE__REFERENCE_EXTRACTED__CROSS_WORK_PENDING",
-    "active_masterwork_binding_role": "CURRENT_FOCUS_BINDING_AFTER_COMPLETION__NOT_IN_PROGRESS",
-    "active_masterwork_coverage": "ALL_8_VOLUMES__1394_CHAPTER_HEADINGS__THROUGH_FULL_BOOK_END",
-    "active_masterwork_next_location": "STOP_AFTER_GUI_MI_COMPLETION__DO_NOT_BEGIN_NEXT_BOOK",
-    "next_pending_masterwork": "DAO_MU_BI_JI",
-    "next_pending_masterwork_status": "PENDING_NOT_STARTED",
-    "completed_masterworks": [
-      "SHIRI_ZHONGYAN",
-      "GUI_MI_ZHI_ZHU"
-    ],
-    "rolling_ledger_sha256": "4fd257d130a019fcc4cc558377c807fe260c17f5ee10658a97612ddb7f49a7fe"
+    "active_masterwork": "DAO_MU_BI_JI",
+    "active_masterwork_status": "ACTIVE__SEQUENTIAL_READ_IN_PROGRESS",
+    "active_masterwork_coverage": "QIXING_LUWANGGONG__CH1-CH29__VOLUME_01_COMPLETE__NUHAI_QIANSHA__CH1-CH46__VOLUME_02_COMPLETE",
+    "active_masterwork_next_location": "《秦岭神树》第一章《老痒出狱》",
+    "completed_masterworks": ["SHIRI_ZHONGYAN","GUI_MI_ZHI_ZHU"],
+    "rolling_ledger_sha256": "133dfb0de4decc2ab21aeb1042aadc340cec21870b96a23c99c11448dceae7bc"
   },
   "rebase": {
     "mode": "CONTROLLED_FULL_FRONT_ARC_REBASE",
@@ -141,32 +124,16 @@
     "SUPERSEDED_ARC_001_NOT_EXECUTABLE"
   ],
   "waiting_on": [],
-  "external_fact_pending": [
-    "CH8 Fanqie publication status remains unconfirmed. This does not block internal masterwork study or story reselection and must not be inferred either way."
-  ],
+  "external_fact_pending": ["CH8 Fanqie publication status remains unconfirmed. This does not block internal masterwork study or story reselection and must not be inferred either way."],
   "blockers": [],
-  "keywords": [
-    "小说",
-    "小说系统",
-    "小说技能",
-    "名作蒸馏",
-    "逐本学习",
-    "故事重选",
-    "诡秘之主",
-    "十日终焉",
-    "盗墓笔记",
-    "明日订单",
-    "番茄小说",
-    "FQ001",
-    "NOVEL_WRITING_AGENT",
-    "NOVEL_OS",
-    "签约",
-    "连载"
-  ],
+  "keywords": ["小说","小说系统","小说技能","名作蒸馏","逐本学习","故事重选","诡秘之主","十日终焉","盗墓笔记","秦岭神树","明日订单","番茄小说","FQ001","NOVEL_WRITING_AGENT","NOVEL_OS","签约","连载"],
   "artifact_refs": [
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/STUDY_STATE.json",
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/INDEX.json",
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/GUI_MI_ZHI_ZHU/FULL_BOOK_EXECUTION_RECEIPT_2026-10-11.json",
+    "D1traverser-debug/novel-writing-agent@main:research/masterworks/DAO_MU_BI_JI/EXECUTION_RECEIPT_2026-10-11_QIXING_LUWANGGONG_CH1_CH29.json",
+    "D1traverser-debug/novel-writing-agent@main:research/masterworks/DAO_MU_BI_JI/EXECUTION_RECEIPT_2026-10-11_NUHAI_QIANSHA_CH1_CH46.json",
+    "D1traverser-debug/novel-writing-agent@main:audits/MASTERWORK_QUEUE_TRANSITION_GENERALIZATION_2026-10-11.md",
     "D1traverser-debug/novel-writing-agent@main:protocols/NOVEL_MASTERY_MODEL.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/SERIES_MASTER_OUTLINE.md",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/outline/FRONT_ARC_REBASE_ARCHITECTURE_V1.md",
@@ -176,6 +143,6 @@
   "derived_artifact_refs": [
     "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
     "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk",
-    "Google Drive file 1Ixa5xE8iWyrGQjuJDgwBSTAQxO81hcXo /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md#sha256=4fd257d130a019fcc4cc558377c807fe260c17f5ee10658a97612ddb7f49a7fe"
+    "Google Drive file 17r1Q49KNT858dJLvrEWQeRlnt7-tb5f4 /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/盗墓笔记全集/盗墓笔记全集_学习总账.md#sha256=133dfb0de4decc2ab21aeb1042aadc340cec21870b96a23c99c11448dceae7bc"
   ]
 }
