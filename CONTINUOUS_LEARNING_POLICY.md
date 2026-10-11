@@ -37,6 +37,37 @@ Prefer evidence in this order for adoption decisions:
 
 For video/media evidence, `MEDIA_DISTILLATION_PROTOCOL.md` remains authoritative. Transcript evidence and visual evidence must not be conflated.
 
+## Operational scout loop
+
+A policy that merely says “learn proactively” is **not operational evidence**. When Universal claims recurring proactive learning, there must be a live product-level scout/monitor or equivalent execution surface that is enabled, refreshes against the current protocol/authority, and can emit a durable non-authoritative signal when material novelty or staleness is detected. A disabled recurring scout, stale hard-coded protocol version, or learning path that activates only after the user supplies a candidate is a maintenance defect.
+
+The recurring discovery surface should cover, when available and relevant:
+
+- current first-party OpenAI Skills/Agents/product documentation;
+- `skills.sh` All Time, Trending and Hot as discovery lanes;
+- high-signal GitHub Agent Skills repositories and curated collections;
+- curated MCP/tool catalogs and notable runtime/harness ecosystems;
+- the current ChatGPT Plugin Directory and installed capability surface;
+- a **novelty lane** for smaller or less-popular tools with strong implementation, test or evaluator evidence, so popularity does not become the ranking function.
+
+Popularity, stars, installs, leaderboard position and social discussion are discovery signals only. They may move a candidate into inspection; they never establish correctness or adoption.
+
+Each newly discovered candidate should be classified as one of:
+
+- `REJECT_DUPLICATE` — current Universal/owner mechanisms already cover the useful primitive at equal or stronger assurance;
+- `MONITOR` — potentially relevant but insufficiently novel, mature, evidenced or currently applicable;
+- `DEEP_DIVE` — strong enough to justify source-level distillation before any architecture decision;
+- `UNIVERSAL_CANDIDATE` — a cross-owner primitive worth evaluating for shared semantics/runtime/harness promotion;
+- `OWNER_LOCAL_CANDIDATE` — useful to one or a subset of BUSINESS owners without evidence for global promotion.
+
+`DEEP_DIVE` is not satisfied by a README, marketplace description, leaderboard entry, social thread or copied prompt. Unless the source genuinely lacks these surfaces, a deep distillation should inspect and pin the original Skill/source revision, delegated runtime/implementation, tests/evals/workflows, authoritative docs/changelog/out-of-scope notes, and relevant issue/failure evidence. Evidence gaps must remain explicit.
+
+Recurring scouting is quiet by default: no notification or heartbeat artifact when nothing material changed. Meaningful candidates, ecosystem changes, stale prior distillations and concrete capability gaps may emit non-authoritative learning/control signals; they do not mutate production authority by themselves.
+
+Keep the active deep-dive queue bounded. Prefer no more than five unresolved deep dives at once; merge duplicate mechanisms early, demote stale candidates, and finish or reject a candidate before continuously adding more. Research remains cold-path evidence and must not enlarge account startup instructions or the mandatory business hot path.
+
+A selected cross-owner mechanism propagates through the existing `evolution@1.0` semantics and owner hook bindings after normal evidence/regression gates. Owner-local candidates remain owner-local. Do not copy shared prose into every child owner and do not use Universal maintenance to rewrite BUSINESS state.
+
 ## Learning loop
 
 For each candidate improvement:
