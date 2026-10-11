@@ -3,7 +3,7 @@
   "role": "REBUILDABLE_REMOTE_AGENT_ARCHITECTURE_OBSERVATION_CACHE",
   "authority_boundary": "This file records observations and validation receipts. It is not owner membership authority, business state authority, or proof of live model quality.",
   "contract_ref": "AGENT_ARCHITECTURE_CONTRACT.json",
-  "refreshed_at": "2026-10-11T11:32:00+08:00",
+  "refreshed_at": "2026-10-11T17:43:00+08:00",
   "owners": [
     {
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
@@ -11,40 +11,40 @@
       "observed_owner_head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
       "architecture_validation_head": "a76c83c917ae6c81ec398ef99749125131e6be2c",
       "architecture_validation_result": "PASS",
-      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
+      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
       "owner_ci_ref": "github-actions:38108186593",
       "warnings": []
     },
     {
       "owner": "A_SHARE_MARKET_AGENT",
       "agent_manifest_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/AGENT_MANIFEST.json",
-      "observed_owner_head": "666c77a3ae4b5d266865a2829b63e2497531c69c",
-      "architecture_validation_head": "666c77a3ae4b5d266865a2829b63e2497531c69c",
+      "observed_owner_head": "f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c",
+      "architecture_validation_head": "f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c",
       "architecture_validation_result": "PASS_WITH_DRIFT",
-      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
-      "owner_ci_ref": "github-actions:38108315217",
+      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
+      "owner_ci_ref": "github-actions:38108652297",
       "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET_BY_80_BYTES"],
       "control_signal_ref": "D1traverser-debug/universal-continuity-agent#2"
     },
     {
       "owner": "NOVEL_WRITING_AGENT",
       "agent_manifest_ref": "D1traverser-debug/novel-writing-agent@main:continuity/AGENT_MANIFEST.json",
-      "observed_owner_head": "df9be9a25b1b9fa7ca6a40a3aaedfcdcc6ece94a",
-      "architecture_validation_head": "df9be9a25b1b9fa7ca6a40a3aaedfcdcc6ece94a",
+      "observed_owner_head": "7988b96c8be661a2f92bad96daac6322bcf664ef",
+      "architecture_validation_head": "7988b96c8be661a2f92bad96daac6322bcf664ef",
       "architecture_validation_result": "PASS_WITH_DRIFT",
-      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
-      "owner_ci_ref": "github-actions:38108317227",
+      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
+      "owner_ci_ref": "github-actions:38110065043",
       "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET", "JUDGMENT_CHAT_BRIDGED_NOT_PROVIDER_ATTESTED"],
       "control_signal_ref": "D1traverser-debug/universal-continuity-agent#3"
     },
     {
       "owner": "VIDEO_GROWTH_AGENT",
       "agent_manifest_ref": "D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json",
-      "observed_owner_head": "ee029fee7ef32ccf9ce485b2261972e8d846df30",
-      "architecture_validation_head": "ee029fee7ef32ccf9ce485b2261972e8d846df30",
+      "observed_owner_head": "977ad5329b1ffb1f971db922fac3e17bf91a412a",
+      "architecture_validation_head": "977ad5329b1ffb1f971db922fac3e17bf91a412a",
       "architecture_validation_result": "PASS_WITH_DRIFT",
-      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_LIVE_DRIFT_REVALIDATION_2026-10-11.json",
-      "owner_ci_ref": "github-actions:38088627844",
+      "architecture_validation_ref": "audits/AGENT_ARCHITECTURE_GLOBAL_SELF_AUDIT_V51_2026-10-11.json",
+      "owner_ci_ref": "github-actions:38129311234",
       "warnings": ["SKILL_ROUTER_ABOVE_8192_BYTE_TARGET", "STRICT_ISOLATED_REVIEW_REMAINS_SEPARATE_OPEN_ASSURANCE"],
       "control_signal_ref": "D1traverser-debug/universal-continuity-agent#4"
     }
