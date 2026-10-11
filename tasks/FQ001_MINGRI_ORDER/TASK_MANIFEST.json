@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 14,
+  "manifest_version": 15,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T12:12:00Z",
+  "updated_at": "2026-10-11T12:20:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
-  "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU is ACTIVE and must be read sequentially from the beginning. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
+  "next_action": "Continue the user-provided standardized masterwork corpus one book at a time. SHIRI_ZHONGYAN is complete; GUI_MI_ZHI_ZHU has completed sequential study of 第一部《小丑》 CH1-CH213 plus the volume summary and must continue from 第二部《无面人》 CH1. Maintain the single rolling ledger and do not switch books until the active work is complete. Do not draft the existing FQ001 replacement CH1-CH8 while this learning stage is active. After all non-excluded works are complete, synthesize cross-work evidence and run fresh story/premise/world/character/architecture selection. Only signing mode and serialization mode are user-locked; all other story design may be rebuilt. Preserve existing published/history/Canon artifacts as historical evidence; external platform changes remain user-controlled.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
@@ -41,7 +41,7 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "Novel owner now persists one-book-at-a-time masterwork study as the active execution priority before story reselection. Historical FQ001 FINALs/Canon/publication facts and the same resume_epoch/lease remain preserved; existing rebase architecture is suspended as a historical candidate, not the next action."
+    "owner_internal_hardening": "Novel owner persists one-book-at-a-time masterwork study as the active execution priority before story reselection. GUI_MI_ZHI_ZHU first-volume coverage has been recovered from verified source-bound learning evidence and the active resume pointer is now 第二部《无面人》CH1. Historical FQ001 FINALs/Canon/publication facts remain preserved; existing rebase architecture is suspended as a historical candidate, not the next action."
   },
   "continuity_acceptance": {
     "result": "PASS",
@@ -134,6 +134,7 @@
   ],
   "derived_artifact_refs": [
     "Google Drive /ChatGPT/NOVEL_OS_小说系统_交付归档/章节DOCX/CH0008_第8章_药盒上的名字.docx",
-    "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk"
+    "https://docs.google.com/document/d/1OtBWEt7GrLaGU2cZOJcH1G-wWPIsBy8H/edit?usp=drivesdk",
+    "Google Drive /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/诡秘之主/诡秘之主_学习总账.md"
   ]
 }
