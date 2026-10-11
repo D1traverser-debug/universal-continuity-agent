@@ -5,6 +5,7 @@ from typing import Any
 
 ALLOWED_OWNER_KINDS = {"BUSINESS", "FALLBACK", "ENGINEERING", "STANDALONE", "INFRA"}
 MEMBERSHIP_AUTHORITY_ROLE = "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY"
+FORBIDDEN_REBUILDABLE_OBSERVATION_PREFIXES = ("observed_", "architecture_validation_")
 
 
 def _text(value: Any) -> str:
@@ -60,6 +61,10 @@ def validate_owner_registry(registry: Mapping[str, Any]) -> tuple[str, ...]:
             errors.append(f"OWNER_REGISTRY owners[{index}] missing name"); continue
         if name in names: errors.append(f"duplicate owner name:{name}")
         names.add(name)
+        for key in raw:
+            key_text = _text(key)
+            if any(key_text.startswith(prefix) for prefix in FORBIDDEN_REBUILDABLE_OBSERVATION_PREFIXES):
+                errors.append(f"{name}: rebuildable remote observation field does not belong in OWNER_REGISTRY:{key_text}")
         kind = _text(raw.get("owner_kind")); kind_by_name[name] = kind
         if kind not in ALLOWED_OWNER_KINDS: errors.append(f"{name}: invalid or missing owner_kind:{kind or 'MISSING'}")
         domains = raw.get("domains")
