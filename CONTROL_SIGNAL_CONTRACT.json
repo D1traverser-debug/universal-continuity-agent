@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0",
-  "purpose": "Separate non-authoritative detection/monitoring signals from single-writer authoritative task state.",
+  "schema_version": "1.1",
+  "purpose": "Separate non-authoritative detection/monitoring signals from single-writer authoritative task state and make signal consumption verify-first rather than clarification-first.",
   "transport": {
     "preferred": "GITHUB_ISSUE",
     "title_prefix": "[CONTROL_SIGNAL]",
@@ -35,12 +35,24 @@
   },
   "consumption": {
     "consumer": "CURRENT_VALID_UNIVERSAL_MAINTENANCE_WRITER",
-    "required_action": "Re-observe evidence, classify the signal, then either open/continue maintenance or close as not actionable with reason.",
+    "runtime": "runtime/control_signal.py",
+    "required_order": ["REOBSERVE", "RESOLVE_RETRIEVABLE_FACTS", "CLASSIFY_ACTIONABILITY", "ASK_ONLY_UNAVAILABLE_FACT_OR_HUMAN_JUDGMENT", "BUILD_AGENT_READY_BRIEF", "DELEGATE_OR_CLOSE"],
+    "required_action": "Re-observe evidence first. Resolve retrievable facts autonomously. Ask the user only for unavailable facts or genuine human judgment. If actionable, construct a stable Agent-ready brief before delegation; otherwise close or retain the signal with reason.",
+    "work_admission_states": ["VERIFY_REQUIRED", "FACT_GATHERING", "NEEDS_USER_INFORMATION", "NEEDS_HUMAN_JUDGMENT", "BRIEF_REQUIRED", "READY_TO_DELEGATE", "NOT_ACTIONABLE"],
+    "retrievable_fact_is_user_choice": false,
+    "raw_chat_or_issue_history_is_agent_ready_brief": false,
     "issue_closure_does_not_rewrite_business_truth": true
+  },
+  "agent_ready_brief": {
+    "required_for_ready_to_delegate": true,
+    "required_fields": ["behavior", "current_state", "desired_state", "stable_interfaces", "acceptance_criteria", "out_of_scope", "evidence_refs"],
+    "principle": "A downstream Agent receives stable behavior/state/interfaces/evidence and testable acceptance criteria, not a noisy transcript or stale line-number/file-layout micromanagement.",
+    "out_of_scope_must_be_explicit": true,
+    "acceptance_criteria_must_be_testable": true
   },
   "anti_duplication": {
     "dedupe_key": "signal_type + subject + latest_observed_head_or_evidence_identity",
     "prefer_update_existing_open_signal": true
   },
-  "assurance_boundary": "A signal proves only that an observation was reported. It is neither a lease, a state transition, nor proof that the reported diagnosis is correct."
+  "assurance_boundary": "A signal proves only that an observation was reported. Work-admission classification proves only deterministic process state, not that the diagnosis is semantically correct. Neither is a lease, a business state transition, nor live quality proof."
 }
