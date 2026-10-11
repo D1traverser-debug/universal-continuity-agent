@@ -71,6 +71,27 @@ def test_existing_maintenance_loop_already_contains_the_full_closed_loop_in_orde
     assert positions == sorted(positions)
 
 
+def test_plausible_system_defect_hypothesis_is_triaged_before_ordinary_discussion():
+    startup = (ROOT / "STARTUP_HOOK.md").read_text(encoding="utf-8")
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+    policy = load_json("SYSTEM_MAINTENANCE_POLICY.json")
+
+    assert "defect triage" in startup
+    assert "确认无问题则解释并停止" in startup
+    assert "证据不足则继续核查" in startup
+    assert "确认有问题则在同一轮进入维护/进化闭环" in startup
+    assert "不得只把已确认缺陷描述成“未来风险”后结束" in startup
+
+    assert "Plausible system-defect hypothesis" in entrypoint
+    assert "signal triage before ordinary discussion" in entrypoint
+    assert "`NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`" in entrypoint
+    assert "A confirmed defect may not be downgraded" in entrypoint
+
+    assert policy["meta_maintenance_outline"]["stages"][0] == "M0_INTAKE_AND_SIGNAL_CLASSIFICATION"
+    assert policy["default_autonomy"]["classify_user_feedback_before_adoption"] is True
+    assert policy["default_autonomy"]["wait_for_user_to_notice_related_internal_followups"] is False
+
+
 def test_learning_policy_is_an_input_to_maintenance_not_a_parallel_root_system():
     learning = (ROOT / "CONTINUOUS_LEARNING_POLICY.md").read_text(encoding="utf-8")
     assert "Learning is one input to maintenance" in learning
