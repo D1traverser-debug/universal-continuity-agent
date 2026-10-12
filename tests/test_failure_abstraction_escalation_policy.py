@@ -26,12 +26,15 @@ def test_failure_abstraction_escalation_policy_is_single_semantic_owner():
     assert escalation["rules"]["high_level_repair_must_return_to_concrete_instance_fix"] is True
 
 
-def test_meta_outline_places_history_and_escalation_before_system_impact_and_patch():
+def test_meta_outline_builds_parent_system_map_before_deep_diagnosis_and_history_escalation():
     policy = json.loads((ROOT / "SYSTEM_MAINTENANCE_POLICY.json").read_text(encoding="utf-8"))
     stages = policy["meta_maintenance_outline"]["stages"]
     loop = policy["maintenance_loop"]
 
-    assert stages.index("M1A_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION") < stages.index("M2_FULL_SYSTEM_IMPACT_MAP")
-    assert loop.index("SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS") < loop.index("BUILD_FULL_SYSTEM_IMPACT_MAP")
+    assert stages.index("M2_FULL_SYSTEM_IMPACT_MAP") < stages.index("M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION")
+    assert loop.index("BUILD_FULL_SYSTEM_IMPACT_MAP") < loop.index("DIAGNOSE_ROOT_CAUSE")
+    assert loop.index("DIAGNOSE_ROOT_CAUSE") < loop.index("SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS")
+    assert loop.index("SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS") < loop.index("ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX")
     assert loop.index("ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX") < loop.index("PATCH_MINIMUM_AUTHORITY_SURFACE")
-    assert loop.index("RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX") > loop.index("RUN_OR_OBSERVE_VALIDATION")
+    assert loop.index("PATCH_MINIMUM_AUTHORITY_SURFACE") < loop.index("RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX")
+    assert loop.index("RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX") < loop.index("RUN_OR_OBSERVE_VALIDATION")
