@@ -265,6 +265,7 @@ def test_fault_injection_suite_targets_unknown_unknown_boundaries():
     assert "external_reference_is_promoted_to_authority_by_presence" in scenarios
     assert "declared_executor_is_treated_as_session_execution_proof" in scenarios
     assert "meta_maintenance_outline_omitted_after_systemic_correction" in scenarios
+    assert "recurrent_failure_class_repaired_again_at_same_or_lower_abstraction_level" in scenarios
     assert "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade" in scenarios
 
 
