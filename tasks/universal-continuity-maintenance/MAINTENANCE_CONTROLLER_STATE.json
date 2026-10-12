@@ -3,7 +3,7 @@
   "run_id": "maintenance-execution-sop-v62-selfhost-2026-10-12",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 11,
+  "revision": 12,
   "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
   "completed_stage_receipts": [
     {
@@ -75,6 +75,11 @@
   ],
   "reopen_history": [],
   "investigation_resolution": null,
-  "prepatch_checkpoint": null,
+  "prepatch_checkpoint": {
+    "ref": "github-commit://7155f4aacc0238a7fe308f58959cfc4d60498007",
+    "revision": 12,
+    "bound_completed_stage_count": 11,
+    "authoritative_reread_verified": true
+  },
   "blocker": null
 }
