@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "run_id": "monitor-external-state-authority-v63-2026-10-12",
+  "failure_class": "TASK_MUTATION_VERSION_COUPLED_TO_FORMAL_META_PROOF_VERSION",
+  "recurrence_status": "RECURRED_AFTER_FIX",
+  "prior_incident_ref": "audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json",
+  "prior_repair_level": "OWNER_OR_COMPONENT_MECHANISM",
+  "current_repair_level": "SYSTEM_ARCHITECTURE",
+  "evidence": [
+    "runtime/universal_continuity.py::acquire_resume_lease",
+    "tests/test_meta_maintenance.py::test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record",
+    "tasks/universal-continuity-maintenance/HANDOFF.md",
+    "github-actions://D1traverser-debug/universal-continuity-agent/runs/38275584909/jobs/114900126253"
+  ],
+  "root_cause": "manifest_version is a durable task mutation/CAS lineage counter and is incremented by every legal resume takeover. The latest_meta_maintenance_run_ref is the latest completed formal maintenance proof and may legitimately predate a task-only mutation. Requiring target_manifest_version == current manifest_version conflates these two lifecycles and forces either fake formal runs or CI failure after ordinary takeover. The V53 workaround generated a new formal run on takeover, but the newer during-execution controller correctly forbids treating an incomplete trajectory as a completed formal proof, exposing the architectural mismatch again.",
+  "history_search": {
+    "matched_prior_refs": ["audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json"],
+    "prior_fix": "Generate a current-manifest-version formal meta closure and synchronize status cache after takeover.",
+    "why_prior_fix_is_now_insufficient": "Formal maintenance proof must represent a genuinely completed maintenance trajectory. A lease-only task mutation is not itself a new formal maintenance proof, and an in-progress controller run cannot be backfilled as completed merely to satisfy version equality."
+  },
+  "alternatives": [
+    {
+      "id": "ROLL_BACK_OR_STOP_MANIFEST_VERSION_ON_TAKEOVER",
+      "decision": "REJECT",
+      "reason": "Contradicts the authoritative single-writer/CAS takeover contract and weakens stale-writer detection."
+    },
+    {
+      "id": "GENERATE_FORMAL_META_RUN_ON_EVERY_TAKEOVER",
+      "decision": "REJECT_AS_RECURRENT_SAME_LEVEL_FIX",
+      "reason": "Repeats the V53 mechanism, inflates proof artifacts, and can falsely imply a completed maintenance trajectory."
+    },
+    {
+      "id": "DECOUPLE_TASK_MUTATION_VERSION_FROM_LATEST_COMPLETED_FORMAL_META_PROOF",
+      "decision": "ACCEPT",
+      "reason": "Preserves both truthful task mutation lineage and truthful formal proof chronology. The latest completed run must be internally valid and target a manifest version not newer than the current task manifest; equality is not required for task-only mutations."
+    }
+  ],
+  "accepted_invariant": {
+    "manifest_version": "task authority mutation/CAS lineage; increments on legal takeover and other durable task-state writes",
+    "latest_meta_maintenance_run_ref": "latest completed formal meta-maintenance proof, not a mirror of every task mutation",
+    "target_manifest_version_rule": "latest completed formal run target_manifest_version MUST be <= current manifest_version; exact equality may be required only by a separate explicit promotion/freshness gate, not by generic task versioning",
+    "in_progress_rule": "an ACTIVE/BLOCKED controller trajectory must never be fabricated into a completed formal meta-run just to satisfy version equality"
+  },
+  "implementation_plan": [
+    "change the stale-or-missing meta-run regression from exact target/current manifest equality to non-future binding plus full run structural evaluation",
+    "record the binding model explicitly in the maintenance task manifest/handoff",
+    "retain acquire_resume_lease manifest_version increment unchanged",
+    "retain the latest completed formal run pointer until a genuine completed formal promotion replaces it",
+    "add/retain CI regression coverage so a future takeover can advance manifest_version without requiring fabricated meta evidence"
+  ],
+  "complexity": {
+    "new_authority_surfaces": 0,
+    "new_agents": 0,
+    "protocol_bump": false,
+    "runtime_takeover_change": false,
+    "test_change": "one incorrect equality invariant is replaced by the correct lifecycle relation"
+  },
+  "assurance_boundary": "This decoupling prevents false CI failures and fake proof generation. It does not by itself prove that the latest formal meta-run covers every later semantic change; semantic promotion remains an explicit maintenance/closure responsibility and is represented separately from the task mutation counter."
+}
