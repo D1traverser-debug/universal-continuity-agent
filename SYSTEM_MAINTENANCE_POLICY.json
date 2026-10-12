@@ -2,7 +2,7 @@
   "schema_version": "1.8",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
-  "principle": "The user is not the system maintenance operator. A user correction, systemic defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal starts a maintenance process; it is not a direct implementation order. The maintenance writer must classify the signal, inspect the affected system, decide what must be learned or changed, and only then execute the smallest evidence-backed change.",
+  "principle": "The user is not the system maintenance operator. A user correction, systemic defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal starts a maintenance process; it is not a direct implementation order. The maintenance writer must classify the signal, inspect the affected system, build the parent-system outline before deep local diagnosis, decide what must be learned or changed, and only then execute the smallest evidence-backed change.",
   "triggers": [
     "ASSISTANT_DETECTS_SYSTEMIC_GAP",
     "USER_REPORT_REVEALS_SYSTEMIC_GAP",
@@ -22,6 +22,7 @@
   "default_autonomy": {
     "diagnose_root_cause": true,
     "inspect_authoritative_state_before_write": true,
+    "build_parent_system_outline_before_deep_local_diagnosis": true,
     "classify_artifact_context_and_cache_authority": true,
     "assess_reliability_guard_before_feature_expansion": true,
     "classify_user_feedback_before_adoption": true,
@@ -57,7 +58,7 @@
     "claim_global_perfection_or_all_future_failures_preconsidered": false
   },
   "meta_maintenance_outline": {
-    "purpose": "Default governance path for non-trivial systemic maintenance. It prevents symptom-driven patching, blind obedience to proposed fixes, prompt-only papering-over, cross-subsystem drift, avoidable user questioning, redundant capability construction, repeated same-level repair after a known failure class recurs, and unbounded architecture growth.",
+    "purpose": "Default governance path for non-trivial systemic maintenance. It prevents symptom-driven patching, blind obedience to proposed fixes, prompt-only papering-over, cross-subsystem drift, avoidable user questioning, redundant capability construction, repeated same-level repair after a known failure class recurs, and unbounded architecture growth. The parent-system impact outline is built before detailed root-cause drilling so local evidence is interpreted in the correct system context.",
     "activation": {
       "full_depth": [
         "explicit global audit",
@@ -70,9 +71,9 @@
     },
     "stages": [
       "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
-      "M1_REQUIREMENT_AND_FAILURE_MODEL",
-      "M1A_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
+      "M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION",
       "M2_FULL_SYSTEM_IMPACT_MAP",
+      "M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
       "M3_LEARNING_AND_EVIDENCE_SCOUT",
       "M3A_CAPABILITY_REUSE_SCAN",
       "M4_ALTERNATIVES_AND_FALSIFICATION",
@@ -88,10 +89,11 @@
     ],
     "mandatory_questions": [
       "What exact user goal/constraint/counterexample was revealed, separate from the proposed mechanism?",
-      "What is the root-cause layer: account/prompt instruction, repository policy, runtime, schema, test/eval, owner binding, product capability, evidence, or propagation?",
+      "Before detailed local diagnosis, what is the parent-system outline: affected owners, authorities, state transitions, consumers, outputs, evidence paths, lifecycle boundaries and bypass surfaces?",
+      "Given that outline, what is the root-cause layer: account/prompt instruction, repository policy, runtime, schema, test/eval, owner binding, product capability, evidence, or propagation?",
       "Which reusable failure class does this instance belong to, and what prior incidents or accepted repairs match that class?",
       "If the same failure class recurred after an accepted fix, what higher abstraction level must now be challenged before another local patch is allowed?",
-      "After the higher-level repair, what class-level prevention and concrete instance repair must both be revalidated?",
+      "After the higher-level repair, what class-level prevention and concrete instance repair must both be revalidated before validation can close?",
       "What other active surfaces can contradict or bypass this fix?",
       "What relevant prior incidents, accepted rules, user corrections, and current external practices should be learned before choosing a fix?",
       "What existing capability, Skill, runtime, plugin, policy, harness, or owner primitive can be reused or extended before building something new?",
@@ -108,7 +110,7 @@
   },
   "failure_abstraction_escalation": {
     "owner": "SYSTEM_MAINTENANCE_POLICY.json",
-    "principle": "Repair is a vertical loop, not a patch queue: concrete instance -> reusable failure class -> owner/component mechanism -> system architecture -> maintenance meta-method. The lowest sufficient layer is preferred on first observation, but recurrence after an accepted fix is evidence that the previous abstraction was insufficient.",
+    "principle": "Repair is a vertical loop, not a patch queue: concrete instance -> reusable failure class -> owner/component mechanism -> system architecture -> maintenance meta-method. The lowest sufficient layer is preferred on first observation, but recurrence after an accepted fix is evidence that the previous abstraction was insufficient. The vertical loop is evaluated inside the parent-system outline, not before it.",
     "recurrence_statuses": ["FIRST_OBSERVED", "KNOWN_CLASS_NEW_INSTANCE", "RECURRED_AFTER_FIX", "CROSS_OWNER_RECURRENT"],
     "abstraction_levels_low_to_high": ["INSTANCE", "FAILURE_CLASS", "OWNER_OR_COMPONENT_MECHANISM", "SYSTEM_ARCHITECTURE", "META_METHOD"],
     "escalation_decisions": ["HOLD_FIRST_OBSERVATION", "ESCALATE", "MAX_LEVEL_REDESIGN"],
@@ -213,7 +215,7 @@
       "the owner repeatedly executes from stale rules, stale state, or stale artifacts",
       "CI, eval, or product evidence shows a regression in a core owner responsibility"
     ],
-    "required_response": ["PERSIST_INCIDENT_OR_FAILURE_EVIDENCE", "CLASSIFY_ROOT_CAUSE_LAYER", "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA", "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS", "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX", "BUILD_FULL_SYSTEM_IMPACT_MAP", "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM", "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE", "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD", "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA", "BUILD_FACT_DECISION_FRONTIER", "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW", "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST", "CHECK_EXECUTION_AND_REFRESH_PATH", "PATCH_TRUE_OWNER_SURFACE", "ADD_OR_UPDATE_REGRESSION_OR_EVAL", "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX", "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM", "VERIFY_CROSS_SUBSYSTEM_PROPAGATION", "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE", "CALIBRATE_CLOSURE_CLAIM"],
+    "required_response": ["PERSIST_INCIDENT_OR_FAILURE_EVIDENCE", "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA", "BUILD_FULL_SYSTEM_IMPACT_MAP", "CLASSIFY_ROOT_CAUSE_LAYER", "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS", "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX", "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM", "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE", "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD", "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA", "BUILD_FACT_DECISION_FRONTIER", "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW", "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST", "CHECK_EXECUTION_AND_REFRESH_PATH", "PATCH_TRUE_OWNER_SURFACE", "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX", "ADD_OR_UPDATE_REGRESSION_OR_EVAL", "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM", "VERIFY_CROSS_SUBSYSTEM_PROPAGATION", "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE", "CALIBRATE_CLOSURE_CLAIM"],
     "affected_owner_non_reliability_expansion": "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY",
     "freeze_scope": "AFFECTED_OWNER_OR_CAPABILITY_ONLY",
     "freeze_clearance": "ROOT_CAUSE_PATCH_PLUS_RELEVANT_REGRESSION_OR_EVAL_PASS_PLUS_VERIFIED_AUTHORITY_REREAD",
@@ -249,10 +251,10 @@
     "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA",
     "CLASSIFY_SCOPE_AND_AUTHORITY",
     "READ_CURRENT_AUTHORITY",
+    "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "DIAGNOSE_ROOT_CAUSE",
     "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS",
     "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX",
-    "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "ASSESS_RELIABILITY_GUARD",
     "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE",
     "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD",
@@ -265,10 +267,10 @@
     "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST",
     "SELECT_RISK_TIERED_AUDIT_DEPTH",
     "PATCH_MINIMUM_AUTHORITY_SURFACE",
+    "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
     "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
     "ADD_OR_UPDATE_GUARD",
     "RUN_OR_OBSERVE_VALIDATION",
-    "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
     "RUN_SELECTED_CROSS_SURFACE_OR_FAULT_AUDIT",
     "RUN_CROSS_SUBSYSTEM_PROPAGATION_CHECK",
     "RUN_SECOND_ORDER_CHALLENGE_AND_CLAIM_CALIBRATION",
