@@ -16,6 +16,13 @@
         "base_head": "98063362b4716eaed4b222e40493eebe8b612524",
         "observed_head": "2c71944bb22d04899773efbf8622e4b1ebf56609",
         "architecture_relevant_change": false,
+        "changed_paths": [
+          "workspaces/articles/fw-20261012-ai-security-6dd14859/STATE.json",
+          "workspaces/articles/fw-20261012-ai-security-6dd14859/reviews/FINAL_AUDIT.json",
+          "workspaces/articles/fw-20261012-ai-security-6dd14859/reviews/MECHANICAL_AUDIT.json",
+          "workspaces/articles/fw-20261012-ai-security-6dd14859/stages/DELIVERY.json",
+          "workspaces/articles/fw-20261012-ai-security-6dd14859/stages/MECHANICAL_AUDIT.json"
+        ],
         "evidence_ref": "https://github.com/D1traverser-debug/financial-writing-agent/compare/98063362b4716eaed4b222e40493eebe8b612524...2c71944bb22d04899773efbf8622e4b1ebf56609"
       },
       "latest_owner_repair_ref": "D1traverser-debug/financial-writing-agent@main:evals/FINANCIAL_FRESH_CHAT_EXTERNAL_AUTHORITY_AUDIT_2026-10-12.md",
