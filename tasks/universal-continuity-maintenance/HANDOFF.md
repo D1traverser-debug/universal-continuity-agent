@@ -6,9 +6,9 @@
 - status: `ACTIVE`
 - contract: `CONTINUITY_V3_7`
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
-- current writer lease: `lease-d5136fdf-0661-4cd9-aeba-74db63c4dc3f`
-- resume_epoch: `7`
-- manifest_version: `61`
+- current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
+- resume_epoch: `8`
+- manifest_version: `62`
 - system-maintenance policy: `1.8`
 - meta-maintenance: `1.3`
 - latest formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
