@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from runtime.maintenance_controller import evaluate_maintenance_state
 from runtime.meta_maintenance import CURRENT_META_MAINTENANCE_SCHEMA
 
 
@@ -60,7 +61,38 @@ def test_harness_records_meta_governance_assurance_ceiling_and_hot_path_boundary
     assert meta["systemic_run_requires_parent_system_outline_before_deep_diagnosis"] is True
     assert meta["systemic_run_requires_failure_history_search"] is True
     assert meta["recurrent_failure_requires_higher_abstraction"] is True
-    # Keep the established status-cache key for downstream compatibility while
-    # also requiring the tightened ordering semantics introduced by v1.3.
     assert meta["high_level_repair_returns_to_class_and_instance"] is True
     assert meta["high_level_repair_returns_to_class_and_instance_before_validation"] is True
+
+
+def test_latest_meta_run_is_bound_to_complete_controller_trace_once_contract_is_enabled():
+    manifest = load_json("tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
+    controller_contract = manifest.get("maintenance_controller_contract_version")
+    if not controller_contract:
+        return
+
+    assert controller_contract == "1.0"
+    policy = load_json("SYSTEM_MAINTENANCE_POLICY.json")
+    run = load_json(manifest["latest_meta_maintenance_run_ref"])
+    binding = run.get("maintenance_controller")
+    assert isinstance(binding, dict)
+    assert binding.get("contract_version") == controller_contract
+    assert binding.get("state_ref") == manifest.get("last_completed_maintenance_controller_state_ref")
+
+    state = binding.get("final_state")
+    assert isinstance(state, dict)
+    result = evaluate_maintenance_state(state, policy, require_complete=True)
+    assert result.status == "PASS", result.errors
+    assert state["triage_outcome"] == "CONFIRMED_DEFECT"
+    assert state["status"] == "COMPLETE"
+    assert state["prepatch_checkpoint"]["authoritative_reread_verified"] is True
+    assert binding.get("prepatch_checkpoint_ref") == state["prepatch_checkpoint"]["ref"]
+    assert binding.get("run_id") == state["run_id"]
+
+
+def test_controller_state_is_not_a_second_policy_or_business_authority():
+    blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
+    assert "runtime/maintenance_controller.py" in blueprint
+    assert "SYSTEM_MAINTENANCE_POLICY.json" in blueprint
+    assert "during-execution transition controller" in blueprint
+    assert "Domain owners retain business truth" in blueprint
