@@ -3,8 +3,8 @@
   "run_id": "maintenance-execution-sop-v62-selfhost-2026-10-12",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 12,
-  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+  "revision": 13,
+  "current_stage": "M8_MULTI_LAYER_VALIDATION",
   "completed_stage_receipts": [
     {
       "stage": "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
@@ -71,6 +71,18 @@
       "revision": 11,
       "evidence_refs": ["runtime/maintenance_controller.py", "tests/test_maintenance_controller.py"],
       "summary": "Deletion test removed the duplicate maintenance_sop mechanism. Remaining payoff is to make prepatch durability and controller-complete closure mechanically required."
+    },
+    {
+      "stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+      "revision": 13,
+      "evidence_refs": [
+        "github-commit://26bd7930eca1b88023f2b6205ab9730df6e9dba8",
+        "github-commit://2a55d9a344b1a0ae7794293e3e0a5ac5f72b4e98",
+        "github-commit://dd19e8da61dc3759d0880bf7a44c8baa330aee75",
+        "github-commit://a1ae28f4a308f263519fdb5b3cb0aaaa87af588d",
+        "github-commit://7c66d57df958d2ba0161e8820c3a5229ef9aff32"
+      ],
+      "summary": "Removed the duplicate SOP, hardened the canonical controller, separated INVESTIGATE from systemic stages, required verified durable prepatch admission, repaired reopen revision semantics, and added closure-binding regression coverage."
     }
   ],
   "reopen_history": [],
