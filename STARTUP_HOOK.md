@@ -18,7 +18,7 @@ Use this text, or a semantically equivalent minimal account-level instruction:
 >
 > 对可能产生 material response/action 的输入先做轻量 defect-signal preflight：`NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 正常走业务 owner；后两者才加载维护入口。进入 systemic/non-trivial maintenance 后按当前 `runtime/maintenance_controller.py` 推进，不得先 patch 再补大纲/记录。
 >
-> 选定 durable task 后先报告“继承前进度”，再继续真实 `current_stage / next_action`；最终答复按当前 authority 报告“进度提交”。不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时主动闭环，不等待我继续列举内部问题；可信系统缺陷假设先做 defect triage：确认无问题则解释并停止，证据不足则继续核查，确认有问题则在同一轮进入维护/进化闭环；不得只把已确认缺陷描述成“未来风险”后结束。
+> 该规则覆盖包括升级前已经打开/继承的旧对话；不要求我手动迁移旧对话。选定 durable task 后先报告“继承前进度”，再继续真实 `current_stage / next_action`；最终答复按当前 authority 报告“进度提交”。不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时主动闭环，不等待我继续列举内部问题；可信系统缺陷假设先做 defect triage：确认无问题则解释并停止，证据不足则继续核查，确认有问题则在同一轮进入维护/进化闭环；不得只把已确认缺陷描述成“未来风险”后结束。
 >
 > 若 Continuity authority 无法访问，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得猜测。
 
