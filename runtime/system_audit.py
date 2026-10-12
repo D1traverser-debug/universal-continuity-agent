@@ -66,6 +66,7 @@ FAULT_INJECTION_SCENARIOS = (
     "external_reference_is_promoted_to_authority_by_presence",
     "declared_executor_is_treated_as_session_execution_proof",
     "meta_maintenance_outline_omitted_after_systemic_correction",
+    "recurrent_failure_class_repaired_again_at_same_or_lower_abstraction_level",
     "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade",
 )
 
@@ -1010,6 +1011,38 @@ def run_synthetic_fault_injection(root: str | Path, scenarios: Iterable[str]) ->
                     result.status == "FAIL"
                     and "systemic_change_requires_learning_scout" in result.errors
                     and "at_least_two_alternatives_required" in result.errors
+                )
+            elif scenario == "recurrent_failure_class_repaired_again_at_same_or_lower_abstraction_level":
+                policy = _load_json(root, "SYSTEM_MAINTENANCE_POLICY.json")
+                manifest = _load_json(root, "tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
+                run_ref = str(manifest.get("latest_meta_maintenance_run_ref", ""))
+                candidate = copy.deepcopy(_load_json(root, run_ref))
+                history = candidate.setdefault("failure_history", {})
+                history.update(
+                    {
+                        "recurrence_status": "RECURRED_AFTER_FIX",
+                        "matched_prior_refs": history.get("matched_prior_refs") or ["synthetic://prior-repair"],
+                        "prior_repair_abstraction_level": "SYSTEM_ARCHITECTURE",
+                        "current_abstraction_level": "SYSTEM_ARCHITECTURE",
+                        "escalation_decision": "ESCALATE",
+                        "escalation_reason": "synthetic same-level recurrence",
+                        "class_level_prevention": "synthetic class prevention",
+                        "instance_fix": "synthetic concrete fix",
+                        "considered_or_reused_mechanism_refs": ["SYSTEM_MAINTENANCE_POLICY.json"],
+                    }
+                )
+                result = evaluate_meta_maintenance_run(
+                    candidate,
+                    policy,
+                    owner_registry=_load_json(root, "OWNER_REGISTRY.json"),
+                )
+                passed = (
+                    policy.get("failure_abstraction_escalation", {})
+                    .get("rules", {})
+                    .get("same_or_lower_level_repeat_patch_is_allowed")
+                    is False
+                    and result.status == "FAIL"
+                    and "recurring_failure_must_escalate_abstraction_level" in result.errors
                 )
             elif scenario == "hard_coded_stale_methodology_receipt_semantics_survive_contract_upgrade":
                 adapter = copy.deepcopy(_load_json(root, "OWNER_ADAPTER_CONTRACT.json"))
