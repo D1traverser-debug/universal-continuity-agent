@@ -14,28 +14,27 @@
 
 ## 当前权威状态
 
-1. Universal PR #11 的根修已经合并；两文件 bootstrap、hot-path Skill budget、delta-aware architecture freshness、稳定 maintenance lifecycle stage 均已进入 `main`。
-2. 当前 Financial `main` 为 `6be076cf0cc328345d6dd5e215857f5f24b98de7`。相对旧 validation head `98063362...` 的 31 个提交包含 policy / rule ownership / checks / document / schemas / canonical references / tests，因此旧 architecture PASS 正确失效。
-3. 已完成当前 HEAD 的 fresh structural revalidation：六层架构、manifest compatibility、thin Skill、runtime/workflow/state/harness/continuity pointers 仍成立；变化仍处于既有声明层内，没有产生第二 workflow/state authority 或未知 shared vocabulary。审计：`audits/FINANCIAL_ARCHITECTURE_REVALIDATION_6BE076_2026-10-12.json`。
-4. Financial 当前 HEAD 的 owner CI `38220099673` / job `114713994352` 为 `steps=null`，所以仍是 `UNVERIFIED`；结构 PASS 不升级成 owner CI PASS、live quality、owner-native semantic certification 或 provider attestation。
-5. 三条核心 Universal 自动任务当前都启用：`Continuity Self Audit`、`Agent Architecture Watch`、`Continuity Learning Scout`。每次 run 均按 cold start 重建状态，不依赖先前 automation chat。
-6. 监控曾出现 enabled→disabled→enabled 的产品状态漂移，mutation provenance 当前不可见。Issue #12 保持 OPEN；审计：`audits/CONTINUITY_MONITOR_LIVENESS_INCIDENT_2026-10-12.md`。
-7. 三条核心监控现在互相检查 peer liveness；删除旧监控聊天不视为 task 删除证据。发现 peer missing/disabled 时记录 liveness signal，但在缺少明确用户授权时不自动 re-enable，以免覆盖用户主动关闭的意图。
-8. Skill 8192B 仍只表示 always-loaded hot-path router target，不限制 A股/小说/视频/财经的 research、canon、distillation、history、data、examples 或其他知识库规模。
+1. Universal PR #11 的根修已合并：两文件 bootstrap、hot-path Skill budget、delta-aware architecture freshness、稳定 maintenance lifecycle stage 已进入 `main`。
+2. Universal PR #13 已合并；当前 Financial `main` `6be076cf0cc328345d6dd5e215857f5f24b98de7` 已完成 fresh structural revalidation，审计为 `audits/FINANCIAL_ARCHITECTURE_REVALIDATION_6BE076_2026-10-12.json`。
+3. Financial 当前 HEAD 的 owner CI `38220099673` / job `114713994352` 为 `steps=null`，仍是 `UNVERIFIED`。结构 PASS 不升级成 owner CI PASS、live quality、owner-native semantic certification 或 provider attestation。
+4. Financial architecture freshness signal `#7` 已在 authoritative merge + reread + exact-current-head confirmation后关闭。
+5. 旧 umbrella productization signal `#1` 已关闭；它的原始失败类现由 architecture contract、signal plane、Architecture Watch、Self Audit signal-to-repair、thin bootstrap/hot-path semantics 等具体机制承担。
+6. 三条核心 Universal 自动任务当前均启用：`Continuity Self Audit`、`Agent Architecture Watch`、`Continuity Learning Scout`。每次 run 按 cold start 重建状态，不依赖先前 automation chat。
+7. 监控曾出现 enabled→disabled→enabled 的产品状态漂移，mutation provenance 当前不可见。Issue `#12` 保持 OPEN；审计：`audits/CONTINUITY_MONITOR_LIVENESS_INCIDENT_2026-10-12.md`。
+8. 三条核心监控现互相检查 peer liveness；删除旧监控聊天不视为 task 删除证据。发现 peer missing/disabled 时记录 liveness signal，但缺少明确用户授权时不自动 re-enable，以免覆盖用户主动关闭意图。
+9. Skill 8192B 仅是 always-loaded hot-path router target，不限制 A股、小说、视频、财经的 research、canon、distillation、history、data、examples 或其他知识库规模。
 
 ## 当前开放信号
 
 - `#2` A-share hot-path Skill router：LOW，owner-local efficiency optimization。
-- `#3` Novel hot-path Skill router：MEDIUM，不能通过删除 canon/research/distillation 来“凑字节”。
+- `#3` Novel hot-path Skill router：MEDIUM；不得通过删除 canon/research/distillation 来“凑字节”。
 - `#4` Video hot-path Skill router：MEDIUM，owner-local efficiency optimization。
-- `#12` recurring monitor liveness：OPEN，当前三条 task 已 enabled，但 disable provenance / all-three-disabled external detection 仍未证明。
-
-Financial architecture freshness signal `#7` 在本次 Universal observation refresh 合并并回读后应关闭；其 owner CI / owner-native / provider / live-quality 边界继续独立 OPEN。
+- `#12` recurring monitor liveness：OPEN；当前三条 task 已 enabled，但 disable provenance 和 all-three-disabled external detection 仍未证明。
 
 ## 下一步
 
-1. 合并当前 Universal observation/state reconciliation PR 并回读 `main`。
-2. 关闭 #7；关闭旧的 umbrella productization signal #1（其失败类已经由当前 architecture contract / signal plane / monitor machinery 覆盖），但保留 #12 的真实产品边界。
-3. 等待 `Continuity Self Audit` 在新 completion gate 下首次完整真实运行，以及 `Continuity Learning Scout` 首次真实运行；不能用 prompt 安装本身冒充运行证据。
-4. 若 Financial 之后只有 `workspaces/articles/...` 等业务 artifact 提交，使用 exact delta 证明后保持 architecture freshness；若再次触及 architecture-relevant surfaces，则重新 fail-closed revalidate。
+1. 观察 `Continuity Self Audit` 在新 completion gate 下首次完整真实运行；partial run 不允许 `NO_MATERIAL_CHANGE`。
+2. 观察 `Continuity Learning Scout` 首次真实运行；不能用 prompt 安装本身冒充运行证据。
+3. 若 Financial 后续只产生 `workspaces/articles/...` 等业务 artifact 提交，使用 exact delta 证明后维持 architecture freshness；若再次触及 architecture-relevant surfaces，则 fail-closed 重新验证。
+4. 对 #12 仅在获得新的产品状态或 mutation provenance 证据时推进；不把“当前 enabled”冒充根因已解决。
 5. 不获取任何 BUSINESS lease，不修改 BUSINESS truth。
