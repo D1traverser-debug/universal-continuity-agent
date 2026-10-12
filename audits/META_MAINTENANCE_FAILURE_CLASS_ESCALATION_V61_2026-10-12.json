@@ -15,8 +15,12 @@
       "SYSTEM_MAINTENANCE_POLICY.json",
       "CONTINUOUS_LEARNING_POLICY.md",
       "runtime/meta_maintenance.py",
+      "runtime/self_maintenance_trajectory.py",
       "runtime/decision_memory.py",
       "tests/test_meta_maintenance.py",
+      "tests/test_self_maintenance_evolution.py",
+      "tests/test_system_audit.py",
+      "tests/test_meta_governance_status_alignment.py",
       "audits/META_MAINTENANCE_UNIFIED_SELF_EVOLUTION_V59_2026-10-11.json",
       "audits/META_MAINTENANCE_ARCHITECTURE_ROOT_CAUSE_V60_2026-10-12.json",
       "D1traverser-debug/financial-writing-agent@main:evals/FINANCIAL_LIVE_E2E_TASK_OUTPUT_CONTRACT_INCIDENT_2026-10-12.md"
@@ -33,6 +37,8 @@
     "system_impact_map": [
       "Universal systemic maintenance diagnosis order",
       "meta-maintenance structural harness",
+      "self-maintenance reference trajectory",
+      "risk-tiered system-audit consumers",
       "durable failure-class learning and reuse",
       "all BUSINESS owners inheriting the shared maintenance/evolution method",
       "future incident closure claims and operator-dependence risk"
@@ -44,6 +50,8 @@
       "A RECURRED_AFTER_FIX run that stays at the prior abstraction level must fail.",
       "A repair that previously reached META_METHOD and recurs must require explicit MAX_LEVEL_REDESIGN rather than pretending there is another higher named level.",
       "A valid escalated repair must still record both class_level_prevention and instance_fix; high-level redesign alone cannot close the concrete defect.",
+      "The parent-system impact map must precede detailed root-cause drilling in the canonical maintenance loop and reference simulation.",
+      "The concrete class/instance repair must occur before validation rather than being recorded after validation as review theater.",
       "The runtime's executable recurrence statuses, abstraction ladder and escalation decisions must fail closed if they drift from SYSTEM_MAINTENANCE_POLICY.json.",
       "Legacy v1.0-v1.2 meta-maintenance records must remain readable as historical evidence rather than being rewritten or treated as current-schema executions."
     ]
@@ -66,13 +74,14 @@
     "current_abstraction_level": "META_METHOD",
     "escalation_decision": "ESCALATE",
     "escalation_reason": "V59 already repaired the shared parent self-maintenance/evolution architecture and explicitly named symptom-first repair plus user-reminder dependence. V60 then exposed another operator-reminder variant, and the Financial live trajectory exposed another negative-space/output-contract omission. The recurring family therefore cannot be closed by another owner-local guard or another architecture diagram; the maintenance method itself must mechanically require historical class recall and abstraction escalation.",
-    "class_level_prevention": "SYSTEM_MAINTENANCE_POLICY v1.8 now owns a failure-abstraction escalation contract. Meta-maintenance schema v1.3 requires every current systemic run to search all classified failure classes, bind prior incidents for known/recurrent classes, escalate recurrence after an accepted fix above the prior repair level, and record both class-level prevention and the concrete instance fix.",
-    "instance_fix": "The current Financial 3-to-2 delivery incident remains repaired in the Financial owner by canonical TaskContract/output parity, while this Universal change prevents its broader failure family from being treated as a novel isolated bug in future systemic maintenance. This maintenance turn also corrected its own initial shadow-rule attempt by binding runtime mirrors back to SYSTEM_MAINTENANCE_POLICY authority.",
+    "class_level_prevention": "SYSTEM_MAINTENANCE_POLICY v1.8 now owns a failure-abstraction escalation contract. Meta-maintenance schema v1.3 requires every current systemic run to search all classified failure classes, bind prior incidents for known/recurrent classes, escalate recurrence after an accepted fix above the prior repair level, and record both class-level prevention and the concrete instance fix. The canonical loop now builds the parent-system impact outline before deep root-cause drilling and returns from the higher-level repair to class+instance work before validation.",
+    "instance_fix": "The current Financial 3-to-2 delivery incident remains repaired in the Financial owner by canonical TaskContract/output parity. In Universal, the first v61 CI exposed stale consumers: the self-maintenance reference trajectory still encoded the old loop order and the system-audit test hard-pinned policy 1.7. Those consumers were repaired rather than weakening the new policy. This turn also corrected its own initial shadow-rule attempt by binding runtime mirrors back to SYSTEM_MAINTENANCE_POLICY authority.",
     "considered_or_reused_mechanism_refs": [
       "SYSTEM_MAINTENANCE_POLICY.json:meta_maintenance_outline",
       "SYSTEM_MAINTENANCE_POLICY.json:reliability_guard",
       "CONTINUOUS_LEARNING_POLICY.md:reusable failure patterns",
       "runtime/meta_maintenance.py",
+      "runtime/self_maintenance_trajectory.py",
       "runtime/decision_memory.py",
       "tests/test_meta_maintenance.py"
     ]
@@ -103,9 +112,10 @@
   "capability_reuse": {
     "decision": "EXTEND_EXISTING",
     "inspected_existing_capabilities": [
-      "SYSTEM_MAINTENANCE_POLICY v1.7 meta-maintenance outline and reliability guard",
+      "SYSTEM_MAINTENANCE_POLICY v1.7/v1.8 meta-maintenance outline and reliability guard",
       "CONTINUOUS_LEARNING_POLICY failure-pattern distillation and second-order challenge",
       "runtime/meta_maintenance.py structural harness",
+      "runtime/self_maintenance_trajectory.py deterministic parent-loop reference simulation",
       "runtime/decision_memory.py searchable negative-decision memory",
       "existing V59 unified self-maintenance/evolution parent loop"
     ],
@@ -113,7 +123,7 @@
       "A new Reflection/Supervisor Agent is not required because no distinct executor/trace boundary or held-out verification lift was demonstrated.",
       "A second failure database is not required because audit artifacts remain durable authority; the immediate missing control is mandatory historical lookup/escalation in the existing harness."
     ],
-    "rationale": "The doctrine and durable audit corpus already existed. The defect was that the current executable meta harness could accept a systemic run that named failure classes without demonstrating prior-class search or escalation. Extending the existing policy+harness is smaller and avoids another authority surface."
+    "rationale": "The doctrine, deterministic parent-loop simulator and durable audit corpus already existed. The defect was that the current executable meta harness could accept a systemic run that named failure classes without demonstrating prior-class search or escalation, while some downstream consumers still encoded older loop semantics. Extending and reconciling the existing policy+harness+simulation is smaller and avoids another authority surface."
   },
   "decision_frontier": {
     "verified_facts": [
@@ -121,6 +131,8 @@
       "V60 later documented another operator-reminder failure where signal emission had been treated as repair closure.",
       "Before schema 1.3, runtime/meta_maintenance.py required a non-empty failure_classes list but had no required historical match, recurrence status, prior repair level or abstraction escalation field.",
       "runtime/decision_memory.py currently makes rejected alternatives searchable but does not provide an authoritative automatic incident database for failure classes.",
+      "The first current v61 CI run genuinely executed and failed four tests, exposing stale self-maintenance trajectory/order and policy-version consumers rather than being dismissed as an environment issue.",
+      "After consumer-complete repair, GitHub Actions run 38253314936 / job 114824858476 executed risk-tiered control-plane audit PASS, Agent architecture harness PASS, and pytest 275 passed.",
       "The current change adds no new permanent Agent, registry or business owner and does not mutate any BUSINESS task state."
     ],
     "unresolved_facts": [
@@ -130,10 +142,9 @@
     ],
     "user_decisions_required": [],
     "autonomous_next_steps": [
-      "Run current Universal CI against policy/runtime/test/status alignment.",
-      "Repair any discovered propagation drift without weakening the historical-recall gate.",
-      "Bind this v61 run into the authoritative maintenance manifest and rebuildable status cache.",
-      "Use the next real recurring failure as live evidence; if semantic historical matching still misses obvious analogues, escalate within META_METHOD and evaluate an indexed failure-class retrieval primitive rather than waiting for another user correction."
+      "Keep the first real no-user-reminder v1.3 systemic trajectory as the next live proof gate.",
+      "Use the next real recurring failure as live evidence; if semantic historical matching still misses obvious analogues, stay at META_METHOD and evaluate normalized concept keys or indexed semantic retrieval rather than waiting for another user correction.",
+      "Keep Financial fresh-chat DUAL three-output retest and fresh current-head architecture revalidation separate from this Universal structural regression proof."
     ],
     "facts_resolved_before_user_decision": true
   },
@@ -158,26 +169,26 @@
       "id": "extend-existing-policy-and-meta-harness-with-recurrence-escalation",
       "concept_key": "failure-class-history-abstraction-escalation",
       "decision": "ACCEPTED",
-      "rationale": "It turns an existing doctrine into a fail-closed structural obligation while reusing the current authority, audit corpus and test harness and keeping business hot paths unchanged."
+      "rationale": "It turns an existing doctrine into a fail-closed structural obligation while reusing the current authority, reference simulation, audit corpus and test harness and keeping business hot paths unchanged."
     }
   ],
   "architecture_payoff": {
     "current_failure_cost": "Repeated user correction, duplicated diagnosis effort, re-learning previously documented lessons, local patches that do not eliminate the failure family, and loss of trust in claimed self-evolution.",
-    "change_cost": "One compatible maintenance-policy version bump, one meta-harness schema increment, bounded regression additions, one v61 maintenance record and cache/checkpoint reconciliation.",
-    "expected_payoff": "Known failure families become mandatory diagnostic inputs. Recurrence after a prior accepted fix mechanically forces a higher abstraction challenge, reducing same-level Band-Aid cycles without adding a new Agent or hot-path burden.",
+    "change_cost": "One compatible maintenance-policy version bump, one meta-harness schema increment, one existing reference simulation alignment, bounded regression additions, one v61 maintenance record and cache/checkpoint reconciliation.",
+    "expected_payoff": "Known failure families become mandatory diagnostic inputs. Recurrence after a prior accepted fix mechanically forces a higher abstraction challenge, and detailed diagnosis is constrained by a parent-system impact outline, reducing same-level Band-Aid cycles without adding a new Agent or hot-path burden.",
     "deletion_or_simplification_considered": true,
-    "deletion_or_simplification_result": "Reuse the existing SYSTEM_MAINTENANCE_POLICY and meta harness; do not create a separate reflection system, failure registry or duplicated startup doctrine. Runtime mirrors of the escalation vocabulary are fail-closed against the canonical policy so they cannot silently become a second authority.",
+    "deletion_or_simplification_result": "Reuse the existing SYSTEM_MAINTENANCE_POLICY, meta harness and self-maintenance trajectory simulator; do not create a separate reflection system, failure registry or duplicated startup doctrine. Runtime mirrors of the escalation vocabulary are fail-closed against the canonical policy so they cannot silently become a second authority. Stale hard-coded policy-version assertions were removed where version identity was not the behavior under test.",
     "net_complexity_decision": "NET_NEUTRAL"
   },
   "instruction_surface": {
     "decision": "NO_CHANGE",
-    "reason": "This defect occurs after repository maintenance authority is already loaded. Expanding account/startup instructions would duplicate the policy and would not mechanically enforce historical recall or recurrence escalation."
+    "reason": "This defect occurs after repository maintenance authority is already loaded. Expanding account/startup instructions would duplicate the policy and would not mechanically enforce parent-system outline ordering, historical recall or recurrence escalation."
   },
   "propagation": {
     "classification": "COMPOSABLE_PROFILE_METHOD",
     "scope": "ALL_BUSINESS_OWNERS",
     "impacted_business_owners": ["A_SHARE_MARKET_AGENT", "FINANCIAL_WRITING_AGENT_RUNTIME", "NOVEL_WRITING_AGENT", "VIDEO_GROWTH_AGENT"],
-    "mechanism": "All current BUSINESS owners continue inheriting the existing operational_hygiene/evolution parent method; the shared maintenance semantics now include history-before-repair and recurrence escalation. No owner business rule, state, task lease or article workflow is copied into Universal.",
+    "mechanism": "All current BUSINESS owners continue inheriting the existing operational_hygiene/evolution parent method; the shared maintenance semantics now include parent-outline-before-deep-diagnosis, history-before-repair, recurrence escalation and class+instance return before validation. No owner business rule, state, task lease or article workflow is copied into Universal.",
     "stale_override_scan": "PASS"
   },
   "complexity_efficiency": {
@@ -185,10 +196,10 @@
     "mandatory_startup_context_delta": 0,
     "tool_or_remote_read_delta": "SYSTEMIC_MAINTENANCE_ONLY__HISTORICAL_FAILURE_SEARCH_REQUIRED_BEFORE_CLOSURE",
     "steady_state_latency_effect": "NONE_ON_HEALTHY_BUSINESS_HOT_PATH",
-    "duplicate_rule_effect": "CANONICAL_POLICY_PLUS_FAIL_CLOSED_RUNTIME_MIRROR_PARITY__NO_SECOND_FAILURE_DATABASE",
+    "duplicate_rule_effect": "CANONICAL_POLICY_PLUS_FAIL_CLOSED_RUNTIME_MIRROR_PARITY__EXISTING_REFERENCE_SIMULATION_REUSED__NO_SECOND_FAILURE_DATABASE",
     "cross_owner_touch_count": 4,
     "migration_compatibility_effect": "META_RUN_SCHEMA_1_0_TO_1_2_REMAIN_HISTORICALLY_READABLE__CURRENT_RUNS_USE_1_3",
-    "test_observability_effect": "ADDS_NEGATIVE_TESTS_FOR_MISSING_HISTORY_PARTIAL_HISTORY_MISSING_PRIOR_REFS_SAME_LEVEL_RECURRENCE_AND_META_METHOD_RECURRENCE",
+    "test_observability_effect": "ADDS_NEGATIVE_TESTS_FOR_MISSING_HISTORY_PARTIAL_HISTORY_MISSING_PRIOR_REFS_SAME_LEVEL_RECURRENCE_META_METHOD_RECURRENCE_AND_OUTLINE_ORDER; CURRENT_FULL_PYTEST_275_PASS",
     "decision": "ACCEPTABLE"
   },
   "authority_surface_admission": "PASS",
@@ -198,8 +209,13 @@
       "SYSTEM_MAINTENANCE_POLICY.json",
       "CONTINUOUS_LEARNING_POLICY.md",
       "runtime/meta_maintenance.py",
+      "runtime/self_maintenance_trajectory.py",
       "runtime/decision_memory.py",
       "tests/test_meta_maintenance.py",
+      "tests/test_failure_abstraction_escalation_policy.py",
+      "tests/test_self_maintenance_evolution.py",
+      "tests/test_system_audit.py",
+      "tests/test_meta_governance_status_alignment.py",
       "audits/META_MAINTENANCE_UNIFIED_SELF_EVOLUTION_V59_2026-10-11.json",
       "audits/META_MAINTENANCE_ARCHITECTURE_ROOT_CAUSE_V60_2026-10-12.json",
       "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
@@ -209,7 +225,12 @@
     "changed_paths": [
       "SYSTEM_MAINTENANCE_POLICY.json",
       "runtime/meta_maintenance.py",
+      "runtime/self_maintenance_trajectory.py",
       "tests/test_meta_maintenance.py",
+      "tests/test_failure_abstraction_escalation_policy.py",
+      "tests/test_self_maintenance_evolution.py",
+      "tests/test_system_audit.py",
+      "tests/test_meta_governance_status_alignment.py",
       "audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json",
       "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
       "tasks/universal-continuity-maintenance/HANDOFF.md",
@@ -218,34 +239,67 @@
     "superseded_or_demoted_surfaces": [
       "The implicit assumption that naming failure_classes plus second-order review is sufficient without historical same-class search is superseded.",
       "The implicit permission to repeat a repair at the same abstraction level after that class has already recurred is superseded.",
-      "A prose-only notion of parent-system reframing is superseded by a current-schema fail-closed structural gate."
+      "The old ordering that allowed detailed root-cause drilling before the full-system impact outline is superseded.",
+      "The old reference simulation that omitted historical failure search and abstraction escalation is superseded.",
+      "Stale exact-version assertions that were unrelated to the behavior under test are superseded by authority/status alignment checks.",
+      "A prose-only notion of parent-system reframing is superseded by current-schema fail-closed structural and trajectory gates."
     ]
   },
   "validation": {
     "regression_or_eval_refs": [
       "tests/test_meta_maintenance.py",
+      "tests/test_failure_abstraction_escalation_policy.py",
+      "tests/test_self_maintenance_evolution.py",
+      "tests/test_system_audit.py",
+      "tests/test_meta_governance_status_alignment.py",
       "SYSTEM_MAINTENANCE_POLICY.json:failure_abstraction_escalation",
-      "runtime/meta_maintenance.py:failure_history_and_abstraction_escalation"
+      "runtime/meta_maintenance.py:failure_history_and_abstraction_escalation",
+      "runtime/self_maintenance_trajectory.py:_REQUIRED_FULL_LOOP_STEPS",
+      "github-actions://D1traverser-debug/universal-continuity-agent/runs/38253314936/jobs/114824858476"
     ],
+    "ci_evidence": {
+      "head_sha": "1cc8e1b3bd7d504f0a1ac01d39542d6bfa97db9a",
+      "run_id": 38253314936,
+      "job_id": 114824858476,
+      "risk_tiered_control_plane_audit": "PASS",
+      "agent_architecture_harness": "PASS_WITH_ACKNOWLEDGED_OWNER_DRIFT_WARNINGS",
+      "pytest": "PASS",
+      "pytest_count": 275,
+      "runner_executed": true
+    },
+    "first_ci_feedback": {
+      "run_id": 38252468487,
+      "job_id": 114822012392,
+      "result": "REAL_FAILURE_271_PASS_4_FAIL",
+      "distilled_failure_class": "CONSUMER_INCOMPLETE_PROPAGATION_OF_NEW_MAINTENANCE_SEMANTICS",
+      "repairs": [
+        "Restore parent-system impact map before detailed root-cause diagnosis.",
+        "Propagate historical-search/escalation and class+instance return into runtime/self_maintenance_trajectory.py.",
+        "Remove stale policy-version pin from tests/test_system_audit.py instead of bumping another unrelated literal.",
+        "Update focused policy-order regressions rather than weakening the canonical gate."
+      ]
+    },
     "second_order_challenge": "PASS",
     "second_order_findings": [
+      "The first genuine CI failure proved the initial v61 implementation itself had consumer-incomplete propagation; the repair used that evidence to expand the impact map rather than treating failing tests as obstacles to green status.",
+      "The old self-maintenance regression preserved a stronger outline-first invariant than the first v61 policy edit. The final order therefore keeps BUILD_FULL_SYSTEM_IMPACT_MAP before detailed DIAGNOSE_ROOT_CAUSE instead of merely updating the test to match the newer code.",
       "A required failure_history object does not prove semantic completeness of the historical search; classification and analogue matching remain model/evidence judgments.",
       "Free-form failure-class names can fragment semantically identical incidents under different labels. If live v1.3 use still misses obvious analogues, the next META_METHOD repair should evaluate normalized concept keys or indexed semantic retrieval rather than adding more policy prose.",
       "Forcing escalation on every new instance of a known class would overreact; strict higher-level escalation is reserved for RECURRED_AFTER_FIX or CROSS_OWNER_RECURRENT, while KNOWN_CLASS_NEW_INSTANCE requires prior refs but may reuse a still-valid mechanism.",
-      "Escalation is not permission to abandon the triggering defect. Both class_level_prevention and instance_fix remain mandatory so architectural thinking cannot become review theater.",
+      "Escalation is not permission to abandon the triggering defect. Both class_level_prevention and instance_fix remain mandatory before validation so architectural thinking cannot become review theater.",
       "No claim is made that this structural harness independently verifies diagnosis quality or guarantees that future users will never need to correct the system."
     ],
     "cross_surface_or_fault_audit": "PASS"
   },
   "closure": {
-    "assurance_ceiling": "WIRED",
+    "assurance_ceiling": "REGRESSION_VERIFIED",
     "global_flawlessness_claimed": false,
     "open_gates": [
-      "current Universal CI/regression execution after v1.3 + policy v1.8 propagation",
-      "authoritative manifest/handoff/HARNESS_STATUS reconciliation and reread",
       "first real systemic maintenance trajectory demonstrating historical failure-class lookup and correct abstraction escalation without user prompting",
-      "semantic completeness of historical analogue retrieval remains unproven"
+      "semantic completeness of historical analogue retrieval remains unproven",
+      "Financial fresh-chat DUAL three-output retest remains open and is separate owner evidence",
+      "Financial current-head ce7bac architecture revalidation remains open"
     ],
-    "unknown_or_open_world_boundary": "The repair enforces a structured escalation method for classified systemic failures. It does not guarantee exhaustive ontology design, perfect semantic matching of historical incidents, independent diagnosis correctness, or elimination of all future failure classes."
+    "unknown_or_open_world_boundary": "The repair is regression-verified as a structural maintenance method on the current Universal control plane. It does not guarantee exhaustive ontology design, perfect semantic matching of historical incidents, independent diagnosis correctness, elimination of all future failure classes, or live reduction of user reminders until a future real trajectory demonstrates that outcome."
   }
 }
