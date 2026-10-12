@@ -96,3 +96,20 @@ def test_controller_state_is_not_a_second_policy_or_business_authority():
     assert "SYSTEM_MAINTENANCE_POLICY.json" in blueprint
     assert "during-execution transition controller" in blueprint
     assert "Domain owners retain business truth" in blueprint
+
+
+def test_blueprint_separates_task_mutation_lineage_from_completed_formal_meta_proof():
+    blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
+    assert "Task mutation lineage and formal maintenance proof are separate lifecycle axes" in blueprint
+    assert "manifest_version" in blueprint
+    assert "latest_meta_maintenance_run_ref" in blueprint
+    assert "must never be newer than the current task manifest" in blueprint
+    assert "must never manufacture or backfill a completed formal meta-run" in blueprint
+
+
+def test_blueprint_requires_live_reread_for_external_automation_liveness():
+    blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
+    assert "external product state" in blueprint
+    assert "present-tense decision" in blueprint
+    assert "reread the live product surface" in blueprint
+    assert "must not be silently reversed without new authorization" in blueprint
