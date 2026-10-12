@@ -68,7 +68,7 @@ Methodology profiles are conditional contracts loaded only on activation. Owners
 
 Repository declarations are capability ceilings, not current execution proof. Before a material owner action, refresh the exact owner Skill/capability manifest, observe only capabilities needed now, evaluate readiness/methodology, use only an allowed route at its real assurance level, bind receipts to exact task/stage/action/subject/input, and block only the exact unavailable hard gate.
 
-Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner CI, or proof for another action cannot substitute for current-action proof.
+Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action operational proof.
 
 ## Agent product architecture
 
@@ -86,7 +86,7 @@ Do not add a permanent supervisory Agent merely to simulate independent review. 
 
 ## Progress observability
 
-Checkpoint material safe points during the turn; pure reads/unchanged state do not create heartbeat writes. Before a final response on an active durable task, persist material change and reread authority.
+Work must checkpoint **during the turn** at verified material safe points; pure reads/unchanged state do not create heartbeat writes. Before a final response on an active durable task, persist material change and reread authority.
 
 Exactly one receipt:
 - `进度提交：COMMITTED` — material state written + authoritative reread;
@@ -94,7 +94,7 @@ Exactly one receipt:
 - `进度提交：COMMIT_FAILED` — intended persistence not verified;
 - `进度提交：STALE_WRITER` — writer lease lost.
 
-`COMMITTED` proves durable persistence only, not execution/review/quality/outcome. Report OPEN/BLOCKED assurance separately.
+`COMMITTED` is a **durable-persistence receipt**. It proves durable persistence only, not execution/review/quality/outcome. Report OPEN/BLOCKED assurance separately.
 
 ## Performance invariant
 
