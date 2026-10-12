@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 23,
+  "manifest_version": 24,
   "task_id": "FQ001_MINGRI_ORDER",
   "task_class": "USER",
   "domain": "NOVEL",
@@ -10,9 +10,9 @@
   "resume_eligible": true,
   "resume_visibility": "DEFAULT",
   "recovery_owner": "NOVEL_WRITING_AGENT",
-  "updated_at": "2026-10-11T17:58:00Z",
+  "updated_at": "2026-10-12T01:06:00Z",
   "current_stage": "MASTERWORK_SINGLE_BOOK_DISTILLATION_ACTIVE__STORY_RESELECTION_PENDING",
-  "next_action": "DAO_MU_BI_JI (《盗墓笔记全集》) is complete through source line 30839 end marker 【全书完】 and whole-book single-work distillation is complete in the same rolling ledger. STOP_AFTER_CURRENT_WORK__NEXT_BOOK_NOT_STARTED. GUI_CHUI_DENG (《鬼吹灯全集》) remains PENDING and has not started. Keep cross-work synthesis deferred until all non-excluded single-book studies are complete. Do not draft existing FQ001 replacement prose while the masterwork queue is active.",
+  "next_action": "Continue GUI_CHUI_DENG (《鬼吹灯全集》) sequentially from 《鬼吹灯I-1之精绝古城》正文引子 at source line 77. The user-provided standardized source is bound to Drive file 1sNSSvaHcGTxqtAC4kXMR8c7VYdTbJMOL, SHA-256 c02631f309cb6e30981a56566b5194c5e7c8661c4c71f66a7888d6970116bc3a, 61201 physical lines. Preserve the explicitly marked 网络版 variant/overlap block beginning at line 43264 as a source boundary and do not inflate duplicate material into independent evidence. QING_YU_NIAN remains PENDING until GUI_CHUI_DENG is complete. Cross-work synthesis stays deferred and existing FQ001 replacement prose remains held.",
   "checkpoint_ref": "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json",
   "contract_version": "3.7",
   "continuity_protocol_version": "3.7",
@@ -41,10 +41,10 @@
     "pre_migration": "MIGRATABLE",
     "post_migration": "COMPATIBLE",
     "checked_against": "Universal Continuity v3.7",
-    "owner_internal_hardening": "DAO_MU_BI_JI is terminal-complete through the user standardized source physical end at line 30839 marker 【全书完】. Whole-book distillation, same-ledger overwrite, full-book receipt, execution-binding receipt, owner checkpoint and routing indexes are persisted. Source numbering anomalies are preserved without fabricating a unified chapter count. GUI_CHUI_DENG remains PENDING and NOT STARTED."
+    "owner_internal_hardening": "DAO_MU_BI_JI remains terminal-complete. GUI_CHUI_DENG is now the only ACTIVE one-book-at-a-time study after explicit user continue. Source/ledger/activation receipt and all owner routing surfaces are bound. QING_YU_NIAN remains PENDING. Source variant/overlap boundaries are preserved without duplicate-evidence inflation."
   },
   "continuity_acceptance": {
-    "result": "PASS_PREVIOUS_BASELINE__LATEST_DAO_FULL_BOOK_CHECKPOINT_CI_NOT_EXECUTED",
+    "result": "PERSISTED_GUI_CHUI_DENG_ACTIVATION__LATEST_CI_EXECUTION_NOT_YET_RECHECKED_FOR_THIS_ACTIVATION",
     "owner_acceptance_ref": "D1traverser-debug/novel-writing-agent@main:migration/MIGRATION_ACCEPTANCE.json",
     "owner_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/recovery_guard.py",
     "owner_release_evidence_guard_ref": "D1traverser-debug/novel-writing-agent@main:runtime/release_evidence_guard.py",
@@ -55,16 +55,12 @@
     "new_chat_recovery": "PASS_PREVIOUS_BASELINE",
     "takeover_simulation": "PASS_PREVIOUS_BASELINE",
     "github_owner_cutover": "PASS",
-    "masterwork_study_recovery": "PERSISTED_TERMINAL_STATE__LATEST_CI_NOT_EXECUTED",
-    "previous_owner_final_head": "449e0fdc81aaa6fa32f4959bc7af59997bdc8552",
-    "previous_owner_final_ci_run_id": 38140259347,
-    "previous_owner_final_ci_job_id": 114472506449,
-    "previous_owner_final_ci_result": "PASS_RECOVERY_GUARD_RELEASE_EVIDENCE_GUARD_MASTERWORK_DISTILLATION_GUARD_OWNER_CONTRACT_TESTS",
-    "latest_owner_head": "ea76f72b44adbd75a9284e86d47defa24beffb83",
-    "latest_ci_run_id": 38161740487,
-    "latest_ci_job_id": 114535913061,
-    "latest_ci_observation": "WORKFLOW_COMPLETED_FAILURE_BEFORE_RUNNER_START__runner_id_0__steps_empty__NO_GUARD_OR_TEST_EXECUTION_CLAIM",
-    "latest_validation_ceiling": "PERSISTED_FULL_SOURCE_LEDGER_TERMINAL_STATE_ROUTING_FULL_BOOK_RECEIPT_AND_EXECUTION_BINDING_RECEIPT_VERIFIED__LATEST_CI_EXECUTION_NOT_VERIFIED"
+    "masterwork_study_recovery": "PERSISTED_GUI_CHUI_DENG_ACTIVE_STATE",
+    "previous_owner_final_head": "ea76f72b44adbd75a9284e86d47defa24beffb83",
+    "previous_owner_final_ci_run_id": 38161740487,
+    "previous_owner_final_ci_job_id": 114535913061,
+    "previous_owner_final_ci_result": "CI_NOT_EXECUTED__RUNNER_ID_0__STEPS_EMPTY",
+    "latest_validation_ceiling": "PERSISTED_SOURCE_LEDGER_ACTIVATION_RECEIPT_OWNER_ROUTING_AND_CHECKPOINT_VERIFIED__CURRENT_ACTIVATION_CI_NOT_YET_RECHECKED"
   },
   "platform_signing": {
     "attempt_1": "REJECTED_QUALITY_EVALUATION",
@@ -89,22 +85,21 @@
     "mastery_levels": ["L0_UNMAPPED", "L1_CONCEPTUAL", "L2_OPERATIONAL_WITH_SCAFFOLD", "L3_PROJECT_READY", "L4_TRANSFER_VERIFIED"],
     "architecture_gate": "PASS_WITH_SCOPED_DEFERRALS__HISTORICAL_CANDIDATE",
     "claim_ceiling": "PROJECT_LEVEL_L3_WHERE_LISTED__NO_L4_TRANSFER_OR_LIVE_OUTCOME_CLAIM",
-    "active_masterwork": "DAO_MU_BI_JI",
-    "active_masterwork_status": "SINGLE_BOOK_DISTILLATION_COMPLETE__REFERENCE_EXTRACTED__CROSS_WORK_PENDING",
-    "active_masterwork_binding_role": "CURRENT_FOCUS_BINDING_AFTER_COMPLETION__NOT_IN_PROGRESS",
-    "active_masterwork_coverage": "ENTIRE_USER_STANDARDIZED_SOURCE__FIRST_LINE_THROUGH_LINE_30839__FULL_BOOK_END_VERIFIED",
-    "active_masterwork_next_location": "FULL_BOOK_END__STOP_BEFORE_GUI_CHUI_DENG",
+    "active_masterwork": "GUI_CHUI_DENG",
+    "active_masterwork_status": "ACTIVE__SEQUENTIAL_READ_IN_PROGRESS",
+    "active_masterwork_coverage": "SOURCE_PREFLIGHT_COMPLETE__NO_BODY_STAGE_COMPLETION_YET",
+    "active_masterwork_next_location": "《鬼吹灯I-1之精绝古城》正文引子（源第77行）",
     "completed_masterworks": ["SHIRI_ZHONGYAN", "GUI_MI_ZHI_ZHU", "DAO_MU_BI_JI"],
-    "next_pending_masterwork": "GUI_CHUI_DENG",
+    "next_pending_masterwork": "QING_YU_NIAN",
     "next_pending_masterwork_status": "PENDING__NOT_STARTED",
     "storage_policy": "PER_WORK_COLOCATED_RESEARCH__INTERNAL_VOLUMES_SHARE_ONE_WORK_LEDGER__CROSS_WORK_SYNTHESIS_SEPARATE",
-    "source_file_id": "1j22-7Q5H3rsBY0fsCa3K3TmpQ3qhLBRG",
-    "source_sha256": "7ee1015d5a384e0acaf85a05367e95c3eb5ed3cb3c7b95fcb5333ffe81bb6768",
-    "source_total_lines": 30839,
-    "full_book_end_verified": true,
-    "full_book_end_marker": "【全书完】",
-    "rolling_ledger_sha256": "55a914a10166167e0cb4a1632e7a5378dc037bb548f73bea24b12d8a88e3b5c8",
-    "rolling_ledger_size_bytes": 140554
+    "source_file_id": "1sNSSvaHcGTxqtAC4kXMR8c7VYdTbJMOL",
+    "source_sha256": "c02631f309cb6e30981a56566b5194c5e7c8661c4c71f66a7888d6970116bc3a",
+    "source_total_lines": 61201,
+    "source_variant_policy": "READ_PHYSICAL_SOURCE_ORDER__PRESERVE_NETWORK_VARIANT_OVERLAP_BOUNDARY__NO_DUPLICATE_EVIDENCE_INFLATION",
+    "rolling_ledger_file_id": "1j9Lx98jpx-pmNMma8EW8DEYTiqjKurtF",
+    "rolling_ledger_sha256": "d4d8890a180090e3c37f83b6d839eb2dec610a6b49ad1fbd13aab27c196e4786",
+    "rolling_ledger_size_bytes": 4133
   },
   "rebase": {
     "mode": "CONTROLLED_FULL_FRONT_ARC_REBASE",
@@ -124,15 +119,14 @@
   "waiting_on": [],
   "external_fact_pending": ["CH8 Fanqie publication status remains unconfirmed. This does not block internal masterwork study or story reselection and must not be inferred either way."],
   "blockers": [],
-  "keywords": ["小说", "小说系统", "小说技能", "名作蒸馏", "逐本学习", "故事重选", "诡秘之主", "十日终焉", "盗墓笔记", "全书完", "鬼吹灯", "明日订单", "番茄小说", "FQ001", "NOVEL_WRITING_AGENT", "NOVEL_OS", "签约", "连载"],
+  "keywords": ["小说", "小说系统", "小说技能", "名作蒸馏", "逐本学习", "故事重选", "十日终焉", "诡秘之主", "盗墓笔记", "鬼吹灯", "精绝古城", "庆余年", "明日订单", "番茄小说", "FQ001", "NOVEL_WRITING_AGENT", "NOVEL_OS", "签约", "连载"],
   "artifact_refs": [
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/STUDY_STATE.json",
     "D1traverser-debug/novel-writing-agent@main:research/masterworks/INDEX.json",
-    "D1traverser-debug/novel-writing-agent@main:research/masterworks/DAO_MU_BI_JI/FULL_BOOK_EXECUTION_RECEIPT_2026-10-12.json",
-    "D1traverser-debug/novel-writing-agent@main:research/masterworks/DAO_MU_BI_JI/EXECUTION_BINDING_RECEIPT_2026-10-12_FULL_BOOK.json",
+    "D1traverser-debug/novel-writing-agent@main:research/masterworks/GUI_CHUI_DENG/EXECUTION_BINDING_RECEIPT_2026-10-12_ACTIVATION.json",
     "D1traverser-debug/novel-writing-agent@main:projects/FQ001_MINGRI_ORDER/checkpoints/CURRENT_CHECKPOINT.json"
   ],
   "derived_artifact_refs": [
-    "Google Drive file 17r1Q49KNT858dJLvrEWQeRlnt7-tb5f4 /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/盗墓笔记全集/盗墓笔记全集_学习总账.md#sha256=55a914a10166167e0cb4a1632e7a5378dc037bb548f73bea24b12d8a88e3b5c8"
+    "Google Drive file 1j9Lx98jpx-pmNMma8EW8DEYTiqjKurtF /ChatGPT/NOVEL_OS_名作蒸馏研究库/01_逐本学习/鬼吹灯全集/鬼吹灯全集_学习总账.md#sha256=d4d8890a180090e3c37f83b6d839eb2dec610a6b49ad1fbd13aab27c196e4786"
   ]
 }
