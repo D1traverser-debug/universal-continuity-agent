@@ -21,6 +21,8 @@ PROPAGATION_SCOPES = {"ALL_BUSINESS_OWNERS", "SUBSET_WITH_REASON", "NOT_APPLICAB
 IMPLEMENTATION_DECISIONS = {"CHANGE_APPLIED", "NO_CHANGE_REQUIRED"}
 CAPABILITY_REUSE_DECISIONS = {"REUSE_EXISTING", "EXTEND_EXISTING", "BUILD_NEW", "NOT_APPLICABLE_WITH_REASON"}
 NET_COMPLEXITY_DECISIONS = {"NET_SIMPLER", "NET_NEUTRAL", "NET_MORE_COMPLEX_WITH_JUSTIFICATION"}
+# Executable mirrors of SYSTEM_MAINTENANCE_POLICY.failure_abstraction_escalation.
+# Current-schema evaluation fails closed if the policy and runtime mirrors drift.
 RECURRENCE_STATUSES = {
     "FIRST_OBSERVED",
     "KNOWN_CLASS_NEW_INSTANCE",
@@ -122,6 +124,29 @@ def evaluate_meta_maintenance_run(
         errors.append("unsupported_meta_maintenance_schema")
     current_schema = schema_version == CURRENT_META_MAINTENANCE_SCHEMA
 
+    if current_schema:
+        escalation_policy = _mapping(policy.get("failure_abstraction_escalation"))
+        if set(escalation_policy.get("recurrence_statuses", [])) != RECURRENCE_STATUSES:
+            errors.append("policy_runtime_recurrence_status_mismatch")
+        if tuple(escalation_policy.get("abstraction_levels_low_to_high", [])) != ABSTRACTION_LEVELS:
+            errors.append("policy_runtime_abstraction_ladder_mismatch")
+        if set(escalation_policy.get("escalation_decisions", [])) != ESCALATION_DECISIONS:
+            errors.append("policy_runtime_escalation_decision_mismatch")
+        escalation_rules = _mapping(escalation_policy.get("rules"))
+        required_true_rules = {
+            "systemic_run_must_search_every_classified_failure_class",
+            "known_or_recurrent_class_must_bind_prior_incident_or_repair_refs",
+            "recurrence_after_accepted_fix_must_move_strictly_above_prior_repair_level",
+            "meta_method_recurrence_requires_explicit_max_level_redesign",
+            "high_level_repair_must_return_to_class_level_prevention",
+            "high_level_repair_must_return_to_concrete_instance_fix",
+            "historical_search_and_escalation_record_is_required_before_systemic_closure",
+        }
+        if any(escalation_rules.get(rule) is not True for rule in required_true_rules):
+            errors.append("policy_runtime_abstraction_rules_not_enabled")
+        if escalation_rules.get("same_or_lower_level_repeat_patch_is_allowed") is not False:
+            errors.append("policy_runtime_same_level_repeat_patch_boundary_mismatch")
+
     if not _nonempty(run.get("run_id")):
         errors.append("run_id_required")
     scope = str(run.get("scope", "")).strip().upper()
@@ -165,10 +190,6 @@ def evaluate_meta_maintenance_run(
     if schema_version in {"1.1", "1.2", "1.3"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
         errors.append("systemic_falsification_checks_required")
 
-    # v1.3 closes a recurring maintenance gap: naming a failure class is not enough.
-    # A systemic run must search prior incidents for every named class and, when a class
-    # recurs after a previous fix, move the investigation up the abstraction ladder
-    # before returning to both class-level prevention and the concrete instance fix.
     if current_schema and scope in SYSTEMIC_SCOPES:
         history = _mapping(run.get("failure_history"))
         searched_classes = history.get("searched_failure_classes")
