@@ -26,6 +26,7 @@
   "workflow": {
     "state_authority_refs": [
       "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+      "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
       "OWNER_REGISTRY.json",
       "GENERIC_TASK_REGISTRY.json"
     ],
@@ -53,6 +54,7 @@
   },
   "continuity": {
     "task_manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
+    "maintenance_controller_state_ref": "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
     "owner_registry_ref": "OWNER_REGISTRY.json",
     "current_protocol_ref": "CURRENT_PROTOCOL.json"
   }
