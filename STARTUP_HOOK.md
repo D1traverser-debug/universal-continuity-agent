@@ -2,7 +2,7 @@
 
 Status: REQUIRED_FOR_BARE_INHERIT_ACCOUNT_LEVEL_ROUTING  
 Hook: ACCOUNT_ROUTER_V2  
-Updated: 2026-10-11
+Updated: 2026-10-12
 
 ## Purpose
 
@@ -15,6 +15,8 @@ Use the following text, or a semantically equivalent minimal account-level instr
 > 当我明确发送“继承”“继续”“恢复”“接着上次”，或“继承/继续/恢复：<任务名>”时，优先按 CONTINUE 处理并启动 `D1traverser-debug/universal-continuity-agent@main`。
 >
 > **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
+>
+> 对每条可能产生 material response / material action 的输入，先做一个极轻的 defect-signal preflight，只分 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`，不要因此默认加载完整维护系统。`NO_DEFECT` 正常走业务 owner；`INVESTIGATE / CONFIRMED_DEFECT` 才按当前仓库 authority 加载维护入口。进入 systemic/non-trivial maintenance 后，必须使用当前 `runtime/maintenance_controller.py` 推进 canonical stage；不得先 patch 再补大纲/记录，也不得在 controller 未到 implementation stage 时进行 material control-plane mutation。
 >
 > 该规则覆盖包括升级前已经打开/继承的旧对话；不要求我手动迁移旧对话。选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。每次最终答复末尾必须报告“进度提交”，具体状态语义以当前仓库 authority 为准。
 >
