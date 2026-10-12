@@ -161,7 +161,7 @@ def validate_agent_manifest(
     if file_sizes and _nonempty_str(skill_entrypoint) and skill_entrypoint in file_sizes and target_max:
         actual = int(file_sizes[skill_entrypoint])
         if actual > target_max:
-            warnings.append(f"skill router exceeds target byte budget: {actual}>{target_max}")
+            warnings.append(f"hot-path skill router exceeds target byte budget: {actual}>{target_max}")
 
     runtime = layers.get("runtime", {})
     allowed_runtime = set(required_layers.get("runtime", {}).get("allowed_runtime_type", ()))
@@ -222,9 +222,27 @@ def validate_architecture_observation(observation: Mapping[str, Any], *, observe
     warnings: list[str] = []
     required = ("architecture_validation_head", "architecture_validation_result", "architecture_validation_ref")
     _require_fields(observation, required, "architecture_observation", errors)
+
     validated_head = str(observation.get("architecture_validation_head", "")).strip()
-    if validated_head and validated_head != str(observed_owner_head).strip():
-        errors.append("architecture validation is stale relative to externally observed owner head")
+    current_head = str(observed_owner_head).strip()
+    if validated_head and validated_head != current_head:
+        delta = observation.get("architecture_head_delta")
+        if not isinstance(delta, Mapping):
+            errors.append("architecture validation is stale relative to externally observed owner head")
+        else:
+            base_head = str(delta.get("base_head", "")).strip()
+            delta_head = str(delta.get("observed_head", "")).strip()
+            evidence_ref = str(delta.get("evidence_ref", "")).strip()
+            relevant_change = delta.get("architecture_relevant_change")
+            if base_head != validated_head:
+                errors.append("architecture head-delta base does not bind architecture_validation_head")
+            if delta_head != current_head:
+                errors.append("architecture head-delta observed head does not bind externally observed owner head")
+            if not evidence_ref:
+                errors.append("architecture head-delta evidence_ref is required")
+            if relevant_change is not False:
+                errors.append("architecture validation is stale because architecture-relevant change is present or unproven")
+
     result = str(observation.get("architecture_validation_result", "")).strip()
     if result not in {"PASS", "PASS_WITH_DRIFT", "FAIL"}:
         errors.append("architecture_validation_result is invalid")
