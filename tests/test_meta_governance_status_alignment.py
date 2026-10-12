@@ -30,14 +30,15 @@ def test_meta_harness_version_is_aligned_across_runtime_manifest_and_status_cach
     assert harness["latest_meta_maintenance_run"] == manifest["latest_meta_maintenance_run_ref"]
 
 
-def test_blueprint_exposes_meta_governance_as_narrow_verifier_not_independent_agent():
+def test_blueprint_exposes_meta_governance_as_posthoc_structural_verifier_not_independent_agent():
     blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
 
     assert "runtime/meta_maintenance.py" in blueprint
-    assert "narrow deterministic verifier" in blueprint
-    assert "structured process conformance" in blueprint
-    assert "does not prove the diagnosis" in blueprint
-    assert "A new supervisory LLM Agent is not implied by meta-governance" in blueprint
+    assert "post-hoc closure verifier" in blueprint
+    assert "closure record is structurally conformant" in blueprint
+    assert "Neither proves semantic diagnosis quality" in blueprint
+    assert "not an independent LLM reviewer" in blueprint
+    assert "A new supervisory LLM Agent is not implied" in blueprint
 
 
 def test_harness_records_meta_governance_assurance_ceiling_and_hot_path_boundary():
