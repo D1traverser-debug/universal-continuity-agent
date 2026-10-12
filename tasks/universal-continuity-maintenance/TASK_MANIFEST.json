@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 61,
+  "manifest_version": 62,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,7 +10,7 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-12T21:08:00+08:00",
+  "updated_at": "2026-10-12T23:50:00+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
   "next_action": "Meta-maintenance v1.3 / SYSTEM_MAINTENANCE_POLICY v1.8 are regression-verified on current Universal main: systemic work must classify the signal, build the parent-system impact outline before deep local diagnosis, classify reusable failure classes, search historical same-class incidents/repairs, escalate strictly above the prior repair level when a class recurs after an accepted fix, then return to class-level prevention plus the concrete instance fix before validation. Keep the first real no-user-reminder v1.3 systemic trajectory OPEN as live proof. Financial main remains ce7bac183e0ca57be1cbc1591e7e124f209055e0 after task/output-parity repair; its old 6be076 architecture validation is historical, fresh architecture revalidation and fresh-chat DUAL 3-output retest are OPEN. Keep #12 open until monitor-disable provenance or a stronger external liveness guarantee exists; retain #2/#3/#4 only as owner-local hot-path router optimization signals. Never take BUSINESS leases or rewrite business truth.",
@@ -110,12 +110,12 @@
   "complexity_efficiency_effect": "NO_NEW_AGENT__NO_NEW_AUTHORITY_DATABASE__NO_PROTOCOL_BUMP__EXTENDS_EXISTING_POLICY_META_HARNESS_AND_REFERENCE_SIMULATION__SYSTEMIC_MAINTENANCE_ONLY_HISTORY_LOOKUP__NO_HEALTHY_BUSINESS_HOT_PATH_COST__FINANCIAL_REVALIDATION_AND_LIVE_RETEST_OPEN",
   "last_protocol_reconciled_at": "2026-10-10T01:28:00Z",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
-  "resume_epoch": 7,
+  "resume_epoch": 8,
   "active_lease": {
-    "lease_id": "lease-d5136fdf-0661-4cd9-aeba-74db63c4dc3f",
-    "acquired_at": "2026-10-11T20:23:24+08:00",
-    "supersedes_lease_id": "lease-4812a7a8-83cf-414d-87e9-198a60a9cfeb",
-    "writer": "chatgpt-universal-continuity-maintenance-2026-10-11-fresh-chat"
+    "lease_id": "lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654",
+    "acquired_at": "2026-10-12T23:50:00+08:00",
+    "supersedes_lease_id": "lease-d5136fdf-0661-4cd9-aeba-74db63c4dc3f",
+    "writer": "chatgpt-universal-continuity-maintenance-2026-10-12-fresh-chat"
   },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
