@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
-CURRENT_META_MAINTENANCE_SCHEMA = "1.2"
-SUPPORTED_META_MAINTENANCE_SCHEMAS = {"1.0", "1.1", CURRENT_META_MAINTENANCE_SCHEMA}
+CURRENT_META_MAINTENANCE_SCHEMA = "1.3"
+SUPPORTED_META_MAINTENANCE_SCHEMAS = {"1.0", "1.1", "1.2", CURRENT_META_MAINTENANCE_SCHEMA}
 SYSTEMIC_SCOPES = {"SYSTEMIC", "ARCHITECTURE", "FULL_CONTROL_PLANE"}
 USER_SIGNAL_CLASSES = {
     "GOAL_OR_CONSTRAINT",
@@ -21,6 +21,25 @@ PROPAGATION_SCOPES = {"ALL_BUSINESS_OWNERS", "SUBSET_WITH_REASON", "NOT_APPLICAB
 IMPLEMENTATION_DECISIONS = {"CHANGE_APPLIED", "NO_CHANGE_REQUIRED"}
 CAPABILITY_REUSE_DECISIONS = {"REUSE_EXISTING", "EXTEND_EXISTING", "BUILD_NEW", "NOT_APPLICABLE_WITH_REASON"}
 NET_COMPLEXITY_DECISIONS = {"NET_SIMPLER", "NET_NEUTRAL", "NET_MORE_COMPLEX_WITH_JUSTIFICATION"}
+RECURRENCE_STATUSES = {
+    "FIRST_OBSERVED",
+    "KNOWN_CLASS_NEW_INSTANCE",
+    "RECURRED_AFTER_FIX",
+    "CROSS_OWNER_RECURRENT",
+}
+ABSTRACTION_LEVELS = (
+    "INSTANCE",
+    "FAILURE_CLASS",
+    "OWNER_OR_COMPONENT_MECHANISM",
+    "SYSTEM_ARCHITECTURE",
+    "META_METHOD",
+)
+ABSTRACTION_INDEX = {name: index for index, name in enumerate(ABSTRACTION_LEVELS)}
+ESCALATION_DECISIONS = {
+    "HOLD_FIRST_OBSERVATION",
+    "ESCALATE",
+    "MAX_LEVEL_REDESIGN",
+}
 ASSURANCE_ORDER = {
     "DECLARED": 1,
     "WIRED": 2,
@@ -83,6 +102,7 @@ def evaluate_meta_maintenance_run(
     checked = (
         "signal",
         "authority_and_failure_model",
+        "failure_history_and_abstraction_escalation",
         "learning",
         "capability_reuse",
         "decision_frontier",
@@ -122,7 +142,7 @@ def evaluate_meta_maintenance_run(
         errors.append("user_goal_or_constraint_required")
     if "PROPOSED_MECHANISM" in (classes or []) and "proposed_mechanism" not in signal:
         errors.append("proposed_mechanism_field_required_when_classified")
-    if schema_version in {"1.1", "1.2"} and "COUNTEREXAMPLE_OR_FAILURE_REPORT" in (classes or []) and not _nonempty(signal.get("counterexample")):
+    if schema_version in {"1.1", "1.2", "1.3"} and "COUNTEREXAMPLE_OR_FAILURE_REPORT" in (classes or []) and not _nonempty(signal.get("counterexample")):
         errors.append("counterexample_required_when_failure_report_classified")
 
     authority = _mapping(run.get("authority_inspection"))
@@ -136,12 +156,80 @@ def evaluate_meta_maintenance_run(
         errors.append("root_cause_layers_required")
     elif allowed_layers and any(layer not in allowed_layers for layer in root_layers):
         errors.append("unknown_root_cause_layer")
-    if not _nonempty_str_list(failure.get("failure_classes")):
+    failure_classes = failure.get("failure_classes")
+    if not _nonempty_str_list(failure_classes):
         errors.append("failure_classes_required")
+        failure_classes = []
     if not isinstance(failure.get("system_impact_map"), list) or not failure.get("system_impact_map"):
         errors.append("system_impact_map_required")
-    if schema_version in {"1.1", "1.2"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
+    if schema_version in {"1.1", "1.2", "1.3"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(failure.get("falsification_checks")):
         errors.append("systemic_falsification_checks_required")
+
+    # v1.3 closes a recurring maintenance gap: naming a failure class is not enough.
+    # A systemic run must search prior incidents for every named class and, when a class
+    # recurs after a previous fix, move the investigation up the abstraction ladder
+    # before returning to both class-level prevention and the concrete instance fix.
+    if current_schema and scope in SYSTEMIC_SCOPES:
+        history = _mapping(run.get("failure_history"))
+        searched_classes = history.get("searched_failure_classes")
+        if not _nonempty_str_list(searched_classes):
+            errors.append("failure_history_search_required")
+            searched_classes = []
+        elif not set(map(str, failure_classes)).issubset(set(map(str, searched_classes))):
+            errors.append("failure_history_must_cover_all_failure_classes")
+
+        matched_refs = history.get("matched_prior_refs")
+        if not _string_list(matched_refs):
+            errors.append("matched_prior_refs_must_be_string_list")
+            matched_refs = []
+
+        recurrence_status = str(history.get("recurrence_status", ""))
+        if recurrence_status not in RECURRENCE_STATUSES:
+            errors.append("recurrence_status_required")
+
+        current_level = str(history.get("current_abstraction_level", ""))
+        if current_level not in ABSTRACTION_INDEX:
+            errors.append("current_abstraction_level_required")
+
+        prior_level_raw = history.get("prior_repair_abstraction_level")
+        prior_level = str(prior_level_raw) if prior_level_raw is not None else ""
+        if prior_level and prior_level not in ABSTRACTION_INDEX:
+            errors.append("prior_repair_abstraction_level_invalid")
+
+        escalation_decision = str(history.get("escalation_decision", ""))
+        if escalation_decision not in ESCALATION_DECISIONS:
+            errors.append("escalation_decision_required")
+        if not _nonempty(history.get("escalation_reason")):
+            errors.append("escalation_reason_required")
+        if not _nonempty(history.get("class_level_prevention")):
+            errors.append("class_level_prevention_required")
+        if not _nonempty(history.get("instance_fix")):
+            errors.append("instance_fix_required")
+        if not _nonempty_str_list(history.get("considered_or_reused_mechanism_refs")):
+            errors.append("considered_or_reused_mechanism_refs_required")
+
+        known_recurrence = recurrence_status in {
+            "KNOWN_CLASS_NEW_INSTANCE",
+            "RECURRED_AFTER_FIX",
+            "CROSS_OWNER_RECURRENT",
+        }
+        if known_recurrence and not matched_refs:
+            errors.append("known_failure_class_requires_prior_refs")
+
+        repaired_recurrence = recurrence_status in {"RECURRED_AFTER_FIX", "CROSS_OWNER_RECURRENT"}
+        if repaired_recurrence:
+            if not prior_level:
+                errors.append("recurrent_after_fix_requires_prior_repair_level")
+            elif prior_level in ABSTRACTION_INDEX and current_level in ABSTRACTION_INDEX:
+                if prior_level == "META_METHOD":
+                    if current_level != "META_METHOD" or escalation_decision != "MAX_LEVEL_REDESIGN":
+                        errors.append("meta_method_recurrence_requires_max_level_redesign")
+                elif ABSTRACTION_INDEX[current_level] <= ABSTRACTION_INDEX[prior_level]:
+                    errors.append("recurring_failure_must_escalate_abstraction_level")
+                elif escalation_decision != "ESCALATE":
+                    errors.append("recurrent_failure_requires_escalation_decision")
+        elif recurrence_status == "FIRST_OBSERVED" and escalation_decision not in {"HOLD_FIRST_OBSERVATION", "ESCALATE"}:
+            errors.append("first_observation_escalation_decision_invalid")
 
     learning = _mapping(run.get("learning_scout"))
     disposition = learning.get("disposition")
@@ -159,7 +247,7 @@ def evaluate_meta_maintenance_run(
                 for field in ("ref", "observation", "disposition", "rationale"):
                     if not _nonempty(source.get(field)):
                         errors.append(f"learning_source_{idx}_{field}_required")
-                if schema_version in {"1.1", "1.2"} and source.get("disposition") not in LEARNING_SOURCE_DISPOSITIONS:
+                if schema_version in {"1.1", "1.2", "1.3"} and source.get("disposition") not in LEARNING_SOURCE_DISPOSITIONS:
                     errors.append(f"learning_source_{idx}_disposition_invalid")
     elif disposition == "NOT_REQUIRED_WITH_REASON" and not _nonempty(learning.get("reason")):
         errors.append("learning_not_required_reason_required")
@@ -273,7 +361,7 @@ def evaluate_meta_maintenance_run(
     if not isinstance(changed_paths, list) or any(not _nonempty(item) for item in changed_paths):
         errors.append("changed_paths_must_be_string_list")
         changed_paths = []
-    if schema_version in {"1.1", "1.2"}:
+    if schema_version in {"1.1", "1.2", "1.3"}:
         implementation_decision = implementation.get("decision")
         if implementation_decision not in IMPLEMENTATION_DECISIONS:
             errors.append("implementation_decision_required")
@@ -297,7 +385,7 @@ def evaluate_meta_maintenance_run(
         errors.append("regression_or_eval_refs_required")
     if validation.get("second_order_challenge") != "PASS":
         errors.append("second_order_challenge_required")
-    if schema_version in {"1.1", "1.2"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(validation.get("second_order_findings")):
+    if schema_version in {"1.1", "1.2", "1.3"} and scope in SYSTEMIC_SCOPES and not _nonempty_str_list(validation.get("second_order_findings")):
         errors.append("systemic_second_order_findings_required")
     if scope in SYSTEMIC_SCOPES and validation.get("cross_surface_or_fault_audit") != "PASS":
         errors.append("systemic_change_requires_cross_surface_or_fault_audit")
