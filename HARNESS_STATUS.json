@@ -61,6 +61,7 @@
     "parent_system_outline_before_deep_local_diagnosis_required": true,
     "historical_failure_class_search_required_for_systemic_work": true,
     "recurrent_failure_after_fix_requires_higher_abstraction": true,
+    "high_level_repair_returns_to_class_and_instance": true,
     "high_level_repair_returns_to_class_and_instance_before_validation": true,
     "fact_decision_frontier_required_for_systemic_work": true,
     "architecture_payoff_deletion_test_required_for_systemic_work": true,
@@ -100,7 +101,7 @@
     "synthetic_fault_injection_production_mutation_by_default": false
   },
   "meta_governance": {
-    "status": "HARNESS_1_3_ACTIVE__PARENT_OUTLINE_FIRST__FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION_REGRESSION_VERIFIED__V61_CURRENT_RUN_BOUND__INDEPENDENT_SEMANTIC_AND_LIVE_REVIEW_OPEN",
+    "status": "HARNESS_1_3_ACTIVE__PARENT_OUTLINE_FIRST__FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION_REGRESSION_VERIFIED__RECURRENCE_SAME_LEVEL_FAULT_INJECTION_WIRED__V61_CURRENT_RUN_BOUND__INDEPENDENT_SEMANTIC_AND_LIVE_REVIEW_OPEN",
     "authority": "SYSTEM_MAINTENANCE_POLICY.json",
     "policy_version": "1.8",
     "runtime": "runtime/meta_maintenance.py",
@@ -132,7 +133,9 @@
     "known_or_recurrent_failure_requires_prior_refs": true,
     "recurrent_failure_requires_higher_abstraction": true,
     "meta_method_recurrence_requires_max_level_redesign": true,
+    "high_level_repair_returns_to_class_and_instance": true,
     "high_level_repair_returns_to_class_and_instance_before_validation": true,
+    "synthetic_fault_rejects_same_or_lower_level_repair_after_recurrence": true,
     "systemic_run_requires_capability_reuse_scan": true,
     "systemic_run_requires_fact_decision_frontier": true,
     "systemic_run_requires_architecture_payoff_deletion_test": true,
