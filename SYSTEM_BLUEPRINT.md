@@ -16,7 +16,9 @@ Universal is intentionally a **small control kernel plus composable methodology 
 
 ### 1. Bootstrap / routing edge
 
-`STARTUP_HOOK.md` routes explicit continuation intent. `ENTRYPOINT.md + CURRENT_PROTOCOL.json` are the minimal repository bootstrap. Bare discovery, named routing and deeper authorities are loaded only when their event occurs.
+`STARTUP_HOOK.md` routes explicit continuation intent and the lightweight defect-signal preflight. `ENTRYPOINT.md + CURRENT_PROTOCOL.json` are the minimal repository bootstrap. Bare discovery, named routing and deeper authorities are loaded only when their event occurs.
+
+The preflight is deliberately cheap: it routes only among `NO_DEFECT`, `INVESTIGATE`, and `CONFIRMED_DEFECT`. It does not run the full maintenance stack on healthy business turns.
 
 Both bootstrap surfaces have explicit byte budgets. A thin `SKILL.md` does not count as a thin product if the mandatory bootstrap immediately reloads a giant duplicated prompt.
 
@@ -120,16 +122,20 @@ Library/Drive/Notion/connected apps are reference/evidence by default unless an 
 
 ### 10. Maintenance, learning and meta-governance boundary
 
-`SYSTEM_MAINTENANCE_POLICY.json` owns autonomous maintenance semantics and the default meta-maintenance outline. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution. `runtime/meta_maintenance.py` is a **narrow deterministic verifier**, not a second root authority and not an independent LLM reviewer.
+`SYSTEM_MAINTENANCE_POLICY.json` is the single semantic owner of autonomous maintenance and the canonical meta-maintenance stage list. `CONTINUOUS_LEARNING_POLICY.md` owns evidence-gated learning/evolution.
 
-For systemic/non-trivial maintenance, the normative path includes:
-`SIGNAL CLASSIFICATION -> FAILURE/IMPACT MODEL -> LEARNING DECISION -> ALTERNATIVES/FALSIFICATION -> INSTRUCTION-SURFACE DECISION -> COMPLEXITY/EFFICIENCY BUDGET -> MINIMUM IMPLEMENTATION -> MULTI-LAYER VALIDATION -> CROSS-SUBSYSTEM PROPAGATION -> SECOND-ORDER CHALLENGE -> DURABLE LEARNING/CHECKPOINT`.
+Two deterministic runtime roles are intentionally separate:
 
-The Meta-Governance Harness may reject a closure record that omits required process evidence. A harness PASS proves only **structured process conformance**. It does not prove the diagnosis, external learning, architecture decision, chronology or result is semantically correct; those claims require appropriate independent trajectory/evidence/outcome verification.
+- `runtime/maintenance_controller.py` is the **during-execution transition controller**. It reads the canonical stage list from `SYSTEM_MAINTENANCE_POLICY.json`, preserves the current stage, forbids forward skips, blocks material control-plane mutation before the implementation stage, supports evidence-bound BLOCKED/resume state, and reopens an earlier stage with downstream invalidation when validation or second-order review discovers new work.
+- `runtime/meta_maintenance.py` is the **post-hoc closure verifier**. It checks that the final maintenance record contains the required failure model, historical failure-class search, abstraction escalation, learning, alternatives, propagation, validation and bounded assurance evidence. It is not a second root authority and not an independent LLM reviewer.
+
+For systemic/non-trivial maintenance, the normative path is the ordered stage list in `SYSTEM_MAINTENANCE_POLICY.json`: intake/classification -> parent-system impact outline -> root-cause/failure-history/abstraction decision -> learning/reuse/alternatives -> instruction and complexity/payoff decisions -> implementation -> validation -> propagation -> second-order review -> durable learning/checkpoint.
+
+The controller and verifier solve different failure modes. A controller PASS means the deterministic stage/action boundary is internally coherent; a Meta-Governance Harness PASS means the closure record is structurally conformant. Neither proves semantic diagnosis quality, chronology outside the recorded controller state, independent review, or live outcome. Those higher claims require appropriate independent trajectory/evidence/outcome verification.
 
 User goals/constraints and material corrections are first-class inputs. A user-proposed mechanism, assistant first idea, another Agent/framework or optimizer output is a candidate rather than architecture authority. Nontrivial architecture adoption requires alternative comparison, failure-mode search and evidence proportional to the promoted claim.
 
-A new supervisory LLM Agent is not implied by meta-governance. Add one only if it has a distinct execution/trace boundary and held-out evidence that the added coordination cost produces a measurable verification benefit. Otherwise prefer deterministic harnesses and existing independent graders.
+A new supervisory LLM Agent is not implied by maintenance control or meta-governance. Add one only if it has a distinct execution/trace boundary and held-out evidence that the added coordination cost produces a measurable verification benefit. Otherwise prefer deterministic controllers/harnesses and existing independent graders.
 
 ## Authority order
 
@@ -151,7 +157,7 @@ Before the next affected material action, refresh the exact current owner Skill/
 
 ## Autonomous maintenance invariant
 
-A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem, execution-evidence defect, architecture signal, or material challenge to the maintenance method itself must follow `SYSTEM_MAINTENANCE_POLICY.json` rather than waiting for the user to enumerate follow-ups.
+A systemic defect, drift, propagation gap, repeated owner failure, stale artifact/context problem, execution-evidence defect, architecture signal, or material challenge to the maintenance method itself must follow `SYSTEM_MAINTENANCE_POLICY.json` through `runtime/maintenance_controller.py` rather than waiting for the user to enumerate follow-ups.
 
 A material correction is classified into the user goal/constraint, counterexample/failure evidence and any proposed mechanism before implementation. Autonomous maintenance does not mean blindly executing the user's suggested fix; it means owning the full evidence-backed repair/evolution process.
 
@@ -178,8 +184,9 @@ Conditional loads:
 - business execution -> execution contract + exact owner capability/Skill;
 - owner admission/architecture drift -> Agent architecture contract + observations;
 - artifact/file action -> `artifact_io` profile;
+- plausible defect signal -> lightweight three-state ingress triage only; do not preload full maintenance on `NO_DEFECT`;
 - local maintenance/drift/reliability incident -> `operational_hygiene` profile and scope-appropriate maintenance path;
-- systemic/non-trivial maintenance or a challenge to maintenance completeness -> full meta-maintenance path, learning/impact review and `runtime/meta_maintenance.py` closure verification;
+- systemic/non-trivial maintenance or a challenge to maintenance completeness -> `SYSTEM_MAINTENANCE_POLICY.json` + `runtime/maintenance_controller.py` during execution, learning/impact review as required, then `runtime/meta_maintenance.py` closure verification;
 - durable learning/evolution -> `evolution` profile;
 - media evidence -> media distillation authority;
 - recovery gap -> recovery authority + selective history.
@@ -196,4 +203,4 @@ A semantics-owner improvement may remain compatible with the existing profile ve
 
 Every active durable task follows `PROGRESS_OBSERVABILITY_POLICY.json`: `COMMITTED` is valid only after authoritative reread verification. A chat-only insight, cache write, tool-success response, control signal or unpromoted learning candidate cannot justify durable `COMMITTED`.
 
-No maintenance pass may claim that the entire evolving system is globally error-free, that every future failure class has already been anticipated, or that all child systems/outcomes are proven merely because the scoped meta-governance/regression checks passed. Report the actual assurance ceiling and open-world boundary.
+No maintenance pass may claim that the entire evolving system is globally error-free, that every future failure class has already been anticipated, or that all child systems/outcomes are proven merely because the scoped controller/meta-governance/regression checks passed. Report the actual assurance ceiling and open-world boundary.
