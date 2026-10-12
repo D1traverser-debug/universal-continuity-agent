@@ -11,34 +11,38 @@
 - manifest_version: `61`
 - system-maintenance policy: `1.8`
 - meta-maintenance: `1.3`
-- latest meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
-- regression evidence: GitHub Actions `38253314936` / job `114824858476` / `275 passed`
+- latest formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
+- controller cutover audit: `audits/MAINTENANCE_EXECUTION_CONTROLLER_CUTOVER_2026-10-12.md`
+- controller regression evidence: GitHub Actions `38268950814` / job `114878120772` / `298 passed`
 
 ## 当前权威状态
 
-1. 本轮修复对象不是 Financial 单点 bug，而是 Universal 自进化方法的复发性缺陷：过去已经要求 parent-system reframe、failure-class distillation、主动学习和 second-order review，但旧 `runtime/meta_maintenance.py` 仍允许系统只填写 `failure_classes`，不证明检索过历史同类事件，也不强制“修过又复发”时上升抽象层。因此同族故障仍可能再次等用户提醒。
-2. `SYSTEM_MAINTENANCE_POLICY.json` v1.8 现在明确把**大纲放在下钻之前**。系统性问题的 canonical 顺序是：`信号/约束分类 → 读取 authority → BUILD_FULL_SYSTEM_IMPACT_MAP → 详细 root cause + failure class → 历史同类检索 → recurrence 判定与 abstraction escalation → 学习/备选/设计 → 高层/类型机制修复 → 回落 class_level_prevention + concrete instance fix → validation → cross-surface/propagation → second-order review → durable learning`。
-3. 纵向抽象梯由同一 policy owner 定义：`INSTANCE → FAILURE_CLASS → OWNER_OR_COMPONENT_MECHANISM → SYSTEM_ARCHITECTURE → META_METHOD`。第一次问题优先最低充分层；同类问题在 accepted fix 后再次发生，必须高于上次修复层级；若已在 `META_METHOD` 仍复发，则必须显式进入 `MAX_LEVEL_REDESIGN`，不能伪造不存在的更高层。
-4. `runtime/meta_maintenance.py` schema 1.3 把上述方法变成 fail-closed 结构门：当前 systemic run 必须搜索全部已分类 failure class；known/recurrent class 必须绑定历史 ref；`RECURRED_AFTER_FIX` / `CROSS_OWNER_RECURRENT` 必须记录 prior repair level 并升级；高层修复后必须同时记录 `class_level_prevention` 与 `instance_fix`。runtime 的枚举只是 executable mirror，并对 canonical policy 做 parity 检查，防止形成 shadow rule。
-5. `runtime/self_maintenance_trajectory.py` 也已同步，不再只验证抽象政策：reference trajectory 现在包含 `PARENT_SYSTEM_REFRAME → DIAGNOSE_ROOT_CAUSE → SEARCH_FAILURE_HISTORY → ABSTRACTION_ESCALATION_DECISION → ... → PATCH → RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX → VALIDATION`。
-6. V59 已明确记录 `symptom-first-repair-without-parent-system-reframe` 与 `owner-maintenance-waits-for-user-signal...`；V60 又记录 confirmed defect 发 signal 后仍需用户催着真正修；Financial live trajectory又暴露 task/output negative-space omission。本轮因此正式分类为 `RECURRED_AFTER_FIX`，prior level=`SYSTEM_ARCHITECTURE`，current level=`META_METHOD`，不是另一次局部补丁。
-7. 第一次 V61 真实 CI 并没有直接绿：run `38252468487` / job `114822012392` 为真实 runner，结果 `271 passed, 4 failed`。失败暴露两类 stale consumer：旧 self-maintenance reference simulation 仍编码旧顺序，以及 `tests/test_system_audit.py` 硬编码 policy `1.7`。没有降低新 gate，而是把影响面扩大到这些 consumer 并修正。
-8. 修复 consumer 后，run `38253314936` / job `114824858476` 真实执行并通过：risk-tiered control-plane audit `PASS`、Agent architecture harness `PASS_WITH_ACKNOWLEDGED_OWNER_DRIFT_WARNINGS`、pytest `275 passed`。因此 V61 可到 `REGRESSION_VERIFIED`；仍不能升级为 independent semantic/live outcome proof。
-9. 没有新增 Reflection/Supervisor Agent、root policy、failure database 或业务热路径 preload。现有 audit artifacts 继续保存历史证据；如果未来真实运行证明 free-form failure class 名称导致明显同类问题仍匹配失败，再在 `META_METHOD` 层评估 normalized concept key / semantic retrieval，而不是现在预先堆系统。
-10. Financial 最新 `main` 仍为 `ce7bac183e0ca57be1cbc1591e7e124f209055e0`。其 fresh-chat default DUAL 轨迹之前暴露应交付 Deep+Broad+Audit 三份而实际只交两份；Financial owner 已做 TaskContract/output parity repair，但 fresh-chat 3-output retest 与 ce7bac fresh architecture revalidation 仍 OPEN。Universal 不改写其 BUSINESS truth/lease。
+1. V61 已把系统性维护升级为：先建 parent-system outline，再做 root cause/failure class、历史同类检索、recurrence 判定与 abstraction escalation，最后回落 `class_level_prevention + concrete instance fix` 后验证；该结构仍有效。
+2. 本轮进一步确认一个更直接的缺陷：**进入维护入口以后，旧系统仍主要是“policy 定义 SOP + meta harness 最后审记录”，不是 during-execution execution control**。因此模型理论上可以先 patch，最后再补齐大纲/历史检索记录。该 failure class 记为 `declarative-SOP-without-execution-control`。
+3. 已新增 `runtime/maintenance_controller.py`，但它不拥有第二套流程。canonical stage 仍由 `SYSTEM_MAINTENANCE_POLICY.json.meta_maintenance_outline.stages` 唯一定义；controller 只负责当前 stage、顺序、action authorization、BLOCKED/resume、re-open/downstream invalidation 和 closure gate。
+4. 三态入口现在固定为 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 保持正常业务热路径；`INVESTIGATE` 只查证据且不能 material patch；systemic/non-trivial `CONFIRMED_DEFECT` 进入 controller。入口只负责分流，不复制完整 SOP。
+5. Controller 已机械覆盖：禁止 stage skip；禁止 M7 前 material patch；`INVESTIGATE` 未确认不能 patch；validation/propagation/second-order review 只能在对应 stage；validation/second-order 新发现可 reopen 更早 stage 并使下游 receipt 失效；全部 canonical stages 未完成不能 CLOSE。
+6. `AGENT_MANIFEST.json` 已把 controller 声明为 runtime entrypoint + workflow transition guard；`SYSTEM_BLUEPRINT.md` 已明确区分 `maintenance_controller.py`（during-execution controller）与 `meta_maintenance.py`（post-hoc closure verifier）。
+7. 第一版 wiring 因把太多 SOP 塞进入口而真实 CI 失败；没有调大预算，而是压缩入口，把详细流程移回 cold-path policy/runtime。随后压缩又删掉部分已有 takeover/progress invariant，CI 再次失败；这些稳定边界已经恢复。最终 current verified sizes：`ENTRYPOINT.md` 8,013 B、`CURRENT_PROTOCOL.json` 454 B、两文件合计 8,467 B / 9,216 B；`STARTUP_HOOK.md` 3,464 B / 4,096 B。
+8. 最终真实 CI run `38268950814` / job `114878120772`：risk-tiered audit PASS、selected synthetic faults PASS、Agent architecture harness PASS（仅既有 owner drift warnings）、pytest `298 passed`。因此当前 controller/ingress wiring 达到 `REGRESSION_VERIFIED`。
+9. **不要把这写成 controller-native live proof。** 本轮 repair 在 controller 存在之前已经开始，所以没有伪造ย้อนหลัง stage trace。第一条真正“从入口开始就由 controller 驱动”的 systemic maintenance trajectory 仍 OPEN。
+10. 还有一个更硬的产品边界：当前 ChatGPT GitHub connector 可以直接调用 repository mutation；repo 内 Python controller 不能物理拦截外部 tool call。因此当前保证是“路由 + deterministic authorization + CI/regression”，不是不可绕过的 mutation middleware。若真实 trajectory 仍出现绕过，下一层应该是 controller-aware mutation gateway 或 GitHub protection/required-check 级执行约束，不得再靠提醒 prose。
+11. Financial 最新 `main` 仍为 `ce7bac183e0ca57be1cbc1591e7e124f209055e0`；其 fresh-chat DUAL 3-output retest 与 ce7bac fresh architecture revalidation 继续 OPEN。本轮 Universal maintenance 不获取任何 BUSINESS lease、不修改 BUSINESS truth。
 
 ## 当前开放门
 
-- **live no-reminder proof**：OPEN。下一次真实 systemic incident 必须在没有用户再次指出“这是同类问题”的情况下，自己先建 parent-system outline，再检索历史 failure class、判断 recurrence、正确上升 abstraction level，并回落修 class + 当前实例。
-- **semantic analogue completeness**：OPEN。结构门不能证明模型找全所有语义同类历史事件；若未来明显漏配，需在 `META_METHOD` 层重新设计 retrieval/concept normalization。
-- **independent semantic review / live outcome**：OPEN。275 tests 证明当前结构与回归，不证明语义诊断永远正确，也不证明用户以后绝不会再提醒。
+- **controller-native live trajectory**：OPEN。下一次真实 systemic/non-trivial maintenance 必须从三态入口开始，并在用户不提醒 SOP 的情况下按 controller stage 推进。
+- **tool-level hard enforcement**：OPEN。当前 repo controller 不能物理拦截 ChatGPT GitHub connector 的直接 mutation；如 live evidence 证明仍可绕过，必须升到 mutation gateway / repository protection，而不是继续堆 prompt。
+- **semantic analogue completeness / live no-reminder proof**：OPEN。结构门仍不能证明 failure-class 语义匹配永远完整。
+- **independent semantic review / live outcome**：OPEN。298 tests 不等于独立语义审查或未来结果保证。
 - **Financial fresh-chat DUAL 3-output retest**：OPEN。
 - **Financial ce7bac architecture revalidation**：OPEN。
 - **monitor disable provenance issue #12**：OPEN。
 
 ## 下一步
 
-1. 后续任何 material/systemic 问题先执行：`信号 → authority → parent-system outline → root cause/failure class → historical match → recurrence → abstraction level`，禁止先 patch 再补大纲。
-2. 如果是 `RECURRED_AFTER_FIX/CROSS_OWNER_RECURRENT`，不得在原层继续打补丁；必须上升至少一级，再回落完成 `class_level_prevention + concrete instance fix` 后才能验证关闭。
-3. 下一次真实无提醒轨迹作为 V61 live proof；若仍漏掉明显历史同类，继续在 `META_METHOD` 层修“学习/检索机制”，而不是回到局部 guard 堆叠。
-4. 不获取任何 BUSINESS lease，不修改 BUSINESS truth；共享方法传播只走现有 Universal profile/maintenance contract。
+1. 后续任何 material 输入先走轻量三态 triage；健康业务 `NO_DEFECT` 不加载全维护栈。
+2. 一旦进入 systemic/non-trivial maintenance，controller current stage 是 SOP 执行导航；禁止先 patch 再补记录。
+3. 第一条 controller-native live trajectory 是当前最高价值验证；若仍发生 controller bypass，直接把问题升级为 `execution-controller-not-on-mutation-path`，评估真正 mutation gateway / GitHub enforcement。
+4. 保持入口薄，不因可靠性需求把完整治理文本塞回 STARTUP/ENTRYPOINT。
+5. 不获取任何 BUSINESS lease，不修改 BUSINESS truth；共享方法传播只走 Universal control-plane authority。
