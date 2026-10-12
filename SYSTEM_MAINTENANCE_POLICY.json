@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.7",
+  "schema_version": "1.8",
   "status": "ACTIVE",
   "scope": "UNIVERSAL_CONTINUITY_AND_CROSS_AGENT_CONTROL_PLANE_MAINTENANCE",
   "principle": "The user is not the system maintenance operator. A user correction, systemic defect, drift, propagation gap, regression, lifecycle ambiguity, maintainability issue, repeated owner failure, premature solution canonicalization, or global-audit signal starts a maintenance process; it is not a direct implementation order. The maintenance writer must classify the signal, inspect the affected system, decide what must be learned or changed, and only then execute the smallest evidence-backed change.",
@@ -30,6 +30,9 @@
     "compare_credible_alternatives_for_nontrivial_design": true,
     "seek_counterexample_or_failure_mode_before_adoption": true,
     "inspect_reusable_capabilities_before_build": true,
+    "search_historical_failure_classes_before_systemic_fix": true,
+    "escalate_abstraction_on_recurrence_after_fix": true,
+    "return_from_high_level_fix_to_class_and_instance_validation": true,
     "resolve_retrievable_facts_before_user_decision": true,
     "maintain_fact_decision_frontier": true,
     "run_architecture_payoff_and_deletion_test": true,
@@ -54,7 +57,7 @@
     "claim_global_perfection_or_all_future_failures_preconsidered": false
   },
   "meta_maintenance_outline": {
-    "purpose": "Default governance path for non-trivial systemic maintenance. It prevents symptom-driven patching, blind obedience to proposed fixes, prompt-only papering-over, cross-subsystem drift, avoidable user questioning, redundant capability construction, and unbounded architecture growth.",
+    "purpose": "Default governance path for non-trivial systemic maintenance. It prevents symptom-driven patching, blind obedience to proposed fixes, prompt-only papering-over, cross-subsystem drift, avoidable user questioning, redundant capability construction, repeated same-level repair after a known failure class recurs, and unbounded architecture growth.",
     "activation": {
       "full_depth": [
         "explicit global audit",
@@ -68,6 +71,7 @@
     "stages": [
       "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
       "M1_REQUIREMENT_AND_FAILURE_MODEL",
+      "M1A_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
       "M2_FULL_SYSTEM_IMPACT_MAP",
       "M3_LEARNING_AND_EVIDENCE_SCOUT",
       "M3A_CAPABILITY_REUSE_SCAN",
@@ -85,6 +89,9 @@
     "mandatory_questions": [
       "What exact user goal/constraint/counterexample was revealed, separate from the proposed mechanism?",
       "What is the root-cause layer: account/prompt instruction, repository policy, runtime, schema, test/eval, owner binding, product capability, evidence, or propagation?",
+      "Which reusable failure class does this instance belong to, and what prior incidents or accepted repairs match that class?",
+      "If the same failure class recurred after an accepted fix, what higher abstraction level must now be challenged before another local patch is allowed?",
+      "After the higher-level repair, what class-level prevention and concrete instance repair must both be revalidated?",
       "What other active surfaces can contradict or bypass this fix?",
       "What relevant prior incidents, accepted rules, user corrections, and current external practices should be learned before choosing a fix?",
       "What existing capability, Skill, runtime, plugin, policy, harness, or owner primitive can be reused or extended before building something new?",
@@ -98,6 +105,25 @@
       "What negative/held-out/cross-surface evidence could falsify the accepted fix?",
       "What is the exact assurance ceiling and what remains unknown?"
     ]
+  },
+  "failure_abstraction_escalation": {
+    "owner": "SYSTEM_MAINTENANCE_POLICY.json",
+    "principle": "Repair is a vertical loop, not a patch queue: concrete instance -> reusable failure class -> owner/component mechanism -> system architecture -> maintenance meta-method. The lowest sufficient layer is preferred on first observation, but recurrence after an accepted fix is evidence that the previous abstraction was insufficient.",
+    "recurrence_statuses": ["FIRST_OBSERVED", "KNOWN_CLASS_NEW_INSTANCE", "RECURRED_AFTER_FIX", "CROSS_OWNER_RECURRENT"],
+    "abstraction_levels_low_to_high": ["INSTANCE", "FAILURE_CLASS", "OWNER_OR_COMPONENT_MECHANISM", "SYSTEM_ARCHITECTURE", "META_METHOD"],
+    "escalation_decisions": ["HOLD_FIRST_OBSERVATION", "ESCALATE", "MAX_LEVEL_REDESIGN"],
+    "rules": {
+      "systemic_run_must_search_every_classified_failure_class": true,
+      "known_or_recurrent_class_must_bind_prior_incident_or_repair_refs": true,
+      "recurrence_after_accepted_fix_must_move_strictly_above_prior_repair_level": true,
+      "same_or_lower_level_repeat_patch_is_allowed": false,
+      "meta_method_recurrence_requires_explicit_max_level_redesign": true,
+      "high_level_repair_must_return_to_class_level_prevention": true,
+      "high_level_repair_must_return_to_concrete_instance_fix": true,
+      "historical_search_and_escalation_record_is_required_before_systemic_closure": true
+    },
+    "anti_pattern": "Fix the latest symptom, record a postmortem, then allow the next semantically equivalent incident to be treated as unrelated work.",
+    "closure_boundary": "Structural conformance can prove that history lookup and escalation fields were supplied and internally consistent. It cannot by itself prove semantic classification exhaustiveness or that every analogous historical incident was discovered."
   },
   "user_feedback_assimilation": {
     "principle": "Material user corrections are first-class reliability/eval evidence, not direct architecture commands and not disposable chat feedback.",
@@ -187,7 +213,7 @@
       "the owner repeatedly executes from stale rules, stale state, or stale artifacts",
       "CI, eval, or product evidence shows a regression in a core owner responsibility"
     ],
-    "required_response": ["PERSIST_INCIDENT_OR_FAILURE_EVIDENCE", "CLASSIFY_ROOT_CAUSE_LAYER", "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA", "BUILD_FULL_SYSTEM_IMPACT_MAP", "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM", "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE", "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD", "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA", "BUILD_FACT_DECISION_FRONTIER", "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW", "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST", "CHECK_EXECUTION_AND_REFRESH_PATH", "PATCH_TRUE_OWNER_SURFACE", "ADD_OR_UPDATE_REGRESSION_OR_EVAL", "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM", "VERIFY_CROSS_SUBSYSTEM_PROPAGATION", "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE", "CALIBRATE_CLOSURE_CLAIM"],
+    "required_response": ["PERSIST_INCIDENT_OR_FAILURE_EVIDENCE", "CLASSIFY_ROOT_CAUSE_LAYER", "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA", "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS", "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX", "BUILD_FULL_SYSTEM_IMPACT_MAP", "SEPARATE_GOAL_FROM_PROPOSED_MECHANISM", "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE", "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD", "COMPARE_ALTERNATIVES_AND_FALSIFY_FIRST_IDEA", "BUILD_FACT_DECISION_FRONTIER", "RUN_INSTRUCTION_SURFACE_IMPACT_REVIEW", "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST", "CHECK_EXECUTION_AND_REFRESH_PATH", "PATCH_TRUE_OWNER_SURFACE", "ADD_OR_UPDATE_REGRESSION_OR_EVAL", "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX", "REMOVE_OR_DEMOTE_CONTRADICTORY_OR_SUPERSEDED_MECHANISM", "VERIFY_CROSS_SUBSYSTEM_PROPAGATION", "VERIFY_RECOVERY_WITH_FRESH_EVIDENCE", "CALIBRATE_CLOSURE_CLAIM"],
     "affected_owner_non_reliability_expansion": "FREEZE_WHILE_CORE_RELIABILITY_IS_UNHEALTHY",
     "freeze_scope": "AFFECTED_OWNER_OR_CAPABILITY_ONLY",
     "freeze_clearance": "ROOT_CAUSE_PATCH_PLUS_RELEVANT_REGRESSION_OR_EVAL_PASS_PLUS_VERIFIED_AUTHORITY_REREAD",
@@ -204,7 +230,7 @@
       "IMPACT_SCOPED": {"activation": "every material change", "checks": ["changed authority surface", "direct dependents", "affected runtime/tests", "affected owner adapters or capability pointers", "instruction-surface impact", "inheritance/propagation impact", "complexity/efficiency impact"]},
       "OWNER_SENTINEL_ROTATION": {"activation": "owner-related maintenance or active maintenance turns where additional confidence is useful without a full sweep", "checks": ["metadata/index/manifest pointer freshness", "adapter and execution-capability reachability", "no business execution or lease takeover"]},
       "FULL_CONTROL_PLANE": {"activation": ["explicit global audit", "Continuity protocol change", "authority-precedence or writer-lease model change", "startup/discovery routing change", "artifact/storage authority change", "methodology profile contract change", "execution-readiness contract change", "cross-owner migration", "systemic reliability incident", "user challenges maintenance method/global completeness", "major release boundary"], "checks": ["all control-plane contracts/policies/registries", "all durable-owner metadata surfaces", "cross-surface contradiction scan", "dangling remote pointer scan", "stale derived-cache/status scan", "instruction/policy/runtime alignment", "cross-subsystem inheritance and stale-override scan", "complexity/efficiency and supersession review", "relevant owner-specific regressions without stealing owner leases"]},
-      "SYNTHETIC_FAULT_INJECTION": {"activation": "explicit global audit, systemic incident, or high-risk architecture/reliability boundary where negative evidence is needed", "production_mutation_allowed_by_default": false, "checks": ["required discovery source unavailable", "stale registry tries to override owner authority", "same-chat refresh changes lease/epoch", "new-chat takeover fails to change lease", "floating/missing/forbidden methodology profile state", "COMMITTED without authoritative reread", "destructive mutation with unknown identity/dependency", "external reference promoted to authority by presence", "declared executor treated as current-session proof", "meta-maintenance outline omitted after systemic correction", "hard-coded stale methodology receipt semantics survive contract upgrade"], "safety": "Use deterministic fixtures or non-production experiments by default."}
+      "SYNTHETIC_FAULT_INJECTION": {"activation": "explicit global audit, systemic incident, or high-risk architecture/reliability boundary where negative evidence is needed", "production_mutation_allowed_by_default": false, "checks": ["required discovery source unavailable", "stale registry tries to override owner authority", "same-chat refresh changes lease/epoch", "new-chat takeover fails to change lease", "floating/missing/forbidden methodology profile state", "COMMITTED without authoritative reread", "destructive mutation with unknown identity/dependency", "external reference promoted to authority by presence", "declared executor treated as current-session proof", "meta-maintenance outline omitted after systemic correction", "hard-coded stale methodology receipt semantics survive contract upgrade", "recurrent failure class repaired again at same or lower abstraction level"] , "safety": "Use deterministic fixtures or non-production experiments by default."}
     },
     "decision_rules": [
       "Routine low-risk changes run CORE_ALWAYS + IMPACT_SCOPED.",
@@ -223,8 +249,10 @@
     "CLASSIFY_USER_SIGNAL_AND_REQUIREMENT_DELTA",
     "CLASSIFY_SCOPE_AND_AUTHORITY",
     "READ_CURRENT_AUTHORITY",
-    "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "DIAGNOSE_ROOT_CAUSE",
+    "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS",
+    "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX",
+    "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "ASSESS_RELIABILITY_GUARD",
     "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE",
     "SCAN_EXISTING_CAPABILITIES_BEFORE_BUILD",
@@ -240,6 +268,7 @@
     "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
     "ADD_OR_UPDATE_GUARD",
     "RUN_OR_OBSERVE_VALIDATION",
+    "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
     "RUN_SELECTED_CROSS_SURFACE_OR_FAULT_AUDIT",
     "RUN_CROSS_SUBSYSTEM_PROPAGATION_CHECK",
     "RUN_SECOND_ORDER_CHALLENGE_AND_CLAIM_CALIBRATION",
@@ -251,7 +280,7 @@
   "artifact_context_governance": {"policy": "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json", "stale_cache_is_authority": false, "chat_only_material_change_is_durable": false, "external_reference_presence_implies_authority": false, "superseded_engineering_implementation_kept_active_by_default": false, "owner_business_evidence_retention_is_domain_owned": true},
   "required_durable_record": {
     "when_material_change_occurs": true,
-    "fields": ["problem", "root_cause", "user_signal_classification", "system_impact_map", "learning_scout_disposition", "capability_reuse_disposition", "decision_frontier", "instruction_surface_disposition", "inheritance_propagation_effect", "complexity_efficiency_effect", "architecture_payoff_deletion_effect", "changed_authority_surfaces", "validation_or_ci_result", "behavioral_effect", "remaining_risks_or_external_dependencies", "assurance_ceiling", "current_stage", "next_action"],
+    "fields": ["problem", "root_cause", "user_signal_classification", "failure_history_and_abstraction_level", "system_impact_map", "learning_scout_disposition", "capability_reuse_disposition", "decision_frontier", "instruction_surface_disposition", "inheritance_propagation_effect", "complexity_efficiency_effect", "architecture_payoff_deletion_effect", "changed_authority_surfaces", "validation_or_ci_result", "class_level_prevention", "concrete_instance_fix", "behavioral_effect", "remaining_risks_or_external_dependencies", "assurance_ceiling", "current_stage", "next_action"],
     "preferred_locations": ["task HANDOFF/checkpoint", "HARNESS_STATUS.json", "audit or research artifact when detail is substantial", "Git commit history for file-level change history"],
     "avoid_duplicate_changelog_for_trivial_edits": true
   },
@@ -288,6 +317,7 @@
     "retrievable_fact_escalated_as_user_choice": "DECISION_FRONTIER_NOT_SATISFIED",
     "architecture_change_without_payoff_or_deletion_test": "ARCHITECTURE_PAYOFF_GATE_NOT_SATISFIED",
     "repeated_owner_failure_without_durable_incident_or_regression": "RELIABILITY_GUARD_NOT_SATISFIED",
+    "recurrent_failure_after_fix_without_historical_search_or_higher_abstraction": "ABSTRACTION_ESCALATION_GATE_NOT_SATISFIED",
     "nontrivial_solution_adopted_without_independent_candidate_critique": "EVOLUTION_GATE_NOT_SATISFIED",
     "nontrivial_systemic_fix_without_meta_maintenance_outline": "META_MAINTENANCE_GATE_NOT_SATISFIED",
     "systemic_fix_without_learning_scout_disposition": "LEARNING_DECISION_NOT_RECORDED",
