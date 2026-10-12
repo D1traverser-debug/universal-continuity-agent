@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from runtime.meta_maintenance import evaluate_meta_maintenance_run
+from runtime.meta_maintenance import CURRENT_META_MAINTENANCE_SCHEMA, evaluate_meta_maintenance_run
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,7 +22,7 @@ def valid_systemic_run():
         if item.get("owner_kind") == "BUSINESS"
     ]
     return {
-        "schema_version": "1.2",
+        "schema_version": CURRENT_META_MAINTENANCE_SCHEMA,
         "run_id": "meta-test-1",
         "scope": "FULL_CONTROL_PLANE",
         "trigger": "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
@@ -42,6 +42,21 @@ def valid_systemic_run():
             "falsification_checks": [
                 "Try a structurally incomplete systemic run and require fail-closed behavior.",
                 "Try a no-change conclusion and verify the harness does not force a mutation.",
+            ],
+        },
+        "failure_history": {
+            "searched_failure_classes": ["repair-first-governance", "self-review-without-process-verifier"],
+            "matched_prior_refs": [],
+            "recurrence_status": "FIRST_OBSERVED",
+            "current_abstraction_level": "FAILURE_CLASS",
+            "prior_repair_abstraction_level": None,
+            "escalation_decision": "HOLD_FIRST_OBSERVATION",
+            "escalation_reason": "No prior accepted repair for this exact classified failure set is assumed by the fixture.",
+            "class_level_prevention": "Encode the reusable failure class in the existing deterministic maintenance harness.",
+            "instance_fix": "Repair the concrete maintenance run and its affected authority surfaces.",
+            "considered_or_reused_mechanism_refs": [
+                "SYSTEM_MAINTENANCE_POLICY.json",
+                "runtime/meta_maintenance.py",
             ],
         },
         "learning_scout": {
@@ -164,25 +179,104 @@ def test_user_proposed_mechanism_does_not_remove_alternative_requirement():
     assert "at_least_two_alternatives_required" in result.errors
 
 
-def test_v1_2_failure_report_requires_counterexample():
+def test_v1_3_failure_report_requires_counterexample():
     run = valid_systemic_run()
     run["user_signal"].pop("counterexample")
     result = evaluate(run)
     assert "counterexample_required_when_failure_report_classified" in result.errors
 
 
-def test_v1_2_systemic_run_requires_falsification_checks():
+def test_v1_3_systemic_run_requires_falsification_checks():
     run = valid_systemic_run()
     run["failure_model"].pop("falsification_checks")
     result = evaluate(run)
     assert "systemic_falsification_checks_required" in result.errors
 
 
-def test_v1_2_learning_source_disposition_is_bounded():
+def test_v1_3_learning_source_disposition_is_bounded():
     run = valid_systemic_run()
     run["learning_scout"]["sources"][0]["disposition"] = "TRUST_ME"
     result = evaluate(run)
     assert "learning_source_0_disposition_invalid" in result.errors
+
+
+def test_systemic_run_requires_failure_history_search():
+    run = valid_systemic_run()
+    run.pop("failure_history")
+    result = evaluate(run)
+    assert "failure_history_search_required" in result.errors
+    assert "recurrence_status_required" in result.errors
+    assert "current_abstraction_level_required" in result.errors
+
+
+def test_failure_history_search_must_cover_every_classified_failure():
+    run = valid_systemic_run()
+    run["failure_history"]["searched_failure_classes"] = ["repair-first-governance"]
+    result = evaluate(run)
+    assert "failure_history_must_cover_all_failure_classes" in result.errors
+
+
+def test_known_failure_class_requires_prior_incident_refs():
+    run = valid_systemic_run()
+    run["failure_history"].update(
+        {
+            "recurrence_status": "KNOWN_CLASS_NEW_INSTANCE",
+            "matched_prior_refs": [],
+            "escalation_decision": "ESCALATE",
+            "current_abstraction_level": "OWNER_OR_COMPONENT_MECHANISM",
+        }
+    )
+    result = evaluate(run)
+    assert "known_failure_class_requires_prior_refs" in result.errors
+
+
+def test_recurrence_after_fix_must_move_up_the_abstraction_ladder():
+    run = valid_systemic_run()
+    run["failure_history"].update(
+        {
+            "recurrence_status": "RECURRED_AFTER_FIX",
+            "matched_prior_refs": ["audits/prior-repair.json"],
+            "prior_repair_abstraction_level": "OWNER_OR_COMPONENT_MECHANISM",
+            "current_abstraction_level": "OWNER_OR_COMPONENT_MECHANISM",
+            "escalation_decision": "ESCALATE",
+            "escalation_reason": "The same class recurred after the owner-level repair.",
+        }
+    )
+    result = evaluate(run)
+    assert "recurring_failure_must_escalate_abstraction_level" in result.errors
+
+
+def test_recurrence_after_fix_can_close_structurally_only_after_escalation_and_return_to_instance():
+    run = valid_systemic_run()
+    run["failure_history"].update(
+        {
+            "recurrence_status": "RECURRED_AFTER_FIX",
+            "matched_prior_refs": ["audits/prior-repair.json"],
+            "prior_repair_abstraction_level": "OWNER_OR_COMPONENT_MECHANISM",
+            "current_abstraction_level": "SYSTEM_ARCHITECTURE",
+            "escalation_decision": "ESCALATE",
+            "escalation_reason": "The owner-level mechanism already failed, so the system architecture must be challenged before another local patch.",
+            "class_level_prevention": "Repair the shared architecture condition that permitted the class to recur.",
+            "instance_fix": "Then repair and revalidate the triggering concrete defect under the new architecture.",
+        }
+    )
+    result = evaluate(run)
+    assert result.status == "PASS", result.errors
+
+
+def test_meta_method_recurrence_requires_explicit_max_level_redesign():
+    run = valid_systemic_run()
+    run["failure_history"].update(
+        {
+            "recurrence_status": "RECURRED_AFTER_FIX",
+            "matched_prior_refs": ["audits/prior-meta-method-repair.json"],
+            "prior_repair_abstraction_level": "META_METHOD",
+            "current_abstraction_level": "META_METHOD",
+            "escalation_decision": "ESCALATE",
+        }
+    )
+    result = evaluate(run)
+    assert "meta_method_recurrence_requires_max_level_redesign" in result.errors
 
 
 def test_systemic_run_requires_reuse_before_build_scan():
@@ -329,9 +423,18 @@ def test_local_mechanical_bug_can_skip_external_scout_with_reason():
     assert result.status == "PASS", result.errors
 
 
+def test_legacy_v1_2_run_remains_readable_as_historical_evidence():
+    run = valid_systemic_run()
+    run["schema_version"] = "1.2"
+    run.pop("failure_history")
+    result = evaluate(run)
+    assert result.status == "PASS", result.errors
+
+
 def test_legacy_v1_1_run_remains_readable_as_historical_evidence():
     run = valid_systemic_run()
     run["schema_version"] = "1.1"
+    run.pop("failure_history")
     run.pop("capability_reuse")
     run.pop("decision_frontier")
     run.pop("architecture_payoff")
@@ -344,6 +447,7 @@ def test_legacy_v1_0_run_remains_readable_as_historical_evidence():
     run["schema_version"] = "1.0"
     run["user_signal"].pop("counterexample")
     run["failure_model"].pop("falsification_checks")
+    run.pop("failure_history")
     run.pop("capability_reuse")
     run.pop("decision_frontier")
     run.pop("architecture_payoff")
@@ -387,11 +491,11 @@ def test_meta_governance_hardening_cannot_close_with_stale_or_missing_run_record
     if "SELF_AUDIT_IN_PROGRESS" in stage or "PRODUCTION_PROMOTION_IN_PROGRESS" in stage:
         return
 
-    assert manifest.get("meta_maintenance_harness_version") == "1.2"
+    assert manifest.get("meta_maintenance_harness_version") == CURRENT_META_MAINTENANCE_SCHEMA
     run_ref = manifest.get("latest_meta_maintenance_run_ref")
     assert isinstance(run_ref, str) and run_ref
     run = load_json(run_ref)
-    assert run.get("schema_version") == "1.2"
+    assert run.get("schema_version") == CURRENT_META_MAINTENANCE_SCHEMA
     assert run.get("target_manifest_version") == manifest.get("manifest_version")
     result = evaluate(run)
     assert result.status == "PASS", result.errors
