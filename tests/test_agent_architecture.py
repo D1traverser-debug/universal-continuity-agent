@@ -3,6 +3,7 @@ from pathlib import Path
 
 from runtime.agent_architecture import (
     ArchitectureStatus,
+    architecture_relevant_delta_paths,
     validate_agent_manifest,
     validate_architecture_observation,
     validate_registry_architecture_pointers,
@@ -191,11 +192,46 @@ def test_business_only_head_advance_can_preserve_architecture_freshness_with_bou
             "base_head": "old",
             "observed_head": "new",
             "architecture_relevant_change": False,
-            "evidence_ref": "compare://old...new",
+            "changed_paths": [
+                "workspaces/articles/task/STATE.json",
+                "workspaces/articles/task/stages/DRAFT.json",
+            ],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
         },
     }
     result = validate_architecture_observation(observation, observed_owner_head="new")
     assert result.status == ArchitectureStatus.PASS
+
+
+def test_business_only_boolean_cannot_hide_architecture_path_change():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": False,
+            "changed_paths": ["runtime/controller.py"],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("non-exempt paths" in error for error in result.errors)
+
+
+def test_business_artifact_classifier_is_narrow_and_unknown_paths_fail_closed():
+    relevant = architecture_relevant_delta_paths(
+        [
+            "workspaces/articles/t/STATE.json",
+            "projects/P1/checkpoints/CURRENT.json",
+            "research/masterworks/book/receipt.json",
+            "financial_writing_agent/controller.py",
+            "continuity/AGENT_MANIFEST.json",
+        ]
+    )
+    assert relevant == ("financial_writing_agent/controller.py", "continuity/AGENT_MANIFEST.json")
 
 
 def test_architecture_relevant_head_advance_still_fails_closed():
@@ -207,7 +243,8 @@ def test_architecture_relevant_head_advance_still_fails_closed():
             "base_head": "old",
             "observed_head": "new",
             "architecture_relevant_change": True,
-            "evidence_ref": "compare://old...new",
+            "changed_paths": ["runtime/agent.py"],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
         },
     }
     result = validate_architecture_observation(observation, observed_owner_head="new")
@@ -224,13 +261,32 @@ def test_head_delta_must_bind_exact_validation_and_observed_heads():
             "base_head": "wrong-base",
             "observed_head": "wrong-head",
             "architecture_relevant_change": False,
-            "evidence_ref": "compare://wrong",
+            "changed_paths": ["workspaces/articles/t/STATE.json"],
+            "evidence_ref": "https://github.com/example/owner/compare/wrong-base...wrong-head",
         },
     }
     result = validate_architecture_observation(observation, observed_owner_head="new")
     assert result.status == ArchitectureStatus.FAIL
     assert any("base" in error for error in result.errors)
     assert any("observed head" in error for error in result.errors)
+
+
+def test_head_delta_evidence_ref_must_bind_exact_heads():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": False,
+            "changed_paths": ["workspaces/articles/t/STATE.json"],
+            "evidence_ref": "compare://some-other-range",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("evidence_ref" in error for error in result.errors)
 
 
 def test_matching_architecture_observation_passes():
