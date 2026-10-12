@@ -3,8 +3,8 @@
   "run_id": "monitor-external-state-authority-v63-2026-10-12",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 25,
-  "current_stage": "M8_MULTI_LAYER_VALIDATION",
+  "revision": 26,
+  "current_stage": "M9_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION",
   "completed_stage_receipts": [
     {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["product-state://chatgpt-automations/current-reread-2026-10-12T23:55+08:00","tasks/universal-continuity-maintenance/TASK_MANIFEST.json","HARNESS_STATUS.json"],"summary":"Confirmed control-plane defects from the audit: stale external monitor-liveness representation and, later in validation, a manifest/proof version lifecycle conflict."},
     {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["SYSTEM_MAINTENANCE_POLICY.json","audits/CONTINUITY_MONITOR_LIVENESS_INCIDENT_2026-10-12.md","audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json"],"summary":"Classified two systemic failure classes: external-product-observation-staleness and task-mutation-version-coupled-to-formal-meta-proof-version. Both affect Universal control truth, not BUSINESS truth."},
@@ -17,18 +17,14 @@
     {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":21,"evidence_refs":["STARTUP_HOOK.md","tests/test_meta_maintenance.py","runtime/universal_continuity.py"],"summary":"No account/startup instruction change. The correct control surface is the repository proof-binding regression plus explicit task-manifest/handoff semantics; prompt text cannot resolve lifecycle coupling."},
     {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":22,"evidence_refs":["audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json","runtime/meta_maintenance.py","tests/test_meta_maintenance.py"],"summary":"Design keeps one manifest mutation counter and one latest completed formal proof pointer. It changes the relation from equality to non-future binding plus structural validity, retains strict takeover versioning, adds no authority surface and removes pressure to create redundant meta artifacts on every lease takeover."},
     {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":23,"evidence_refs":["audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json","audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json"],"summary":"Deletes the recurrent workaround requirement 'new formal meta-run for every manifest_version bump' while preserving anti-staleness checks: proof ref exists, schema matches, run structurally passes, and its target cannot exceed current durable task version. Net architecture is simpler and more truthful."},
-    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":25,"evidence_refs":["github-commit://2f2d0b1a643f6e593acbd88e05975c814f10f61c","tests/test_meta_maintenance.py","audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json","github-commit://f3533462a3814ecb117b73283c0e7334436219a6"],"summary":"Implemented the architecture-level proof lifecycle decoupling by replacing exact current-manifest equality with non-future target binding plus unchanged structural evaluation of the latest completed meta run. Retained acquire_resume_lease version advancement. The same M7 scope also corrected monitor liveness representation in the task manifest so external scheduler state requires live product reread and user-deleted monitors are not recreated without authorization."}
+    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":25,"evidence_refs":["github-commit://2f2d0b1a643f6e593acbd88e05975c814f10f61c","tests/test_meta_maintenance.py","audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json","github-commit://f3533462a3814ecb117b73283c0e7334436219a6"],"summary":"Implemented proof lifecycle decoupling by replacing exact current-manifest equality with non-future target binding plus unchanged structural evaluation of the latest completed meta run. Retained acquire_resume_lease version advancement. Also corrected monitor liveness representation in the task manifest so external scheduler state requires live product reread and user-deleted monitors are not recreated without authorization."},
+    {"stage":"M8_MULTI_LAYER_VALIDATION","revision":26,"evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/runs/38276628670/jobs/114903580100","github-commit://ceab3271e16fd3b3f373dd49a5894024fda0921a"],"summary":"Fresh hosted validation passed the risk-tiered control-plane audit, Agent architecture harness and complete pytest suite after the proof-lifecycle repair. This follows two earlier real CI failures that were used to reopen and strengthen the implementation rather than being ignored."}
   ],
   "reopen_history": [
     {"target_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":14,"reason":"Hosted CI run 38275331371 failed because compacting the manifest removed a required methodology contract field; implementation was reopened and the field restored.","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/runs/38275331371/jobs/114899271329","tasks/universal-continuity-maintenance/TASK_MANIFEST.json"]},
     {"target_stage":"M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION","revision":15,"reason":"Second hosted CI run 38275584909 proved a deeper pre-existing architecture conflict between legal manifest_version advancement and exact formal meta-run target equality; history search found the same class in V53, requiring abstraction escalation rather than another same-level current-version meta artifact.","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/runs/38275584909/jobs/114900126253","audits/META_MAINTENANCE_TAKEOVER_V53_2026-10-11.json","runtime/universal_continuity.py","tests/test_meta_maintenance.py"]}
   ],
   "investigation_resolution": null,
-  "prepatch_checkpoint": {
-    "ref": "audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json",
-    "revision": 24,
-    "bound_completed_stage_count": 11,
-    "authoritative_reread_verified": true
-  },
+  "prepatch_checkpoint": {"ref":"audits/MANIFEST_META_PROOF_VERSION_DECOUPLING_V63_PREPATCH_2026-10-12.json","revision":24,"bound_completed_stage_count":11,"authoritative_reread_verified":true},
   "blocker": null
 }
