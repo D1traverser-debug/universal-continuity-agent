@@ -32,6 +32,8 @@ Stable cross-agent invariants:
 - authoritative reread before `COMMITTED`;
 - lower-authority cache/chat context never silently overriding durable truth.
 
+Task mutation lineage and formal maintenance proof are separate lifecycle axes. `manifest_version` is the durable task mutation/CAS lineage and may advance on a legal takeover or checkpoint write even when no new formal maintenance proof has completed. `latest_meta_maintenance_run_ref` points to the latest **completed** formal proof; its `target_manifest_version` must never be newer than the current task manifest, but generic task mutation does not require exact equality. A task-only mutation must never manufacture or backfill a completed formal meta-run merely to mirror the newest manifest version. Exact-current binding is reserved for an explicit promotion/freshness gate that separately requires it.
+
 Responsibility pointers remain explicit even though they are not fixed bootstrap input:
 - protocol lifecycle/version compatibility -> `VERSION_LIFECYCLE_POLICY.json`;
 - same-chat reconciliation / lease-preserving upgrades -> `LIVE_CHAT_RECONCILIATION_POLICY.json`;
@@ -111,6 +113,8 @@ This prevents discoveries made by a stale writer or unattended CI from disappear
 `OWNER_ARCHITECTURE_OBSERVATIONS.json` is a rebuildable observation cache containing externally observed owner HEADs and architecture-validation receipts. It is not owner membership or business-state authority.
 
 Local Universal CI can validate that this cache is structurally complete and internally consistent, but it cannot discover a newer private owner HEAD without a connected remote execution surface. A remote architecture watch therefore reads every current BUSINESS owner from `OWNER_REGISTRY.json`, compares current HEAD / Agent manifest / Skill shape / CI with the recorded observation, and emits a non-authoritative control signal when meaningful drift appears.
+
+ChatGPT automation/task existence, enabled state and scheduler liveness are likewise **external product state**, not repository-owned current truth. Repository surfaces may record desired policy and timestamped last-observed product evidence, but any present-tense decision that depends on whether an automation currently exists or is enabled must reread the live product surface when available. A stale repository observation cannot prove current liveness, and an explicit user deletion/disable must not be silently reversed without new authorization.
 
 Remote monitoring never takes a business lease or writes business state.
 
