@@ -50,6 +50,10 @@ def _valid_refs(refs: Any) -> bool:
     return isinstance(refs, list) and bool(refs) and all(isinstance(ref, str) and bool(ref.strip()) for ref in refs)
 
 
+def _strictly_increasing(values: list[int]) -> bool:
+    return all(left < right for left, right in zip(values, values[1:]))
+
+
 def new_maintenance_state(*, run_id: str, triage_outcome: str, policy: Mapping[str, Any]) -> dict[str, Any]:
     outcome = str(triage_outcome).strip().upper()
     if outcome not in TRIAGE_OUTCOMES:
@@ -111,7 +115,7 @@ def evaluate_maintenance_state(
         receipts = []
 
     completed: list[str] = []
-    event_revisions: list[int] = []
+    receipt_revisions: list[int] = []
     for index, receipt in enumerate(receipts):
         if not isinstance(receipt, Mapping):
             errors.append(f"stage_receipt_{index}_invalid")
@@ -130,12 +134,15 @@ def evaluate_maintenance_state(
         if not isinstance(receipt_revision, int) or receipt_revision <= 0:
             errors.append(f"stage_receipt_{index}_revision_invalid")
         else:
-            event_revisions.append(receipt_revision)
+            receipt_revisions.append(receipt_revision)
+    if receipt_revisions and not _strictly_increasing(receipt_revisions):
+        errors.append("stage_receipt_revisions_must_be_strictly_increasing")
 
     if completed != list(stages[: len(completed)]):
         errors.append("completed_stages_must_be_exact_canonical_prefix")
 
     reopen_history = state.get("reopen_history")
+    reopen_revisions: list[int] = []
     if not isinstance(reopen_history, list):
         errors.append("reopen_history_must_be_list")
         reopen_history = []
@@ -156,8 +163,11 @@ def evaluate_maintenance_state(
             if not isinstance(item_revision, int) or item_revision <= 0:
                 errors.append(f"reopen_history_{index}_revision_invalid")
             else:
-                event_revisions.append(item_revision)
+                reopen_revisions.append(item_revision)
+    if reopen_revisions and not _strictly_increasing(reopen_revisions):
+        errors.append("reopen_revisions_must_be_strictly_increasing")
 
+    auxiliary_revisions: list[int] = []
     investigation_resolution = state.get("investigation_resolution")
     if investigation_resolution is not None:
         if not isinstance(investigation_resolution, Mapping):
@@ -169,7 +179,7 @@ def evaluate_maintenance_state(
             if not isinstance(inv_revision, int) or inv_revision <= 0:
                 errors.append("investigation_resolution_revision_invalid")
             else:
-                event_revisions.append(inv_revision)
+                auxiliary_revisions.append(inv_revision)
 
     checkpoint = state.get("prepatch_checkpoint")
     if checkpoint is not None:
@@ -185,7 +195,7 @@ def evaluate_maintenance_state(
             if not isinstance(checkpoint_revision, int) or checkpoint_revision <= 0:
                 errors.append("prepatch_checkpoint_revision_invalid")
             else:
-                event_revisions.append(checkpoint_revision)
+                auxiliary_revisions.append(checkpoint_revision)
             try:
                 implementation_index = stages.index(_stage_for_prefix(stages, "M7_"))
             except ValueError:
@@ -194,11 +204,11 @@ def evaluate_maintenance_state(
             if checkpoint.get("bound_completed_stage_count") != implementation_index:
                 errors.append("prepatch_checkpoint_not_bound_to_preimplementation_prefix")
 
-    if event_revisions:
-        if event_revisions != sorted(event_revisions) or len(event_revisions) != len(set(event_revisions)):
-            errors.append("controller_event_revisions_must_be_strictly_increasing")
-        if isinstance(revision, int) and max(event_revisions) > revision:
-            errors.append("controller_revision_behind_recorded_events")
+    all_event_revisions = receipt_revisions + reopen_revisions + auxiliary_revisions
+    if len(all_event_revisions) != len(set(all_event_revisions)):
+        errors.append("controller_event_revisions_must_be_unique")
+    if all_event_revisions and isinstance(revision, int) and max(all_event_revisions) > revision:
+        errors.append("controller_revision_behind_recorded_events")
 
     next_stage = stages[len(completed)] if len(completed) < len(stages) else None
     current_stage = state.get("current_stage")
@@ -298,7 +308,7 @@ def complete_current_stage(
 
     stages = canonical_stages(policy)
     implementation_stage = _stage_for_prefix(stages, "M7_")
-    if stage == implementation_stage and not evaluate_maintenance_state(state, policy).material_patch_allowed:
+    if stage == implementation_stage and not evaluation.material_patch_allowed:
         raise ValueError("implementation_stage_requires_verified_prepatch_checkpoint")
 
     updated = deepcopy(dict(state))
