@@ -12,9 +12,12 @@ _REQUIRED_FULL_LOOP_STEPS = (
     "DETECT",
     "BUILD_FULL_SYSTEM_IMPACT_MAP",
     "DIAGNOSE_ROOT_CAUSE",
+    "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS",
+    "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX",
     "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE",
     "CHALLENGE_INITIAL_SOLUTION_CANDIDATES",
     "PATCH_MINIMUM_AUTHORITY_SURFACE",
+    "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
     "RUN_OR_OBSERVE_VALIDATION",
     "RUN_CROSS_SUBSYSTEM_PROPAGATION_CHECK",
     "RUN_SECOND_ORDER_CHALLENGE_AND_CLAIM_CALIBRATION",
@@ -122,6 +125,20 @@ def simulate_self_maintenance_reference(
     elif not _ordered_subset(loop, _REQUIRED_FULL_LOOP_STEPS):
         errors.append("maintenance_loop_required_order_missing")
 
+    escalation = policy.get("failure_abstraction_escalation", {})
+    if not isinstance(escalation, Mapping):
+        errors.append("failure_abstraction_escalation_missing")
+        escalation = {}
+    escalation_rules = escalation.get("rules", {}) if isinstance(escalation, Mapping) else {}
+    for flag in (
+        "systemic_run_must_search_every_classified_failure_class",
+        "recurrence_after_accepted_fix_must_move_strictly_above_prior_repair_level",
+        "high_level_repair_must_return_to_class_level_prevention",
+        "high_level_repair_must_return_to_concrete_instance_fix",
+    ):
+        if not isinstance(escalation_rules, Mapping) or escalation_rules.get(flag) is not True:
+            errors.append(f"failure_abstraction_rule_missing:{flag}")
+
     shared = (
         adapter.get("operational_hygiene_and_learning", {})
         .get("unified_self_maintenance_evolution_loop", {})
@@ -133,12 +150,26 @@ def simulate_self_maintenance_reference(
         if shared.get(flag) is not True:
             errors.append(f"unified_loop_flag_missing:{flag}")
 
-    events.extend(("READ_CURRENT_AUTHORITY", "PARENT_SYSTEM_REFRAME", "DIAGNOSE_ROOT_CAUSE"))
+    events.extend(
+        (
+            "READ_CURRENT_AUTHORITY",
+            "PARENT_SYSTEM_REFRAME",
+            "DIAGNOSE_ROOT_CAUSE",
+            "SEARCH_FAILURE_HISTORY",
+            "ABSTRACTION_ESCALATION_DECISION",
+        )
+    )
 
     if systemic or solution_uncertain:
         events.append("LEARNING_SCOUT")
 
-    events.extend(("COMPARE_AND_FALSIFY_CANDIDATES", "PATCH_MINIMUM_AUTHORITY_SURFACE"))
+    events.extend(
+        (
+            "COMPARE_AND_FALSIFY_CANDIDATES",
+            "PATCH_MINIMUM_AUTHORITY_SURFACE",
+            "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
+        )
+    )
 
     if not validation_passed:
         events.extend(("VALIDATION_FAIL", "KEEP_ACTIVE_WITH_BLOCKER"))
