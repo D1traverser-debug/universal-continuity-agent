@@ -58,10 +58,13 @@ def test_existing_maintenance_loop_already_contains_the_full_closed_loop_in_orde
         "DETECT",
         "BUILD_FULL_SYSTEM_IMPACT_MAP",
         "DIAGNOSE_ROOT_CAUSE",
+        "SEARCH_HISTORICAL_FAILURE_CLASS_AND_PRIOR_REPAIRS",
+        "ESCALATE_ABSTRACTION_IF_RECURRED_AFTER_FIX",
         "DECIDE_LEARNING_SCOUT_AND_DISTILL_RELEVANT_EVIDENCE",
         "CHALLENGE_INITIAL_SOLUTION_CANDIDATES",
         "RUN_ARCHITECTURE_PAYOFF_AND_DELETION_TEST",
         "PATCH_MINIMUM_AUTHORITY_SURFACE",
+        "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
         "REMOVE_OR_DEMOTE_SUPERSEDED_MECHANISM",
         "RUN_OR_OBSERVE_VALIDATION",
         "RUN_CROSS_SUBSYSTEM_PROPAGATION_CHECK",
@@ -92,6 +95,7 @@ def test_plausible_system_defect_hypothesis_is_triaged_before_ordinary_discussio
 
     assert policy["meta_maintenance_outline"]["stages"][0] == "M0_INTAKE_AND_SIGNAL_CLASSIFICATION"
     assert policy["default_autonomy"]["classify_user_feedback_before_adoption"] is True
+    assert policy["default_autonomy"]["build_parent_system_outline_before_deep_local_diagnosis"] is True
     assert policy["default_autonomy"]["wait_for_user_to_notice_related_internal_followups"] is False
 
 
@@ -107,16 +111,19 @@ def test_reference_simulation_runs_confirmed_systemic_defect_through_full_parent
         adapter=load_json("OWNER_ADAPTER_CONTRACT.json"),
     )
 
-    assert result.status == "PASS"
+    assert result.status == "PASS", result.errors
     assert result.assurance_ceiling == "DETERMINISTIC_REFERENCE_SIMULATION_ONLY"
     expected = [
         "DEFECT_TRIAGE",
         "READ_CURRENT_AUTHORITY",
         "PARENT_SYSTEM_REFRAME",
         "DIAGNOSE_ROOT_CAUSE",
+        "SEARCH_FAILURE_HISTORY",
+        "ABSTRACTION_ESCALATION_DECISION",
         "LEARNING_SCOUT",
         "COMPARE_AND_FALSIFY_CANDIDATES",
         "PATCH_MINIMUM_AUTHORITY_SURFACE",
+        "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX",
         "VALIDATION_PASS",
         "SECOND_ORDER_REVIEW",
         "PROPAGATE_SHARED_METHOD_INVARIANTS_ONLY",
@@ -188,7 +195,8 @@ def test_reference_simulation_validation_failure_does_not_fake_closure_or_propag
         adapter=load_json("OWNER_ADAPTER_CONTRACT.json"),
     )
 
-    assert result.status == "PASS"
+    assert result.status == "PASS", result.errors
+    assert "RETURN_TO_CLASS_PREVENTION_AND_INSTANCE_FIX" in result.events
     assert result.events[-2:] == ("VALIDATION_FAIL", "KEEP_ACTIVE_WITH_BLOCKER")
     assert "PROPAGATE_SHARED_METHOD_INVARIANTS_ONLY" not in result.events
     assert "DISTILL_DURABLE_LEARNING" not in result.events
