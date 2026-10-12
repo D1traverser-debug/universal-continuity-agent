@@ -7,17 +7,16 @@ description: Resume durable cross-chat tasks from authoritative owner checkpoint
 
 This Skill is a thin capability map. It is **not** the engineering authority and must not duplicate the full protocol.
 
-## Authority
+## Authority bootstrap
 
-Read, in order:
+Always begin with exactly:
 
 1. repository root `ENTRYPOINT.md`;
-2. `CONTINUITY_CONTRACT.json`;
-3. `PROGRESS_OBSERVABILITY_POLICY.json`;
-4. `OWNER_REGISTRY.json`;
-5. the exact owner manifest/checkpoint selected by the root protocol.
+2. `CURRENT_PROTOCOL.json`.
 
-When media/research learning is involved, also follow `MEDIA_DISTILLATION_PROTOCOL.md` and `CONTINUOUS_LEARNING_POLICY.md`.
+Then follow the current `ENTRYPOINT.md` event-driven loading map. Do **not** maintain or preload a second fixed list of contracts, registries, policies, owner files, audits, or historical transcripts in this Skill. If the current protocol or entrypoint changes, this router delegates to that authority rather than pinning an older read order.
+
+When an event activates media/research learning, maintenance, artifact handling, owner execution, architecture review, protocol reconciliation, or recovery, load only the exact authority surfaces named by the current `ENTRYPOINT.md` for that event.
 
 ## Core execution
 
@@ -27,9 +26,9 @@ When media/research learning is involved, also follow `MEDIA_DISTILLATION_PROTOC
 - Capture and surface **继承前进度** from authoritative persisted state before takeover mutation.
 - Run compatibility before replaying executable state.
 - Acquire and verify the single-writer lease for the selected task.
-- Load context progressively: metadata -> short handoff -> exact artifacts -> selective history only if needed.
+- Load context progressively: bootstrap -> metadata -> short handoff -> exact artifacts -> selective history only if needed.
 - Continue from the real `current_stage / next_action`.
-- Before every final user-facing response on an active durable task, persist any material state change, re-read the authority, and report **进度提交** using `PROGRESS_OBSERVABILITY_POLICY.json`.
+- Before every final user-facing response on an active durable task, persist any material state change, re-read the authority, and report **进度提交** using the current repository authority.
 - If nothing material changed, do not create a heartbeat write; report `NO_MATERIAL_CHANGE` and the unchanged durable resume point.
 - If persistence/verification fails, report it explicitly; never claim progress is safe for the next chat.
 

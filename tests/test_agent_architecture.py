@@ -3,6 +3,7 @@ from pathlib import Path
 
 from runtime.agent_architecture import (
     ArchitectureStatus,
+    architecture_relevant_delta_paths,
     validate_agent_manifest,
     validate_architecture_observation,
     validate_registry_architecture_pointers,
@@ -108,9 +109,9 @@ def test_v11_video_aliases_normalize_to_shared_semantics():
     manifest = valid_manifest()
     manifest["schema_version"] = "1.1"
     manifest["architecture_contract_version"] = "1.1"
-    manifest["skill"]["role"] = "ROUTER_AND_OPERATING_CONTRACT"
-    manifest["runtime"]["judgment_execution"] = "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES"
-    manifest["references"]["mirror_policy"] = "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK"
+    manifest["skill"]["role"] = "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT"
+    manifest["runtime"]["judgment_execution"] = "CHAT_BRIDGED_OWNER_GATED"
+    manifest["references"]["mirror_policy"] = "GENERATED_DISTRIBUTION_MIRRORS_ONLY"
     result = validate_agent_manifest(manifest, CONTRACT)
     assert result.status == ArchitectureStatus.PASS
 
@@ -145,7 +146,7 @@ def test_unknown_future_manifest_version_fails_closed():
     assert "architecture_contract_version unsupported" in result.errors
 
 
-def test_big_skill_is_drift_not_silent_pass():
+def test_big_skill_is_hot_path_drift_not_execution_failure_or_corpus_cap():
     manifest = valid_manifest()
     result = validate_agent_manifest(
         manifest,
@@ -153,7 +154,12 @@ def test_big_skill_is_drift_not_silent_pass():
         file_sizes={manifest["skill"]["entrypoint"]: 20000},
     )
     assert result.status == ArchitectureStatus.PASS_WITH_DRIFT
-    assert any("skill router exceeds" in warning for warning in result.warnings)
+    assert any("hot-path skill router exceeds" in warning for warning in result.warnings)
+    skill_contract = CONTRACT["required_layers"]["skill"]
+    assert skill_contract["budget_scope"] == "HOT_PATH_SKILL_ROUTER_FILE_ONLY"
+    assert skill_contract["hard_repository_or_knowledge_cap"] is False
+    assert skill_contract["oversize_is_execution_blocker"] is False
+    assert CONTRACT["knowledge_scaling"]["large_corpus_expectation"] == "ALLOWED_AND_EXPECTED_WHEN_DOMAIN_REQUIRES_IT"
 
 
 def test_skill_only_owner_fails():
@@ -166,7 +172,7 @@ def test_skill_only_owner_fails():
     assert "missing layer: harness" in result.errors
 
 
-def test_stale_architecture_observation_fails_against_external_head():
+def test_stale_architecture_observation_without_delta_evidence_fails_against_external_head():
     observation = {
         "architecture_validation_head": "old",
         "architecture_validation_result": "PASS",
@@ -175,6 +181,112 @@ def test_stale_architecture_observation_fails_against_external_head():
     result = validate_architecture_observation(observation, observed_owner_head="new")
     assert result.status == ArchitectureStatus.FAIL
     assert any("stale" in error for error in result.errors)
+
+
+def test_business_only_head_advance_can_preserve_architecture_freshness_with_bound_delta_evidence():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": False,
+            "changed_paths": [
+                "workspaces/articles/task/STATE.json",
+                "workspaces/articles/task/stages/DRAFT.json",
+            ],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.PASS
+
+
+def test_business_only_boolean_cannot_hide_architecture_path_change():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": False,
+            "changed_paths": ["runtime/controller.py"],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("non-exempt paths" in error for error in result.errors)
+
+
+def test_business_artifact_classifier_is_narrow_and_unknown_paths_fail_closed():
+    relevant = architecture_relevant_delta_paths(
+        [
+            "workspaces/articles/t/STATE.json",
+            "projects/P1/checkpoints/CURRENT.json",
+            "research/masterworks/book/receipt.json",
+            "financial_writing_agent/controller.py",
+            "continuity/AGENT_MANIFEST.json",
+        ]
+    )
+    assert relevant == ("financial_writing_agent/controller.py", "continuity/AGENT_MANIFEST.json")
+
+
+def test_architecture_relevant_head_advance_still_fails_closed():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": True,
+            "changed_paths": ["runtime/agent.py"],
+            "evidence_ref": "https://github.com/example/owner/compare/old...new",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("architecture-relevant change" in error for error in result.errors)
+
+
+def test_head_delta_must_bind_exact_validation_and_observed_heads():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "wrong-base",
+            "observed_head": "wrong-head",
+            "architecture_relevant_change": False,
+            "changed_paths": ["workspaces/articles/t/STATE.json"],
+            "evidence_ref": "https://github.com/example/owner/compare/wrong-base...wrong-head",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("base" in error for error in result.errors)
+    assert any("observed head" in error for error in result.errors)
+
+
+def test_head_delta_evidence_ref_must_bind_exact_heads():
+    observation = {
+        "architecture_validation_head": "old",
+        "architecture_validation_result": "PASS",
+        "architecture_validation_ref": "audit://old",
+        "architecture_head_delta": {
+            "base_head": "old",
+            "observed_head": "new",
+            "architecture_relevant_change": False,
+            "changed_paths": ["workspaces/articles/t/STATE.json"],
+            "evidence_ref": "compare://some-other-range",
+        },
+    }
+    result = validate_architecture_observation(observation, observed_owner_head="new")
+    assert result.status == ArchitectureStatus.FAIL
+    assert any("evidence_ref" in error for error in result.errors)
 
 
 def test_matching_architecture_observation_passes():
