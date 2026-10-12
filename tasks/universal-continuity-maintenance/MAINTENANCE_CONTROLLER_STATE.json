@@ -3,8 +3,8 @@
   "run_id":"maintenance-execution-sop-v62-selfhost-2026-10-12",
   "triage_outcome":"CONFIRMED_DEFECT",
   "status":"ACTIVE",
-  "revision":16,
-  "current_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION",
+  "revision":17,
+  "current_stage":"M8_MULTI_LAYER_VALIDATION",
   "completed_stage_receipts":[
     {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["audits/MAINTENANCE_EXECUTION_SOP_V62_PREPATCH_2026-10-12.json"],"summary":"Classified maintenance-entry-with-skippable-SOP as a systemic execution-control defect."},
     {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["runtime/meta_maintenance.py","runtime/maintenance_controller.py"],"summary":"Separated ingress reliability from post-entry execution reliability."},
@@ -16,7 +16,8 @@
     {"stage":"M4A_FACT_DECISION_FRONTIER","revision":8,"evidence_refs":["runtime/maintenance_controller.py","runtime/meta_maintenance.py","tasks/universal-continuity-maintenance/TASK_MANIFEST.json"],"summary":"Identified durable controller state and closure binding as internal work with no user decision required."},
     {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":9,"evidence_refs":["ENTRYPOINT.md","STARTUP_HOOK.md"],"summary":"Kept the account hook to cheap triage; detailed SOP remains repository-owned."},
     {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":10,"evidence_refs":["SYSTEM_BLUEPRINT.md","AGENT_MANIFEST.json","runtime/maintenance_controller.py"],"summary":"Used one controller, one task-local state and existing harness; no new agent, root policy or registry."},
-    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["runtime/maintenance_controller.py","tests/test_maintenance_controller.py"],"summary":"Deleted the duplicate SOP and retained only the canonical controller."}
+    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["runtime/maintenance_controller.py","tests/test_maintenance_controller.py"],"summary":"Deleted the duplicate SOP and retained only the canonical controller."},
+    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":17,"evidence_refs":["github-commit://26bd7930eca1b88023f2b6205ab9730df6e9dba8","github-commit://bbb069f5d7866232db31d0ad7d5afc4c67c048c1","github-commit://7c66d57df958d2ba0161e8820c3a5229ef9aff32","github-commit://1f5e0e9b82de87bc4995e7187002a1b0a6106b95","github-commit://6b9392deae85c0b4ac4626ef9214cd49a7d9d64b"],"summary":"Hardened the single canonical controller, removed duplicate SOP authority, bound durable controller state into Universal architecture, required complete controller trace before future closed meta-run binding, and added CI validation of the current persisted controller state itself."}
   ],
   "reopen_history":[
     {"target_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":16,"reason":"Second-order review found that CI validated controller logic but did not directly validate the current durable MAINTENANCE_CONTROLLER_STATE.json, leaving a persisted-state conformance gap.","evidence_refs":["tests/test_maintenance_controller.py","tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json","AGENT_MANIFEST.json"]}
