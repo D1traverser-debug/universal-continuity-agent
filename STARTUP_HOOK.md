@@ -6,37 +6,35 @@ Updated: 2026-10-12
 
 ## Purpose
 
-GitHub and ChatGPT Library are durable storage/discovery surfaces, **not automatic event listeners**. This file defines only the account-level trigger into current repository authority. It is not business authority, task storage, execution proof, or a copy of the evolving control plane.
+GitHub/Library are durable storage surfaces, not automatic event listeners. This file only activates current repository authority; it is not business authority, task state, execution proof, or a copied control plane.
 
 ## Canonical Custom Instructions
 
-Use the following text, or a semantically equivalent minimal account-level instruction:
+Use this text, or a semantically equivalent minimal account-level instruction:
 
 > 当我明确发送“继承”“继续”“恢复”“接着上次”，或“继承/继续/恢复：<任务名>”时，优先按 CONTINUE 处理并启动 `D1traverser-debug/universal-continuity-agent@main`。
 >
-> **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，然后按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
+> **启动时不要机械预读整个仓库。** 只先读取 `ENTRYPOINT.md` 与 `CURRENT_PROTOCOL.json`，再按当前 `ENTRYPOINT.md` 的 Event-driven authority loading 执行；`SYSTEM_BLUEPRINT.md`、审计、研究资料、无关 owner 和旧聊天均为 cold-path。
 >
-> 对每条可能产生 material response / material action 的输入，先做一个极轻的 defect-signal preflight，只分 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`，不要因此默认加载完整维护系统。`NO_DEFECT` 正常走业务 owner；`INVESTIGATE / CONFIRMED_DEFECT` 才按当前仓库 authority 加载维护入口。进入 systemic/non-trivial maintenance 后，必须使用当前 `runtime/maintenance_controller.py` 推进 canonical stage；不得先 patch 再补大纲/记录，也不得在 controller 未到 implementation stage 时进行 material control-plane mutation。
+> 对可能产生 material response/action 的输入先做轻量 defect-signal preflight：`NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 正常走业务 owner；后两者才加载维护入口。进入 systemic/non-trivial maintenance 后按当前 `runtime/maintenance_controller.py` 推进，不得先 patch 再补大纲/记录。
 >
-> 该规则覆盖包括升级前已经打开/继承的旧对话；不要求我手动迁移旧对话。选定 durable task 后按当前 authority 先报告“继承前进度”，再继续真实 `current_stage / next_action`。每次最终答复末尾必须报告“进度提交”，具体状态语义以当前仓库 authority 为准。
->
-> 不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时，按当前仓库 authority 主动闭环，不等待我继续列举内部问题；**当我提出某个系统、入口、传播、路由或进化机制“是不是有问题”，或以其他方式提出一个可信的系统缺陷假设时，也先启动当前 authority 做 defect triage：确认无问题则解释并停止，证据不足则继续核查，确认有问题则在同一轮进入维护/进化闭环；不得只把已确认缺陷描述成“未来风险”后结束。**有 durable task 时按当前仓库规则在 material safe point 持久化并回读。
+> 选定 durable task 后先报告“继承前进度”，再继续真实 `current_stage / next_action`；最终答复按当前 authority 报告“进度提交”。不得从 Memory/旧聊天重建持久化事实。系统维护、用户实质纠正或学习进化触发时主动闭环，不等待我继续列举内部问题；可信系统缺陷假设先做 defect triage：确认无问题则解释并停止，证据不足则继续核查，确认有问题则在同一轮进入维护/进化闭环；不得只把已确认缺陷描述成“未来风险”后结束。
 >
 > 若 Continuity authority 无法访问，回复 `CONTINUITY_BOOTSTRAP_UNAVAILABLE`，不得猜测。
 
 ## Thin-hook invariant
 
-- Account-level Custom Instructions only activate the current repository authority. Bare/named routing details, owner discovery, lease/takeover, capability readiness, methodology, learning, progress receipts and version compatibility remain in the repository and must not be copied into the account hook.
-- Bare discovery uses current `OWNER_REGISTRY.json`; this hook never pins a copied owner list or historical owner count.
-- Change account-level Custom Instructions only when **pre-repository activation/routing/fail-closed semantics** change. Compatible internal protocol/profile/policy evolution must not force account-instruction churn.
-- Existing/open chats reconcile through current repository authority; only a real new chat takeover replaces the writer. 只有真正的新聊天 takeover 才替换 writer lease / `resume_epoch`。
-- This repository cannot prove that the account-level text is actually installed. Product-surface propagation requires product evidence when relevant.
-- 只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才按 `ENTRYPOINT.md` 加载对应 profile/semantics owner；不要把这些规则复制进固定启动 prompt。
+- Bare/named routing details、owner discovery、lease/takeover、capability/methodology、receipt/version semantics stay in repository authority, not this hook.
+- Bare discovery uses current `OWNER_REGISTRY.json`; never pin a copied owner list or historical owner count.
+- Change account instructions only when **pre-repository activation/routing/fail-closed semantics** change; compatible internal evolution stays repository-side.
+- Existing chats reconcile through current authority; only a legal new-chat takeover replaces writer lease / `resume_epoch`.
+- This repository cannot prove the account text is installed; product propagation requires product evidence.
+- 只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才按 `ENTRYPOINT.md` 加载对应 profile/semantics owner。
 
 ## Event-driven authority loading
 
-After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`, follow only the current `ENTRYPOINT.md` routing map. The account hook does not maintain a second owner list, capability list, profile list, receipt algorithm or protocol migration table.
+After `ENTRYPOINT.md + CURRENT_PROTOCOL.json`, follow the current routing map only. The hook keeps no second owner/capability/profile/receipt table.
 
 ## Cold-start and writer boundary
 
-Historical fresh-chat evidence does not prove a future owner. A real new-owner cold-start still requires a genuinely fresh product chat after admission. An active writer reconciles supported changes in place; only a legal new-chat takeover replaces the writer lease. System maintenance never grants permission to take a BUSINESS lease or rewrite owner business truth.
+Historical fresh-chat evidence does not prove a future owner. A real new-owner cold-start requires a genuinely fresh product chat after admission. System maintenance never grants permission to take a BUSINESS lease or rewrite owner business truth.
