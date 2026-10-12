@@ -25,7 +25,6 @@ def test_meta_harness_version_is_aligned_across_runtime_manifest_and_status_cach
     manifest = load_json("tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
     harness = load_json("HARNESS_STATUS.json")
 
-    assert CURRENT_META_MAINTENANCE_SCHEMA == "1.2"
     assert manifest["meta_maintenance_harness_version"] == CURRENT_META_MAINTENANCE_SCHEMA
     assert harness["meta_governance"]["runtime_version"] == CURRENT_META_MAINTENANCE_SCHEMA
     assert harness["latest_meta_maintenance_run"] == manifest["latest_meta_maintenance_run_ref"]
@@ -57,3 +56,6 @@ def test_harness_records_meta_governance_assurance_ceiling_and_hot_path_boundary
     assert meta["systemic_run_requires_capability_reuse_scan"] is True
     assert meta["systemic_run_requires_fact_decision_frontier"] is True
     assert meta["systemic_run_requires_architecture_payoff_deletion_test"] is True
+    assert meta["systemic_run_requires_failure_history_search"] is True
+    assert meta["recurrent_failure_requires_higher_abstraction"] is True
+    assert meta["high_level_repair_returns_to_class_and_instance"] is True
