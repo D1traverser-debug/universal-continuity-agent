@@ -3,8 +3,8 @@
   "run_id": "monitor-external-state-authority-v63-2026-10-12",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 13,
-  "current_stage": "M8_MULTI_LAYER_VALIDATION",
+  "revision": 14,
+  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
   "completed_stage_receipts": [
     {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["product-state://chatgpt-automations/current-reread-2026-10-12T23:55+08:00","tasks/universal-continuity-maintenance/TASK_MANIFEST.json","HARNESS_STATUS.json"],"summary":"Confirmed a control-plane state-drift defect: the user explicitly reports deleting the Continuity monitors and current product-state reread shows the declared core monitor tasks absent, while durable/rebuildable repository surfaces still claim them enabled or hourly-active. The user deletion is intentional product mutation; the defect is stale repository liveness representation, not the deletion itself."},
     {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["SYSTEM_MAINTENANCE_POLICY.json","audits/CONTINUITY_MONITOR_LIVENESS_INCIDENT_2026-10-12.md","D1traverser-debug/universal-continuity-agent#12"],"summary":"Classified the failure as external-product-observation-staleness: mutable ChatGPT automation state can change outside repository writes, so a past enabled observation cannot remain represented as current liveness truth. User intent to delete must not be auto-reversed."},
@@ -16,10 +16,16 @@
     {"stage":"M4A_FACT_DECISION_FRONTIER","revision":8,"evidence_refs":["audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json","product-state://chatgpt-automations/current-reread-2026-10-12T23:55+08:00"],"summary":"Resolved retrievable facts autonomously. User intent is known: deletion was intentional. Whether monitors should be recreated later remains a genuine future user/product decision and is not inferred by this maintenance run."},
     {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":9,"evidence_refs":["STARTUP_HOOK.md","SYSTEM_BLUEPRINT.md","audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json"],"summary":"No account/startup instruction change is required. The defect occurs after repository bootstrap and must be repaired in repository state semantics; more prompt text would not make external scheduler observations fresh."},
     {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":10,"evidence_refs":["audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json","SYSTEM_BLUEPRINT.md"],"summary":"Designed a zero-new-authority repair: current liveness decisions require live product reread; repository stores desired semantics plus timestamped last observation/provenance only. No new Agent/task/registry/root policy and no business hot-path preload are added."},
-    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json","tasks/universal-continuity-maintenance/TASK_MANIFEST.json","HARNESS_STATUS.json"],"summary":"Architecture payoff is removal of false present-tense liveness claims after out-of-band product mutations. The repair demotes persistent ENABLED/hourly flags from current truth to historical observation and adds no parallel mechanism."},
-    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":13,"evidence_refs":["github-commit://f3533462a3814ecb117b73283c0e7334436219a6","tasks/universal-continuity-maintenance/TASK_MANIFEST.json","audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json"],"summary":"Replaced stale current-liveness claims in the authoritative maintenance manifest with a live-product-reread boundary, recorded the latest user-confirmed intentional deletion as a timestamped last observation, revoked implicit monitor recreation authorization, and compacted historical status clutter while preserving routing/lease/version/open-gate metadata. No monitors or BUSINESS state were created or mutated."}
+    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json","tasks/universal-continuity-maintenance/TASK_MANIFEST.json","HARNESS_STATUS.json"],"summary":"Architecture payoff is removal of false present-tense liveness claims after out-of-band product mutations. The repair demotes persistent ENABLED/hourly flags from current truth to historical observation and adds no parallel mechanism."}
   ],
-  "reopen_history": [],
+  "reopen_history": [
+    {
+      "target_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+      "revision": 14,
+      "reason": "Hosted CI run 38275331371 failed the risk-tiered audit because the compacted TASK_MANIFEST accidentally removed methodology_owner_declaration_contract_version, creating a control-plane version-alignment regression. M7 must restore the required field before validation can continue.",
+      "evidence_refs": ["github-actions://D1traverser-debug/universal-continuity-agent/runs/38275331371/jobs/114899271329","tasks/universal-continuity-maintenance/TASK_MANIFEST.json"]
+    }
+  ],
   "investigation_resolution": null,
   "prepatch_checkpoint": {
     "ref": "audits/MONITOR_EXTERNAL_STATE_AUTHORITY_V63_PREPATCH_2026-10-12.json",
