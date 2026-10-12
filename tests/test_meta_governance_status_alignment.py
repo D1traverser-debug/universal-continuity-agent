@@ -56,6 +56,10 @@ def test_harness_records_meta_governance_assurance_ceiling_and_hot_path_boundary
     assert meta["systemic_run_requires_capability_reuse_scan"] is True
     assert meta["systemic_run_requires_fact_decision_frontier"] is True
     assert meta["systemic_run_requires_architecture_payoff_deletion_test"] is True
+    assert meta["systemic_run_requires_parent_system_outline_before_deep_diagnosis"] is True
     assert meta["systemic_run_requires_failure_history_search"] is True
     assert meta["recurrent_failure_requires_higher_abstraction"] is True
+    # Keep the established status-cache key for downstream compatibility while
+    # also requiring the tightened ordering semantics introduced by v1.3.
     assert meta["high_level_repair_returns_to_class_and_instance"] is True
+    assert meta["high_level_repair_returns_to_class_and_instance_before_validation"] is True
