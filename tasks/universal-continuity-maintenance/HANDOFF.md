@@ -8,50 +8,81 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `62`
+- manifest_version: `64`
 - system-maintenance policy: `1.8`
 - meta-maintenance: `1.3`
-- latest formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
-- controller state: `tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json`
-- controller run: `maintenance-execution-sop-v62-selfhost-2026-10-12`
-- controller state status: `COMPLETE` revision `21`
-- controller continuation audit: `audits/MAINTENANCE_CONTROLLER_SELF_HOSTED_CONTINUATION_V62_2026-10-12.md`
-- latest controller validation: GitHub Actions `38271641398` / job `114887058655` / `295 passed`
+- latest completed formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
+- latest completed controller state: `tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json`
+- latest controller run: `monitor-external-state-authority-v63-2026-10-12`
+- latest controller status: `COMPLETE` revision `33`
+- latest hosted validation: GitHub Actions `38277130974` / job `114905234417` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
 
-## 当前权威状态
+## 本轮缺陷审计结论
 
-1. 当前协议仍为 v3.7。系统性维护的 canonical semantics 仍由 `SYSTEM_MAINTENANCE_POLICY.json` 唯一拥有；没有新增第二套 root policy。
-2. 本轮确认的根因不是“历史 recall 不够”，而是**进入维护后仍可能靠模型记忆 SOP**。旧架构是强 policy + post-hoc meta verifier，但缺少 during-execution transition control，因此理论上可能先 patch、后补大纲/历史记录。
-3. 当前入口固定为轻量三态：`NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 走正常业务；`INVESTIGATE` 只核证且不能 material patch；systemic/non-trivial `CONFIRMED_DEFECT` 进入 `runtime/maintenance_controller.py`。
-4. `runtime/maintenance_controller.py` 是唯一 during-execution controller，但不拥有第二套阶段表；它从 `SYSTEM_MAINTENANCE_POLICY.json.meta_maintenance_outline.stages` 读取 canonical stages。`runtime/meta_maintenance.py` 继续只做 post-hoc closure/conformance verifier，两者职责分开。
-5. Controller 已机械禁止：stage skip、未确认 INVESTIGATE 的 material patch、未到 M7 的 material patch、没有 authoritative-reread prepatch checkpoint 的 patch、未完成所有 canonical stages 的 CLOSE。reopen 会截断旧 downstream receipts，BLOCKED 保留精确恢复点。
-6. 重复的 `runtime/maintenance_sop.py` 与对应重复测试已经删除；没有新增 Supervisor/Reflection Agent、failure database、root registry 或另一套 startup SOP。
-7. `AGENT_MANIFEST.json` 已把 `runtime/maintenance_controller.py` 声明为 runtime/transition guard，并把 `MAINTENANCE_CONTROLLER_STATE.json` 声明为 workflow/continuity state surface。
-8. M10 二阶审查真实发现过一个遗漏：此前只测试 controller 逻辑，没有在 CI 中直接读取并验证当前 durable controller state。Controller 因此实际 reopen 回 M7，而不是继续假 PASS；随后新增 `tests/test_current_maintenance_controller_state.py`，现在 full pytest 会从 `AGENT_MANIFEST` 找到真实 state ref 并按当前 policy 验证它。
-9. 第二轮 hosted validation：run `38271641398` / job `114887058655`，risk-tiered audit PASS、Agent architecture harness PASS、pytest `295 passed`。因此当前内部保证达到 `REGRESSION_VERIFIED`。
-10. 当前 durable controller state 已完成到 M11，revision `21`。但本轮事故在 controller 出现之前已经开始，所以只能诚实称为 **`SELF_HOSTED_CONTROLLER_CONTINUATION_M7_TO_M11`**；M0-M6A 是证据绑定的历史 receipts，不能倒称 controller-native pre-action execution。
-11. 因此第一条真正**从 material input → triage → M0…M11** 全程由 controller 驱动、且不靠用户提醒 SOP 的 fresh systemic trajectory 仍是 OPEN 的最高价值 live gate。禁止为了关门而倒造历史轨迹。
-12. `recall/history` 现在只承担诊断输入：帮助识别 failure class/历史修复；真正保证“进入后不漏步”的是 persisted controller state + action authorization + reopen/invalidation + CI/meta closure。
-13. 所有当前 BUSINESS owner 继续通过 Universal contract/routing 继承共享维护方法；没有复制 controller 到 owner repo，没有获取 BUSINESS lease，也没有修改 BUSINESS truth。
-14. 工具层硬边界仍 OPEN：ChatGPT GitHub connector 可以直接 mutation，repo 内 Python controller 无法物理拦截外部 tool call；当前 `main` 也没有 branch protection。若 fresh live trajectory 仍出现绕过，下一层应评估 controller-aware mutation gateway 或 GitHub protection/required checks，而不是继续加 prompt/Agent。
-15. `TASK_MANIFEST.json` 的 latest formal meta-run 仍保持 V61。本轮没有把一个“事故中途才引入 controller”的轨迹伪装成完整 M0 controller-native formal meta-run。已有 closure-binding regression 会在未来正式启用 controller contract 时要求 COMPLETE controller trace；正式 promotion 应绑定第一条真正 fresh ingress-native 完整轨迹。
+本轮不是风险清单式审查，而是一次真实 fresh systemic maintenance trajectory。用户提出“检查总控是否有缺陷隐患”后先做 triage；用户随后澄清当前核心监控是其主动删除，系统没有把该删除误当作新的静默失活事故。确认的缺陷进入 `runtime/maintenance_controller.py`，完整走过 M0→M11；期间两次真实 CI failure 都触发 reopen，而不是被忽略。
 
-## 当前开放门
+### 已确认并修复 1：外部产品状态被旧仓库观测冒充当前事实
 
-- **fresh ingress-native controller trajectory**：OPEN。下一次真实 systemic/non-trivial maintenance 必须从三态入口开始，全程由 controller stage 推进。
-- **tool-level unbypassable enforcement**：OPEN。当前 repo controller 不能物理拦截外部 GitHub mutation；如出现 live bypass，升级到 mutation gateway / branch protection 层。
-- **formal controller-meta promotion**：OPEN，必须绑定第一条真正从入口开始的 COMPLETE controller trace，不能用本轮中途接管轨迹倒填。
-- **semantic analogue completeness**：OPEN。failure-class 历史匹配仍可能有语义漏配；这是诊断质量问题，不是 SOP execution 问题。
-- **independent semantic review / live outcome**：OPEN。295 tests 不等于独立语义正确性或未来结果保证。
-- **Financial fresh-chat DUAL 3-output retest**：OPEN。
-- **Financial current-head architecture revalidation**：OPEN。
-- **monitor disable provenance issue #12**：OPEN。
+此前 task/status surfaces 仍携带 monitor enabled/hourly 的现时语义，但 ChatGPT automation product state 已因用户主动删除发生变化。根因不是“用户删了监控”，而是外部产品状态可以脱离 GitHub 变化，仓库过去缺少足够严格的 freshness/authority 边界。
+
+现在的架构规则：ChatGPT automation/task 是否存在、是否 enabled、scheduler 是否存活属于 **external product state**。GitHub 可以保存期望策略与带时间戳的 last-observed evidence，但任何依赖“现在是否存在/启用”的判断都必须在产品面可用时 live reread。显式用户删除/禁用不得被自动逆转，除非之后获得新授权。
+
+当前 2026-10-13T00:27:13+08:00 的产品面 reread：没有核心 Continuity monitor tasks；用户已明确确认这是主动删除，因此 `monitor_recreation_authorized=false`。历史 issue #12 仍只保留其原始未解问题：此前那次 silent enabled→disabled 的 provenance 未知；当前主动删除不是该历史事故复发证据。
+
+### 已确认并修复 2：task manifest mutation version 与 formal meta-proof version 错误耦合
+
+合法 new-chat takeover 会由 `runtime/universal_continuity.py::acquire_resume_lease()` 增加 `manifest_version`。旧 regression 同时要求 `latest_meta_maintenance_run_ref.target_manifest_version == current manifest_version`。这意味着普通 takeover/任务 checkpoint 也会迫使系统制造一份“当前版本 formal meta-run”，否则 CI 失败。
+
+该 failure class 在 V53 已出现并以“每次 takeover 补当前版本 formal meta-run”修过；本轮同类再次发生，而且当前 controller contract 已明确禁止为了关门倒造未完成轨迹。因此按 policy 1.8 做 abstraction escalation，不再重复 V53 同层补丁。
+
+新的架构模型：
+- `manifest_version` = durable task mutation / CAS lineage；合法 takeover/checkpoint 可独立增长；
+- `latest_meta_maintenance_run_ref` = **最近一条真正完成的 formal maintenance proof**；
+- completed formal run 的 `target_manifest_version` 不能晚于 current manifest，但普通 task mutation 不要求 exact equality；
+- ACTIVE/BLOCKED trajectory 不能为了追版本号而被伪装成 completed formal proof；
+- exact-current proof binding 只应由另一个明确的 promotion/freshness gate 在确实需要时要求。
+
+该规则已写入 `SYSTEM_BLUEPRINT.md`，并由 `tests/test_meta_maintenance.py` 与 `tests/test_meta_governance_status_alignment.py` 回归保护。
+
+## 本轮真实验证
+
+1. 首次实现后的 CI `38275331371` 真实失败：manifest compaction 漏掉 `methodology_owner_declaration_contract_version`；controller reopen M7 并修复。
+2. 第二次 CI `38275584909`：risk-tiered audit PASS、architecture PASS，但 pytest 294 pass / 1 fail，暴露上述 manifest/meta-proof 版本耦合；controller reopen 到 M2A，查到 V53 同类历史并升级到 system-architecture repair。
+3. 生命周期解耦实现后的 CI `38276628670` 全绿。
+4. M10 二阶审查发现 repair semantics 还没有进入 architecture map，于是再次 reopen M7，将两条不变量写入 `SYSTEM_BLUEPRINT.md` 并增加 regression anchor。
+5. 最终 hosted validation `38277130974` / `114905234417`：risk-tiered audit PASS、Agent architecture harness PASS、full pytest PASS。
+
+这因此是当前任务中第一条可诚实记录为 **fresh / no-user-reminder / M0→M11 complete** 的 controller trajectory；不是把旧事故中途接管的历史倒称为 ingress-native proof。
+
+## 仍然 OPEN 的真实缺陷/边界
+
+### A. Tool-level unbypassable enforcement — HIGH / OPEN
+
+GitHub `main` 目前仍 `protected=false`，没有 required status checks enforcement。repo 内 `maintenance_controller.py` 可以规定和验证顺序，但不能物理阻止一个外部 GitHub connector/API 直接 mutation。因此当前保证仍是 **repo/controller + CI level enforcement**，不是 unbypassable mutation-path enforcement。
+
+下一层如果要关闭此门，应评估 controller-aware mutation gateway 或 GitHub branch protection / required checks。不要再通过增加 prompt、Supervisor Agent 或更多提醒文本来伪装硬约束。本聊天当前可用 GitHub connector 没有 branch-protection 写动作，因此本轮未冒充已经关闭。
+
+### B. HARNESS_STATUS historical monitor cache — LOWER-AUTHORITY DRIFT / OPEN FOR CONVERGENCE
+
+`HARNESS_STATUS.json` 是明确标注的 rebuildable cache，内部仍可能含本轮之前的 monitor-enabled historical observations。它现在不能覆盖 task manifest 与 live product reread，也不能再作为 present-tense liveness evidence。后续重建该 cache 时应收敛到新模型；该缓存漂移不再是当前 liveness authority。
+
+### C. Independent semantic / live outcome proof — OPEN
+
+最终 CI 证明 scoped regression/structure 通过，不证明独立语义判断无误，也不证明未来外部产品变化或实际业务结果。`independent_meta_semantic_review` 继续 OPEN。
+
+### D. Formal controller-meta promotion — OPEN but now eligible
+
+当前最新 formal meta-run 仍是 V61，没有为了本轮追 `manifest_version` 而伪造新 formal proof。现在 controller trajectory 已 genuinely COMPLETE，可在下一次维护动作中评估是否把这条完整 trace 正式 promotion/bind 到 meta-governance proof。
+
+### E. 既有业务侧开放门
+
+Financial current-head architecture revalidation 与 fresh-chat DUAL 3-output retest 仍 OPEN；本 SYSTEM_INFRA 审计没有取得 Financial BUSINESS lease，也没有修改其业务真值。
 
 ## 下一步
 
-1. 后续任何 material 输入先执行薄 triage；只有 `INVESTIGATE / CONFIRMED_DEFECT` 才进入维护路径。
-2. 一旦确认 systemic/non-trivial defect，读取/创建 durable controller state，后续动作必须由 current stage + action authorization 驱动，禁止先 patch 再补记录。
-3. 下一条真实 fresh systemic trajectory 是关键验收：必须自动从入口进入 controller，并在没有用户提醒 SOP 的情况下完成或精确 BLOCK。
-4. 若 controller 在真实工具 mutation 前仍可被绕过，不再增加 reminder/Agent；直接把 failure class 升级为 `execution-controller-not-on-mutation-path` 并评估工具/仓库级硬约束。
-5. 保持入口薄、业务热路径轻；共享方法传播，不传播 owner-local BUSINESS truth。
-6. 文档/状态收口后的 GitHub CI 仍必须正常通过，但不为了记录“最后一次 CI 的 run id”再制造递归状态提交。
+优先级建议：
+1. 评估并关闭 **tool-level mutation bypass**（mutation gateway 或 GitHub protection/required checks）；
+2. 用这条 COMPLETE controller trace 做 **formal controller-meta promotion**，但只在 proof schema/contract 真正满足时推进，不能倒填；
+3. 下次 HARNESS_STATUS rebuild 时收敛 monitor cache；
+4. 继续 Financial 已登记的 current-head architecture revalidation / fresh-chat DUAL 3-output retest；
+5. 保持所有 BUSINESS owner lease/business truth 边界不变。
