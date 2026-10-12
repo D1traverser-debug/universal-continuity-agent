@@ -13,7 +13,7 @@
 
 ## 当前阶段
 
-`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN__CONTEXT_CAPACITY_PREFLIGHT_REGRESSION_VERIFIED__UNIFIED_SELF_MAINTENANCE_EVOLUTION_LOOP_REGRESSION_VERIFIED`
+`V3_7_AGENT_CONTROL_PLANE_V1_1_REGRESSION_VERIFIED__GLOBAL_LIVE_OWNER_REOBSERVATION_V51_PASS__VIDEO_SHARED_ARCHITECTURE_VERSION_DRIFT_REPAIRED__OWNER_REGISTRY_MEMBERSHIP_OBSERVATION_SEPARATION_REGRESSION_VERIFIED__ARCHITECTURE_WATCH_HOURLY__TOP10_SELECTED_PRIMITIVES_REGRESSION_VERIFIED__OWNER_DRIFT_SIGNALS_OPEN__OPERATOR_DEPENDENCE_LIVE_EVIDENCE_OPEN__PRIOR_LIVE_EVIDENCE_GATES_OPEN__CONTEXT_CAPACITY_PREFLIGHT_REGRESSION_VERIFIED__UNIFIED_SELF_MAINTENANCE_EVOLUTION_LOOP_REGRESSION_VERIFIED__FINANCIAL_GITHUB_CHAT_GUARD_SCOPED_EXECUTION_AND_ARCHITECTURE_PASS__FINANCIAL_FULL_OWNER_CI_AND_LIVE_TRAJECTORY_OPEN`
 
 ## V59 本轮闭环
 
@@ -66,26 +66,78 @@
 5. commit `934fc51d874e23bd7455250e70ff60e32fd8968f` 引入可执行轨迹测试；CI `38153628452` / job `114511998218`：risk-tiered control-plane audit PASS、Agent architecture harness PASS、pytest PASS。
 6. 第二序审查结论：该 simulator 只用于“在做 repo/mechanism completeness 声明前先做代表性 dry-run”；不得取代现有 `maintenance_decision_eval` 的真实 product-trace / independent-grader gate，也不得作为“四个子系统已经真实自主进化”的证据。
 
+## Post-V59：Financial 子系统真实事故的父级进化复核与执行控制加固
+
+1. 用户先让 Financial 子系统用一个可信缺陷假设自查；子系统确认了“material 写作反馈可能只局部修文、没有 durable system-impact obligation”的 declaration-to-operation gap，并在 owner-native 路径加入 v0.8.1 system-impact wiring。该实验提供了真实 child-owner defect-hypothesis→triage→maintenance 行为证据，但仍不是“完全无人提示的自主发现”。
+2. 随后的真实写作实验又暴露更严重事故：GPT 聊天可以绕过 Financial owner workflow，直接从用户 prompt 产出伪成稿。第一次父维修把当前用户运行形态 `GitHub-mounted authority + GPT chat execution` 提升为 `GITHUB_CHAT` mode，并在 `d50adb726fd1a8671a2bd23bf04105797d6faeab` 合入 state/checkpoint/CAS 机制。
+3. 用户随后质疑：该维修是否真正按进化系统先做 parent-system reframe、方案竞争、验证和二次攻击。复核确认该质疑是 **CONFIRMED_DEFECT**：第一次维修并非完全没有系统思路，但过早把“Python runtime 与 GPT chat 缺桥”提升为主根因，并在 full owner CI 没有执行、architecture validation 仍 stale 时用“已经修了”描述，属于 assurance/closure 过度。
+4. C 的 architecture-watch control signal `#5` 正确报告：Financial `d50adb...` 与旧 `architecture_validation_head=a76c83...` 不一致。该 signal 被重新分类为可执行证据，而不是 freshness noise。
+5. 重新按 `SYSTEM_MAINTENANCE_POLICY` M0→M11 做全系统 reframe 后，根因被拆成：
+   - `OWNER_BINDING / EXECUTION_READINESS`：真实 GPT+GitHub 路径能绕开 owner workflow；
+   - `EXECUTION_CONTROL_GAP`：第一版 GITHUB_CHAT 有 GitHub state/CAS，但 stage order 仍依赖聊天遵守声明，没有 deterministic fail-closed transition guard 与 exact action-bound execution receipt；
+   - `ARCHITECTURE_DESCRIPTION_DRIFT`：Financial `AGENT_MANIFEST` 当时只描述 Python state/guards，没有把 chat state/guard 建模进去；
+   - `ASSURANCE_CLOSURE_GAP`：新 HEAD 未经当前 architecture harness fresh validation；
+   - `HARNESS_DRIFT`：若干 profile-10 tests 仍锁定旧 executor/status 文案，runner 真恢复时会暴露。
+   因而“执行顺序没跑”是下游症状，不是父级根因。
+6. reuse-before-build / candidate competition：
+   - 否决继续加 Skill 提醒；原事故已证明 declaration-only 不够；
+   - 否决现在强制 Site/MCP；用户当前明确采用 GitHub+GPT 模式；
+   - 否决把 same-chat review 升级成 owner-native PASS；会破坏 assurance；
+   - 否决新增 Financial supervisor/reviewer Agent；没有独立执行身份，只会增加 review theatre；
+   - 选中：复用 Financial 既有 stage semantics + Universal execution-receipt invariant + GitHub CAS + Novel CHAT_BRIDGED deterministic guard pattern，加入 owner-local deterministic GitHub-chat transition guard。
+7. Financial PR `#13` 已 squash 合入 main，最终 HEAD：`cf5236a8218678a85bd95bd6782442086d2d891c`。核心修复：
+   - 新增 `financial_writing_agent/github_chat_guard.py`；
+   - GITHUB_CHAT state schema 1.1；
+   - 每次 material transition 必须绑定 fetched prior `STATE.json` blob SHA、task/stage/capability/action、executor identity、subject/input bindings、output refs，并追加 `SELF_ATTESTED_CHAT_EXECUTION_RECEIPT`；
+   - GitHub update 必须使用同一 prior blob SHA，stale writer 由 provider CAS 拒绝；
+   - 缺 current-stage artifact、错 route、foreign-task artifact、future-stage artifact/review 预塞、owner-native `COMPLETE` spoof、chat assurance inflation 均 fail closed；
+   - `REVISE` 会失效目标阶段及全部下游 active artifact/review refs，必须产生新 artifact 才能重新推进；
+   - material negative/corrective feedback + OPEN system-impact 由 guard 绑定同一 state mutation；
+   - `AGENT_MANIFEST` 现在真正把 GITHUB_CHAT state authority 和 guard 纳入 runtime/workflow；
+   - profile 10 execution capabilities 只有在当前 session 具备 model + GitHub read/write + deterministic guard（及 exact-stage web/document 工具）时才可标 session-executable；否则阻塞，禁止 free-form publishable fallback。
+8. 二次攻击没有停在第一版 guard：实际又发现并修复三类绕过：
+   - REVISE 后旧 target/downstream artifact 仍可能被复用；
+   - future-stage artifact/review 可被预塞进 state；
+   - chat state 可手工注入不属于 GITHUB_CHAT 的 `COMPLETE` status。
+   最终 guard 已做 downstream invalidation、future-state pollution rejection 与 status allow-list。
+9. **scoped code-level regression**：直接从 GitHub 取回最终 guard blob `ffa2e5f7f10ff8940a257fa560683bb400195201` 的实际源码并 compile/import/执行，验证 COMPLETE spoof rejection、future-artifact rejection、missing-artifact rejection、revision invalidation + fresh-artifact requirement、feedback/system-impact pairing，以及完整 happy path；最终只能到 `DELIVERED_CHAT_REVIEWED__CERTIFICATION_OPEN`，不会冒充 owner-native COMPLETE。
+10. **真实 provider-boundary tracer**：隔离 branch `test/github-chat-guard-tracer-20261012` 真创建 STATE、Research artifact、action receipts；Research receipt 真绑定 artifact blob SHA；故意用 stale STATE SHA 更新得到 HTTP 409；随后 `RESEARCH_AUDIT → REVISE → RESEARCH`，回读确认 `stage_artifacts={}`、`review_decisions={}`。synthetic workspace 随后删除，只保留 commit/audit history。该 tracer 证明 state/CAS/receipt/invalidation 能组合，不证明真实文章质量或 live autonomous routing。
+11. **最终架构 freshness 已关闭 #5 对应问题**：对最终 Financial main `cf5236...` 使用当前 Universal `runtime/agent_architecture.py` / `AGENT_ARCHITECTURE_CONTRACT.json` 实际 validator，结果 `PASS / errors=0 / warnings=0`；Skill 7549 B < 8192 B。新 receipt：`audits/FINANCIAL_ARCHITECTURE_REVALIDATION_CF5236_2026-10-12.json`。`OWNER_ARCHITECTURE_OBSERVATIONS.json` 已更新到 `observed_owner_head == architecture_validation_head == cf5236...`，control signal Issue `#5` 已按 completed 关闭。
+12. **严格证据边界仍保留**：GitHub Hosted Runner 仍未真正执行 Financial full CI。最新 PR run `38192604882` / job `114628380998` 为 `steps=null`，因此 SDK smoke、MCP smoke、全量 pytest、static audit、wheel、DOCX render 均不能宣称 PASS；本轮只建立 scoped guard code regression + provider tracer + final-head architecture PASS。真实 post-fix Financial article trajectory、live prose quality、independent/provider review 仍 OPEN。
+13. **owner boundary**：Financial 的 BUSINESS task manifest 仍处于 profile 9，由另一个有效 Financial writer 持有；本 SYSTEM_INFRA writer没有越权改 lease/task state。下一次真实 Financial owner turn 必须先 reconcile 到 profile 10，再正常接受文章任务。另有 owner-native `list_recent_writing_tasks` 与 MCP wrapper 对 COMPLETE+未清维护债务的 shadow filtering 缺陷仍 OPEN，本轮未用大范围 runtime rewrite 冒险顺手修。
+14. 本次经验固化：
+   - “知道 SOP”不等于“执行 SOP”；formal execution mode 必须有 durable state + fail-closed transition guard + action-bound receipt，而不是只靠 Skill prose；
+   - architecture change 未完成 freshness validation 时不得用旧 PASS 给新 HEAD 背书；
+   - CI runner 没执行不是 regression PASS；必须降级 claim，并用 scoped exact-code regression / provider tracer补最相关证据，但不能冒充 full suite；
+   - 第一次修法也必须被 M9 second-order challenge 攻击，尤其检查 stale evidence reuse、future-state pollution、status/assurance spoof 和 shadow authority。
+
 ## 子系统继承边界
 
 - 当前 BUSINESS owner 集合：`A_SHARE_MARKET_AGENT`、`FINANCIAL_WRITING_AGENT_RUNTIME`、`NOVEL_WRITING_AGENT`、`VIDEO_GROWTH_AGENT`。
 - Shared loop 通过现有 `OWNER_ADAPTER_CONTRACT` + owner `operational_hygiene/evolution` hooks 传播，不复制大段父系统 prose，也不修改子系统业务 state/lease。
-- Financial / A-share / Novel 已有两类 profile 的明确 owner-local hooks；Video 已有 challenge→pollution/bypass→minimum patch→supersession→adversarial regression→CI→reread 的维护方法，但其已知 architecture/assurance drift 仍是 OPEN evidence gate。
-- 因此现在可以声明：**共享机制有 contract/regression + deterministic reference trajectory evidence**；仍不能声称四个子系统都已经在真实业务事故中独立执行过完整自动进化闭环。
+- Financial 当前共享方法已经真实落到其 GitHub+GPT 执行控制：durable state + deterministic transition guard + exact self-attested action receipt + second-order invalidation/pollution guards；这仍不等于 owner-native independent review 或 live quality PASS。
+- A-share / Novel / Video 继续按各自 authority 与现有 control signals 处理；本轮 Financial 修复不传播 Financial 业务写作规则到其他 owner。
+- 因此现在可以声明：共享机制有 contract/regression + deterministic reference trajectory；Financial 额外已有 scoped guard exact-code regression + provider-boundary tracer + fresh architecture PASS。仍不能声称四个子系统都已经在真实业务事故中独立执行过完整自动进化闭环。
 
 ## 当前 Next action
 
-保持 turn-entry capacity preflight 和 unified self-maintenance-evolution loop。任何可信的系统缺陷假设先完成 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT` triage；确认缺陷后同一轮进入维护/进化闭环，不停在“风险”表述。涉及“系统已经具备完整运行链”的声明时，先用 `runtime/self_maintenance_trajectory.py` 做代表性 reference simulation，再按真实 claim level 区分 contract/regression、reference simulation、action-level proof 与 live product outcome。真实 owner incident 到来时仍必须收集 live trajectory，不能拿 reference simulation 顶替。
+保持 turn-entry capacity preflight 和 unified self-maintenance-evolution loop。任何可信的系统缺陷假设先完成 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT` triage；确认缺陷后同一轮进入维护/进化闭环，不停在“风险”表述。涉及“系统已经具备完整运行链”的声明时，先用 `runtime/self_maintenance_trajectory.py` 做代表性 reference simulation，并把 contract/regression、reference simulation、scoped code execution、provider-boundary tracer、action-level proof、independent verification 与 live product outcome 分开。
+
+Financial 下一条最高价值证据不是继续人工喂“启动进化系统”，而是在原 Financial 聊天正常提出真实文章任务：当前 Financial writer 应先 reconcile business task metadata profile 9→10；若 owner-native runtime 不可用且 session 有 GitHub+deterministic guard 能力，应自主进入 guard-enforced GITHUB_CHAT，在 Research 前建立 STATE，并为每个 material stage 留 durable artifact + action receipt；若仍直接自由写正文，则证明 live owner-binding 仍未闭环。Hosted Runner 恢复后再跑未弱化的完整 owner CI。
 
 ## 仍然 OPEN
 
 1. account-level `ACCOUNT_ROUTER_V2`：用户已明确确认完成 Custom Instructions 更新；独立产品侧 readback/attestation 仍不可用；
-2. real child-owner self-triggered incident/action evidence：需要未来真实子系统事故证明它们会在无需用户逐项提醒时启动并完成该闭环；
-3. operator-dependence independent heldout/live trajectory grader；
-4. A-share / Novel / Video 等已确认的 owner-specific architecture / assurance drift；
-5. owner-local action-level independent methodology verification 与 live quality/outcome；
-6. recurring scout / architecture watch 的长期质量与 future remote-owner freshness；
-7. 不得把 contract wiring + CI + reference simulation 外推成“以后不会再犯错”或“所有子系统已经完成 live 自进化证明”。
+2. real child-owner self-triggered incident/action evidence：Financial 已有“用户给可信 defect hypothesis 后自主 triage+maintenance”的真实证据，但完全无人提示的 assistant-detected live incident/self-trigger 仍未证明；其他 owner 也仍需真实 trajectory；
+3. Financial full owner CI：Hosted Runner 当前 `steps=null`，不能宣称全套 regression verified；
+4. Financial real post-fix GITHUB_CHAT article trajectory + live writing-quality outcome；
+5. Financial BUSINESS task metadata profile 9→10 reconciliation，只能由当前 Financial writer 执行；
+6. Financial owner-native recent-task maintenance-debt filtering shadow logic；
+7. operator-dependence independent heldout/live trajectory grader；
+8. A-share / Novel / Video 等 owner-specific architecture / assurance drift 与其已有 control signals；
+9. owner-local action-level independent methodology verification 与 live quality/outcome；
+10. recurring scout / architecture watch 的长期质量与 future remote-owner freshness；
+11. 不得把 contract wiring + architecture PASS + scoped guard regression + provider tracer 外推成“以后不会再犯错”“文章质量已经提升”或“所有子系统已经完成 live 自进化证明”。
 
 ## Recovery refs
 
@@ -95,12 +147,19 @@
 - `STARTUP_HOOK.md`
 - `OWNER_ADAPTER_CONTRACT.json`
 - `SYSTEM_MAINTENANCE_POLICY.json`
+- `EXECUTION_READINESS_CONTRACT.json`
+- `AGENT_ARCHITECTURE_CONTRACT.json`
+- `OWNER_ARCHITECTURE_OBSERVATIONS.json`
 - `CONTINUOUS_LEARNING_POLICY.md`
 - `runtime/self_maintenance_trajectory.py`
 - `runtime/maintenance_decision_eval.py`
+- `runtime/agent_architecture.py`
 - `tests/test_self_maintenance_evolution.py`
 - `tests/test_maintenance_decision_eval.py`
 - `audits/META_MAINTENANCE_UNIFIED_SELF_EVOLUTION_V59_2026-10-11.json`
+- `audits/FINANCIAL_ARCHITECTURE_REVALIDATION_CF5236_2026-10-12.json`
+- `D1traverser-debug/financial-writing-agent@main:evals/FINANCIAL_GITHUB_CHAT_GUARD_EVOLUTION_AUDIT_2026-10-12.md`
+- `D1traverser-debug/financial-writing-agent@main:financial_writing_agent/github_chat_guard.py`
 - `HARNESS_STATUS.json`
 - `GENERIC_TASK_REGISTRY.json`
 - `CONTEXT_RECOVERY_POLICY.json`
