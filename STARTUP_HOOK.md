@@ -27,7 +27,7 @@ Use this text, or a semantically equivalent minimal account-level instruction:
 - Bare/named routing details、owner discovery、lease/takeover、capability/methodology、receipt/version semantics stay in repository authority, not this hook.
 - Bare discovery uses current `OWNER_REGISTRY.json`; never pin a copied owner list or historical owner count.
 - Change account instructions only when **pre-repository activation/routing/fail-closed semantics** change; compatible internal evolution stays repository-side.
-- Existing chats reconcile through current authority; only a legal new-chat takeover replaces writer lease / `resume_epoch`.
+- Existing chats reconcile through current authority；只有真正的新聊天 takeover 才替换 writer lease / `resume_epoch`。
 - This repository cannot prove the account text is installed; product propagation requires product evidence.
 - 只有发生文件/Artifact、系统维护、学习进化、媒体蒸馏等事件时，才按 `ENTRYPOINT.md` 加载对应 profile/semantics owner。
 
