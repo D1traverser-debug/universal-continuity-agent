@@ -84,7 +84,8 @@
     "D1traverser-debug/universal-continuity-agent#10"
   ],
   "meta_governance_assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
-  "latest_meta_maintenance_run_ref": "audits/META_MAINTENANCE_ARCHITECTURE_ROOT_CAUSE_V60_2026-10-12.json",
+  "latest_meta_maintenance_run_ref": "audits/META_MAINTENANCE_UNIFIED_SELF_EVOLUTION_V59_2026-10-11.json",
+  "pending_meta_maintenance_run_ref": "audits/META_MAINTENANCE_ARCHITECTURE_ROOT_CAUSE_V60_2026-10-12.json",
   "latest_agent_architecture_live_drift_audit_ref": "audits/FINANCIAL_ARCHITECTURE_REVALIDATION_980633_2026-10-12.json",
   "financial_github_chat_guard_status": "SCOPED_EXACT_CODE_REGRESSION_PASS__PROVIDER_BOUNDARY_TRACER_PASS__REAL_GITHUB_CHAT_ARTICLE_TRAJECTORY_ACTIVE__FULL_OWNER_CI_OPEN__OWNER_NATIVE_CERTIFICATION_OPEN",
   "financial_owner_head": "2c71944bb22d04899773efbf8622e4b1ebf56609",
