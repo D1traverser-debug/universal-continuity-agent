@@ -15,12 +15,13 @@
       "runtime/execution_readiness.py",
       "runtime/methodology_conformance.py",
       "runtime/meta_maintenance.py",
+      "runtime/maintenance_controller.py",
       "runtime/mutation_outcome.py",
       "runtime/context_footprint.py",
       "runtime/decision_memory.py"
     ],
     "judgment_execution": "NOT_APPLICABLE",
-    "note": "Universal routes, validates and recovers; domain judgment remains owner-local."
+    "note": "Universal routes, validates and recovers; domain judgment remains owner-local. Systemic maintenance stage order and material-action authorization are deterministically controlled by runtime/maintenance_controller.py using SYSTEM_MAINTENANCE_POLICY.json as semantic authority."
   },
   "workflow": {
     "state_authority_refs": [
@@ -33,6 +34,7 @@
       "runtime/protocol_reconciliation.py",
       "runtime/execution_readiness.py",
       "runtime/methodology_conformance.py",
+      "runtime/maintenance_controller.py",
       "runtime/mutation_outcome.py"
     ]
   },
@@ -43,7 +45,7 @@
       "python -m runtime.agent_architecture_audit --repo-root .",
       "python -m pytest -q"
     ],
-    "suites": ["architecture", "contract", "trajectory", "fault_injection", "meta_governance", "mutation_outcome", "context_footprint", "decision_memory"]
+    "suites": ["architecture", "contract", "trajectory", "fault_injection", "meta_governance", "maintenance_controller", "mutation_outcome", "context_footprint", "decision_memory"]
   },
   "references": {
     "canonical_roots": ["skills/universal-continuity", "tasks", "audits"],
