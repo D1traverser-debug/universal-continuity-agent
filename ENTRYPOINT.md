@@ -86,7 +86,7 @@ Do not add a permanent supervisory Agent merely to simulate independent review. 
 
 ## Progress observability
 
-Work must checkpoint **during the turn** at verified material safe points; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. Before a final response on an active durable task, persist material change and reread authority.
+Work must checkpoint **during the turn** at verified material safe points; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. Resume from the latest verified safe checkpoint. Before a final response on an active durable task, persist material change and reread authority.
 
 Exactly one receipt:
 - `进度提交：COMMITTED` — material state written + authoritative reread;
@@ -94,7 +94,7 @@ Exactly one receipt:
 - `进度提交：COMMIT_FAILED` — intended persistence not verified;
 - `进度提交：STALE_WRITER` — writer lease lost.
 
-`COMMITTED` is a **durable-persistence receipt**; it is not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable. Report assurance/gate state separately from commit status.
+`COMMITTED` is a **durable-persistence receipt**; it is not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable; missing gate evidence does not forbid persisting that blocker. Report assurance/gate state separately from commit status.
 
 ## Performance invariant
 
