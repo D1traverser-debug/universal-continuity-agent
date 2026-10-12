@@ -12,37 +12,46 @@
 - system-maintenance policy: `1.8`
 - meta-maintenance: `1.3`
 - latest formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
-- controller cutover audit: `audits/MAINTENANCE_EXECUTION_CONTROLLER_CUTOVER_2026-10-12.md`
-- controller regression evidence: GitHub Actions `38268950814` / job `114878120772` / `298 passed`
+- controller state: `tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json`
+- controller run: `maintenance-execution-sop-v62-selfhost-2026-10-12`
+- controller state status: `COMPLETE` revision `21`
+- controller continuation audit: `audits/MAINTENANCE_CONTROLLER_SELF_HOSTED_CONTINUATION_V62_2026-10-12.md`
+- latest controller validation: GitHub Actions `38271641398` / job `114887058655` / `295 passed`
 
 ## 当前权威状态
 
-1. V61 已把系统性维护升级为：先建 parent-system outline，再做 root cause/failure class、历史同类检索、recurrence 判定与 abstraction escalation，最后回落 `class_level_prevention + concrete instance fix` 后验证；该结构仍有效。
-2. 本轮进一步确认一个更直接的缺陷：**进入维护入口以后，旧系统仍主要是“policy 定义 SOP + meta harness 最后审记录”，不是 during-execution execution control**。因此模型理论上可以先 patch，最后再补齐大纲/历史检索记录。该 failure class 记为 `declarative-SOP-without-execution-control`。
-3. 已新增 `runtime/maintenance_controller.py`，但它不拥有第二套流程。canonical stage 仍由 `SYSTEM_MAINTENANCE_POLICY.json.meta_maintenance_outline.stages` 唯一定义；controller 只负责当前 stage、顺序、action authorization、BLOCKED/resume、re-open/downstream invalidation 和 closure gate。
-4. 三态入口现在固定为 `NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 保持正常业务热路径；`INVESTIGATE` 只查证据且不能 material patch；systemic/non-trivial `CONFIRMED_DEFECT` 进入 controller。入口只负责分流，不复制完整 SOP。
-5. Controller 已机械覆盖：禁止 stage skip；禁止 M7 前 material patch；`INVESTIGATE` 未确认不能 patch；validation/propagation/second-order review 只能在对应 stage；validation/second-order 新发现可 reopen 更早 stage 并使下游 receipt 失效；全部 canonical stages 未完成不能 CLOSE。
-6. `AGENT_MANIFEST.json` 已把 controller 声明为 runtime entrypoint + workflow transition guard；`SYSTEM_BLUEPRINT.md` 已明确区分 `maintenance_controller.py`（during-execution controller）与 `meta_maintenance.py`（post-hoc closure verifier）。
-7. 第一版 wiring 因把太多 SOP 塞进入口而真实 CI 失败；没有调大预算，而是压缩入口，把详细流程移回 cold-path policy/runtime。随后压缩又删掉部分已有 takeover/progress invariant，CI 再次失败；这些稳定边界已经恢复。最终 current verified sizes：`ENTRYPOINT.md` 8,013 B、`CURRENT_PROTOCOL.json` 454 B、两文件合计 8,467 B / 9,216 B；`STARTUP_HOOK.md` 3,464 B / 4,096 B。
-8. 最终真实 CI run `38268950814` / job `114878120772`：risk-tiered audit PASS、selected synthetic faults PASS、Agent architecture harness PASS（仅既有 owner drift warnings）、pytest `298 passed`。因此当前 controller/ingress wiring 达到 `REGRESSION_VERIFIED`。
-9. **不要把这写成 controller-native live proof。** 本轮 repair 在 controller 存在之前已经开始，所以没有伪造ย้อนหลัง stage trace。第一条真正“从入口开始就由 controller 驱动”的 systemic maintenance trajectory 仍 OPEN。
-10. 还有一个更硬的产品边界：当前 ChatGPT GitHub connector 可以直接调用 repository mutation；repo 内 Python controller 不能物理拦截外部 tool call。因此当前保证是“路由 + deterministic authorization + CI/regression”，不是不可绕过的 mutation middleware。若真实 trajectory 仍出现绕过，下一层应该是 controller-aware mutation gateway 或 GitHub protection/required-check 级执行约束，不得再靠提醒 prose。
-11. Financial 最新 `main` 仍为 `ce7bac183e0ca57be1cbc1591e7e124f209055e0`；其 fresh-chat DUAL 3-output retest 与 ce7bac fresh architecture revalidation 继续 OPEN。本轮 Universal maintenance 不获取任何 BUSINESS lease、不修改 BUSINESS truth。
+1. 当前协议仍为 v3.7。系统性维护的 canonical semantics 仍由 `SYSTEM_MAINTENANCE_POLICY.json` 唯一拥有；没有新增第二套 root policy。
+2. 本轮确认的根因不是“历史 recall 不够”，而是**进入维护后仍可能靠模型记忆 SOP**。旧架构是强 policy + post-hoc meta verifier，但缺少 during-execution transition control，因此理论上可能先 patch、后补大纲/历史记录。
+3. 当前入口固定为轻量三态：`NO_DEFECT / INVESTIGATE / CONFIRMED_DEFECT`。`NO_DEFECT` 走正常业务；`INVESTIGATE` 只核证且不能 material patch；systemic/non-trivial `CONFIRMED_DEFECT` 进入 `runtime/maintenance_controller.py`。
+4. `runtime/maintenance_controller.py` 是唯一 during-execution controller，但不拥有第二套阶段表；它从 `SYSTEM_MAINTENANCE_POLICY.json.meta_maintenance_outline.stages` 读取 canonical stages。`runtime/meta_maintenance.py` 继续只做 post-hoc closure/conformance verifier，两者职责分开。
+5. Controller 已机械禁止：stage skip、未确认 INVESTIGATE 的 material patch、未到 M7 的 material patch、没有 authoritative-reread prepatch checkpoint 的 patch、未完成所有 canonical stages 的 CLOSE。reopen 会截断旧 downstream receipts，BLOCKED 保留精确恢复点。
+6. 重复的 `runtime/maintenance_sop.py` 与对应重复测试已经删除；没有新增 Supervisor/Reflection Agent、failure database、root registry 或另一套 startup SOP。
+7. `AGENT_MANIFEST.json` 已把 `runtime/maintenance_controller.py` 声明为 runtime/transition guard，并把 `MAINTENANCE_CONTROLLER_STATE.json` 声明为 workflow/continuity state surface。
+8. M10 二阶审查真实发现过一个遗漏：此前只测试 controller 逻辑，没有在 CI 中直接读取并验证当前 durable controller state。Controller 因此实际 reopen 回 M7，而不是继续假 PASS；随后新增 `tests/test_current_maintenance_controller_state.py`，现在 full pytest 会从 `AGENT_MANIFEST` 找到真实 state ref 并按当前 policy 验证它。
+9. 第二轮 hosted validation：run `38271641398` / job `114887058655`，risk-tiered audit PASS、Agent architecture harness PASS、pytest `295 passed`。因此当前内部保证达到 `REGRESSION_VERIFIED`。
+10. 当前 durable controller state 已完成到 M11，revision `21`。但本轮事故在 controller 出现之前已经开始，所以只能诚实称为 **`SELF_HOSTED_CONTROLLER_CONTINUATION_M7_TO_M11`**；M0-M6A 是证据绑定的历史 receipts，不能倒称 controller-native pre-action execution。
+11. 因此第一条真正**从 material input → triage → M0…M11** 全程由 controller 驱动、且不靠用户提醒 SOP 的 fresh systemic trajectory 仍是 OPEN 的最高价值 live gate。禁止为了关门而倒造历史轨迹。
+12. `recall/history` 现在只承担诊断输入：帮助识别 failure class/历史修复；真正保证“进入后不漏步”的是 persisted controller state + action authorization + reopen/invalidation + CI/meta closure。
+13. 所有当前 BUSINESS owner 继续通过 Universal contract/routing 继承共享维护方法；没有复制 controller 到 owner repo，没有获取 BUSINESS lease，也没有修改 BUSINESS truth。
+14. 工具层硬边界仍 OPEN：ChatGPT GitHub connector 可以直接 mutation，repo 内 Python controller 无法物理拦截外部 tool call；当前 `main` 也没有 branch protection。若 fresh live trajectory 仍出现绕过，下一层应评估 controller-aware mutation gateway 或 GitHub protection/required checks，而不是继续加 prompt/Agent。
+15. `TASK_MANIFEST.json` 的 latest formal meta-run 仍保持 V61。本轮没有把一个“事故中途才引入 controller”的轨迹伪装成完整 M0 controller-native formal meta-run。已有 closure-binding regression 会在未来正式启用 controller contract 时要求 COMPLETE controller trace；正式 promotion 应绑定第一条真正 fresh ingress-native 完整轨迹。
 
 ## 当前开放门
 
-- **controller-native live trajectory**：OPEN。下一次真实 systemic/non-trivial maintenance 必须从三态入口开始，并在用户不提醒 SOP 的情况下按 controller stage 推进。
-- **tool-level hard enforcement**：OPEN。当前 repo controller 不能物理拦截 ChatGPT GitHub connector 的直接 mutation；如 live evidence 证明仍可绕过，必须升到 mutation gateway / repository protection，而不是继续堆 prompt。
-- **semantic analogue completeness / live no-reminder proof**：OPEN。结构门仍不能证明 failure-class 语义匹配永远完整。
-- **independent semantic review / live outcome**：OPEN。298 tests 不等于独立语义审查或未来结果保证。
+- **fresh ingress-native controller trajectory**：OPEN。下一次真实 systemic/non-trivial maintenance 必须从三态入口开始，全程由 controller stage 推进。
+- **tool-level unbypassable enforcement**：OPEN。当前 repo controller 不能物理拦截外部 GitHub mutation；如出现 live bypass，升级到 mutation gateway / branch protection 层。
+- **formal controller-meta promotion**：OPEN，必须绑定第一条真正从入口开始的 COMPLETE controller trace，不能用本轮中途接管轨迹倒填。
+- **semantic analogue completeness**：OPEN。failure-class 历史匹配仍可能有语义漏配；这是诊断质量问题，不是 SOP execution 问题。
+- **independent semantic review / live outcome**：OPEN。295 tests 不等于独立语义正确性或未来结果保证。
 - **Financial fresh-chat DUAL 3-output retest**：OPEN。
-- **Financial ce7bac architecture revalidation**：OPEN。
+- **Financial current-head architecture revalidation**：OPEN。
 - **monitor disable provenance issue #12**：OPEN。
 
 ## 下一步
 
-1. 后续任何 material 输入先走轻量三态 triage；健康业务 `NO_DEFECT` 不加载全维护栈。
-2. 一旦进入 systemic/non-trivial maintenance，controller current stage 是 SOP 执行导航；禁止先 patch 再补记录。
-3. 第一条 controller-native live trajectory 是当前最高价值验证；若仍发生 controller bypass，直接把问题升级为 `execution-controller-not-on-mutation-path`，评估真正 mutation gateway / GitHub enforcement。
-4. 保持入口薄，不因可靠性需求把完整治理文本塞回 STARTUP/ENTRYPOINT。
-5. 不获取任何 BUSINESS lease，不修改 BUSINESS truth；共享方法传播只走 Universal control-plane authority。
+1. 后续任何 material 输入先执行薄 triage；只有 `INVESTIGATE / CONFIRMED_DEFECT` 才进入维护路径。
+2. 一旦确认 systemic/non-trivial defect，读取/创建 durable controller state，后续动作必须由 current stage + action authorization 驱动，禁止先 patch 再补记录。
+3. 下一条真实 fresh systemic trajectory 是关键验收：必须自动从入口进入 controller，并在没有用户提醒 SOP 的情况下完成或精确 BLOCK。
+4. 若 controller 在真实工具 mutation 前仍可被绕过，不再增加 reminder/Agent；直接把 failure class 升级为 `execution-controller-not-on-mutation-path` 并评估工具/仓库级硬约束。
+5. 保持入口薄、业务热路径轻；共享方法传播，不传播 owner-local BUSINESS truth。
+6. 文档/状态收口后的 GitHub CI 仍必须正常通过，但不为了记录“最后一次 CI 的 run id”再制造递归状态提交。
