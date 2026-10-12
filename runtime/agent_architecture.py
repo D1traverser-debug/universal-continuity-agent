@@ -18,6 +18,16 @@ class ArchitectureResult:
     warnings: tuple[str, ...]
 
 
+# Deliberately narrow. Unknown paths fail closed as architecture-relevant.
+# These roots contain owner business artifacts/corpora rather than executable
+# architecture. A future owner surface is not admitted here merely to reduce noise.
+BUSINESS_ARTIFACT_ONLY_PREFIXES = (
+    "workspaces/articles/",
+    "projects/",
+    "research/masterworks/",
+)
+
+
 def _nonempty_list(value: Any) -> bool:
     return isinstance(value, list) and bool(value) and all(isinstance(x, str) and x.strip() for x in value)
 
@@ -105,6 +115,27 @@ def _normalized_layer(
             layer["canonical_roots"] = [str(canonical_root).strip()]
 
     return layer
+
+
+def architecture_relevant_delta_paths(changed_paths: Sequence[str]) -> tuple[str, ...]:
+    """Return paths that cannot be proven to be business-artifact-only.
+
+    The classifier is intentionally conservative: only narrow known business-artifact
+    roots are exempt. Everything else is architecture-relevant until explicitly
+    reviewed into the shared contract. This prevents a model-authored boolean in the
+    observation cache from silently widening freshness compatibility.
+    """
+
+    relevant: list[str] = []
+    for raw in changed_paths:
+        path = str(raw).strip().lstrip("/")
+        if not path:
+            relevant.append(str(raw))
+            continue
+        if any(path.startswith(prefix) for prefix in BUSINESS_ARTIFACT_ONLY_PREFIXES):
+            continue
+        relevant.append(path)
+    return tuple(relevant)
 
 
 def validate_agent_manifest(
@@ -234,14 +265,27 @@ def validate_architecture_observation(observation: Mapping[str, Any], *, observe
             delta_head = str(delta.get("observed_head", "")).strip()
             evidence_ref = str(delta.get("evidence_ref", "")).strip()
             relevant_change = delta.get("architecture_relevant_change")
+            changed_paths = delta.get("changed_paths")
             if base_head != validated_head:
                 errors.append("architecture head-delta base does not bind architecture_validation_head")
             if delta_head != current_head:
                 errors.append("architecture head-delta observed head does not bind externally observed owner head")
             if not evidence_ref:
                 errors.append("architecture head-delta evidence_ref is required")
+            elif base_head not in evidence_ref or delta_head not in evidence_ref:
+                errors.append("architecture head-delta evidence_ref does not bind exact base and observed heads")
+            if not _nonempty_list(changed_paths):
+                errors.append("architecture head-delta changed_paths must be a non-empty string list")
+                mechanically_relevant: tuple[str, ...] = ()
+            else:
+                mechanically_relevant = architecture_relevant_delta_paths(changed_paths)
             if relevant_change is not False:
                 errors.append("architecture validation is stale because architecture-relevant change is present or unproven")
+            elif mechanically_relevant:
+                errors.append(
+                    "architecture head-delta claims business-only change but includes non-exempt paths: "
+                    + ",".join(mechanically_relevant)
+                )
 
     result = str(observation.get("architecture_validation_result", "")).strip()
     if result not in {"PASS", "PASS_WITH_DRIFT", "FAIL"}:
