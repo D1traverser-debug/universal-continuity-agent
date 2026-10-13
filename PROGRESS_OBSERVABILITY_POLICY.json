@@ -1,13 +1,18 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "continuity_contract": "3.7",
   "purpose": "Make cross-chat continuity observable to the user and mechanically honest about persisted progress, while keeping user-facing revision labels derived from existing authoritative state rather than creating another version authority.",
   "human_revision_display": {
     "model": "CALVER_PLUS_EXISTING_DURABLE_SEQUENCE",
     "format": "<scope>-YYYYMMDD-rN",
     "derived_not_stored_as_new_authority": true,
+    "do_not_store_derived_label_in_task_manifest": true,
     "date_source": "calendar date of the authoritative persisted updated_at/persisted_at value exactly as encoded",
     "sequence_source": "authoritative manifest_version or owner-equivalent monotonic durable version",
+    "ordering_rule": "Within one revision scope, rN is the ordering signal. YYYYMMDD is human calendar context only and must never override the monotonic durable version.",
+    "gaps_allowed": true,
+    "gap_semantics": "Skipped r values may represent internal safe checkpoints, lease/metadata persistence or other durable state transitions; they are not missing releases and must not be backfilled or reused.",
+    "scope_local_not_global_unique": true,
     "new_counter_forbidden": true,
     "daily_counter_reset": false,
     "git_history_scan_required": false,
@@ -16,8 +21,18 @@
     "protocol_version_remains_compatibility_semantics": true,
     "controller_revision_remains_run_local": true,
     "cross_repo_global_sequence_forbidden": true,
+    "core_task_state_schema_expansion_required": false,
+    "presentation_boundary": "USER_FACING_RESUME_AND_TURN_RECEIPT_ASSEMBLY",
+    "adoption_gate": {
+      "existing_monotonic_durable_version_required": true,
+      "stable_scope_code_required": true,
+      "if_owner_has_no_suitable_monotonic_version": "OMIT_HUMAN_REVISION_AND_FIX_OWNER_VERSIONING_SEPARATELY__DO_NOT_INVENT_A_DISPLAY_COUNTER",
+      "multiple_tasks_under_one_owner": "The scope code must identify the actual durable revision stream closely enough to avoid user ambiguity; an owner-wide code may be used only when the sequence itself is owner-wide.",
+      "cross_scope_numeric_comparison_allowed": false
+    },
     "universal_pilot": {
       "scope_code": "UC",
+      "scope_semantics": "Universal Continuity SYSTEM_INFRA maintenance/control-plane durable stream",
       "example": "UC-20261013-r86",
       "runtime_helper": "runtime/human_revision.py"
     },
@@ -29,7 +44,7 @@
       "resume": "show the pre-takeover persisted Human Durable Revision before any lease/resume_epoch mutation"
     },
     "performance_rule": "Derivation is O(1) from already-loaded authoritative metadata. Do not traverse Git history, enumerate tags, call a global counter service, or add a startup preload just to render the label.",
-    "scope_rule": "This presentation convention is generic to durable owner/task state, not maintenance-only. Universal is the first pilot. Other owners may adopt only by mapping to an existing monotonic durable owner version and a stable scope code; no global owner list or shared mutable counter is introduced."
+    "scope_rule": "This presentation convention is generic to durable owner/task state, not maintenance-only. Universal is the first pilot. Other owners may adopt only by mapping to an existing monotonic durable owner/task version and a stable revision-stream scope code; no global owner list or shared mutable counter is introduced."
   },
   "resume_progress_receipt": {
     "name": "Resume Progress Receipt",
@@ -142,7 +157,8 @@
     "commit_sha_without_authoritative_state_verification_is_not_enough": true,
     "receipt_must_distinguish_no_change_from_failed_commit": true,
     "committed_must_not_be_used_as_execution_or_methodology_attestation": true,
-    "human_revision_must_not_be_treated_as_git_or_protocol_authority": true
+    "human_revision_must_not_be_treated_as_git_or_protocol_authority": true,
+    "derived_human_revision_must_not_be_persisted_as_parallel_truth": true
   },
   "performance": {
     "do_not_write_every_turn_if_state_unchanged": true,

@@ -7,62 +7,67 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `88`
+- manifest_version: `89`
 - current controller run: `human-readable-durable-revision-v68-2026-10-13`
-- controller status: `ACTIVE` revision `14` at `M8_MULTI_LAYER_VALIDATION`
-- prepatch audit: `audits/HUMAN_READABLE_DURABLE_REVISION_V68_PREPATCH_2026-10-13.json`
+- controller status: `ACTIVE` revision `16` at `M8_MULTI_LAYER_VALIDATION`
 
-## v68 设计结论
+## Human Durable Revision
 
-用户要解决的是“我看不懂你每次提交到底是哪一版”，不是把 Git 换成 SVN。已学习 SVN、Git tag / `git describe` 与 CalVer 后，Universal 采用派生的人类修订号：
+Universal pilot format remains:
 
 `UC-YYYYMMDD-rN`
 
-其中日期来自权威持久化时间的日历日期，`rN` 直接复用已有 monotonic `manifest_version`。因此没有 daily counter、没有每日归零、没有新的 revision registry、没有 Git history scan，也不会用 tag 给每个 checkpoint 再造一层身份。
+This is a user-facing durable-state revision label, not a replacement for Git, SVN, protocol or business versions.
 
-技术 namespace 继续分开：
+- `Git SHA` = exact immutable engineering identity.
+- `protocol 3.7` = compatibility semantics.
+- `manifest_version` = monotonic durable task/CAS state sequence.
+- controller revision = one maintenance run's internal trace.
+- `UC-YYYYMMDD-rN` = derived presentation for the user.
 
-- Git SHA = 精确不可变工程身份；
-- protocol 3.7 = 兼容语义；
-- manifest_version = durable task/CAS 单调状态序列；
-- controller revision = 单次维护 run 内部轨迹；
-- Human Durable Revision = 用户显示层，派生而非权威。
+`YYYYMMDD` comes from the authoritative persisted timestamp's encoded calendar date. `rN` reuses the existing monotonic durable version. The sequence does **not** reset daily. Date is context; `rN` is ordering within this revision scope.
 
-## 第一次 M8 真实失败并 reopen
+## Why not SVN-style global r1234 or R20261013.001
 
-CI `38363727516 / 115183763873`：control-plane audit PASS、Agent architecture PASS，但 full pytest `317 passed / 2 failed`。
+SVN can expose a repository-wide increasing integer because its repository commit model is centralized. These agents live in separate Git repositories and durable owner/task streams. A shared daily/global counter would add a mutable authority, reset/timezone policy, locks, cross-repo contention and failure recovery.
 
-失败项不是版本格式本身：
+Therefore there is no central revision counter, no `revision registry`, no Git-history scan and no tag for every checkpoint. Git tags remain optional stable-milestone/release markers only.
 
-1. controller M7 implementation receipt 缺少 maintenance policy 要求的 `prepatch_checkpoint` 绑定；
-2. 重写 HANDOFF 时丢掉了既有 single-writer 回归锚点 `当前模型不是 PR-first`。
+## Second-order correction
 
-因此 controller 已真实 reopen 到 M7，再修回 M8。Human Durable Revision 设计未改，只修过程/回归表面。
+Corrective M8 `38363967497 / 115184549077` passed after the first two regressions were fixed. Before propagation/closure, second-order review found a new boundary problem in our own v68 state:
 
-## receipt 行为
+1. `TASK_MANIFEST.json` carried `human_revision_latest_expected`, which contradicted the core rule that the label is derived, not a second stored truth. It has been removed.
+2. Future owner adoption rules were not strict enough: owner/task streams may have independent counters, gaps caused by internal durable checkpoints, and some owners may not have a suitable monotonic sequence for the intended scope. Policy now says:
+   - numbers are scope-local, not globally comparable;
+   - skipped r values are valid and never backfilled/reused;
+   - an owner must already have a suitable monotonic durable version for the intended identity lifetime;
+   - if it does not, omit the human revision and fix owner versioning separately—never invent a display-only counter;
+   - the scope code must identify the actual revision stream closely enough to avoid ambiguity.
+3. The core `TaskMetadata`/receipt state schemas are **not** expanded with a stored human revision field. The label is assembled at the user-facing receipt presentation boundary from already-loaded authoritative metadata. This avoids contaminating persistence/state schemas for a display concern.
 
-- `COMMITTED`：显示新持久化修订号；
-- `NO_MATERIAL_CHANGE`：号不变，并明确“版本未变”；
-- `COMMIT_FAILED`：不造新号，最多显示上一个已验证修订；
-- `STALE_WRITER`：不造新号；
-- 继承时先显示 takeover 前的已持久化修订号。
+This is exactly the anti-bloat decision: one small formatter, existing policy surfaces, focused tests, zero new startup preload, zero new remote read, zero new authority/counter.
 
-## 这是不是维护系统专用？
+## Validation history
 
-不是。它属于 durable progress receipt 的通用显示层。但本轮**只在 Universal 自己先试运行**。未来 Financial / A股 / Novel / Video 若采用，只能映射到各自已经存在的 monotonic durable owner version 和稳定 scope code；不会建一个 5 仓库共用的中央流水号。
+- first M8 `38363727516 / 115183763873`: control-plane PASS, architecture PASS, pytest `317 passed / 2 failed`; real reopen.
+- second M8 `38363967497 / 115184549077`: all steps PASS, then second-order review deliberately reopened because of the duplicate-label/adoption-boundary issue above.
+- current step: re-run M8 against policy schemas 1.2 and the no-stored-label regression.
 
-## 复杂度控制
+## Cross-owner boundary
 
-没有新增 root policy / registry / Agent / service；没有扩大 ENTRYPOINT；没有新增 hot-path 远程调用。只扩展现有 `PROGRESS_OBSERVABILITY_POLICY.json`、`VERSION_LIFECYCLE_POLICY.json`，加一个纯确定性 `runtime/human_revision.py` 和 focused tests。
+This is **not maintenance-only** conceptually; it is a generic durable progress-receipt presentation convention. But the user's instruction was to use it in Universal first. Financial / A-share / Novel / Video were inspected only to assess future propagation. No BUSINESS lease or state was changed.
 
-## v65 direct-main / PR-first 回归锚点
+Future adoption must be owner-local and explicit: map an existing monotonic durable version + a stable revision-stream scope code. Do not assume every owner currently has identical version semantics.
+
+## v65 direct-main / PR-first regression anchor
 
 当前模型不是 PR-first。
 
-Universal material compliant writes 继续使用 active lease + observed-HEAD CAS + CI + authoritative reread。PR-first 和 branch protection 不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的默认要求；unprotected `main` 本身不是 HIGH defect。
+Universal material compliant writes continue to use active lease + observed-HEAD CAS + CI + authoritative reread. PR-first and branch protection are not default requirements under the current `SINGLE_ACTIVE_CHAT` threat model; unprotected `main` alone is not a HIGH defect.
 
-实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
+The experimental branch `continuity/pr-first-mutation-gate-v65` is unmerged and non-authoritative.
 
-## 下一步
+## Next
 
-重新跑 M8 全量 CI；任何失败继续 reopen。通过后做 M9 propagation review（不写四个 BUSINESS repo）、M10 二阶检查、M11 closure 与 post-closure CI/reread。
+Re-run M8. If green: M9 records propagation analysis only, M10 rechecks hidden failure modes (same-day, date change, gap, rollback, failure/stale/no-change, scope collision, missing owner sequence, timestamp anomaly, branch/scratch, tags, protocol/Git namespace confusion, performance), then M11 closure and post-closure CI/reread.
