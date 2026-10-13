@@ -50,6 +50,8 @@ The blueprint points to those authorities; it does not duplicate their detailed 
 
 `Skill/router -> Runtime/executor -> Workflow/state -> Harness/eval -> References -> Continuity`.
 
+For a BUSINESS owner, the normal product boundary is **one ChatGPT-facing owner/Skill entry**. The user gives the matched Agent the business task in ChatGPT; the system performs the capability handshake and selects any `OWNER_NATIVE`, `CHAT_BRIDGED`, deterministic-tool or isolated-external execution/evidence binding internally. Those labels may change assurance or block the exact affected hard gate, but they are not separate user-selected products or separate business SOPs. GitHub `main` remains engineering/rule/continuity authority, while exact business state/checkpoint authority remains whatever the owner contract declares. A connected plugin/MCP/tool may strengthen or simplify an internal execution binding, but no BUSINESS owner requires the user to understand or choose that infrastructure during normal use.
+
 The layers are responsibilities, not mandatory framework brands:
 - **Skill/router**: trigger, authority pointer, progressive loading map and hard boundaries; not the executable business system.
 - **Runtime/executor**: real executable code/tool/judgment surface. OpenAI Agents SDK, deterministic, hybrid and external runtimes are all valid when declared truthfully.

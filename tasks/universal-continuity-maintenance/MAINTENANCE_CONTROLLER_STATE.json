@@ -3,83 +3,28 @@
   "run_id": "chat-product-entry-and-internal-executor-boundary-v66-2026-10-13",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 12,
-  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+  "revision": 17,
+  "current_stage": "M10_SECOND_ORDER_REVIEW_AND_GLOBAL_CLAIM_CALIBRATION",
   "completed_stage_receipts": [
-    {
-      "stage": "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
-      "revision": 1,
-      "evidence_refs": ["user-signal://2026-10-13/single-chat-agent-entry-cross-owner", "skills://financial-writing-agent", "skills://a-share-event-driven-agent", "skills://novel-writing-agent", "skills://video-growth-agent"],
-      "summary": "Confirmed a cross-owner product-boundary defect: internal executor/readiness modes were surfaced as if they were user-facing routes, obscuring the intended ChatGPT + GitHub Agent product model."
-    },
-    {
-      "stage": "M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION",
-      "revision": 2,
-      "evidence_refs": ["AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "github-commit://D1traverser-debug/financial-writing-agent/d50adb726fd1a8671a2bd23bf04105797d6faeab", "github-commit://D1traverser-debug/financial-writing-agent/1948a9f80275aad202955c932430d7c882c82c97"],
-      "summary": "Classified INTERNAL_EXECUTION_ADAPTER_EXPOSED_AS_USER_PRODUCT_ROUTE as CROSS_OWNER_RECURRENT: execution modes are legitimate assurance metadata, but their product boundary was not centrally explicit."
-    },
-    {
-      "stage": "M2_FULL_SYSTEM_IMPACT_MAP",
-      "revision": 3,
-      "evidence_refs": ["SYSTEM_BLUEPRINT.md", "OWNER_REGISTRY.json", "AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "D1traverser-debug/financial-writing-agent@3a8dd1b1158c62cf8759841e1df93cf84cc14c8b", "D1traverser-debug/a-share-event-driven-agent@f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c", "D1traverser-debug/novel-writing-agent@349879601b3114c7caee999ef4079088666c1d90", "D1traverser-debug/video-growth-agent@977ad5329b1ffb1f971db922fac3e17bf91a412a"],
-      "summary": "Mapped the parent system as user -> ChatGPT owner/Skill entry -> GitHub engineering/rule authority and owner task state -> capability/readiness dispatch -> internal executor -> one canonical owner workflow -> evidence/artifacts. The four current BUSINESS owners are in scope; business task state and leases are out of scope."
-    },
-    {
-      "stage": "M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
-      "revision": 4,
-      "evidence_refs": ["github-commit://D1traverser-debug/financial-writing-agent/d50adb726fd1a8671a2bd23bf04105797d6faeab", "github-commit://D1traverser-debug/financial-writing-agent/1948a9f80275aad202955c932430d7c882c82c97", "github-commit://D1traverser-debug/universal-continuity-agent/da3b383852195b43ab984fa00e019c8dc03920de", "EXECUTION_READINESS_CONTRACT.json"],
-      "summary": "Historical work correctly created first-class guarded chat execution and readiness routing, but never promoted the shared distinction that execution modes are internal dispatch/evidence metadata rather than separate products. Recurrence therefore escalates from owner wording to the shared architecture contract."
-    },
-    {
-      "stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
-      "revision": 5,
-      "evidence_refs": ["https://developers.openai.com/plugins/concepts/skills", "https://developers.openai.com/plugins/concepts/plugins", "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt"],
-      "summary": "First-party OpenAI product architecture supports a Skill as workflow/operating guidance with optional connected tools/MCP. Nothing requires each executor mode to become a separate user workflow or requires MCP for every owner."
-    },
-    {
-      "stage": "M3A_CAPABILITY_REUSE_SCAN",
-      "revision": 6,
-      "evidence_refs": ["AGENT_ARCHITECTURE_CONTRACT.json", "runtime/agent_architecture.py", "EXECUTION_READINESS_CONTRACT.json", "SYSTEM_BLUEPRINT.md"],
-      "summary": "Reuse scan found the existing shared architecture contract, readiness contract and validator already own the correct abstraction. No new root policy, registry, permanent Agent, service or MCP layer is needed."
-    },
-    {
-      "stage": "M4_ALTERNATIVES_AND_FALSIFICATION",
-      "revision": 7,
-      "evidence_refs": ["AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "D1traverser-debug/financial-writing-agent@3a8dd1b1158c62cf8759841e1df93cf84cc14c8b"],
-      "summary": "Compared no-change/chat explanation, Financial-only wording, deleting execution-mode identifiers, and a shared product-interface invariant. Accepted the shared invariant because it preserves useful assurance modes while preventing route leakage across owners."
-    },
-    {
-      "stage": "M4A_FACT_DECISION_FRONTIER",
-      "revision": 8,
-      "evidence_refs": ["OWNER_REGISTRY.json", "D1traverser-debug/financial-writing-agent@3a8dd1b1158c62cf8759841e1df93cf84cc14c8b", "D1traverser-debug/a-share-event-driven-agent@f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c", "D1traverser-debug/novel-writing-agent@349879601b3114c7caee999ef4079088666c1d90", "D1traverser-debug/video-growth-agent@977ad5329b1ffb1f971db922fac3e17bf91a412a"],
-      "summary": "Resolved current BUSINESS topology and owner heads. Normal executor selection is a retrievable system decision, not a user choice; user input is required only for genuine external authorization or business decisions."
-    },
-    {
-      "stage": "M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION",
-      "revision": 9,
-      "evidence_refs": ["AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "SYSTEM_BLUEPRINT.md"],
-      "summary": "Selected existing shared control surfaces: architecture contract owns the product-interface invariant, readiness owns internal dispatch semantics, blueprint explains the product shape, and owner Skill/manifests consume it. No account/custom-instruction change is required."
-    },
-    {
-      "stage": "M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET",
-      "revision": 10,
-      "evidence_refs": ["AGENT_ARCHITECTURE_CONTRACT.json", "runtime/agent_architecture.py", "tests/test_agent_product_interface.py"],
-      "summary": "Designed a compact manifest product_interface contract plus deterministic validation and focused regression. Owner changes are metadata/router wording only; no new business state, mandatory service, startup preload or user-operated mode selector is added."
-    },
-    {
-      "stage": "M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST",
-      "revision": 11,
-      "evidence_refs": ["SYSTEM_MAINTENANCE_POLICY.json", "AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json"],
-      "summary": "Payoff/deletion test keeps internal OWNER_NATIVE/CHAT_BRIDGED/DETERMINISTIC_TOOL/ISOLATED_EXTERNAL labels for assurance while removing their user-route semantics. It consolidates rather than adds a parallel workflow or service."
-    }
+    {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["user-signal://2026-10-13/single-chat-agent-entry-cross-owner"],"summary":"Confirmed cross-owner product-boundary defect: internal executor/readiness modes were surfacing as if they were user-facing routes."},
+    {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["AGENT_ARCHITECTURE_CONTRACT.json","EXECUTION_READINESS_CONTRACT.json"],"summary":"Classified INTERNAL_EXECUTION_ADAPTER_EXPOSED_AS_USER_PRODUCT_ROUTE as CROSS_OWNER_RECURRENT."},
+    {"stage":"M2_FULL_SYSTEM_IMPACT_MAP","revision":3,"evidence_refs":["SYSTEM_BLUEPRINT.md","OWNER_REGISTRY.json"],"summary":"Mapped user -> ChatGPT owner/Skill -> owner GitHub authority/state -> internal capability dispatch -> canonical workflow; all four BUSINESS owners in scope, business task truth out of scope."},
+    {"stage":"M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION","revision":4,"evidence_refs":["github-commit://D1traverser-debug/financial-writing-agent/d50adb726fd1a8671a2bd23bf04105797d6faeab","github-commit://D1traverser-debug/financial-writing-agent/1948a9f80275aad202955c932430d7c882c82c97","github-commit://D1traverser-debug/universal-continuity-agent/da3b383852195b43ab984fa00e019c8dc03920de"],"summary":"Prior fixes created guarded chat execution and readiness routing but omitted a shared product-interface boundary; escalated to system architecture."},
+    {"stage":"M3_LEARNING_AND_EVIDENCE_SCOUT","revision":5,"evidence_refs":["https://developers.openai.com/plugins/concepts/skills","https://developers.openai.com/plugins/concepts/plugins","https://help.openai.com/en/articles/20001256-plugins-in-chatgpt"],"summary":"First-party product architecture supports one Skill workflow over optional tools; no separate user workflow or mandatory MCP per executor is required."},
+    {"stage":"M3A_CAPABILITY_REUSE_SCAN","revision":6,"evidence_refs":["AGENT_ARCHITECTURE_CONTRACT.json","runtime/agent_architecture.py","EXECUTION_READINESS_CONTRACT.json"],"summary":"Reused existing architecture/readiness/validator surfaces; no new root policy, Agent, registry, service, or MCP layer."},
+    {"stage":"M4_ALTERNATIVES_AND_FALSIFICATION","revision":7,"evidence_refs":["audits/CHAT_PRODUCT_ENTRY_AND_INTERNAL_EXECUTOR_BOUNDARY_V66_PREPATCH_2026-10-13.json"],"summary":"Rejected chat-only explanation, Financial-only fix, and deletion of execution labels; accepted shared single-entry/internal-dispatch invariant."},
+    {"stage":"M4A_FACT_DECISION_FRONTIER","revision":8,"evidence_refs":["OWNER_REGISTRY.json"],"summary":"Resolved current BUSINESS topology and owner heads; normal executor selection is a system decision rather than user choice."},
+    {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":9,"evidence_refs":["AGENT_ARCHITECTURE_CONTRACT.json","EXECUTION_READINESS_CONTRACT.json","SYSTEM_BLUEPRINT.md"],"summary":"Selected shared architecture/readiness/blueprint plus owner Skill/manifests; no account/custom-instruction change."},
+    {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":10,"evidence_refs":["tests/test_agent_product_interface.py"],"summary":"Designed compact product_interface contract and deterministic regression with owner router wording only where needed."},
+    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["AGENT_ARCHITECTURE_CONTRACT.json","EXECUTION_READINESS_CONTRACT.json"],"summary":"Retained internal assurance labels while deleting their user-route semantics; no parallel workflow or service added."},
+    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":14,"evidence_refs":["github-commit://D1traverser-debug/universal-continuity-agent/2023a2706b875834fd17240e89ee5863d0b9d33a","github-commit://D1traverser-debug/financial-writing-agent/6494cd58a93d82f7fc6849803b6b7493cf66443f","github-commit://D1traverser-debug/a-share-event-driven-agent/651d97533cd62d34dc230f0b5047715074ab1803","github-commit://D1traverser-debug/novel-writing-agent/46606fee061a5cf5421a5d0ef145a5955fd66760","github-commit://D1traverser-debug/video-growth-agent/8f7d0cfb8121fc1a06e1e3a24c1167649d4def94"],"summary":"Implemented shared internal-dispatch product boundary and propagated architecture manifest 1.3. Initial M7 validation exposed a compatibility mistake; corrected contract schema back to 1.1 and moved the new mandatory field to manifest 1.3 while preserving legacy 1.2. No stage reopen was required because controller had not left M7."},
+    {"stage":"M8_MULTI_LAYER_VALIDATION","revision":15,"evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/38341336266/job/115112770288","audits/CHAT_PRODUCT_ENTRY_AND_INTERNAL_EXECUTOR_BOUNDARY_V66_VALIDATION_2026-10-13.json","github-actions://D1traverser-debug/financial-writing-agent/38341448831/job/115113123995","github-actions://D1traverser-debug/a-share-event-driven-agent/38341477686/job/115113214854","github-actions://D1traverser-debug/novel-writing-agent/38341498059/job/115113278000","github-actions://D1traverser-debug/video-growth-agent/38341521415/job/115113349788"],"summary":"Universal risk-tiered audit, Agent architecture harness and full pytest pass. All four owner manifests reread at exact v1.3 heads. Private owner Actions did not allocate runners (empty steps, runner_id 0), so owner CI PASS is not claimed."},
+    {"stage":"M9_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION","revision":16,"evidence_refs":["D1traverser-debug/financial-writing-agent@6494cd58a93d82f7fc6849803b6b7493cf66443f:continuity/AGENT_MANIFEST.json","D1traverser-debug/a-share-event-driven-agent@651d97533cd62d34dc230f0b5047715074ab1803:continuity/AGENT_MANIFEST.json","D1traverser-debug/novel-writing-agent@46606fee061a5cf5421a5d0ef145a5955fd66760:continuity/AGENT_MANIFEST.json","D1traverser-debug/video-growth-agent@8f7d0cfb8121fc1a06e1e3a24c1167649d4def94:continuity/AGENT_MANIFEST.json","OWNER_ARCHITECTURE_OBSERVATIONS.json"],"summary":"All current BUSINESS owners now declare one ChatGPT entry, system-internal execution-mode selection and one canonical owner workflow. Financial/A-share hot-path Skills were corrected where route leakage existed; Novel/Video avoided gratuitous Skill rewrites and preserve their existing assurance semantics."}
   ],
   "reopen_history": [],
-  "investigation_resolution": null,
-  "prepatch_checkpoint": {
-    "ref": "audits/CHAT_PRODUCT_ENTRY_AND_INTERNAL_EXECUTOR_BOUNDARY_V66_PREPATCH_2026-10-13.json",
-    "revision": 12,
-    "bound_completed_stage_count": 11,
-    "authoritative_reread_verified": true
-  },
+  "implementation_validation_findings": [
+    {"finding":"INITIAL_MANIFEST_COMPATIBILITY_REGRESSION","at_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","evidence":"github-actions:38340563667/job/115110366042","repair":"AGENT_ARCHITECTURE_CONTRACT schema restored to 1.1; mandatory product_interface moved to new manifest version 1.3; legacy 1.2 kept compatible","reopen_required":false,"reason":"Current controller stage was still M7 when validation failed."}
+  ],
+  "prepatch_checkpoint": {"ref":"audits/CHAT_PRODUCT_ENTRY_AND_INTERNAL_EXECUTOR_BOUNDARY_V66_PREPATCH_2026-10-13.json","revision":12,"bound_completed_stage_count":11,"authoritative_reread_verified":true},
   "blocker": null
 }
