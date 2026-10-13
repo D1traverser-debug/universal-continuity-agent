@@ -2,11 +2,11 @@
   "schema_version": "1.0",
   "run_id": "chat-product-entry-and-internal-executor-boundary-v66-2026-10-13",
   "record_type": "FINAL_MAINTENANCE_CLOSURE",
-  "created_at": "2026-10-13T11:36:00+08:00",
+  "created_at": "2026-10-13T11:45:00+08:00",
   "triage": "CONFIRMED_DEFECT",
   "failure_class": "INTERNAL_EXECUTION_ADAPTER_EXPOSED_AS_USER_PRODUCT_ROUTE",
   "recurrence_status": "CROSS_OWNER_RECURRENT",
-  "controller_final_revision": 19,
+  "controller_final_revision": 25,
   "accepted_invariant": {
     "normal_business_entry": "ONE_CHATGPT_OWNER_SKILL_ENTRY",
     "execution_mode_selection": "SYSTEM_INTERNAL",
@@ -16,15 +16,7 @@
     "capability_gap_behavior": "LOWER_ASSURANCE_OR_BLOCK_EXACT_HARD_GATE_WITHOUT_REDEFINING_SOP"
   },
   "implemented_surfaces": {
-    "universal": [
-      "AGENT_ARCHITECTURE_CONTRACT.json",
-      "EXECUTION_READINESS_CONTRACT.json",
-      "runtime/agent_architecture.py",
-      "tests/test_agent_architecture.py",
-      "tests/test_agent_product_interface.py",
-      "SYSTEM_BLUEPRINT.md",
-      "OWNER_ARCHITECTURE_OBSERVATIONS.json"
-    ],
+    "universal": ["AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "runtime/agent_architecture.py", "tests/test_agent_architecture.py", "tests/test_agent_product_interface.py", "SYSTEM_BLUEPRINT.md", "OWNER_ARCHITECTURE_OBSERVATIONS.json"],
     "financial": ["skills/financial-writing-agent/SKILL.md", "continuity/AGENT_MANIFEST.json"],
     "a_share": ["skills/a-share-event-driven-agent/SKILL.md", "continuity/AGENT_MANIFEST.json"],
     "novel": ["continuity/AGENT_MANIFEST.json"],
@@ -37,34 +29,23 @@
     "VIDEO_GROWTH_AGENT": "8f7d0cfb8121fc1a06e1e3a24c1167649d4def94"
   },
   "validation": {
-    "universal_corrective_ci": {
-      "commit": "2023a2706b875834fd17240e89ee5863d0b9d33a",
-      "run": 38341336266,
-      "job": 115112770288,
-      "result": "PASS",
-      "checks": ["risk-tiered control-plane audit", "Agent architecture harness", "full pytest"]
-    },
-    "universal_propagation_checkpoint_ci": {
-      "commit": "d2f27c2bbaa1b560222326f4662e9ccd8d85f929",
-      "run": 38341968555,
-      "job": 115114761598,
-      "result": "PASS",
-      "checks": ["risk-tiered control-plane audit", "Agent architecture harness", "full pytest"]
-    },
+    "universal_initial_failure": {"commit":"fc13399b877ad7df3aa1f2c4c073bb564681f2e6","run":38340563667,"job":115110366042,"result":"FAIL","finding":"Shared architecture contract schema/compatibility regression; 3 pytest failures."},
+    "universal_corrective_ci": {"commit":"2023a2706b875834fd17240e89ee5863d0b9d33a","run":38341336266,"job":115112770288,"result":"PASS","checks":["risk-tiered control-plane audit","Agent architecture harness","full pytest"]},
+    "universal_propagation_checkpoint_ci": {"commit":"d2f27c2bbaa1b560222326f4662e9ccd8d85f929","run":38341968555,"job":115114761598,"result":"PASS","checks":["risk-tiered control-plane audit","Agent architecture harness","full pytest"]},
+    "first_closure_ci": {"commit":"f3002de18e284c583ca820eda6ad8d2208e5621a","run":38342327005,"job":115115871171,"result":"FAIL","finding":"Handoff rewrite dropped the exact regression-protected v65 PR-first anchors; 304 passed / 1 failed.","controller_effect":"COMPLETE_REVOKED__REOPEN_TO_M7_REVISION_20"},
+    "reopen_corrective_ci": {"commit":"fe33b1f50759a7e20be24c9bf59138df030d338a","run":38342571980,"job":115116638109,"result":"PASS","checks":["risk-tiered control-plane audit","Agent architecture harness","full pytest"]},
     "private_owner_ci": {
       "FINANCIAL_WRITING_AGENT_RUNTIME": "RUNNER_NOT_EXECUTED__38341448831_115113123995__EMPTY_STEPS_RUNNER_ID_0",
       "A_SHARE_MARKET_AGENT": "RUNNER_NOT_EXECUTED__38341477686_115113214854__EMPTY_STEPS_RUNNER_ID_0",
       "NOVEL_WRITING_AGENT": "RUNNER_NOT_EXECUTED__38341498059_115113278000__EMPTY_STEPS_RUNNER_ID_0",
       "VIDEO_GROWTH_AGENT": "RUNNER_NOT_EXECUTED__38341521415_115113349788__EMPTY_STEPS_RUNNER_ID_0"
     },
-    "manifest_reread": "ALL_FOUR_CURRENT_BUSINESS_OWNER_MANIFESTS_DECLARE_ARCHITECTURE_MANIFEST_1_3_AND_EXACT_CHATGPT_SINGLE_OWNER_ENTRY_SYSTEM_INTERNAL_SINGLE_CANONICAL_WORKFLOW_VALUES"
+    "owner_head_reread": "ALL_FOUR_CURRENT_BUSINESS_OWNER_MAIN_HEADS_REREAD_AFTER_CORRECTIVE_VALIDATION_AND_MATCH_THE_PROPAGATED_PRODUCT_INTERFACE_COMMITS"
   },
-  "implementation_finding": {
-    "initial_error": "The first M7 patch incorrectly bumped the shared architecture-contract schema and made legacy manifest 1.2 require the new field.",
-    "evidence": "github-actions:38340563667/job/115110366042",
-    "repair": "Restore AGENT_ARCHITECTURE_CONTRACT schema 1.1, introduce owner architecture manifest 1.3 as the first version requiring product_interface, retain 1.2 compatibility.",
-    "reopen": "NOT_REQUIRED__FINDING_OCCURRED_WHILE_CONTROLLER_REMAINED_AT_M7"
-  },
+  "implementation_findings": [
+    {"finding":"INITIAL_MANIFEST_COMPATIBILITY_REGRESSION","evidence":"github-actions:38340563667/job/115110366042","repair":"Restore AGENT_ARCHITECTURE_CONTRACT schema 1.1, introduce owner architecture manifest 1.3 as the first version requiring product_interface, retain 1.2 compatibility.","reopen":"NOT_REQUIRED__FINDING_OCCURRED_WHILE_CONTROLLER_REMAINED_AT_M7"},
+    {"finding":"CLOSURE_HANDOFF_REGRESSION_ANCHOR_DROPPED","evidence":"github-actions:38342327005/job/115115871171","repair":"Restore exact Handoff anchors `当前模型不是 PR-first`, `active lease + observed-HEAD CAS + CI + authoritative reread`, and `没有 merge，也不是 authoritative implementation` without changing the accepted threat model.","reopen":"REQUIRED_AND_EXECUTED__M7_REVISION_20__RERAN_M7_THROUGH_M11"}
+  ],
   "second_order_review": {
     "result": "PASS_WITH_BOUNDED_OPEN_ASSURANCE",
     "checks": [
@@ -74,17 +55,19 @@
       "Owner-specific business-state authorities and assurance distinctions remain intact.",
       "Financial GITHUB_CHAT remains bounded CHAT_SELF_REVIEW; owner-native/provider-attested claims were not upgraded.",
       "Video strict isolated-review assurance remains separate and open where required.",
-      "Legacy architecture manifest 1.2 remains supported; only new/current 1.3 mechanically requires product_interface.",
+      "Legacy architecture manifest 1.2 remains supported; only current 1.3 mechanically requires product_interface.",
+      "The v65 direct-main/PR-first regression anchors are restored and protected by passing Universal tests.",
       "Private owner CI runner non-execution is recorded as non-execution, not test failure evidence and not PASS.",
-      "Universal full CI passes after propagation and observation-cache refresh."
+      "All four propagated owner heads were reread after the corrective validation."
     ]
   },
   "durable_learning": {
     "failure_class_rule": "When an internal executor/readiness/assurance mode is needed to make ChatGPT execution reliable, encode it as internal dispatch/evidence metadata under one owner product entry unless there is independent product evidence for a genuinely separate user workflow.",
-    "prevention": "BUSINESS architecture manifest 1.3 requires product_interface with CHATGPT + SINGLE_OWNER_ENTRY + SYSTEM_INTERNAL + SINGLE_CANONICAL_OWNER_WORKFLOW; regression tests fail user-selected execution mode semantics.",
-    "owner_propagation_rule": "Cross-owner product-boundary fixes belong in the shared Agent architecture/readiness contract first, then minimal owner router/manifest propagation; do not duplicate business SOPs or create a new service just to express the invariant."
+    "prevention": "BUSINESS architecture manifest 1.3 requires product_interface with CHATGPT + SINGLE_OWNER_ENTRY + SYSTEM_INTERNAL + SINGLE_CANONICAL_OWNER_WORKFLOW; regression tests reject user-selected execution mode semantics.",
+    "owner_propagation_rule": "Cross-owner product-boundary fixes belong in the shared Agent architecture/readiness contract first, then minimal owner router/manifest propagation; do not duplicate business SOPs or create a new service just to express the invariant.",
+    "closure_rule": "A post-publish closure CI failure revokes COMPLETE and requires a real controller reopen; semantic equivalence in rewritten handoff prose is insufficient when a regression guard deliberately protects exact anchors."
   },
-  "assurance_ceiling": "STRUCTURAL_PRODUCT_INTERFACE_CONFORMANCE_PLUS_UNIVERSAL_REGRESSION_AND_CI_PASS__PRIVATE_OWNER_CI_EXECUTION_NOT_OBSERVED__NO_LIVE_BUSINESS_QUALITY_OR_OUTCOME_PROOF",
+  "assurance_ceiling": "STRUCTURAL_PRODUCT_INTERFACE_CONFORMANCE_PLUS_UNIVERSAL_REGRESSION_AND_CORRECTIVE_CI_PASS__PRIVATE_OWNER_CI_EXECUTION_NOT_OBSERVED__NO_LIVE_BUSINESS_QUALITY_OR_OUTCOME_PROOF",
   "remaining_open": [
     "Private owner GitHub Actions did not allocate runners for the owner commits; no private-owner CI PASS is claimed.",
     "Financial fresh-chat DUAL 3-output retest and current-head business execution/architecture revalidation remain owner-scoped OPEN work.",
@@ -95,5 +78,5 @@
     "GitHub-side physical enforcement against an intentionally noncompliant authorized writer is outside the current single-writer assurance ceiling.",
     "Experimental PR-first branch remains unmerged, without PR, and non-authoritative."
   ],
-  "post_closure_requirement": "A user-facing COMMITTED claim still requires publishing this closure with direct-main HEAD CAS, observing closure CI, and rereading final authoritative main/task/controller surfaces."
+  "post_closure_requirement": "A user-facing COMMITTED claim still requires publishing this revision-25 closure with direct-main HEAD CAS, observing its post-publish CI, and rereading final authoritative main/task/controller surfaces."
 }
