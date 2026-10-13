@@ -2,21 +2,21 @@
   "schema_version": "1.0",
   "run_id": "architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13",
   "triage_outcome": "CONFIRMED_DEFECT",
-  "status": "BLOCKED",
-  "revision": 11,
-  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+  "status": "ACTIVE",
+  "revision": 12,
+  "current_stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
   "completed_stage_receipts": [
     {
       "stage": "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
       "revision": 1,
       "evidence_refs": ["user-signal://2026-10-13/global-architecture-reliability-framework-completeness-challenge"],
-      "summary": "Classified the user challenge as a real maintenance meta-method signal: prior bounded audits did not maintain a sufficiently broad architecture/reliability reference taxonomy. The named frameworks are evidence lenses, not user-mandated implementation choices."
+      "summary": "Classified the user challenge as a real maintenance meta-method signal: prior bounded audits did not maintain a sufficiently broad architecture/reliability reference taxonomy. Named frameworks are evidence lenses, not user-mandated implementation choices."
     },
     {
       "stage": "M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION",
       "revision": 2,
       "evidence_refs": ["research/system_architecture_library/README.md"],
-      "summary": "Requirement: learn and persist the named architecture/reliability disciplines in a cold non-authoritative library, use them to diagnose current Universal gaps, and make no refactor/behavior change until a later explicit user command."
+      "summary": "Requirement: learn and persist architecture/reliability disciplines in a cold non-authoritative library, diagnose current Universal gaps, and make no refactor/behavior change until a later explicit user command."
     },
     {
       "stage": "M2_FULL_SYSTEM_IMPACT_MAP",
@@ -28,57 +28,19 @@
       "stage": "M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
       "revision": 4,
       "evidence_refs": ["audits/UNIVERSAL_GLOBAL_CONTROL_PLANE_AUDIT_V67_FINAL_2026-10-13.json","SYSTEM_MAINTENANCE_POLICY.json","research/system_architecture_library/13_current_universal_gap_audit.md"],
-      "summary": "Root cause is benchmark-scope blindness in the maintenance meta-method: v67 was truthfully bounded but its global-audit taxonomy omitted several mature architecture/control/safety/reliability question families. The new instance therefore challenges M2/M3 breadth rather than asserting that every omitted framework must become runtime architecture."
-    },
-    {
-      "stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
-      "revision": 5,
-      "evidence_refs": ["research/system_architecture_library/SOURCES.md","research/system_architecture_library/CATALOG.json"],
-      "summary": "Studied first-party/original sources covering NASA SE/V&V, Evolutionary Architecture, Team Topologies, distributed systems/Raft/idempotency, UVM, MAPE-K, Kubernetes, OTP supervision, GitOps, SRE, AWS Operational Excellence, environment parity, DO-178C public guidance, TLA+, N-version correlated failures, IEC 61508 public lifecycle material, NASA FDIR, STPA and Chaos Engineering. Paid normative standards are not reproduced and no compliance claim is made."
-    },
-    {
-      "stage": "M3A_CAPABILITY_REUSE_SCAN",
-      "revision": 6,
-      "evidence_refs": ["SYSTEM_BLUEPRINT.md","runtime/system_audit.py","runtime/maintenance_controller.py","runtime/mutation_outcome.py","EXECUTION_READINESS_CONTRACT.json","OWNER_ADAPTER_CONTRACT.json"],
-      "summary": "Found substantial reusable capability already present: lease/CAS, state/signal separation, execution readiness, action-bound receipts, maintenance reopen, synthetic fault injection, mutation-outcome classification, profile composition and anti-bloat controls. A future repair should extend/derive these rather than create branded parallel framework subsystems."
-    },
-    {
-      "stage": "M4_ALTERNATIVES_AND_FALSIFICATION",
-      "revision": 7,
-      "evidence_refs": ["research/system_architecture_library/12_cross_framework_matrix.md","research/system_architecture_library/14_refactor_candidate_map.md"],
-      "summary": "Rejected a framework-zoo approach and literal transplantation of Kubernetes/UVM/OTP/SRE/DO-178C/IEC processes. Compared no-change, separate framework modules, one central meta-platform, and a smaller set of cross-cutting derived primitives; candidates remain non-authoritative pending implementation authorization."
-    },
-    {
-      "stage": "M4A_FACT_DECISION_FRONTIER",
-      "revision": 8,
-      "evidence_refs": ["research/system_architecture_library/13_current_universal_gap_audit.md"],
-      "summary": "Retrievable facts were resolved through repository inspection and source research. The only current human decision frontier is explicit: the user has withheld authorization for adjustment/refactor, so implementation must stop before M7."
-    },
-    {
-      "stage": "M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION",
-      "revision": 9,
-      "evidence_refs": ["ENTRYPOINT.md","SYSTEM_MAINTENANCE_POLICY.json","CONTINUOUS_LEARNING_POLICY.md","research/system_architecture_library/README.md"],
-      "summary": "No hot-path/account/startup instruction change is justified for research. The library remains cold learning evidence and is not added to ENTRYPOINT or loaded on healthy business turns. No new root policy, owner registry, controller or BUSINESS contract is created."
-    },
-    {
-      "stage": "M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET",
-      "revision": 10,
-      "evidence_refs": ["research/system_architecture_library/14_refactor_candidate_map.md"],
-      "summary": "Future candidate design is constrained to consolidation/derived views and reusable primitives; avoid central counters, giant knowledge databases, permanent reviewer agents, continuous global scans or framework-specific parallel authorities. Research storage has zero normal hot-path reads."
-    },
-    {
-      "stage": "M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST",
-      "revision": 11,
-      "evidence_refs": ["research/system_architecture_library/13_current_universal_gap_audit.md","research/system_architecture_library/14_refactor_candidate_map.md"],
-      "summary": "Highest expected payoff comes from a small number of cross-cutting capabilities (derived system model, assurance/coverage trace, reliability objectives, environment model, supervision/FDIR, hazard control and selective formal verification), not from adding every studied framework. No architecture change is accepted yet; M7 is intentionally held."
+      "summary": "Root cause is benchmark-scope blindness in the maintenance meta-method: a global audit can be locally complete while its question taxonomy omits mature architecture/control/safety/reliability families."
     }
   ],
-  "reopen_history": [],
+  "reopen_history": [
+    {
+      "target_stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
+      "revision": 12,
+      "reason": "User challenged the depth claim after the first research pass and explicitly required all previously shallow framework study to be deepened before any refactor. The same request adds current agent-runtime families—OpenAI Agents API/SDK, Microsoft Agent Framework, Google ADK 2.x/Agents CLI, and LangGraph/LangSmith—as direct benchmark subjects. Prior M3-M6A receipts are therefore invalidated and must be regenerated from a deeper source/runtime/failure-mode/lifecycle comparison. Read-only web/source research performed before this checkpoint made no production or BUSINESS mutation.",
+      "evidence_refs": ["user-signal://2026-10-13/deepen-all-prior-framework-study-before-refactor","research/system_architecture_library/CATALOG.json"]
+    }
+  ],
   "investigation_resolution": null,
   "prepatch_checkpoint": null,
-  "blocker": {
-    "reason": "USER_EXPLICIT_HOLD_FOR_REFACTOR_COMMAND: research library and current-gap diagnosis are requested now, but adjustment/refactor/implementation must wait for a later explicit user command.",
-    "evidence_refs": ["user-signal://2026-10-13/wait-for-command-before-adjust-refactor","research/system_architecture_library/14_refactor_candidate_map.md"]
-  },
-  "assurance_ceiling": "PUBLIC_PRIMARY_SOURCE_RESEARCH_PLUS_CURRENT_REPOSITORY_ARCHITECTURE_GAP_ANALYSIS__NO_NORMATIVE_SAFETY_CERTIFICATION__NO_CLAIM_OF_EXHAUSTING_ALL_POSSIBLE_FRAMEWORKS_OR_FUTURE_FAILURES__NO_REFACTOR_APPLIED"
+  "blocker": null,
+  "assurance_ceiling": "DEEP_RESEARCH_REOPEN_ACTIVE__NO_REFACTOR_OR_PRODUCTION_BEHAVIOR_CHANGE_AUTHORIZED"
 }
