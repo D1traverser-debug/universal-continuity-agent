@@ -23,11 +23,11 @@ Everything else is event-driven and cold-path unless activated.
 
 Before material response/action classify only: `NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`.
 
-- `NO_DEFECT` → normal execution; no maintenance stack/global discovery.
+- `NO_DEFECT` → normal execution; do not load full maintenance or global discovery.
 - `INVESTIGATE` → inspect only evidence needed to confirm/reject; do not mutate suspected authority.
 - `CONFIRMED_DEFECT` → enter maintenance in the same turn.
 
-Systemic/non-trivial maintenance is controlled by `runtime/maintenance_controller.py` + `SYSTEM_MAINTENANCE_POLICY.json`; no stage skipping, pre-M7 material patch, or premature closure.
+Systemic/non-trivial maintenance uses `runtime/maintenance_controller.py` + `SYSTEM_MAINTENANCE_POLICY.json`; it forbids stage skipping, pre-M7 material patch, and premature closure.
 
 ## Intent routing
 
@@ -54,9 +54,9 @@ Load only when activated:
 - **Protocol mismatch** → `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
 - **Recovery gap** → `CONTEXT_RECOVERY_POLICY.json` → exact refs → selective history.
 - **Material owner execution** → owner Skill + `continuity/EXECUTION_CAPABILITIES.json` + `EXECUTION_READINESS_CONTRACT.json`; handshake required capabilities only.
-- **Execution/methodology proof** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`.
+- **Execution/methodology proof** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; apply the current receipt/action-binding contract there rather than copying it into this bootstrap.
 - **Artifact/file/storage** → `artifact_io@1.0`; `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when activated.
-- **Plausible system defect** → `SYSTEM_MAINTENANCE_POLICY.json` + maintenance controller; triage before discussion, confirmed defects enter maintenance same turn.
+- **Plausible system-defect hypothesis** → `SYSTEM_MAINTENANCE_POLICY.json` + maintenance controller; triage before discussion, confirmed defects enter maintenance same turn.
 - **Maintenance/repeated failure/drift/material correction** → `operational_hygiene@1.0` + maintenance controller.
 - **Durable learning/evolution** → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`.
 - **Media evidence/distillation** → `MEDIA_DISTILLATION_PROTOCOL.md`.
@@ -68,7 +68,7 @@ Methodology profiles are conditional contracts loaded only on activation. Owners
 
 Declarations are capability ceilings, not execution proof. Before material owner action, refresh exact owner Skill/capability, observe only needed capabilities, evaluate readiness/methodology, use a real allowed route, bind receipts to exact action/input, and block only unavailable hard gates.
 
-Operational proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration, regression or CI does not substitute for current-action proof. Normal product use remains one ChatGPT owner entry; internal executor/readiness/assurance selection must not create a second business SOP or alter the TaskContract.
+Operational proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action proof. Normal product use remains one ChatGPT owner entry; internal executor/readiness/assurance selection must not create a second business SOP or alter the TaskContract.
 
 ## Agent product architecture
 
@@ -88,7 +88,7 @@ Do not add a permanent supervisory Agent merely to simulate independent review.
 
 ## Progress observability
 
-Checkpoint during the turn at verified material safe points; pure reads/unchanged diagnostics create no heartbeat. Before final response on an active durable task, persist material change and reread authority.
+Work must checkpoint **during the turn** at verified material safe points; pure reads/unchanged diagnostics create no heartbeat. Before final response on an active durable task, persist material change and reread authority.
 
 Material Universal `main`: when HEAD-CAS is available, Contents API material mutation is forbidden; require active lease + reread HEAD + commit-on-HEAD + `expected_sha=HEAD` + reread authority. Details: `PROGRESS_OBSERVABILITY_POLICY.json`.
 
@@ -98,7 +98,7 @@ Exactly one receipt:
 - `进度提交：COMMIT_FAILED`
 - `进度提交：STALE_WRITER`
 
-`COMMITTED` attests durable persistence only, not execution/methodology/review/quality/outcome. OPEN/BLOCKED gates are checkpointable and reported separately.
+`COMMITTED` is a **durable-persistence receipt** only, not execution/methodology/review/quality/outcome attestation. OPEN/BLOCKED gates are checkpointable and reported separately.
 
 ## Performance invariant
 
