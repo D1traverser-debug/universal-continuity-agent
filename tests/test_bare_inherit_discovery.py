@@ -44,12 +44,13 @@ def test_synthetic_new_owner_joins_bare_quorum_without_policy_or_code_name_chang
             "owner_kind": "BUSINESS",
             "domains": ["SYNTHETIC_DOMAIN"],
             "priority": 100,
-            "adapter_status": "SYNTHETIC_FIXTURE",
+            "adapter_status": "READY_V37_SYNTHETIC_FIXTURE",
             "bare_inherit_participant": True,
             "bare_inherit_source": "synthetic-owner@main:continuity/TASK_INDEX.json",
             "checkpoint_authority": "synthetic-owner@main:continuity/tasks/<task_id>/TASK_MANIFEST.json",
             "protocol_adapter": "synthetic-owner@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
             "execution_capability_ref": "synthetic-owner@main:continuity/EXECUTION_CAPABILITIES.json",
+            "agent_manifest_ref": "synthetic-owner@main:continuity/AGENT_MANIFEST.json",
         }
     )
 

@@ -27,7 +27,6 @@ def current_business_owners():
 
 def test_routine_change_does_not_scan_every_business_pipeline():
     plan = plan_audit(["README.md"], "routine_change", owner_registry=load("OWNER_REGISTRY.json"))
-
     assert plan["modes"] == ["CORE_ALWAYS", "IMPACT_SCOPED"]
     assert plan["run_all_owner_business_pipelines"] is False
     assert plan["owner_metadata_scope"] == []
@@ -38,7 +37,6 @@ def test_routine_change_does_not_scan_every_business_pipeline():
 def test_explicit_global_audit_escalates_to_all_current_business_owner_metadata_and_fault_injection():
     owners = load("OWNER_REGISTRY.json")
     plan = plan_audit([], "explicit_global_audit", owner_registry=owners)
-
     assert "FULL_CONTROL_PLANE" in plan["modes"]
     assert "SYNTHETIC_FAULT_INJECTION" in plan["modes"]
     assert plan["owner_metadata_scope"] == sorted(business_owner_names(owners))
@@ -48,12 +46,7 @@ def test_explicit_global_audit_escalates_to_all_current_business_owner_metadata_
 
 def test_user_challenge_to_maintenance_completeness_is_a_full_fault_injected_audit_trigger():
     owners = load("OWNER_REGISTRY.json")
-    plan = plan_audit(
-        [],
-        "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS",
-        owner_registry=owners,
-    )
-
+    plan = plan_audit([], "USER_CHALLENGES_MAINTENANCE_METHOD_OR_GLOBAL_COMPLETENESS", owner_registry=owners)
     assert plan["trigger"] == "user_challenges_maintenance_method_or_global_completeness"
     assert "FULL_CONTROL_PLANE" in plan["modes"]
     assert "SYNTHETIC_FAULT_INJECTION" in plan["modes"]
@@ -64,7 +57,6 @@ def test_user_challenge_to_maintenance_completeness_is_a_full_fault_injected_aud
 def test_high_risk_control_plane_change_forces_dynamic_full_control_plane_sweep():
     owners = load("OWNER_REGISTRY.json")
     plan = plan_audit(["OWNER_PROTOCOL_ADAPTATION_REGISTRY.json"], "routine_change", owner_registry=owners)
-
     assert plan["risk"] == "HIGH"
     assert "FULL_CONTROL_PLANE" in plan["modes"]
     assert plan["owner_metadata_scope"] == sorted(business_owner_names(owners))
@@ -72,23 +64,25 @@ def test_high_risk_control_plane_change_forces_dynamic_full_control_plane_sweep(
     assert "dangling_remote_pointer_check" in plan["checks"]
 
 
+def _synthetic_owner():
+    return {
+        "name": "SYNTHETIC_NEW_AGENT",
+        "owner_kind": "BUSINESS",
+        "domains": ["SYNTHETIC_DOMAIN"],
+        "priority": 100,
+        "adapter_status": "READY_V37_SYNTHETIC_RECONCILED",
+        "bare_inherit_participant": True,
+        "bare_inherit_source": "synthetic-owner@main:continuity/TASK_INDEX.json",
+        "checkpoint_authority": "synthetic-owner@main:continuity/tasks/<task_id>/TASK_MANIFEST.json",
+        "protocol_adapter": "synthetic-owner@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+        "execution_capability_ref": "synthetic-owner@main:continuity/EXECUTION_CAPABILITIES.json",
+        "agent_manifest_ref": "synthetic-owner@main:continuity/AGENT_MANIFEST.json",
+    }
+
+
 def test_synthetic_new_business_owner_is_automatically_in_audit_scope():
     owners = copy.deepcopy(load("OWNER_REGISTRY.json"))
-    owners["owners"].append(
-        {
-            "name": "SYNTHETIC_NEW_AGENT",
-            "owner_kind": "BUSINESS",
-            "domains": ["SYNTHETIC_DOMAIN"],
-            "priority": 100,
-            "adapter_status": "SYNTHETIC_RECONCILED",
-            "bare_inherit_participant": True,
-            "bare_inherit_source": "synthetic-owner@main:continuity/TASK_INDEX.json",
-            "checkpoint_authority": "synthetic-owner@main:continuity/tasks/<task_id>/TASK_MANIFEST.json",
-            "protocol_adapter": "synthetic-owner@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
-            "execution_capability_ref": "synthetic-owner@main:continuity/EXECUTION_CAPABILITIES.json",
-        }
-    )
-
+    owners["owners"].append(_synthetic_owner())
     plan = plan_audit([], "explicit_global_audit", owner_registry=owners)
     assert "SYNTHETIC_NEW_AGENT" in plan["owner_metadata_scope"]
 
@@ -99,20 +93,7 @@ def test_new_business_owner_fails_closed_until_all_derived_control_plane_evidenc
 
     owner_registry_path = repo / "OWNER_REGISTRY.json"
     owner_registry = json.loads(owner_registry_path.read_text(encoding="utf-8"))
-    owner_registry["owners"].append(
-        {
-            "name": "SYNTHETIC_NEW_AGENT",
-            "owner_kind": "BUSINESS",
-            "domains": ["SYNTHETIC_DOMAIN"],
-            "priority": 100,
-            "adapter_status": "SYNTHETIC_RECONCILED",
-            "bare_inherit_participant": True,
-            "bare_inherit_source": "synthetic-owner@main:continuity/TASK_INDEX.json",
-            "checkpoint_authority": "synthetic-owner@main:continuity/tasks/<task_id>/TASK_MANIFEST.json",
-            "protocol_adapter": "synthetic-owner@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
-            "execution_capability_ref": "synthetic-owner@main:continuity/EXECUTION_CAPABILITIES.json",
-        }
-    )
+    owner_registry["owners"].append(_synthetic_owner())
     owner_registry_path.write_text(json.dumps(owner_registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     incomplete = audit_local_control_plane(repo)
@@ -173,17 +154,10 @@ def test_new_business_owner_fails_closed_until_all_derived_control_plane_evidenc
 def test_policy_owns_risk_tiered_audit_without_creating_parallel_root_policy():
     policy = json.loads((ROOT / "SYSTEM_MAINTENANCE_POLICY.json").read_text(encoding="utf-8"))
     audit = policy["system_audit_strategy"]
-
     assert audit["owner"] == "SYSTEM_MAINTENANCE_POLICY.json"
     assert audit["runtime"] == "runtime/system_audit.py"
     assert audit["full_business_pipeline_every_audit"] is False
-    assert set(audit["layers"]) == {
-        "CORE_ALWAYS",
-        "IMPACT_SCOPED",
-        "OWNER_SENTINEL_ROTATION",
-        "FULL_CONTROL_PLANE",
-        "SYNTHETIC_FAULT_INJECTION",
-    }
+    assert set(audit["layers"]) == {"CORE_ALWAYS", "IMPACT_SCOPED", "OWNER_SENTINEL_ROTATION", "FULL_CONTROL_PLANE", "SYNTHETIC_FAULT_INJECTION"}
     assert audit["layers"]["SYNTHETIC_FAULT_INJECTION"]["production_mutation_allowed_by_default"] is False
     assert not (ROOT / "GLOBAL_AUDIT_POLICY.json").exists()
     assert not (ROOT / "SYSTEM_AUDIT_POLICY.json").exists()
@@ -191,7 +165,6 @@ def test_policy_owns_risk_tiered_audit_without_creating_parallel_root_policy():
 
 def test_current_repository_passes_local_cross_surface_audit():
     result = audit_local_control_plane(ROOT)
-
     assert result["status"] == "PASS", result["errors"]
     assert result["checked_business_owners"] == sorted(current_business_owners())
 
@@ -199,7 +172,6 @@ def test_current_repository_passes_local_cross_surface_audit():
 def test_local_audit_detects_stale_protocol_registry_and_owner_cache(tmp_path):
     repo = tmp_path / "repo"
     shutil.copytree(ROOT, repo)
-
     adaptation_path = repo / "OWNER_PROTOCOL_ADAPTATION_REGISTRY.json"
     adaptation = json.loads(adaptation_path.read_text(encoding="utf-8"))
     video = next(item for item in adaptation["owners"] if item["owner"] == "VIDEO_GROWTH_AGENT")
@@ -215,7 +187,6 @@ def test_local_audit_detects_stale_protocol_registry_and_owner_cache(tmp_path):
     owner_registry_path.write_text(json.dumps(owner_registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     result = audit_local_control_plane(repo)
-
     assert result["status"] == "FAIL"
     assert any("VIDEO_GROWTH_AGENT" in error for error in result["errors"])
 
@@ -223,38 +194,24 @@ def test_local_audit_detects_stale_protocol_registry_and_owner_cache(tmp_path):
 def test_local_audit_detects_missing_or_invalid_meta_governance_record(tmp_path):
     repo = tmp_path / "repo"
     shutil.copytree(ROOT, repo)
-
     manifest_path = repo / "tasks/universal-continuity-maintenance/TASK_MANIFEST.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest["latest_meta_maintenance_run_ref"] = "audits/DOES_NOT_EXIST.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
     result = audit_local_control_plane(repo)
     assert result["status"] == "FAIL"
     assert "maintenance latest_meta_maintenance_run_ref is missing" in result["errors"]
 
 
 def test_live_owner_observation_detects_stale_registry_and_dangling_remote_ref():
-    entry = {
-        "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",
-        "observed_protocol": "3.3",
-        "target_protocol": "3.7",
-        "classification": "MIGRATABLE",
-    }
-
-    errors = evaluate_owner_protocol_observation(
-        entry,
-        authoritative_protocol="3.7",
-        missing_remote_refs=["continuity/HANDOFF_COMPACTION_PLAN.json"],
-    )
-
+    entry = {"owner": "FINANCIAL_WRITING_AGENT_RUNTIME", "observed_protocol": "3.3", "target_protocol": "3.7", "classification": "MIGRATABLE"}
+    errors = evaluate_owner_protocol_observation(entry, authoritative_protocol="3.7", missing_remote_refs=["continuity/HANDOFF_COMPACTION_PLAN.json"])
     assert any("observed_protocol is stale" in error for error in errors)
     assert any("dangling remote" in error for error in errors)
 
 
 def test_fault_injection_suite_targets_unknown_unknown_boundaries():
     scenarios = set(FAULT_INJECTION_SCENARIOS)
-
     assert "required_discovery_source_unavailable" in scenarios
     assert "stale_registry_attempts_to_override_owner_authority" in scenarios
     assert "new_business_owner_is_added_without_execution_or_adaptation_convergence" in scenarios
@@ -271,7 +228,6 @@ def test_fault_injection_suite_targets_unknown_unknown_boundaries():
 
 def test_full_synthetic_fault_suite_executes_and_passes_on_current_repository():
     result = run_synthetic_fault_injection(ROOT, FAULT_INJECTION_SCENARIOS)
-
     assert result["status"] == "PASS", result
     assert result["failed"] == []
     assert set(result["results"]) == set(FAULT_INJECTION_SCENARIOS)
