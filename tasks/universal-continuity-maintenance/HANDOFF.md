@@ -7,35 +7,53 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `83`
+- manifest_version: `84`
 - current controller run: `universal-global-control-plane-audit-v67-2026-10-13`
-- controller status: `ACTIVE` revision `19` at `M8_MULTI_LAYER_VALIDATION`
+- controller status: `ACTIVE` revision `21` at `M8_MULTI_LAYER_VALIDATION`
 
-## 当前状态
+## v67 当前状态
 
-v67 的第二次 reopen 已完成 M7 修复。此前 M10 发现 control signal 只有 active/resolved 二分不够：issue #12 仍 open 只是因为历史 silent-disable provenance 未解，而当前 core monitor 缺席是用户明确主动删除。若未来 consumer 只看 open issue，可能把历史 unresolved incident 误当当前 drift。
+第二次 M10 reopen 已完成 M7 修复：control signal 现在明确区分 `ACTIVE / HISTORICAL_OPEN / RESOLVED`。issue #12 已标记为 `HISTORICAL_OPEN`，只保留早期 silent-disable provenance 未解这一历史问题；当前 core monitor 缺席是用户明确删除，不允许从历史 issue 推导重建/重启。
 
-现已加入 `ACTIVE / HISTORICAL_OPEN / RESOLVED` 三态语义：
-- #3 / #4 = ACTIVE owner-local drift；
-- #12 = HISTORICAL_OPEN，仅保留历史 provenance 问题，不允许单独触发当前 remediation；
-- #2 / #7 = RESOLVED historical evidence。
+`runtime/control_signal.py` 的 present-tense remediation guard 只有在 `ACTIVE + fresh reobservation + current authorization` 三者都满足时才允许当前状态修复；HISTORICAL_OPEN / RESOLVED 不能单独触发 remediation。
 
-`runtime/control_signal.py` 新增机械 guard：只有 `ACTIVE + fresh reobservation + current authorization` 才允许当前 state remediation；HISTORICAL_OPEN / RESOLVED 均不能因为 issue 仍存在就触发重建、重启或其他 present-tense 修复。issue #12 的 title/body 已同步改成 `[HISTORICAL_OPEN]` 并显式写明当前用户删除意图优先。
+第一次重跑 M8（CI `38360013380` / job `115171721582`）出现 2 个真实回归：
+1. lifecycle enum 转换实现错误，导致 ACTIVE 也被误判为不可 remediation；
+2. handoff 压缩时误删 v65 回归锚点 `当前模型不是 PR-first`。
 
-同时保留本轮此前修复：startup/preflight scope 对齐、OWNER_REGISTRY dynamic assurance 清理与 validator、A-share #2 关闭、ENTRYPOINT >=512-byte reserve、current architecture admission fixture 对齐。
+这两个问题均已在 M7 修正：enum 直接接受 `SignalLifecycleState` 实例；handoff 恢复 direct-main threat-model 锚点。现在重新进入 M8，必须重新跑 control-plane audit、Agent architecture harness、full pytest；任何失败继续 reopen。
 
-## 下一步
+## 其余已修项
 
-M8：重新跑 risk-tiered/full control-plane audit、Agent architecture harness、full pytest。任何失败都 reopen。
+- continuation bootstrap 与 all-material cheap defect preflight scope 已对齐；
+- `NO_DEFECT` 不加载 full maintenance/global discovery；
+- BUSINESS `adapter_status` 只保留 stable admission/protocol metadata，动态 CI/PASS/PENDING/LIVE assurance 被 validator 拒绝；
+- A-share #2 已 live reobserve 后关闭；Financial #7 为 resolved；Novel #3 / Video #4 仍 active；
+- ENTRYPOINT 保留 8,192-byte hard cap 且至少 512-byte reserve；
+- current architecture synthetic admission fixtures 已跟随 `agent_manifest_ref` requirement。
 
-M8 绿后必须重新做 M9 owner-head/signal live reobservation，再做 M10 second-order review；reopen 前的 M8/M9 receipts 不可复用。最后 M11 closure 后还要观察 closure commit 的 CI 并 reread `main + TASK_MANIFEST + controller state` 才能报 `COMMITTED`。
+## 主链边界
 
-## 保留边界
+- single writer：lease_id + resume_epoch + stale-writer fail-closed；
+- Universal material main writes：active lease + observed-HEAD CAS + CI + authoritative reread；
+- bare inherit quorum 动态派生，partial discovery 不得伪装完整或 auto-resume；
+- recovery：metadata → short handoff → exact refs → selective history → old chat last resort；Memory/chat 不是执行权威；
+- lower-authority cache/evidence 不能覆盖 fresher authority；
+- BUSINESS truth/lease 本轮不触碰。
 
-- 不取得 BUSINESS lease，不改文章、市场日、小说 Canon/project、视频项目业务真值。
-- live automations 当前没有启用的 Continuity core monitors；不自动重建。
-- `HARNESS_STATUS.json` 仍是 lower-authority historical cache，不能覆盖 live product reread。
-- private owner CI runner 未实际执行的地方不能称 PASS。
-- Financial fresh-chat DUAL 3-output retest 仍 owner-scoped OPEN。
-- independent semantic/live-outcome assurance 与 formal controller-meta promotion 仍 OPEN。
+## v65 direct-main / PR-first 回归锚点
+
+当前模型不是 PR-first。
+
+Universal material compliant writes 继续使用 active lease + observed-HEAD compare-and-swap + CI + authoritative reread。PR-first 和 branch protection 不是当前 `SINGLE_ACTIVE_CHAT` 的默认要求；unprotected `main` 本身不是 HIGH defect。
+
+实验分支 `continuity/pr-first-mutation-gate-v65` 未 merge、无 PR、非 authoritative implementation。
+
+## 仍 OPEN 的边界
+
+- live automation 当前没有启用的 Continuity core monitors；不自动重建；
+- `HARNESS_STATUS.json` 的旧 monitor 字段仍是 lower-authority historical cache；
+- private owner CI runner 未实际执行的地方不能称 PASS；
+- Financial fresh-chat DUAL 3-output retest 仍 owner-scoped OPEN；
+- independent semantic/live-outcome assurance 与 formal controller-meta promotion 仍 OPEN；
 - `__noop*` 非权威 branch clutter 仍 `OPEN_TOOL_LIMITED`，无 PR，当前 connector 无 delete-ref。

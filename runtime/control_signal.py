@@ -110,7 +110,7 @@ def current_remediation_allowed(
     """
 
     try:
-        state = SignalLifecycleState(str(lifecycle_state))
+        state = lifecycle_state if isinstance(lifecycle_state, SignalLifecycleState) else SignalLifecycleState(str(lifecycle_state))
     except ValueError:
         return False
     if state is not SignalLifecycleState.ACTIVE:
@@ -144,73 +144,22 @@ def assess_signal_admission(
     human_judgment_required: bool = False,
     agent_ready_brief: Mapping[str, Any] | None = None,
 ) -> WorkAdmissionDecision:
-    """Apply verify-before-clarify-before-delegate semantics to a control signal.
-
-    Retrievable facts are system work and must not be escalated to the user as choices.
-    User interruption is reserved for genuinely unavailable information or human judgment.
-    Delegation requires a compact stable brief rather than raw chat/issue history.
-    """
+    """Apply verify-before-clarify-before-delegate semantics to a control signal."""
 
     if not reobserved:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.VERIFY_REQUIRED,
-            user_interruption_required=False,
-            errors=(),
-            next_action="re-observe the reported claim against current authority/environment",
-        )
-
+        return WorkAdmissionDecision(WorkAdmissionState.VERIFY_REQUIRED, False, (), "re-observe the reported claim against current authority/environment")
     if retrievable_fact_gaps:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.FACT_GATHERING,
-            user_interruption_required=False,
-            errors=(),
-            next_action="resolve retrievable facts autonomously before clarification or delegation",
-        )
-
+        return WorkAdmissionDecision(WorkAdmissionState.FACT_GATHERING, False, (), "resolve retrievable facts autonomously before clarification or delegation")
     if unavailable_fact_gaps:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.NEEDS_USER_INFORMATION,
-            user_interruption_required=True,
-            errors=(),
-            next_action="ask only for facts that cannot be safely retrieved or inferred",
-        )
-
+        return WorkAdmissionDecision(WorkAdmissionState.NEEDS_USER_INFORMATION, True, (), "ask only for facts that cannot be safely retrieved or inferred")
     if human_judgment_required:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.NEEDS_HUMAN_JUDGMENT,
-            user_interruption_required=True,
-            errors=(),
-            next_action="ask the user only for the genuine judgment or irreversible choice",
-        )
-
+        return WorkAdmissionDecision(WorkAdmissionState.NEEDS_HUMAN_JUDGMENT, True, (), "ask the user only for the genuine judgment or irreversible choice")
     if actionable is False:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.NOT_ACTIONABLE,
-            user_interruption_required=False,
-            errors=(),
-            next_action="close or retain the signal with a durable not-actionable reason",
-        )
-
+        return WorkAdmissionDecision(WorkAdmissionState.NOT_ACTIONABLE, False, (), "close or retain the signal with a durable not-actionable reason")
     if actionable is not True:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.FACT_GATHERING,
-            user_interruption_required=False,
-            errors=("actionability_not_resolved",),
-            next_action="resolve actionability from current evidence",
-        )
+        return WorkAdmissionDecision(WorkAdmissionState.FACT_GATHERING, False, ("actionability_not_resolved",), "resolve actionability from current evidence")
 
     brief_result = validate_agent_ready_brief(agent_ready_brief)
     if not brief_result.valid:
-        return WorkAdmissionDecision(
-            WorkAdmissionState.BRIEF_REQUIRED,
-            user_interruption_required=False,
-            errors=brief_result.errors,
-            next_action="construct a stable Agent-ready brief from verified evidence before delegation",
-        )
-
-    return WorkAdmissionDecision(
-        WorkAdmissionState.READY_TO_DELEGATE,
-        user_interruption_required=False,
-        errors=(),
-        next_action="delegate using the stable brief and acceptance criteria",
-    )
+        return WorkAdmissionDecision(WorkAdmissionState.BRIEF_REQUIRED, False, brief_result.errors, "construct a stable Agent-ready brief from verified evidence before delegation")
+    return WorkAdmissionDecision(WorkAdmissionState.READY_TO_DELEGATE, False, (), "delegate using the stable brief and acceptance criteria")
