@@ -52,7 +52,7 @@ CI `38382360943` / job `115245654728`：control-plane audit PASS、Agent archite
 1. BLOCKED controller 的 `investigation_resolution` 必须保持 null；
 2. Handoff 必须保留 v65 精确回归锚点 `当前模型不是 PR-first`。
 
-本 checkpoint 正在修复这两项并重新跑 CI；未把失败当作“无关”。
+第二次 corrective CI `38382648214` / job `115246616835`：control-plane audit PASS、Agent architecture PASS，full pytest `321 passed / 1 failed`；剩余失败是 Handoff 还缺另一个 v65 精确锚点。该锚点已在本次纠正中恢复，不能用语义近似替代回归合同。
 
 ## 不应误读
 
@@ -79,7 +79,9 @@ G01–G30 都只是 diagnosis/candidate input；Novel #3、Video #4 owner-local 
 
 当前模型不是 PR-first。
 
-Universal 合规 material main write 仍要求 active lease + reread observed HEAD + expected-HEAD compare-and-swap + CI + authoritative reread。`main protected=false` 本身不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的 HIGH defect；若 writer topology/权限威胁模型改变，必须重新评估。
+active lease + observed-HEAD CAS + CI + authoritative reread
+
+Universal 合规 material main write 继续以该链路为准；`main protected=false` 本身不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的 HIGH defect；若 writer topology/权限威胁模型改变，必须重新评估。
 
 ## 下一步
 
