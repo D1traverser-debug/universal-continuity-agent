@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "purpose": "Define the minimum product architecture for a durable Agent owner or the Universal SYSTEM_INFRA control plane without requiring one specific agent framework.",
   "applies_to_owner_kind": ["BUSINESS", "SYSTEM_INFRA"],
   "default_business_manifest_path": "continuity/AGENT_MANIFEST.json",
@@ -12,131 +12,45 @@
     "manifest_1_2_admission_note": "Manifest 1.2 is admitted only through explicit shared-semantic mappings already used by compatible 1.1 owners. Compatibility admission proves structural interpretability only; it does not prove live quality, current-session execution, provider isolation, or independent attestation.",
     "aliases_by_manifest_version": {
       "1.1": {
-        "skill_role": {
-          "ROUTER": "ROUTER",
-          "ROUTER_WITH_HARD_BOUNDARY_ANCHORS": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
-          "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
-          "ROUTER_AND_OPERATING_CONTRACT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"
-        },
-        "judgment_execution": {
-          "EXECUTABLE": "EXECUTABLE",
-          "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES": "EXECUTABLE",
-          "CHAT_BRIDGED": "CHAT_BRIDGED",
-          "CHAT_BRIDGED_OWNER_GATED": "CHAT_BRIDGED",
-          "DECLARED_ONLY": "DECLARED_ONLY",
-          "NOT_APPLICABLE": "NOT_APPLICABLE"
-        },
-        "mirror_policy": {
-          "NONE": "NONE",
-          "GENERATED_PACKAGE_MIRROR": "GENERATED_PACKAGE_MIRROR",
-          "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR",
-          "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR",
-          "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"
-        }
+        "skill_role": {"ROUTER": "ROUTER", "ROUTER_WITH_HARD_BOUNDARY_ANCHORS": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS", "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS", "ROUTER_AND_OPERATING_CONTRACT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"},
+        "judgment_execution": {"EXECUTABLE": "EXECUTABLE", "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES": "EXECUTABLE", "CHAT_BRIDGED": "CHAT_BRIDGED", "CHAT_BRIDGED_OWNER_GATED": "CHAT_BRIDGED", "DECLARED_ONLY": "DECLARED_ONLY", "NOT_APPLICABLE": "NOT_APPLICABLE"},
+        "mirror_policy": {"NONE": "NONE", "GENERATED_PACKAGE_MIRROR": "GENERATED_PACKAGE_MIRROR", "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR", "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"}
       },
       "1.2": {
-        "skill_role": {
-          "ROUTER": "ROUTER",
-          "ROUTER_WITH_HARD_BOUNDARY_ANCHORS": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
-          "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS",
-          "ROUTER_AND_OPERATING_CONTRACT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"
-        },
-        "judgment_execution": {
-          "EXECUTABLE": "EXECUTABLE",
-          "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES": "EXECUTABLE",
-          "CHAT_BRIDGED": "CHAT_BRIDGED",
-          "CHAT_BRIDGED_OWNER_GATED": "CHAT_BRIDGED",
-          "DECLARED_ONLY": "DECLARED_ONLY",
-          "NOT_APPLICABLE": "NOT_APPLICABLE"
-        },
-        "mirror_policy": {
-          "NONE": "NONE",
-          "GENERATED_PACKAGE_MIRROR": "GENERATED_PACKAGE_MIRROR",
-          "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR",
-          "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR",
-          "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"
-        }
+        "skill_role": {"ROUTER": "ROUTER", "ROUTER_WITH_HARD_BOUNDARY_ANCHORS": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS", "ROUTER_AND_PROGRESSIVE_POLICY_ENTRYPOINT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS", "ROUTER_AND_OPERATING_CONTRACT": "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"},
+        "judgment_execution": {"EXECUTABLE": "EXECUTABLE", "EXECUTABLE_WITH_ASSURANCE_BOUNDARIES": "EXECUTABLE", "CHAT_BRIDGED": "CHAT_BRIDGED", "CHAT_BRIDGED_OWNER_GATED": "CHAT_BRIDGED", "DECLARED_ONLY": "DECLARED_ONLY", "NOT_APPLICABLE": "NOT_APPLICABLE"},
+        "mirror_policy": {"NONE": "NONE", "GENERATED_PACKAGE_MIRROR": "GENERATED_PACKAGE_MIRROR", "GENERATED_DISTRIBUTION_MIRRORS_ONLY": "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR": "EXPLICIT_COMPATIBILITY_MIRROR", "ONLY_REQUIRED_DISTRIBUTION_MIRRORS_WITH_MACHINE_EQUALITY_CHECK": "EXPLICIT_COMPATIBILITY_MIRROR"}
       }
     },
     "field_shapes_by_manifest_version": {
       "1.1": {
-        "runtime.entrypoints": {
-          "canonical": "entrypoints",
-          "accepted_alternative": "public_entrypoint + internal_components",
-          "normalization": "combine the non-empty public entrypoint with the internal component list"
-        },
-        "references.canonical_roots": {
-          "canonical": "canonical_roots",
-          "accepted_alternative": "canonical_root",
-          "normalization": "wrap the non-empty scalar root as a one-item list"
-        }
+        "runtime.entrypoints": {"canonical": "entrypoints", "accepted_alternative": "public_entrypoint + internal_components", "normalization": "combine the non-empty public entrypoint with the internal component list"},
+        "references.canonical_roots": {"canonical": "canonical_roots", "accepted_alternative": "canonical_root", "normalization": "wrap the non-empty scalar root as a one-item list"}
       },
       "1.2": {
-        "runtime.entrypoints": {
-          "canonical": "entrypoints",
-          "accepted_alternative": "public_entrypoint + internal_components",
-          "normalization": "combine the non-empty public entrypoint with the internal component list"
-        },
-        "references.canonical_roots": {
-          "canonical": "canonical_roots",
-          "accepted_alternative": "canonical_root",
-          "normalization": "wrap the non-empty scalar root as a one-item list"
-        }
+        "runtime.entrypoints": {"canonical": "entrypoints", "accepted_alternative": "public_entrypoint + internal_components", "normalization": "combine the non-empty public entrypoint with the internal component list"},
+        "references.canonical_roots": {"canonical": "canonical_roots", "accepted_alternative": "canonical_root", "normalization": "wrap the non-empty scalar root as a one-item list"}
       }
     }
   },
   "required_layers": {
-    "skill": {
-      "role": "ROUTER",
-      "required_fields": ["entrypoint"],
-      "canonical_roles": ["ROUTER", "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"],
-      "target_max_bytes": 8192,
-      "budget_scope": "HOT_PATH_SKILL_ROUTER_FILE_ONLY",
-      "hard_repository_or_knowledge_cap": false,
-      "oversize_result": "ARCHITECTURE_DRIFT_REQUIRES_JUSTIFICATION_OR_REFACTOR",
-      "oversize_is_execution_blocker": false,
-      "principle": "Skill should route, progressively load references and retain only compact hard boundaries that must always be visible. Executable business logic and detailed domain policy belong in runtime/workflow/guards/references rather than duplicated prose. The byte target applies only to the always-loaded Skill router file; it is not a cap on the repository, research corpus, distilled knowledge, examples, projects, evidence, stock data or novel canon."
-    },
-    "runtime": {
-      "required_fields": ["runtime_type", "entrypoints", "judgment_execution"],
-      "optional_fields": ["tool_surface_refs"],
-      "allowed_runtime_type": ["AGENTS_SDK", "DETERMINISTIC_WORKFLOW", "HYBRID", "EXTERNAL_RUNTIME"],
-      "judgment_execution_status": ["EXECUTABLE", "CHAT_BRIDGED", "DECLARED_ONLY", "NOT_APPLICABLE"],
-      "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime. Owner-local assurance detail may refine a shared execution class but cannot invent a new shared class without a central contract mapping."
-    },
-    "workflow": {
-      "required_fields": ["state_authority_refs", "transition_guard_refs"],
-      "principle": "Durable stage/state truth and transition guards must live outside chat prose."
-    },
-    "harness": {
-      "required_fields": ["ci_workflow_ref", "commands", "suites"],
-      "minimum_owner_local_suites": ["contract", "trajectory"],
-      "architecture_suite_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-      "principle": "Owner Harness evaluates domain contract/trajectory/quality. Universal evaluates the shared Agent architecture contract so owners do not copy the same architecture checker into every repository."
-    },
-    "references": {
-      "required_fields": ["canonical_roots", "mirror_policy"],
-      "allowed_mirror_policy": ["NONE", "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR"],
-      "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill. Distribution/compatibility mirror details may be owner-local, but their shared class is centrally normalized."
-    },
-    "continuity": {
-      "business_required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"],
-      "system_infra_required_fields": ["task_manifest_ref", "owner_registry_ref", "current_protocol_ref"],
-      "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state, and SYSTEM_INFRA must not invent business-only adapter fields."
-    }
+    "skill": {"role": "ROUTER", "required_fields": ["entrypoint"], "canonical_roles": ["ROUTER", "ROUTER_WITH_HARD_BOUNDARY_ANCHORS"], "target_max_bytes": 8192, "budget_scope": "HOT_PATH_SKILL_ROUTER_FILE_ONLY", "hard_repository_or_knowledge_cap": false, "oversize_result": "ARCHITECTURE_DRIFT_REQUIRES_JUSTIFICATION_OR_REFACTOR", "oversize_is_execution_blocker": false, "principle": "Skill should route, progressively load references and retain only compact hard boundaries that must always be visible. Executable business logic and detailed domain policy belong in runtime/workflow/guards/references rather than duplicated prose. The byte target applies only to the always-loaded Skill router file; it is not a cap on the repository, research corpus, distilled knowledge, examples, projects, evidence, stock data or novel canon."},
+    "runtime": {"required_fields": ["runtime_type", "entrypoints", "judgment_execution"], "optional_fields": ["tool_surface_refs"], "allowed_runtime_type": ["AGENTS_SDK", "DETERMINISTIC_WORKFLOW", "HYBRID", "EXTERNAL_RUNTIME"], "judgment_execution_status": ["EXECUTABLE", "CHAT_BRIDGED", "DECLARED_ONLY", "NOT_APPLICABLE"], "principle": "A Skill, prompt, configured role or code stub alone is not an executable Agent runtime. Owner-local assurance detail may refine a shared execution class but cannot invent a new shared class without a central contract mapping."},
+    "workflow": {"required_fields": ["state_authority_refs", "transition_guard_refs"], "principle": "Durable stage/state truth and transition guards must live outside chat prose."},
+    "harness": {"required_fields": ["ci_workflow_ref", "commands", "suites"], "minimum_owner_local_suites": ["contract", "trajectory"], "architecture_suite_owner": "UNIVERSAL_CONTINUITY_HARNESS", "principle": "Owner Harness evaluates domain contract/trajectory/quality. Universal evaluates the shared Agent architecture contract so owners do not copy the same architecture checker into every repository."},
+    "references": {"required_fields": ["canonical_roots", "mirror_policy"], "allowed_mirror_policy": ["NONE", "GENERATED_PACKAGE_MIRROR", "EXPLICIT_COMPATIBILITY_MIRROR"], "principle": "Large domain knowledge is progressively loaded from canonical references, not copied into the hot-path Skill. Distribution/compatibility mirror details may be owner-local, but their shared class is centrally normalized."},
+    "continuity": {"business_required_fields": ["task_index_ref", "protocol_adapter_ref", "execution_capability_ref"], "system_infra_required_fields": ["task_manifest_ref", "owner_registry_ref", "current_protocol_ref"], "principle": "Recovery and capability metadata are durable pointers; they do not replace business runtime state, and SYSTEM_INFRA must not invent business-only adapter fields."}
+  },
+  "business_product_interface": {
+    "required_from_manifest_versions": ["1.2"],
+    "required_fields": ["interaction_surface", "entry_model", "execution_mode_selection", "business_contract_model"],
+    "allowed_values": {"interaction_surface": ["CHATGPT"], "entry_model": ["SINGLE_OWNER_ENTRY"], "execution_mode_selection": ["SYSTEM_INTERNAL"], "business_contract_model": ["SINGLE_CANONICAL_OWNER_WORKFLOW"]},
+    "principle": "A BUSINESS owner presents one normal ChatGPT-facing owner/Skill product entry. OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL and ISOLATED_EXTERNAL are internal dispatch/evidence modes, not separate user-selectable products or SOPs. Capability differences may change assurance or block the exact affected hard gate, but may not redefine the canonical owner business workflow, quality contract or task semantics. GitHub remains engineering/rule/continuity authority while exact business state/checkpoint authority remains owner-declared."
   },
   "knowledge_scaling": {
     "principle": "Scale knowledge by progressive disclosure and indexed owner-local corpora, not by expanding the always-loaded Skill router.",
     "router_budget_applies_to": ["skill.entrypoint hot-path file"],
-    "router_budget_does_not_apply_to": [
-      "references and protocols",
-      "research and distilled corpora",
-      "project canon and examples",
-      "market/company data stores",
-      "evaluation and audit history",
-      "generated distribution mirrors",
-      "durable task artifacts"
-    ],
+    "router_budget_does_not_apply_to": ["references and protocols", "research and distilled corpora", "project canon and examples", "market/company data stores", "evaluation and audit history", "generated distribution mirrors", "durable task artifacts"],
     "large_corpus_expectation": "ALLOWED_AND_EXPECTED_WHEN_DOMAIN_REQUIRES_IT",
     "loading_rule": "Load metadata/index first, then only the exact references/data/artifacts required by the current stage/action. Large knowledge bases must remain searchable/indexed and source-bounded; they must not be copied wholesale into the Skill or startup bootstrap.",
     "quality_rule": "A larger corpus is not itself architecture drift. Drift exists when detailed knowledge/policy is duplicated into the always-loaded router, when authority is ambiguous, or when retrieval/indexing cannot identify the current canonical source."
@@ -148,11 +62,7 @@
     "token_measurement": "APPROXIMATE_ONLY__UTF8_BYTES_DIVIDED_BY_4",
     "exact_model_token_count_claimed": false,
     "efficiency_claim_requires_measurement": true,
-    "universal_hot_path_budgets": {
-      "minimal_repo_bootstrap_paths": ["ENTRYPOINT.md", "CURRENT_PROTOCOL.json"],
-      "minimal_repo_bootstrap_max_bytes": 9216,
-      "startup_hook_max_bytes": 8192
-    },
+    "universal_hot_path_budgets": {"minimal_repo_bootstrap_paths": ["ENTRYPOINT.md", "CURRENT_PROTOCOL.json"], "minimal_repo_bootstrap_max_bytes": 9216, "startup_hook_max_bytes": 8192},
     "owner_rule": "Existing Skill target_max_bytes remains the shared owner hot-path router target. It is explicitly not a repository/corpus limit. Broader owner context/tool-surface comparisons are measured when an owner claims an efficiency improvement or when drift indicates hot-path context growth; no owner must preload a new global context bundle merely to satisfy measurement."
   },
   "freshness": {
@@ -162,15 +72,7 @@
     "required_observation_fields": ["observed_owner_head", "architecture_validation_head", "architecture_validation_result", "architecture_validation_ref"],
     "identity_model": "ARCHITECTURE_RELEVANT_DELTA_WITH_EXACT_HEAD_FALLBACK",
     "optional_head_delta_fields": ["base_head", "observed_head", "architecture_relevant_change", "evidence_ref"],
-    "architecture_relevant_surfaces": [
-      "agent manifest and shared-contract declaration",
-      "Skill/router and always-hot hard-boundary anchors",
-      "runtime/executor code and tool surfaces",
-      "workflow/state schema/controller/transition guards",
-      "harness/CI/eval contract surfaces",
-      "reference authority topology and canonical policy declarations",
-      "continuity/protocol/capability architecture metadata"
-    ],
+    "architecture_relevant_surfaces": ["agent manifest and shared-contract declaration", "Skill/router and always-hot hard-boundary anchors", "runtime/executor code and tool surfaces", "workflow/state schema/controller/transition guards", "harness/CI/eval contract surfaces", "reference authority topology and canonical policy declarations", "continuity/protocol/capability architecture metadata"],
     "business_artifact_only_change_rule": "A newer whole-repository HEAD does not by itself stale architecture validation when a current remote observation compares from the validated head to the observed head and proves that the delta contains no architecture-relevant surface change. Ordinary business artifacts, article workspaces, generated outputs, task checkpoints, research receipts and project content do not invalidate architecture architecture solely because they moved the repository HEAD.",
     "fail_closed_rule": "If the HEAD differs and no complete current delta classification exists, if the delta evidence does not bind exactly from architecture_validation_head to observed_owner_head, or if any architecture-relevant surface changed, architecture validation is stale and must be revalidated.",
     "rule": "Prefer architecture-relevant delta identity over whole-repository HEAD equality. Exact HEAD equality remains a safe fallback. This prevents legitimate owner business-state commits from creating recurrent false-positive architecture drift while still failing closed on architecture/control changes."

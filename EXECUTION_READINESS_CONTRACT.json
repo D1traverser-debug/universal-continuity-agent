@@ -14,66 +14,25 @@
     "required_for_github_agents": true,
     "registry_is_cache_not_authority": true
   },
+  "product_boundary": {
+    "normal_interaction_surface": "CHATGPT_OWNER_SKILL",
+    "execution_modes_are": "INTERNAL_DISPATCH_AND_EVIDENCE_METADATA",
+    "normal_user_mode_selection": "NONE",
+    "rule": "Do not ask the user to choose OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL or ISOLATED_EXTERNAL during normal task execution. Expose implementation/assurance mode only when the user asks, when diagnosing a real blocker, or when an external authorization/decision is genuinely required. An internal mode may change assurance or block the exact affected hard gate, but it does not create a second business SOP, task contract, or product entry."
+  },
   "assurance_levels": [
-    {
-      "id": "DECLARED_ONLY",
-      "rank": 0,
-      "meaning": "Role/prompt/config exists but no mechanically proven invocation path. Does not satisfy an execution requirement."
-    },
-    {
-      "id": "HARNESS_WIRED",
-      "rank": 1,
-      "meaning": "Workflow stage is bound to a concrete executor path and fail-closed state transition, but the current ChatGPT session/runtime has not proven the executor is available."
-    },
-    {
-      "id": "SESSION_EXECUTABLE",
-      "rank": 2,
-      "meaning": "The current execution window has the required tool/runtime/credential binding and can run the capability now."
-    },
-    {
-      "id": "ATTESTED_ISOLATED",
-      "rank": 3,
-      "meaning": "Execution is bound to a distinct external/provider run or otherwise inspectable isolated execution identity with context/trace evidence."
-    }
+    {"id": "DECLARED_ONLY", "rank": 0, "meaning": "Role/prompt/config exists but no mechanically proven invocation path. Does not satisfy an execution requirement."},
+    {"id": "HARNESS_WIRED", "rank": 1, "meaning": "Workflow stage is bound to a concrete executor path and fail-closed state transition, but the current ChatGPT session/runtime has not proven the executor is available."},
+    {"id": "SESSION_EXECUTABLE", "rank": 2, "meaning": "The current execution window has the required tool/runtime/credential binding and can run the capability now."},
+    {"id": "ATTESTED_ISOLATED", "rank": 3, "meaning": "Execution is bound to a distinct external/provider run or otherwise inspectable isolated execution identity with context/trace evidence."}
   ],
   "availability": ["AVAILABLE", "PARTIAL", "BLOCKED", "UNKNOWN"],
-  "execution_modes": [
-    "OWNER_NATIVE",
-    "CHAT_BRIDGED",
-    "DETERMINISTIC_TOOL",
-    "ISOLATED_EXTERNAL",
-    "BLOCKED"
-  ],
-  "capability_required_fields": [
-    "capability_id",
-    "scope",
-    "assurance_ceiling",
-    "invocation_path",
-    "executor_type",
-    "evidence_contract",
-    "side_channel_allowed"
-  ],
-  "session_handshake_required_fields": [
-    "capability_id",
-    "availability",
-    "observed_assurance",
-    "execution_mode"
-  ],
+  "execution_modes": ["OWNER_NATIVE", "CHAT_BRIDGED", "DETERMINISTIC_TOOL", "ISOLATED_EXTERNAL", "BLOCKED"],
+  "capability_required_fields": ["capability_id", "scope", "assurance_ceiling", "invocation_path", "executor_type", "evidence_contract", "side_channel_allowed"],
+  "session_handshake_required_fields": ["capability_id", "availability", "observed_assurance", "execution_mode"],
   "execution_receipt_binding": {
     "validator": "runtime/execution_receipt.py",
-    "required_receipt_fields": [
-      "receipt_id",
-      "action_id",
-      "task_id",
-      "stage",
-      "capability_id",
-      "executor_identity",
-      "execution_ref",
-      "subject_bindings",
-      "input_bindings",
-      "output_refs",
-      "result"
-    ],
+    "required_receipt_fields": ["receipt_id", "action_id", "task_id", "stage", "capability_id", "executor_identity", "execution_ref", "subject_bindings", "input_bindings", "output_refs", "result"],
     "required_identity_match": ["task_id", "stage", "capability_id", "action_id"],
     "owner_specific_claim_binding_field": "subject_bindings",
     "immutable_input_binding_field": "input_bindings",
@@ -87,6 +46,8 @@
     "A prompt, markdown policy, Skill, or config row is not execution evidence.",
     "Current-session availability is evaluated separately from repository code readiness.",
     "Repository readiness is a ceiling, not proof that the current chat can execute the capability.",
+    "Execution modes are internal dispatch/evidence metadata for one owner product entry; they must not be presented as separate user-selectable products or separate business SOPs.",
+    "A safe degraded execution path may lower assurance or leave an exact gate OPEN/BLOCKED, but it may not silently redefine the owner TaskContract, canonical workflow, required outputs or quality semantics.",
     "A requirement for ATTESTED_ISOLATED may not be satisfied by role-playing multiple reviewers inside one unverified context.",
     "Quality-critical side-channel tool calls are forbidden when the owner declares side_channel_allowed=false; they must route through the owner gateway/work-order path.",
     "A hard required capability that is unavailable, below required assurance, or missing its evidence contract blocks the stage.",
@@ -100,11 +61,12 @@
   ],
   "routing_algorithm": [
     "Read exact domain owner and task state through Continuity/domain routing.",
+    "Enter the matched BUSINESS owner through its single ChatGPT-facing owner/Skill product entry; do not ask the user to choose an internal execution mode.",
     "Read owner continuity/EXECUTION_CAPABILITIES.json.",
     "Validate that required stages/capabilities have concrete invocation paths and executor bindings.",
     "Perform a current-session capability handshake for only the capabilities needed by the next action.",
     "Compute effective assurance as the lower of owner assurance ceiling and observed session assurance.",
-    "Select OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL, ISOLATED_EXTERNAL, safe DEGRADED, or BLOCKED.",
+    "Select OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL, ISOLATED_EXTERNAL, safe DEGRADED, or BLOCKED internally.",
     "Dispatch only through the selected owner path; do not bypass the owner with an ad-hoc conversational tool call when side-channel use is forbidden.",
     "Require the configured execution receipt/evidence before advancing the business gate.",
     "Validate the receipt against the exact action and owner-required claim/input bindings; apply anti-replay fields required by the owner for independent or single-use executions.",

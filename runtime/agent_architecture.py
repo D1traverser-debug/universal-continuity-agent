@@ -182,6 +182,27 @@ def validate_agent_manifest(
             )
         _require_fields(layer, fields, layer_name, errors)
 
+    product_spec = contract.get("business_product_interface", {})
+    required_versions = set(product_spec.get("required_from_manifest_versions", ())) if isinstance(product_spec, Mapping) else set()
+    if owner_kind == "BUSINESS" and manifest_version in required_versions:
+        product_interface = manifest.get("product_interface")
+        if not isinstance(product_interface, Mapping):
+            errors.append("business product_interface is required for architecture contract 1.2")
+        else:
+            _require_fields(
+                product_interface,
+                product_spec.get("required_fields", ()),
+                "product_interface",
+                errors,
+            )
+            allowed_values = product_spec.get("allowed_values", {})
+            if isinstance(allowed_values, Mapping):
+                for field, allowed in allowed_values.items():
+                    if isinstance(allowed, list) and product_interface.get(field) not in set(allowed):
+                        errors.append(
+                            f"product_interface.{field} must be one of {sorted(str(item) for item in allowed)}"
+                        )
+
     skill = layers.get("skill", {})
     skill_role = _normalize_shared_value(contract, manifest_version, "skill_role", skill.get("role"))
     allowed_skill_roles = set(required_layers.get("skill", {}).get("canonical_roles", ("ROUTER",)))
