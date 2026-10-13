@@ -53,6 +53,12 @@ v1.0 包含：
 
 当前批准写模型仍是：active lease + observed-HEAD CAS + CI + authoritative reread。
 
+## v65 direct-main / PR-first 回归锚点
+
+当前模型不是 PR-first。
+
+当前 `SINGLE_ACTIVE_CHAT` writer model 的批准发布路径仍是 active lease + observed-HEAD CAS + CI + authoritative reread。PR-first 实验没有成为 authoritative implementation；这不影响需求 v1.0 冻结状态。
+
 ## next_action
 
 等待用户明确指令。若用户要求继续新架构设计，则：
