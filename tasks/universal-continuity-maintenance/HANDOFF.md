@@ -57,7 +57,11 @@ v1.0 包含：
 
 当前模型不是 PR-first。
 
-当前 `SINGLE_ACTIVE_CHAT` writer model 的批准发布路径仍是 active lease + observed-HEAD CAS + CI + authoritative reread。PR-first 实验没有成为 authoritative implementation；这不影响需求 v1.0 冻结状态。
+当前 `SINGLE_ACTIVE_CHAT` writer model 的批准发布路径仍是 active lease + observed-HEAD CAS + CI + authoritative reread。
+
+实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
+
+这些历史锚点只维持当前 authority/threat-model 的回归语义，不影响 requirements v1.0 的冻结状态。
 
 ## next_action
 
