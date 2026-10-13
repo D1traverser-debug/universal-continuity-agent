@@ -8,11 +8,10 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `74`
-- completed controller run: `chat-product-entry-and-internal-executor-boundary-v66-2026-10-13`
-- controller status: `COMPLETE` revision `19`
-- propagation-checkpoint validation: Universal GitHub Actions `38341968555` / job `115114761598` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
-- user-facing `COMMITTED` still requires the closure commit itself to be published with current-HEAD CAS, its CI observed, and final authoritative surfaces reread.
+- manifest_version: `75`
+- current controller run: `chat-product-entry-and-internal-executor-boundary-v66-2026-10-13`
+- controller status: `ACTIVE` revision `20`, reopened at `M7_IMPLEMENTATION_AND_SUPERSESSION`
+- reopen evidence: closure CI `38342327005` / job `115115871171` — risk-tiered audit PASS, Agent architecture PASS, full pytest `304 passed / 1 failed`; failure was the v65 handoff regression anchor being dropped during the v66 handoff rewrite.
 
 ## v66：统一为“一个 ChatGPT Agent 入口，执行模式内部处理”
 
@@ -70,7 +69,7 @@ GitHub `main` 继续是工程/规则/Continuity 权威；具体业务运行状�
 
 本轮没有取得任何 BUSINESS task lease，没有改写文章、market-day 决策、小说 Canon/project state 或视频项目业务真值。
 
-## 验证与一次真实 M7 修正
+## 验证与 M7 修正
 
 第一版共享 contract 实现错误地把 `AGENT_ARCHITECTURE_CONTRACT` schema 从 `1.1` 提到 `1.2`，并让旧 architecture manifest `1.2` 也强制要求新字段。Universal CI `38340563667` / job `115110366042` 暴露该兼容性回归。因为 controller 当时仍处于 M7，没有离开 implementation stage，所以没有伪造 reopen；直接在 M7 修正：
 
@@ -79,6 +78,8 @@ GitHub `main` 继续是工程/规则/Continuity 权威；具体业务运行状�
 - legacy `1.2` 继续兼容。
 
 修正后 Universal CI `38341336266` / `115112770288` 全绿；跨 owner propagation + observation cache checkpoint `d2f27c2bbaa1b560222326f4662e9ccd8d85f929` 的 CI `38341968555` / `115114761598` 再次全绿。
+
+第一次 closure commit `f3002de18e284c583ca820eda6ad8d2208e5621a` 的 post-publish CI `38342327005` / `115115871171` 又发现一个真实回归：重写 Handoff 时虽然保留了 v65 的含义，却删掉了回归测试保护的精确 handoff anchors。因此 COMPLETE 被撤销，controller revision 20 正式 reopen 到 M7。本 Handoff 恢复这些 anchors 后必须重新通过 CI，再重新进入 M8-M11；不能把失败的 closure 当作已完成。
 
 四个 private owner 的 push workflow 都创建了 run，但均没有分配 runner：
 
@@ -89,7 +90,15 @@ GitHub `main` 继续是工程/规则/Continuity 权威；具体业务运行状�
 
 这些 job 都是 `steps=[]`, `runner_id=0`。因此只能记录 `RUNNER_NOT_EXECUTED`，不能称 owner CI PASS，也不能把它误判成代码测试失败证据。四个 owner 的当前 manifest 已分别从 main 精确 reread 并确认 product-interface 结构一致。
 
-## M10 二阶复核结论
+## v65 direct-main / PR-first 回归锚点
+
+当前模型不是 PR-first。
+
+Universal material compliant writes 继续使用 active lease + observed-HEAD CAS + CI + authoritative reread；`main protected=false` 本身不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的 HIGH defect。
+
+实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation；它仍无 PR，除非未来 writer topology / permission threat model 出现新的真实证据，否则不得自动 promotion。
+
+## 二阶复核边界
 
 - 没有新建第二套业务工作流。
 - 没有让 MCP/plugin 成为强制依赖；它们仍只是可选内部工具连接方式。
@@ -97,9 +106,7 @@ GitHub `main` 继续是工程/规则/Continuity 权威；具体业务运行状�
 - 没有降低 Financial CHAT_SELF_REVIEW、Video strict isolation 等已有 assurance 边界。
 - 没有改变 owner-specific business state authority。
 - manifest `1.2` 后向兼容得到保留。
-- Universal post-propagation CI 全绿；private owner CI runner 未执行的限制被明确保留。
-
-最终 assurance ceiling：`STRUCTURAL_PRODUCT_INTERFACE_CONFORMANCE_PLUS_UNIVERSAL_REGRESSION_AND_CI_PASS__PRIVATE_OWNER_CI_EXECUTION_NOT_OBSERVED__NO_LIVE_BUSINESS_QUALITY_OR_OUTCOME_PROOF`。
+- private owner CI runner 未执行的限制必须继续明确保留。
 
 ## 继续保持 OPEN 的边界
 
@@ -109,7 +116,6 @@ GitHub `main` 继续是工程/规则/Continuity 权威；具体业务运行状�
 - `HARNESS_STATUS.json` 里的历史 monitor cache 下次安全 rebuild 时再收敛；它不是 live product-state authority。
 - 历史 issue #12 只保留最早 silent enabled→disabled provenance 未解；用户后来的主动删除不是 recurrence。
 - 对故意绕过协议的 authorized GitHub writer，当前 single-writer + HEAD-CAS 仍只声明既有 assurance ceiling，不自动升级到 PR-first/branch-protection 威胁模型。
-- 实验分支 `continuity/pr-first-mutation-gate-v65` 仍无 PR、未 merge、非 authority。
 
 ## 继承时的默认理解
 
