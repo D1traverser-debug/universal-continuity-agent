@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 106,
+  "manifest_version": 107,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,11 +10,11 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-13T22:58:00+08:00",
+  "updated_at": "2026-10-13T23:30:00+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
-  "next_action": "Clean-slate v4 real-workflow reverse validation is complete. The requirements tree has been revised to v0.2 with 10 top-level capabilities: intent/requirements/scope governance; autonomous completion; knowledge/evidence reasoning; execution/resource orchestration; system/subsystem topology and change governance; durable task continuity; data/artifact/knowledge governance; runtime reliability/recovery; evolution/proactive maintenance/complexity control; assurance/delivery. Next derive executable acceptance criteria for key A-J behaviors before architecture selection. Production refactor remains unauthorized. The material-main mechanical-enforcement defect remains OPEN/BLOCKED and must not be treated as closed by requirements/design prose.",
-  "checkpoint_ref": "audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json",
+  "next_action": "Clean-slate v4 requirements are frozen at v1.0. Do not proactively modify the requirements baseline during architecture design. Await explicit user instruction before architecture derivation or production refactor. If architecture design is authorized, derive it strictly from the frozen A-J requirements and X01-X15 constraints, and record implementation limitations as design constraints rather than rewriting requirements. Production refactor remains unauthorized. The material-main mechanical-enforcement defect remains OPEN/BLOCKED.",
+  "checkpoint_ref": "research/clean_slate_v4/03_frozen_requirements_spec_v1_0.md",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "contract_version": "CONTINUITY_V3_7",
   "continuity_protocol_version": "3.7",
@@ -44,10 +44,12 @@
   "architecture_refactor_execution_plan_ref": "research/system_architecture_library/23_refactor_execution_plan.md",
   "architecture_function_coverage_audit_ref": "audits/ARCHITECTURE_FUNCTION_COVERAGE_CROSSCHECK_V70_2026-10-13.md",
   "architecture_function_coverage_audit_status": "COMPLETE__18_FUNCTION_DOMAINS__NO_MAJOR_KERNEL_FUNCTION_UNAUDITED__NINE_PLAN_LANDINGS_REQUIRED",
-  "clean_slate_v4_requirements_ref": "research/clean_slate_v4/01_normalized_functional_requirements.md",
-  "clean_slate_v4_requirements_status": "REVERSE_VALIDATED_V0_2__TEN_TOP_LEVEL_CAPABILITIES__THIRTEEN_CROSS_CUTTING_CONSTRAINTS__SIXTEEN_REAL_SCENARIOS__DESIGN_ONLY",
+  "clean_slate_v4_requirements_ref": "research/clean_slate_v4/03_frozen_requirements_spec_v1_0.md",
+  "clean_slate_v4_requirements_status": "FROZEN_BASELINE_V1_0__TEN_TOP_LEVEL_CAPABILITIES_A_TO_J__FIFTEEN_CROSS_CUTTING_CONSTRAINTS__TWENTY_ACCEPTANCE_SCENARIOS__NO_NEW_TOP_LEVEL_GAP",
+  "clean_slate_v4_normalized_requirements_history_ref": "research/clean_slate_v4/01_normalized_functional_requirements.md",
   "clean_slate_v4_reverse_validation_ref": "research/clean_slate_v4/02_real_workflow_reverse_validation.md",
-  "clean_slate_v4_reverse_validation_status": "COMPLETE__FIVE_REAL_WORKFLOWS__ONE_NEW_TOP_LEVEL_INTENT_REQUIREMENTS_SCOPE_CAPABILITY__OLD_STATE_KNOWLEDGE_SPLIT__OLD_STRUCTURE_SUBSYSTEM_GOVERNANCE_MERGED__EXECUTION_ORCHESTRATION_BROADENED",
+  "clean_slate_v4_final_stress_validation_ref": "research/clean_slate_v4/04_final_requirements_stress_validation.md",
+  "clean_slate_v4_final_stress_validation_status": "COMPLETE__NO_NEW_TOP_LEVEL_CAPABILITY_GAP__NO_UNRESOLVED_LAYERING_CONFLICT__KEY_BEHAVIORS_ACCEPTANCE_SPECIFIED__REQUIREMENTS_FROZEN_V1_0",
   "architecture_research_assurance_ceiling": "PUBLICLY_ACCESSIBLE_ARCHITECTURE_COMPARISON_ONLY__NO_CERTIFICATION__NO_OPEN_WORLD_EXHAUSTIVENESS",
   "pass2_new_gap_refs": [
     "G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL",
@@ -65,7 +67,7 @@
     "P5_MEASURED_RELIABILITY_PROGRESSIVE_ROLLOUT_RESILIENCE",
     "P6_FORMAL_WRITER_COMMIT_PROTOCOL"
   ],
-  "current_user_authorization_scope": "CLEAN_SLATE_V4_REQUIREMENTS_DESIGN__PRODUCTION_REFACTOR_NOT_YET_AUTHORIZED",
+  "current_user_authorization_scope": "CLEAN_SLATE_V4_REQUIREMENTS_FROZEN__AWAIT_EXPLICIT_ARCHITECTURE_DESIGN_OR_REFACTOR_AUTHORIZATION",
   "production_architecture_refactor_authorized": false,
   "recurrent_main_mutation_process_incident_status": "REOPENED_RECURRED_AFTER_BOOTSTRAP_FIX__TREE_RECOVERED__MECHANICAL_ENFORCEMENT_OPEN",
   "main_mutation_recurrence_incident_ref": "audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json",
@@ -112,6 +114,8 @@
     "research/system_architecture_library/22_applicability_screen.md",
     "research/system_architecture_library/23_refactor_execution_plan.md",
     "research/clean_slate_v4/01_normalized_functional_requirements.md",
-    "research/clean_slate_v4/02_real_workflow_reverse_validation.md"
+    "research/clean_slate_v4/02_real_workflow_reverse_validation.md",
+    "research/clean_slate_v4/03_frozen_requirements_spec_v1_0.md",
+    "research/clean_slate_v4/04_final_requirements_stress_validation.md"
   ]
 }
