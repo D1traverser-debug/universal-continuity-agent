@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 104,
+  "manifest_version": 105,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,10 +10,10 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-13T21:26:00+08:00",
+  "updated_at": "2026-10-13T22:13:00+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
-  "next_action": "Function coverage audit complete. G01-G30 cover every major current control-plane function, but plan 23 requires explicit landing for G27, G29, G30/G22, G24, G03, G04, G23, G20/G21 and G14 before production refactor. Production refactor remains deferred by the user. A direct-main file mutation recurred after the v69 ENTRYPOINT guard; README was restored and the audit persisted by expected-HEAD CAS in recovery commit 240029dd. Prevention is BLOCKED at M7 pending mechanical repository/tool enforcement; do not treat more prose as closure.",
+  "next_action": "Clean-slate v4 requirements normalization is now the active design task. Validate the normalized capability tree against representative real workflows, add only genuinely missing top-level capabilities, then derive acceptance criteria before architecture selection. Production refactor remains unauthorized. The material-main mechanical-enforcement defect remains OPEN/BLOCKED and must not be treated as closed by requirements/design prose.",
   "checkpoint_ref": "audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "contract_version": "CONTINUITY_V3_7",
@@ -44,10 +44,26 @@
   "architecture_refactor_execution_plan_ref": "research/system_architecture_library/23_refactor_execution_plan.md",
   "architecture_function_coverage_audit_ref": "audits/ARCHITECTURE_FUNCTION_COVERAGE_CROSSCHECK_V70_2026-10-13.md",
   "architecture_function_coverage_audit_status": "COMPLETE__18_FUNCTION_DOMAINS__NO_MAJOR_KERNEL_FUNCTION_UNAUDITED__NINE_PLAN_LANDINGS_REQUIRED",
+  "clean_slate_v4_requirements_ref": "research/clean_slate_v4/01_normalized_functional_requirements.md",
+  "clean_slate_v4_requirements_status": "NORMALIZED_V0_1__NINE_TOP_LEVEL_CAPABILITIES__TEN_CROSS_CUTTING_CONSTRAINTS__TWELVE_REPRESENTATIVE_SCENARIOS__DESIGN_ONLY",
   "architecture_research_assurance_ceiling": "PUBLICLY_ACCESSIBLE_ARCHITECTURE_COMPARISON_ONLY__NO_CERTIFICATION__NO_OPEN_WORLD_EXHAUSTIVENESS",
-  "pass2_new_gap_refs": ["G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL","G26_HITL_APPROVAL_BINDING_NOT_SHARED_INVARIANT","G27_CONTEXT_COMPACTION_GOVERNANCE_NOT_FIRST_CLASS","G28_RUNTIME_REPLAY_AND_STATE_CLASS_TAXONOMY_UNDECLARED","G29_PROTOCOL_INTEGRATION_COMPATIBILITY_NOT_FIRST_CLASS","G30_EVALUATION_FEEDBACK_PROMOTION_LIFECYCLE_FRAGMENTED"],
-  "applicability_primitives": ["P1_DERIVED_SYSTEM_AUTHORITY_MODEL","P2_RUNTIME_SEMANTICS_EXECUTION_LINEAGE_EFFECT_CONTRACT","P3_ASSURANCE_COVERAGE_EVALUATION_TRACE","P4_SUPERVISION_FDIR_HAZARD_CONTROL","P5_MEASURED_RELIABILITY_PROGRESSIVE_ROLLOUT_RESILIENCE","P6_FORMAL_WRITER_COMMIT_PROTOCOL"],
-  "current_user_authorization_scope": "FUNCTION_COVERAGE_AUDIT_ONLY__PRODUCTION_REFACTOR_DEFERRED_BY_USER",
+  "pass2_new_gap_refs": [
+    "G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL",
+    "G26_HITL_APPROVAL_BINDING_NOT_SHARED_INVARIANT",
+    "G27_CONTEXT_COMPACTION_GOVERNANCE_NOT_FIRST_CLASS",
+    "G28_RUNTIME_REPLAY_AND_STATE_CLASS_TAXONOMY_UNDECLARED",
+    "G29_PROTOCOL_INTEGRATION_COMPATIBILITY_NOT_FIRST_CLASS",
+    "G30_EVALUATION_FEEDBACK_PROMOTION_LIFECYCLE_FRAGMENTED"
+  ],
+  "applicability_primitives": [
+    "P1_DERIVED_SYSTEM_AUTHORITY_MODEL",
+    "P2_RUNTIME_SEMANTICS_EXECUTION_LINEAGE_EFFECT_CONTRACT",
+    "P3_ASSURANCE_COVERAGE_EVALUATION_TRACE",
+    "P4_SUPERVISION_FDIR_HAZARD_CONTROL",
+    "P5_MEASURED_RELIABILITY_PROGRESSIVE_ROLLOUT_RESILIENCE",
+    "P6_FORMAL_WRITER_COMMIT_PROTOCOL"
+  ],
+  "current_user_authorization_scope": "CLEAN_SLATE_V4_REQUIREMENTS_DESIGN__PRODUCTION_REFACTOR_NOT_YET_AUTHORIZED",
   "production_architecture_refactor_authorized": false,
   "recurrent_main_mutation_process_incident_status": "REOPENED_RECURRED_AFTER_BOOTSTRAP_FIX__TREE_RECOVERED__MECHANICAL_ENFORCEMENT_OPEN",
   "main_mutation_recurrence_incident_ref": "audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json",
@@ -57,14 +73,42 @@
   "architecture_monitor_status": "CORE_CONTINUITY_MONITORS_ABSENT_BY_USER_INTENT",
   "monitor_recreation_authorized": false,
   "monitor_historical_issue_12_status": "HISTORICAL_OPEN__UNRESOLVED_PRIOR_DISABLE_PROVENANCE_ONLY__NOT_CURRENT_DRIFT__NO_RECREATE_OR_REENABLE_WITHOUT_FRESH_EVIDENCE_AND_NEW_AUTHORIZATION",
-  "open_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#3","D1traverser-debug/universal-continuity-agent#4"],
-  "historical_open_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#12"],
-  "resolved_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#2","D1traverser-debug/universal-continuity-agent#7"],
+  "open_control_signal_refs": [
+    "D1traverser-debug/universal-continuity-agent#3",
+    "D1traverser-debug/universal-continuity-agent#4"
+  ],
+  "historical_open_control_signal_refs": [
+    "D1traverser-debug/universal-continuity-agent#12"
+  ],
+  "resolved_control_signal_refs": [
+    "D1traverser-debug/universal-continuity-agent#2",
+    "D1traverser-debug/universal-continuity-agent#7"
+  ],
   "architecture_freshness_model_status": "PASS2_VERSION_SENSITIVE_FACTS_REOBSERVED_2026_10_13__REOBSERVE_BEFORE_IMPLEMENTATION",
   "resume_epoch": 9,
-  "active_lease": {"lease_id":"lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67","resume_epoch":9,"acquired_at":"2026-10-13T19:47:00+08:00","supersedes_lease_id":"lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654"},
+  "active_lease": {
+    "lease_id": "lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67",
+    "resume_epoch": 9,
+    "acquired_at": "2026-10-13T19:47:00+08:00",
+    "supersedes_lease_id": "lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654"
+  },
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "artifact_refs": ["ENTRYPOINT.md","CURRENT_PROTOCOL.json","PROGRESS_OBSERVABILITY_POLICY.json","tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json","tasks/universal-continuity-maintenance/HANDOFF.md","audits/ARCHITECTURE_APPLICABILITY_V69_FINAL_2026-10-13.json","audits/ARCHITECTURE_FUNCTION_COVERAGE_CROSSCHECK_V70_2026-10-13.md","audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json","research/system_architecture_library/README.md","research/system_architecture_library/CATALOG.json","research/system_architecture_library/20_pass2_current_universal_gap_audit.md","research/system_architecture_library/22_applicability_screen.md","research/system_architecture_library/23_refactor_execution_plan.md"]
+  "artifact_refs": [
+    "ENTRYPOINT.md",
+    "CURRENT_PROTOCOL.json",
+    "PROGRESS_OBSERVABILITY_POLICY.json",
+    "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
+    "tasks/universal-continuity-maintenance/HANDOFF.md",
+    "audits/ARCHITECTURE_APPLICABILITY_V69_FINAL_2026-10-13.json",
+    "audits/ARCHITECTURE_FUNCTION_COVERAGE_CROSSCHECK_V70_2026-10-13.md",
+    "audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json",
+    "research/system_architecture_library/README.md",
+    "research/system_architecture_library/CATALOG.json",
+    "research/system_architecture_library/20_pass2_current_universal_gap_audit.md",
+    "research/system_architecture_library/22_applicability_screen.md",
+    "research/system_architecture_library/23_refactor_execution_plan.md",
+    "research/clean_slate_v4/01_normalized_functional_requirements.md"
+  ]
 }
