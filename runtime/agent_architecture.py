@@ -18,9 +18,6 @@ class ArchitectureResult:
     warnings: tuple[str, ...]
 
 
-# Deliberately narrow. Unknown paths fail closed as architecture-relevant.
-# These roots contain owner business artifacts/corpora rather than executable
-# architecture. A future owner surface is not admitted here merely to reduce noise.
 BUSINESS_ARTIFACT_ONLY_PREFIXES = (
     "workspaces/articles/",
     "projects/",
@@ -118,14 +115,7 @@ def _normalized_layer(
 
 
 def architecture_relevant_delta_paths(changed_paths: Sequence[str]) -> tuple[str, ...]:
-    """Return paths that cannot be proven to be business-artifact-only.
-
-    The classifier is intentionally conservative: only narrow known business-artifact
-    roots are exempt. Everything else is architecture-relevant until explicitly
-    reviewed into the shared contract. This prevents a model-authored boolean in the
-    observation cache from silently widening freshness compatibility.
-    """
-
+    """Return paths that cannot be proven to be business-artifact-only."""
     relevant: list[str] = []
     for raw in changed_paths:
         path = str(raw).strip().lstrip("/")
@@ -187,21 +177,14 @@ def validate_agent_manifest(
     if owner_kind == "BUSINESS" and manifest_version in required_versions:
         product_interface = manifest.get("product_interface")
         if not isinstance(product_interface, Mapping):
-            errors.append("business product_interface is required for architecture contract 1.2")
+            errors.append(f"business product_interface is required for architecture contract {manifest_version}")
         else:
-            _require_fields(
-                product_interface,
-                product_spec.get("required_fields", ()),
-                "product_interface",
-                errors,
-            )
+            _require_fields(product_interface, product_spec.get("required_fields", ()), "product_interface", errors)
             allowed_values = product_spec.get("allowed_values", {})
             if isinstance(allowed_values, Mapping):
                 for field, allowed in allowed_values.items():
                     if isinstance(allowed, list) and product_interface.get(field) not in set(allowed):
-                        errors.append(
-                            f"product_interface.{field} must be one of {sorted(str(item) for item in allowed)}"
-                        )
+                        errors.append(f"product_interface.{field} must be one of {sorted(str(item) for item in allowed)}")
 
     skill = layers.get("skill", {})
     skill_role = _normalize_shared_value(contract, manifest_version, "skill_role", skill.get("role"))
@@ -303,10 +286,7 @@ def validate_architecture_observation(observation: Mapping[str, Any], *, observe
             if relevant_change is not False:
                 errors.append("architecture validation is stale because architecture-relevant change is present or unproven")
             elif mechanically_relevant:
-                errors.append(
-                    "architecture head-delta claims business-only change but includes non-exempt paths: "
-                    + ",".join(mechanically_relevant)
-                )
+                errors.append("architecture head-delta claims business-only change but includes non-exempt paths: " + ",".join(mechanically_relevant))
 
     result = str(observation.get("architecture_validation_result", "")).strip()
     if result not in {"PASS", "PASS_WITH_DRIFT", "FAIL"}:

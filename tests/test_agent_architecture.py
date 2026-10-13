@@ -75,10 +75,10 @@ def test_v10_manifest_remains_compatible_under_v11_contract():
     assert result.status == ArchitectureStatus.PASS
 
 
-def test_manifest_compatibility_current_version_is_v12_without_bumping_contract_schema():
+def test_manifest_compatibility_current_version_is_v13_without_bumping_contract_schema():
     assert CONTRACT["schema_version"] == "1.1"
-    assert CONTRACT["compatibility"]["current_manifest_version"] == "1.2"
-    assert set(CONTRACT["compatibility"]["supported_manifest_versions"]) == {"1.0", "1.1", "1.2"}
+    assert CONTRACT["compatibility"]["current_manifest_version"] == "1.3"
+    assert set(CONTRACT["compatibility"]["supported_manifest_versions"]) == {"1.0", "1.1", "1.2", "1.3"}
 
 
 def test_v11_owner_aliases_normalize_to_shared_semantics():

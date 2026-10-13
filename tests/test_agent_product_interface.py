@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = json.loads((ROOT / "AGENT_ARCHITECTURE_CONTRACT.json").read_text(encoding="utf-8"))
 
 
-def _manifest(version: str = "1.2") -> dict:
+def _manifest(version: str = "1.3") -> dict:
     value = {
         "architecture_contract_version": version,
         "owner": "TEST_BUSINESS_OWNER",
@@ -37,7 +37,7 @@ def _manifest(version: str = "1.2") -> dict:
             "execution_capability_ref": "continuity/EXECUTION_CAPABILITIES.json",
         },
     }
-    if version == "1.2":
+    if version == "1.3":
         value["product_interface"] = {
             "interaction_surface": "CHATGPT",
             "entry_model": "SINGLE_OWNER_ENTRY",
@@ -57,7 +57,8 @@ def test_current_business_manifest_rejects_missing_product_interface() -> None:
     manifest.pop("product_interface")
     result = validate_agent_manifest(manifest, CONTRACT)
     assert result.status is ArchitectureStatus.FAIL
-    assert "business product_interface is required for architecture contract 1.2" in result.errors
+    assert "business product_interface is required for architecture contract 1.2" not in result.errors
+    assert "business product_interface is required for architecture contract 1.3" in result.errors
 
 
 def test_current_business_manifest_rejects_user_selected_execution_mode() -> None:
@@ -68,8 +69,8 @@ def test_current_business_manifest_rejects_user_selected_execution_mode() -> Non
     assert any("product_interface.execution_mode_selection" in item for item in result.errors)
 
 
-def test_legacy_manifest_remains_backward_compatible() -> None:
-    result = validate_agent_manifest(_manifest("1.1"), CONTRACT)
+def test_v12_manifest_remains_backward_compatible_without_product_interface() -> None:
+    result = validate_agent_manifest(_manifest("1.2"), CONTRACT)
     assert result.status is ArchitectureStatus.PASS
 
 
