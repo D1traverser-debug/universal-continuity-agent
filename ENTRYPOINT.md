@@ -92,6 +92,8 @@ Do not add a permanent supervisory Agent merely to simulate independent review.
 
 Work must checkpoint **during the turn** at verified material safe points; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. Resume from the latest verified safe checkpoint. Before a final response on an active durable task, persist material change and reread authority.
 
+Material writes to authoritative Universal `main` are a kernel integrity boundary. When branch-head compare-and-swap primitives are available, **MUST NOT use GitHub Contents API create/update/delete for a material `main` mutation**: verify the active lease, reread current `main` HEAD, build the commit on exactly that parent, publish with `expected_sha=OBSERVED_CURRENT_MAIN_HEAD`, then reread authority. Detailed mutation semantics remain solely in `PROGRESS_OBSERVABILITY_POLICY.json`; do not duplicate them here.
+
 Exactly one receipt:
 - `进度提交：COMMITTED`
 - `进度提交：NO_MATERIAL_CHANGE`

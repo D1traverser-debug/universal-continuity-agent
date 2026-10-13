@@ -1,13 +1,14 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "library_id": "system-architecture-reliability-benchmark-library",
-  "status": "PASS2_DEEP_RESEARCH_COMPLETE__NON_AUTHORITY__REFACTOR_HOLD",
+  "status": "PASS2_PRUNED_AND_APPLICABILITY_SCREENED__NON_AUTHORITY__NO_PRODUCTION_REFACTOR",
   "created_at": "2026-10-13T17:12:18+08:00",
   "pass2_completed_at": "2026-10-13T18:20:00+08:00",
+  "applicability_screened_at": "2026-10-13T20:19:00+08:00",
   "load_policy": "COLD_PATH_ONLY",
   "authority_effect": "NONE",
   "implementation_authorized": false,
-  "depth_claim": "ARCHITECTURE_COMPARISON_DEPTH__PURPOSE_RUNTIME_STATE_AUTHORITY_FAILURE_RECOVERY_VERIFICATION_OBSERVABILITY_LIFECYCLE_LIMITATIONS__NOT_EXHAUSTIVE_API_SOURCE_OR_NORMATIVE_STANDARD_MASTERY",
+  "depth_claim": "ARCHITECTURE_COMPARISON_DEPTH_OVER_PUBLICLY_ACCESSIBLE_FIRST_PARTY_OR_ORIGINAL_MATERIAL__PURPOSE_RUNTIME_STATE_AUTHORITY_FAILURE_RECOVERY_VERIFICATION_OBSERVABILITY_LIFECYCLE_LIMITATIONS__PAID_NORMATIVE_DO178C_AND_IEC61508_NOT_COUNTED_AS_FULLY_STUDIED__NOT_EXHAUSTIVE",
   "parent_dimensions": [
     "PURPOSE_LIFECYCLE_DECOMPOSITION",
     "CONTROL_RECONCILIATION",
@@ -31,7 +32,7 @@
     "EVOLUTIONARY_ARCHITECTURE",
     "TEAM_TOPOLOGIES",
     "DISTRIBUTED_SYSTEMS_RAFT_IDEMPOTENCY_RETRY",
-    "UVM",
+    "UVM_PUBLIC_ACCELERA_MATERIAL",
     "MAPE_K",
     "KUBERNETES_CONTROLLER_OPERATOR",
     "ERLANG_OTP_SUPERVISION",
@@ -39,10 +40,8 @@
     "GOOGLE_SRE",
     "AWS_WELL_ARCHITECTED_OPERATIONAL_EXCELLENCE",
     "ENVIRONMENT_PARITY_TWELVE_FACTOR",
-    "DO_178C_PUBLIC_ASSURANCE_GUIDANCE",
     "TLA_PLUS_FORMAL_VERIFICATION",
     "N_VERSION_PROGRAMMING_COMMON_MODE_FAILURE",
-    "IEC_61508_PUBLIC_FUNCTIONAL_SAFETY_LIFECYCLE",
     "NASA_FDIR_FAULT_MANAGEMENT",
     "STPA",
     "CHAOS_ENGINEERING",
@@ -54,6 +53,15 @@
     "LANGGRAPH_1_2_X_2026",
     "LANGSMITH_2026"
   ],
+  "public_evidence_lenses_not_full_frameworks": [
+    "FAA_PUBLIC_SOFTWARE_ASSURANCE_GUIDANCE_RELATED_TO_DO_178C",
+    "IEC_PUBLIC_FUNCTIONAL_SAFETY_LIFECYCLE_MATERIAL_RELATED_TO_IEC_61508"
+  ],
+  "removed_from_full_deep_studied_count": [
+    "RTCA_DO_178C_NORMATIVE_STANDARD",
+    "IEC_61508_NORMATIVE_STANDARD_SERIES"
+  ],
+  "source_pruning_rule": "If the core normative or architectural corpus is not reliably accessible, do not count it as a fully studied framework. Public first-party material may remain only as a bounded evidence lens when its supported claims are independently clear.",
   "pass2_files": [
     "15_prior_frameworks_deep_pass.md",
     "16_agent_runtime_frameworks_2026.md",
@@ -61,7 +69,8 @@
     "18_agent_runtime_failure_case_matrix.md",
     "19_pass2_sources.md",
     "20_pass2_current_universal_gap_audit.md",
-    "21_pass2_candidate_map.md"
+    "21_pass2_candidate_map.md",
+    "22_applicability_screen.md"
   ],
   "historical_pass1_files": [
     "README.md",
@@ -82,8 +91,29 @@
     "13_current_universal_gap_audit.md",
     "14_refactor_candidate_map.md"
   ],
+  "historical_note_policy": "Historical notes remain for provenance and are not silently rewritten to pretend they were never considered. Current study scope, supersession and adoption status are defined by this catalog and the current README/applicability screen.",
   "current_gap_audit_ref": "research/system_architecture_library/20_pass2_current_universal_gap_audit.md",
-  "current_candidate_ref": "research/system_architecture_library/21_pass2_candidate_map.md",
+  "historical_candidate_ref": "research/system_architecture_library/21_pass2_candidate_map.md",
+  "current_candidate_ref": "research/system_architecture_library/22_applicability_screen.md",
+  "applicability_primitives": [
+    "P1_DERIVED_SYSTEM_AUTHORITY_MODEL",
+    "P2_RUNTIME_SEMANTICS_EXECUTION_LINEAGE_EFFECT_CONTRACT",
+    "P3_ASSURANCE_COVERAGE_EVALUATION_TRACE",
+    "P4_SUPERVISION_FDIR_HAZARD_CONTROL",
+    "P5_MEASURED_RELIABILITY_PROGRESSIVE_ROLLOUT_RESILIENCE",
+    "P6_FORMAL_WRITER_COMMIT_PROTOCOL"
+  ],
+  "explicit_non_adoptions": [
+    "RAFT_OR_CONSENSUS_UNDER_CURRENT_SINGLE_AUTHORITATIVE_WRITER_MODEL",
+    "LITERAL_UVM_PHASE_CLASS_HIERARCHY",
+    "KUBERNETES_CONTROL_PLANE_FOR_FINITE_USER_TASKS",
+    "CENTRALIZED_MAPE_K_KNOWLEDGE_DATABASE",
+    "PERMANENT_LLM_SUPERVISOR_AGENT_FOR_OTP_ANALOGY",
+    "GENERIC_AGENT_RUNTIME_ABSTRACTION_THAT_ERASES_SUBSTRATE_STATE_REPLAY_DIFFERENCES",
+    "BLANKET_MULTI_AGENT_ORCHESTRATION_WHEN_DETERMINISTIC_WORKFLOW_SUFFICES",
+    "CERTIFICATION_STYLE_DO178C_OR_IEC61508_PROCESS_IMITATION",
+    "FABRICATED_SLO_TARGETS_WITHOUT_OBSERVABLE_DENOMINATORS"
+  ],
   "pass2_new_findings": [
     "G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL",
     "G26_HITL_APPROVAL_BINDING_NOT_SHARED_INVARIANT",
@@ -110,20 +140,23 @@
   ],
   "research_freshness": {
     "version_sensitive_agent_framework_facts_observed_on": "2026-10-13",
+    "reobserved_for_applicability_screen_on": "2026-10-13",
     "must_reobserve_before_implementation_dependency": true,
     "current_release_observations": {
-      "GOOGLE_ADK_PYTHON": "2.10.0 observed",
-      "LANGGRAPH": "1.2.13 observed",
-      "MICROSOFT_AGENT_FRAMEWORK_PYTHON": "1.19.0 observed",
-      "OPENAI_AGENTS_API": "current official Agents API beta documentation observed"
+      "GOOGLE_ADK_PYTHON": "2.10.0 observed during Pass 2; current official docs re-observed for applicability screening",
+      "LANGGRAPH": "1.2.13 observed during Pass 2; current official docs re-observed for applicability screening",
+      "MICROSOFT_AGENT_FRAMEWORK_PYTHON": "1.19.0 observed during Pass 2; current official docs re-observed for applicability screening",
+      "OPENAI_AGENTS_API": "current official Agents API/SDK documentation re-observed for applicability screening"
     }
   },
   "standards_boundary": {
+    "do_178c_normative_standard_fully_studied": false,
+    "iec_61508_normative_standard_fully_studied": false,
     "do_178c_normative_conformance_claimed": false,
     "iec_61508_normative_conformance_claimed": false,
     "uvm_ieee_1800_2_conformance_claimed": false,
-    "note": "Public first-party/original sources are architecture-learning evidence only; paid normative standards are not reproduced and no certification claim is made."
+    "note": "Paid normative DO-178C and IEC 61508 standards are outside the complete study corpus. Public FAA/IEC material is retained only as bounded evidence lenses. UVM architecture study remains supported by public Accellera material; no IEEE conformance claim is made."
   },
-  "next_gate": "M7_IMPLEMENTATION_AND_SUPERSESSION",
-  "next_gate_status": "BLOCKED_PENDING_EXPLICIT_USER_REFACTOR_COMMAND"
+  "next_gate": "PRODUCTION_ARCHITECTURE_REFACTOR",
+  "next_gate_status": "REQUIRES_SEPARATE_EXPLICIT_USER_COMMAND"
 }

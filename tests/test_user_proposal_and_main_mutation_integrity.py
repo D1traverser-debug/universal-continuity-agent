@@ -50,6 +50,17 @@ def test_material_universal_main_mutation_uses_head_level_cas_not_pr_first_by_de
     assert "does not physically block an authorized external writer" in mutation["assurance_ceiling"]
 
 
+def test_entrypoint_bootstrap_forbids_contents_api_for_material_main_when_head_cas_exists():
+    entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
+
+    assert "Material writes to authoritative Universal `main` are a kernel integrity boundary." in entrypoint
+    assert "MUST NOT use GitHub Contents API create/update/delete for a material `main` mutation" in entrypoint
+    assert "verify the active lease" in entrypoint
+    assert "reread current `main` HEAD" in entrypoint
+    assert "expected_sha=OBSERVED_CURRENT_MAIN_HEAD" in entrypoint
+    assert "Detailed mutation semantics remain solely in `PROGRESS_OBSERVABILITY_POLICY.json`" in entrypoint
+
+
 def test_blueprint_and_handoff_bind_the_single_writer_threat_model_without_stale_high_claim():
     blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
     handoff = (ROOT / "tasks/universal-continuity-maintenance/HANDOFF.md").read_text(encoding="utf-8")
