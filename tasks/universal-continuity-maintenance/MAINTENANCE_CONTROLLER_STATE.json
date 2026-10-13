@@ -3,8 +3,8 @@
   "run_id": "architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13",
   "triage_outcome": "CONFIRMED_DEFECT",
   "status": "ACTIVE",
-  "revision": 30,
-  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
+  "revision": 31,
+  "current_stage": "M8_MULTI_LAYER_VALIDATION",
   "completed_stage_receipts": [
     {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["user-signal://2026-10-13/global-architecture-reliability-framework-completeness-challenge"],"summary":"Classified the challenge as a maintenance meta-method defect: a locally complete audit can still omit mature architecture/reliability question families. Named frameworks are evidence lenses, not mandated mechanisms."},
     {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["research/system_architecture_library/README.md"],"summary":"Requirement: build a cold non-authoritative benchmark library, diagnose Universal gaps, and hold all production refactor until later explicit authorization."},
@@ -16,7 +16,8 @@
     {"stage":"M4A_FACT_DECISION_FRONTIER","revision":26,"evidence_refs":["user-signal://2026-10-13/prune-inaccessible-research-and-screen-applicability","research/system_architecture_library/22_applicability_screen.md"],"summary":"User authorization is bounded to source pruning/demotion and applicability screening. It does not authorize blanket production refactor. Internal repair of the recurrent main-mutation process defect remains autonomous system maintenance."},
     {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":27,"evidence_refs":["ENTRYPOINT.md","PROGRESS_OBSERVABILITY_POLICY.json"],"summary":"Because the recurrence is caused by the route invariant not being present on mandatory bootstrap, ENTRYPOINT is the correct higher-level activation surface. Add only a compact delegation rule; do not copy detailed mutation doctrine into bootstrap."},
     {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":28,"evidence_refs":["research/system_architecture_library/22_applicability_screen.md","SYSTEM_MAINTENANCE_POLICY.json"],"summary":"Complexity budget: no new authority root, no PR workflow, no new agent, no framework zoo. Research applicability collapses into six primitive families. The mutation repair adds only a short bootstrap invariant plus regression coverage."},
-    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":29,"evidence_refs":["research/system_architecture_library/22_applicability_screen.md","tests/test_user_proposal_and_main_mutation_integrity.py"],"summary":"Payoff is high relative to cost: recurring operator-route omission is addressed at mandatory bootstrap; inaccessible normative standards are removed from the full-study count; retained research is consolidated rather than expanded. No superseded production subsystem needs coexistence."}
+    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":29,"evidence_refs":["research/system_architecture_library/22_applicability_screen.md","tests/test_user_proposal_and_main_mutation_integrity.py"],"summary":"Payoff is high relative to cost: recurring operator-route omission is addressed at mandatory bootstrap; inaccessible normative standards are removed from the full-study count; retained research is consolidated rather than expanded. No superseded production subsystem needs coexistence."},
+    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":31,"evidence_refs":["github-commit://6a8cc347c942d0589acbde0971b427f6e0893708","audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_M7_IMPLEMENTATION_2026-10-13.json","ENTRYPOINT.md","tests/test_user_proposal_and_main_mutation_integrity.py","research/system_architecture_library/CATALOG.json","research/system_architecture_library/README.md"],"summary":"Implemented the smallest higher-abstraction repair and research-scope cleanup. ENTRYPOINT now forbids material Contents-API main writes when HEAD-CAS primitives exist and delegates details to the existing progress policy; regression coverage binds this bootstrap rule. DO-178C/IEC 61508 paid normative standards are removed from the current full-study framework set, public FAA/IEC evidence lenses remain bounded, UVM remains retained, and 22_applicability_screen is the current six-primitive applicability view. No production architecture refactor was applied."}
   ],
   "reopen_history": [
     {"target_stage":"M3_LEARNING_AND_EVIDENCE_SCOUT","revision":12,"reason":"User challenged the depth claim after Pass 1 and required all prior framework study to be deepened before any refactor, adding OpenAI Agents API/SDK, Microsoft Agent Framework, Google ADK and LangGraph as direct benchmark subjects.","evidence_refs":["user-signal://2026-10-13/deepen-all-prior-framework-study-before-refactor"]},
@@ -30,13 +31,24 @@
     "authoritative_reread_verified": true
   },
   "blocker": null,
+  "material_mutation_route_receipt": {
+    "route": "GIT_DATA_TREE_COMMIT_PLUS_HEAD_CAS",
+    "active_lease_id": "lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67",
+    "resume_epoch": 9,
+    "observed_main_head": "0ba190c05f1b14913d873695bb63c75598098d30",
+    "expected_sha": "0ba190c05f1b14913d873695bb63c75598098d30",
+    "published_commit": "6a8cc347c942d0589acbde0971b427f6e0893708",
+    "force": false,
+    "ref_update_verified": true,
+    "authoritative_main_reread_verified": true
+  },
   "research_persistence_findings": [
-    {"finding":"TWO_PASS2_RESEARCH_FILES_WERE_PUBLISHED_WITH_GITHUB_CONTENTS_API_WITHOUT_EXPLICIT_OBSERVED_HEAD_CAS","classification":"OPERATOR_PROCESS_DEVIATION__NO_CONFLICT_OBSERVED__NO_BUSINESS_OR_PRODUCTION_BEHAVIOR_CHANGE","evidence_refs":["github-commit://5e748d0dd9fc5f7f48392680335e857237b938ca","github-commit://7bb4752b9c02be3dea5bd398f3aa1082456470d7"],"current_action":"Disclosed and stopped. Later checkpoint batches use reread main plus expected-HEAD CAS."},
-    {"finding":"CONTENTS_API_MAIN_WRITE_RECURRED_AFTER_ACCEPTED_HEAD_CAS_RULE","classification":"RECURRED_AFTER_FIX__ABSTRACTION_ESCALATED_TO_MANDATORY_BOOTSTRAP_SURFACE","evidence_refs":["github-commit://2ec72f478ce225ec0a9619a3d70a516e89bb0da0","audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_PREPATCH_2026-10-13.json"],"current_action":"Patch ENTRYPOINT with the compact material-main HEAD-CAS invariant, add regression coverage, then validate through CI. Physical prevention against a deliberately noncompliant authorized writer remains outside the claimed assurance ceiling."}
+    {"finding":"TWO_PASS2_RESEARCH_FILES_WERE_PUBLISHED_WITH_GITHUB_CONTENTS_API_WITHOUT_EXPLICIT_OBSERVED_HEAD_CAS","classification":"OPERATOR_PROCESS_DEVIATION__NO_CONFLICT_OBSERVED__NO_BUSINESS_OR_PRODUCTION_BEHAVIOR_CHANGE","evidence_refs":["github-commit://5e748d0dd9fc5f7f48392680335e857237b938ca","github-commit://7bb4752b9c02be3dea5bd398f3aa1082456470d7"],"current_action":"Historical deviation retained as evidence."},
+    {"finding":"CONTENTS_API_MAIN_WRITE_RECURRED_AFTER_ACCEPTED_HEAD_CAS_RULE","classification":"RECURRED_AFTER_FIX__ABSTRACTION_ESCALATED_TO_MANDATORY_BOOTSTRAP_SURFACE","evidence_refs":["github-commit://2ec72f478ce225ec0a9619a3d70a516e89bb0da0","audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_PREPATCH_2026-10-13.json","github-commit://6a8cc347c942d0589acbde0971b427f6e0893708"],"current_action":"Higher-abstraction bootstrap guard implemented; validate with regression and full CI. Physical prevention against a deliberately noncompliant authorized writer remains outside the claimed assurance ceiling."}
   ],
   "validation_findings": [
-    {"finding":"PASS2_CHECKPOINT_FIRST_CI_FAILED_TWO_EXISTING_REGRESSION_CONTRACTS","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/38382360943/job/115245654728"],"details":"risk-tiered control-plane audit PASS; Agent architecture PASS; pytest 320 passed / 2 failed. Failure 1: BLOCKED controller must keep investigation_resolution null. Failure 2: Handoff must preserve exact v65 regression anchor 当前模型不是 PR-first.","corrective_action":"Corrected before resume; later main validation was green."},
+    {"finding":"PASS2_CHECKPOINT_FIRST_CI_FAILED_TWO_EXISTING_REGRESSION_CONTRACTS","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/38382360943/job/115245654728"],"details":"risk-tiered control-plane audit PASS; Agent architecture PASS; pytest 320 passed / 2 failed.","corrective_action":"Corrected before resume; later main validation was green."},
     {"finding":"RESUME_CHECKPOINT_CI_GREEN","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/38392911449"],"details":"Resume takeover checkpoint completed with continuity-ci success before the current recurrence."}
   ],
-  "assurance_ceiling": "STRUCTURED_PROCESS_PLUS_BOOTSTRAP_AND_REGRESSION_ENFORCEMENT_AFTER_PATCH__NO_PHYSICAL_PREVENTION_OF_A_DELIBERATELY_NONCOMPLIANT_AUTHORIZED_EXTERNAL_WRITER__NO_PRODUCTION_ARCHITECTURE_REFACTOR_YET"
+  "assurance_ceiling": "BOOTSTRAP_RULE_PLUS_REGRESSION_AND_CAS_ROUTE_RECEIPT_PENDING_M8_CI__NO_PHYSICAL_PREVENTION_OF_A_DELIBERATELY_NONCOMPLIANT_AUTHORIZED_EXTERNAL_WRITER__NO_PRODUCTION_ARCHITECTURE_REFACTOR"
 }

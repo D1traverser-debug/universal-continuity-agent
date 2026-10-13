@@ -7,31 +7,24 @@
 - contract: `CONTINUITY_V3_7`
 - current writer lease: `lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67`
 - resume_epoch: `9`
-- manifest_version: `97`
-- human revision: `UC-20261013-r97` (derived presentation only)
+- manifest_version: `98`
+- human revision: `UC-20261013-r98` (derived presentation only)
 - current controller: `architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13`
-- controller status: `ACTIVE revision 30 @ M7_IMPLEMENTATION_AND_SUPERSESSION / PREPATCH CHECKPOINTED`
-- prepatch checkpoint: `audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_PREPATCH_2026-10-13.json`
+- controller status: `ACTIVE revision 31 @ M8_MULTI_LAYER_VALIDATION`
+- M7 implementation receipt: `audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_M7_IMPLEMENTATION_2026-10-13.json`
 
-## 用户本轮授权边界
+## 本轮用户授权与研究结果
 
-用户明确要求：
+用户授权的是：删除/降级核心资料无法可靠获取的研究项，并用保留下来的知识做适用性筛选；**不是**直接进行 Universal 生产架构重构。
 
-1. 对核心资料无法可靠获取的架构/规范研究进行删除或降级，不再装作“完整研究过”；
-2. 用剩余已研究且可验证的知识重新判断哪些能用于 Universal。
+当前有效研究集已经裁剪：
 
-这授权了**研究集清理 + 适用性筛选**，没有授权把全部候选直接改进生产架构。
+- RTCA DO-178C 付费规范正文、IEC 61508 付费规范系列已从“完整深研框架集合”移除；
+- FAA/IEC 公开一手资料仅保留为 bounded evidence lens，不产生规范符合性/认证主张；
+- UVM 保留，因为 Accellera 公开资料足以做架构级研究；
+- 其余成熟体系和 2026 Agent runtime 继续保留。
 
-## 研究集裁剪结果
-
-- RTCA DO-178C 付费规范正文：从“已深研完整框架”计数中移除；只保留 FAA 公开软件保证资料能够直接支持的生命周期、追踪、独立性等思想。
-- IEC 61508 付费规范系列：从“已深研完整框架”计数中移除；只保留 IEC 公开资料能直接支持的功能安全生命周期/变更/危险控制思想。
-- UVM：保留。Accellera 有公开 User Guide、Class Reference、reference implementation，足够进行架构级比较。
-- 其他 Pass-2 成熟体系与 OpenAI/Microsoft/Google/LangGraph 当前 Agent runtime 继续保留为公开/原始资料可验证的研究对象。
-
-适用性筛选已经落在：`research/system_architecture_library/22_applicability_screen.md`。
-
-核心结论不是建立“框架动物园”，而是把可用知识压缩成六类共享原语：
+`research/system_architecture_library/22_applicability_screen.md` 是当前适用性结果，压缩为六类共享原语：
 
 1. Derived System / Authority Model；
 2. Runtime Semantics + Execution Lineage + Effect Contract；
@@ -40,26 +33,29 @@
 5. Measured Reliability + Progressive Rollout / Resilience；
 6. Formal Writer / Commit Protocol。
 
-Raft、字面 UVM phase/class、Kubernetes 化所有有限任务、中央 MAPE-K Knowledge DB、永久 LLM supervisor、抹平 substrate 差异的 generic runtime abstraction、无证据的 SLO 数字等均明确不采用。
+结论：大部分保留知识**都能用上**，但主要作为共享 invariant、failure model、verification question 或少量共用原语，而不是每个框架变成一个模块。框架动物园、无条件 multi-agent、Raft、字面 UVM/Kubernetes/MAPE-K 移植等均不采用。
 
-## 本轮发现的复发性系统缺陷
+## 复发性 main 写入流程缺陷
 
-在创建 `22_applicability_screen.md` 时，再次发生了 material `main` 写入使用 GitHub Contents API、没有显式 `observed HEAD + expected-HEAD CAS` 的操作偏差；提交为 `2ec72f478ce225ec0a9619a3d70a516e89bb0da0`。没有观察到冲突，研究内容本身有效，但写入路径不合规。
+适用性文件首次写入时再次发生 Contents API material-main write，提交 `2ec72f478ce225ec0a9619a3d70a516e89bb0da0`。没有观察到内容冲突，但属于 `RECURRED_AFTER_FIX`。
 
-这属于 `RECURRED_AFTER_FIX`，不能再用同层提醒修补。controller 已 reopen 到 M2A 完成抽象升级分析，然后重新走完 M2A–M6A，并在 M7 重新建立 prepatch checkpoint。
+controller 已 reopen 到 M2A，重新完成 M2A–M6A，并在 M7 做了更高抽象层修复：
 
-根因：详细 direct-main 规则存在于 `PROGRESS_OBSERVABILITY_POLICY.json` 和旧 Handoff，但关键禁止项没有进入每次 Continuity 都强制加载的 bootstrap authority，仍依赖操作者记忆。
+- `ENTRYPOINT.md` 现在在 mandatory bootstrap 中明确：有 branch-head CAS primitive 时，material `main` **MUST NOT use GitHub Contents API create/update/delete**；
+- 必须 active lease + reread current HEAD + commit parent=current HEAD + `expected_sha=OBSERVED_CURRENT_MAIN_HEAD` + authoritative reread；
+- 详细合同仍只由 `PROGRESS_OBSERVABILITY_POLICY.json` 持有；
+- `tests/test_user_proposal_and_main_mutation_integrity.py` 新增 bootstrap 回归；
+- 没有切成 PR-first，也没有新增 parallel mutation policy。
 
-选定的最小高层修复：
+M7 material patch 使用的合规发布链：
 
-- 在 `ENTRYPOINT.md` 增加极短 material-main mutation invariant：有 HEAD-CAS primitive 时禁止 Contents API material write；必须 active lease + observed HEAD + expected-HEAD CAS；
-- 详细语义继续由现有 `PROGRESS_OBSERVABILITY_POLICY.json` 唯一拥有，避免复制整套规则；
-- 增加回归测试绑定该 bootstrap invariant；
-- 不切换为 PR-first，不新增 mutation policy，不声称能物理阻止一个故意违规的授权外部 writer。
+`0ba190c05f1b14913d873695bb63c75598098d30 -> 6a8cc347c942d0589acbde0971b427f6e0893708`
+
+`update_ref(expected_sha=0ba190c05f1b14913d873695bb63c75598098d30)` 成功，且已 reread `main` 验证 `6a8cc347...` 为 authority。
 
 ## 当前下一步
 
-当前已到 M7 implementation admission。下一步仅实施上述最小 bootstrap + regression 修复，同时把 README/CATALOG/Pass-2 当前研究表述同步为“付费规范正文不计入完整深研、六原语适用性筛选完成”。之后跑 CI，若失败按 controller reopen；若通过再继续 M8–M11。
+当前进入 M8：观察 `6a8cc347...` 及本 M7 checkpoint 的 CI，验证 bootstrap guard、回归测试、controller structural validity、研究库 catalog/README 一致性。若绿则继续 M9 propagation → M10 second-order review → M11 durable checkpoint；若失败则按 controller reopen。
 
 生产架构重构仍未授权。
 
