@@ -3,7 +3,7 @@
 - task_id: `continuity:universal-continuity-maintenance`
 - owner: `UNIVERSAL_CONTINUITY_HARNESS`
 - status: `ACTIVE`
-- manifest_version: `105`
+- manifest_version: `106`
 - resume_epoch: `9`
 - active lease: `lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67`
 - current controller: `main-mutation-mechanical-enforcement-v70-2026-10-13`
@@ -11,33 +11,51 @@
 
 ## 当前设计任务
 
-用户已把 clean-slate v4 的重点拉回到“先把真正想要的功能说清楚，再从功能推导架构”。当前已完成第一轮需求归一化，不再把上层能力、下层细节、异常案例和验收场景平铺成 40 个同级 REQ。
+用户要求先从真实功能反推 clean-slate v4，而不是从架构框架倒推需求。本轮已完成真实业务反查，并修订需求树。
 
-新需求树：
-`research/clean_slate_v4/01_normalized_functional_requirements.md`
+权威设计输入：
+- `research/clean_slate_v4/01_normalized_functional_requirements.md` — v0.2 归一化功能需求；
+- `research/clean_slate_v4/02_real_workflow_reverse_validation.md` — 财经写作、A 股、视频、小说、总控维护五类真实工作流反推审计。
 
-当前归一化结果：
-- 9 个一级能力：目标驱动自主完成；自主知识获取/提炼/决策；任务规划调度与多 Agent 协作；系统结构理解与精准变更；持久状态/统一知识/跨会话连续性；运行监测/诊断/恢复；子系统与 Agent 生态治理；自我进化/主动维护/复杂度控制；质量验证/完成证明/用户交付。
-- 10 个跨域约束：用户负担最小、不臃肿、不拆东墙补西墙、真值与来源可辨、自主有边界、故障隔离、兼容迁移、成本意识、可追溯、禁止虚假完成。
-- 12 个代表性场景：普通“做XX”、当前资料研究、视频多 Agent、小说蒸馏原创、新增长期要求、聊天上限继承、未知工具结果、子系统重复故障、空闲维护、多任务竞争、新 Agent/工具引入、升级后继承旧任务。
+## 真实工作流反查后的结构变化
 
-下一步设计工作不是立即选框架，而是用真实业务场景继续反查这棵需求树：如果发现遗漏，先判断它是新的一级能力、已有能力的二级行为、跨域约束还是场景；只有无法归类的独立用户能力才新增一级能力。然后为稳定需求建立验收条件，再进入 clean-slate 架构推导。
+v0.1 的 9 个一级能力不再机械保留。本轮发现：
+
+1. 用户意图、用户要求和作用域生命周期此前分散在目标理解、变更定位、调度和继承中；真实错误已证明它应该成为独立一级能力。
+2. “任务规划与多 Agent 协作”不足以表达真实执行：视频/写作需要确认 Agent、工具、模型、provider、connector、Runtime、额度和产物依赖的当前可执行性，因此扩展为执行编排与资源协调。
+3. “持久状态 + 统一知识”混入了生命周期完全不同的对象；现拆为“持久任务状态与连续性”和“数据/产物/知识治理”。
+4. 原“系统结构理解与精准变更”和“子系统/Agent 生态治理”高度重叠，合并为“系统/子系统拓扑与变更治理”。
+
+v0.2 因此得到 10 个一级能力：
+A 用户意图/要求/作用域治理；B 自主任务完成；C 知识/证据获取、提炼与最适配决策；D 执行编排与资源协调；E 系统/子系统拓扑与变更治理；F 持久任务状态与跨会话连续性；G 数据/产物/知识治理；H 运行监测/故障诊断/可靠恢复；I 自我进化/主动维护/复杂度控制；J 质量验证/完成证明/用户交付。
+
+同时新增三条通用约束：关键高影响约束优先机械化；关键前置数据/能力/授权/证据缺失时不得静默降级；探索/候选状态不得未经验证污染权威生产状态。
+
+## 五类真实工作流的主要新发现
+
+- 财经写作：NEW_TASK、CONTINUE、SYSTEM_AUDIT 必须区分；规则/Agent 声明不能替代当前 capability；当前交付 Word 必须做真实产物验真；生产和审核需要适当独立证据。
+- A 股：需要交易日/时间语义、冻结快照、数据血缘、来源冲突 reconciliation、完整性门禁；盘后真实结果只能按证据逐步晋升为方法改进。
+- 视频：需要模型/工具/额度/质量路由、工作流 producer→artifact→consumer 可达性、批准资产身份/版本/连续性、探索轨/生产轨隔离和真实 reviewer receipt。
+- 小说：需要“整本”为完成单位、coverage/hash/next-location 可恢复游标、单书结论适用范围/anti-overfit、单书证据到跨作品方法论的分层晋升。
+- 总控维护：D/G 合并合理；文字规则存在不等于关键 invariant 已机械封堵；失败修复必须提升到正确抽象层并有晋升/退役闭环。
+
+## 下一步设计工作
+
+不立即选框架。下一步为 A–J 的关键二级能力建立可验收行为标准：触发条件、必须行为、状态变化、异常处理、完成证据、真实回归场景。验收标准稳定以后，再从需求 + 风险反推 clean-slate 架构。
 
 ## 既有功能覆盖结论
 
-此前功能覆盖审计已经完成：共归纳 18 个当前总控功能域；G01–G30 已触及所有主要功能域，没有发现一个完整的大功能从未被审视过。
-
-旧 `research/system_architecture_library/23_refactor_execution_plan.md` 不能原样作为实施清单。其九项显式补齐要求仍是后续架构设计必须吸收的风险输入：G27 context compaction、G29 runtime/protocol/provider compatibility、G30/G22 evaluation-promotion lifecycle、G24 writer-model transition trigger、G03 inter-owner interaction、G04 environment/substrate、G23 multiple-fault、G20/G21 coupling/toil、G14 fitness-function map。
-
-详细证据：`audits/ARCHITECTURE_FUNCTION_COVERAGE_CROSSCHECK_V70_2026-10-13.md`。
+此前功能覆盖审计已经完成：G01–G30 已触及所有主要当前控制面功能域；旧 `research/system_architecture_library/23_refactor_execution_plan.md` 仍不能原样作为新架构实施清单。旧九项风险输入仍需在未来架构推导时逐项映射，而不是丢弃。
 
 ## material-main 机械 enforcement 仍未关闭
 
-上一轮 direct file mutation 复发产生 commit `b0dd89ffdc43876951cfb430d57ea6b0eb1e4792`；随后已通过 Git Data + `expected_sha` CAS 恢复 README，并保留审计，恢复 commit 为 `240029ddf6168d6a55a9af05357330a3a49cf167`。
+上一轮 direct file mutation 复发产生 commit `b0dd89ffdc43876951cfb430d57ea6b0eb1e4792`，恢复 commit 为 `240029ddf6168d6a55a9af05357330a3a49cf167`。该失败类仍为 `RECURRED_AFTER_FIX`，prevention 仍 OPEN/BLOCKED。
 
-该失败类为 `RECURRED_AFTER_FIX`。v69 的 ENTRYPOINT 文字 guard 已被事实证明不能机械阻止错误工具路径。prevention 仍为 OPEN/BLOCKED，必须由 tool/repository permission 等机械层解决；新增需求文档或更多提示语不构成关闭证据。
+本轮反查把“关键约束优先机械化”提升为通用需求；这不等于当前 GitHub 工具/仓库层已经完成机械封堵。
 
-事故状态：`audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json`。
+本轮还发生了数次对不存在分支的 Contents API 调用，均被 GitHub 404 拒绝、未产生 commit 或文件。这没有造成 main mutation，但进一步说明危险原语仍然可调用；不能把提示语视为物理 enforcement。
+
+事故状态仍由 `audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json` 约束。
 
 ## v65 direct-main / PR-first 回归锚点
 
@@ -47,16 +65,15 @@ active lease + observed-HEAD CAS + CI + authoritative reread
 
 实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
 
-这些锚点描述当前 authority 与历史实验边界；它们不表示 convention-only PR-first、提示语或回归文案可以替代已证明缺失的机械 enforcement。
+这些锚点只描述当前 authority 与历史实验边界；convention-only PR-first、提示语或回归文案不能替代已经证明缺失的机械 enforcement。
 
 ## authorization
 
-当前只授权 clean-slate v4 **需求设计**。生产架构重构尚未开始，也不得因需求文档完成而视为已授权。
+当前只授权 clean-slate v4 **需求设计**。生产架构重构尚未开始。
 
 ## next_action
 
-1. 用金融文章/A股/视频/小说/系统维护等真实工作流逐个反查需求树；
-2. 合并重复场景，补真正缺失的功能；
-3. 为一级/关键二级能力写可验收的行为标准；
-4. 在需求稳定后，再从需求与风险反推 clean-slate 架构；
-5. 任何生产实现前仍需处理或明确重新决策 material-main 机械 enforcement 阻塞。
+1. 为 A–J 的关键二级能力建立可验收行为标准；
+2. 用五类真实业务 + 并发/故障/升级/要求变更等横向场景形成验收矩阵；
+3. 需求与验收稳定后，再从它们反推 clean-slate 架构；
+4. 任何生产实现前仍需处理或明确重新决策 material-main 机械 enforcement 阻塞。
