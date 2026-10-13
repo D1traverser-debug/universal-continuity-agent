@@ -2,45 +2,97 @@
   "schema_version": "1.0",
   "run_id": "architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13",
   "triage_outcome": "CONFIRMED_DEFECT",
-  "status": "ACTIVE",
-  "revision": 12,
-  "current_stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
+  "status": "BLOCKED",
+  "revision": 19,
+  "current_stage": "M7_IMPLEMENTATION_AND_SUPERSESSION",
   "completed_stage_receipts": [
     {
       "stage": "M0_INTAKE_AND_SIGNAL_CLASSIFICATION",
       "revision": 1,
       "evidence_refs": ["user-signal://2026-10-13/global-architecture-reliability-framework-completeness-challenge"],
-      "summary": "Classified the user challenge as a real maintenance meta-method signal: prior bounded audits did not maintain a sufficiently broad architecture/reliability reference taxonomy. Named frameworks are evidence lenses, not user-mandated implementation choices."
+      "summary": "Classified the challenge as a maintenance meta-method defect: a locally complete audit can still omit mature architecture/reliability question families. Named frameworks are evidence lenses, not mandated mechanisms."
     },
     {
       "stage": "M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION",
       "revision": 2,
       "evidence_refs": ["research/system_architecture_library/README.md"],
-      "summary": "Requirement: learn and persist architecture/reliability disciplines in a cold non-authoritative library, diagnose current Universal gaps, and make no refactor/behavior change until a later explicit user command."
+      "summary": "Requirement: build a cold non-authoritative benchmark library, diagnose Universal gaps, and hold all production refactor until later explicit authorization."
     },
     {
       "stage": "M2_FULL_SYSTEM_IMPACT_MAP",
       "revision": 3,
       "evidence_refs": ["SYSTEM_BLUEPRINT.md","ORCHESTRATION_BLUEPRINT.md","OWNER_REGISTRY.json","EXECUTION_READINESS_CONTRACT.json","CONTROL_SIGNAL_CONTRACT.json","research/system_architecture_library/12_cross_framework_matrix.md"],
-      "summary": "Mapped lifecycle/decomposition, control/reconciliation, authority/change, inter/intra-owner interaction, execution environments, supervision/recovery, reliability governance, verification/coverage, formal correctness, hazards, evolution and resilience experiments across the current control plane."
+      "summary": "Mapped lifecycle/decomposition, control/reconciliation, authority/change, owner interactions, environments, durable execution lineage, supervision/recovery, reliability, assurance, formal correctness, hazards, learning and resilience."
     },
     {
       "stage": "M2A_ROOT_CAUSE_FAILURE_HISTORY_AND_ABSTRACTION_ESCALATION",
       "revision": 4,
-      "evidence_refs": ["audits/UNIVERSAL_GLOBAL_CONTROL_PLANE_AUDIT_V67_FINAL_2026-10-13.json","SYSTEM_MAINTENANCE_POLICY.json","research/system_architecture_library/13_current_universal_gap_audit.md"],
-      "summary": "Root cause is benchmark-scope blindness in the maintenance meta-method: a global audit can be locally complete while its question taxonomy omits mature architecture/control/safety/reliability families."
+      "evidence_refs": ["audits/UNIVERSAL_GLOBAL_CONTROL_PLANE_AUDIT_V67_FINAL_2026-10-13.json","research/system_architecture_library/13_current_universal_gap_audit.md"],
+      "summary": "Root cause is benchmark-scope blindness at the maintenance meta-method layer. Pass-1 research reduced the gap but the later user challenge correctly showed that the depth claim was too strong."
+    },
+    {
+      "stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
+      "revision": 13,
+      "evidence_refs": ["research/system_architecture_library/15_prior_frameworks_deep_pass.md","research/system_architecture_library/16_agent_runtime_frameworks_2026.md","research/system_architecture_library/19_pass2_sources.md"],
+      "summary": "Completed Pass-2 architecture-comparison-depth research for every prior framework and added current OpenAI Agents API/SDK, Microsoft Agent Framework 1.x, Google ADK 2.x/Agents CLI and LangGraph/LangSmith. Depth covers purpose, runtime/control model, state/authority, failure/recovery, verification/observability/evaluation, lifecycle/change and misuse limits. Version-sensitive current framework facts are timestamped and must be reobserved before implementation dependency. No exhaustive/normative mastery claim is made."
+    },
+    {
+      "stage": "M3A_CAPABILITY_REUSE_SCAN",
+      "revision": 14,
+      "evidence_refs": ["runtime/maintenance_controller.py","runtime/system_audit.py","runtime/mutation_outcome.py","EXECUTION_READINESS_CONTRACT.json","research/system_architecture_library/17_state_resume_side_effect_matrix.md"],
+      "summary": "Reconfirmed substantial reusable primitives: task/lease/CAS authority, state/signal separation, action receipts, unknown-outcome handling, readiness handshake, controller reopen and fault injection. Current-runtime research indicates future work should extend these primitives with lineage/replay/effect semantics rather than add framework-specific subsystems."
+    },
+    {
+      "stage": "M4_ALTERNATIVES_AND_FALSIFICATION",
+      "revision": 15,
+      "evidence_refs": ["research/system_architecture_library/12_cross_framework_matrix.md","research/system_architecture_library/20_pass2_current_universal_gap_audit.md","research/system_architecture_library/21_pass2_candidate_map.md"],
+      "summary": "Rejected literal framework transplantation, a single generic runtime abstraction that erases substrate semantics, and a framework-zoo of supervisory agents. Candidate consolidation remains 5–10 cross-cutting primitives, with implementation choice intentionally undecided."
+    },
+    {
+      "stage": "M4A_FACT_DECISION_FRONTIER",
+      "revision": 16,
+      "evidence_refs": ["research/system_architecture_library/CATALOG.json","research/system_architecture_library/18_agent_runtime_failure_case_matrix.md"],
+      "summary": "Resolved retrievable architecture/runtime facts sufficient for diagnosis. The human decision frontier is unchanged: no refactor/adoption is authorized until the user explicitly commands it. Paid standards and future framework behavior remain outside the evidence boundary."
+    },
+    {
+      "stage": "M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION",
+      "revision": 17,
+      "evidence_refs": ["ENTRYPOINT.md","research/system_architecture_library/README.md"],
+      "summary": "Keep the entire research library cold-path/non-authoritative. Do not add framework names or research files to normal bootstrap, account instructions, owner business workflow, execution routing or production gates."
+    },
+    {
+      "stage": "M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET",
+      "revision": 18,
+      "evidence_refs": ["research/system_architecture_library/21_pass2_candidate_map.md"],
+      "summary": "Anti-bloat budget: derive views from current authorities, avoid duplicated registries/counters/knowledge stores, select version-specific runtime evidence only on demand, preserve BUSINESS ownership, and consolidate replay/HITL/idempotency under shared lineage/effect concepts if later justified."
+    },
+    {
+      "stage": "M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST",
+      "revision": 19,
+      "evidence_refs": ["research/system_architecture_library/20_pass2_current_universal_gap_audit.md","research/system_architecture_library/21_pass2_candidate_map.md"],
+      "summary": "Pass 2 identifies highest payoff in derived system model, environment/runtime semantics, assurance/coverage trace, measurable reliability, supervision/FDIR, hazard analysis, formal writer model, execution lineage/effect idempotency and independence/evaluation promotion. These are still candidates; no production surface is admitted."
     }
   ],
   "reopen_history": [
     {
       "target_stage": "M3_LEARNING_AND_EVIDENCE_SCOUT",
       "revision": 12,
-      "reason": "User challenged the depth claim after the first research pass and explicitly required all previously shallow framework study to be deepened before any refactor. The same request adds current agent-runtime families—OpenAI Agents API/SDK, Microsoft Agent Framework, Google ADK 2.x/Agents CLI, and LangGraph/LangSmith—as direct benchmark subjects. Prior M3-M6A receipts are therefore invalidated and must be regenerated from a deeper source/runtime/failure-mode/lifecycle comparison. Read-only web/source research performed before this checkpoint made no production or BUSINESS mutation.",
-      "evidence_refs": ["user-signal://2026-10-13/deepen-all-prior-framework-study-before-refactor","research/system_architecture_library/CATALOG.json"]
+      "reason": "User challenged the depth claim after Pass 1 and required all prior framework study to be deepened before any refactor, adding OpenAI Agents API/SDK, Microsoft Agent Framework, Google ADK and LangGraph as direct benchmark subjects.",
+      "evidence_refs": ["user-signal://2026-10-13/deepen-all-prior-framework-study-before-refactor"]
     }
   ],
-  "investigation_resolution": null,
-  "prepatch_checkpoint": null,
-  "blocker": null,
-  "assurance_ceiling": "DEEP_RESEARCH_REOPEN_ACTIVE__NO_REFACTOR_OR_PRODUCTION_BEHAVIOR_CHANGE_AUTHORIZED"
+  "research_persistence_findings": [
+    {
+      "finding": "TWO_PASS2_RESEARCH_FILES_WERE_PUBLISHED_WITH_GITHUB_CONTENTS_API_WITHOUT_EXPLICIT_OBSERVED_HEAD_CAS",
+      "classification": "OPERATOR_PROCESS_DEVIATION__NO_CONFLICT_OBSERVED__NO_BUSINESS_OR_PRODUCTION_BEHAVIOR_CHANGE",
+      "evidence_refs": ["github-commit://5e748d0dd9fc5f7f48392680335e857237b938ca","github-commit://7bb4752b9c02be3dea5bd398f3aa1082456470d7"],
+      "current_action": "Disclosed and stopped. Remaining checkpoint is published from reread current main with expected-HEAD CAS. This reinforces the known limitation that compliant writer discipline is procedural rather than physically enforced by connector permissions; no architecture refactor is authorized in this run."
+    }
+  ],
+  "investigation_resolution": "PASS2_DEEP_RESEARCH_COMPLETE__G01_G24_RETAINED_AND_REFINED__G25_G30_ADDED__NO_REFACTOR_APPLIED",
+  "blocker": {
+    "reason": "USER_EXPLICIT_HOLD_FOR_REFACTOR_COMMAND: learning library and diagnosis are complete, but implementation/refactor must wait for a later explicit user command. On that command, reread current authority and re-evaluate candidates rather than treating research proposals as approved design.",
+    "evidence_refs": ["research/system_architecture_library/CATALOG.json","research/system_architecture_library/21_pass2_candidate_map.md"]
+  },
+  "assurance_ceiling": "PASS2_PUBLIC_PRIMARY_OR_OFFICIAL_SOURCE_ARCHITECTURE_COMPARISON_PLUS_CURRENT_IMPLEMENTATION_FAILURE_EVIDENCE__NO_NORMATIVE_CERTIFICATION__NO_EXHAUSTIVE_API_SOURCE_OR_FUTURE_VERSION_MASTERY__NO_REFACTOR_APPLIED"
 }

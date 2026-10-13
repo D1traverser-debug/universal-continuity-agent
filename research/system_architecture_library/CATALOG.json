@@ -1,11 +1,13 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "library_id": "system-architecture-reliability-benchmark-library",
-  "status": "LEARNING_EVIDENCE_COMPLETE__NON_AUTHORITY__REFACTOR_HOLD",
+  "status": "PASS2_DEEP_RESEARCH_COMPLETE__NON_AUTHORITY__REFACTOR_HOLD",
   "created_at": "2026-10-13T17:12:18+08:00",
+  "pass2_completed_at": "2026-10-13T18:20:00+08:00",
   "load_policy": "COLD_PATH_ONLY",
   "authority_effect": "NONE",
   "implementation_authorized": false,
+  "depth_claim": "ARCHITECTURE_COMPARISON_DEPTH__PURPOSE_RUNTIME_STATE_AUTHORITY_FAILURE_RECOVERY_VERIFICATION_OBSERVABILITY_LIFECYCLE_LIMITATIONS__NOT_EXHAUSTIVE_API_SOURCE_OR_NORMATIVE_STANDARD_MASTERY",
   "parent_dimensions": [
     "PURPOSE_LIFECYCLE_DECOMPOSITION",
     "CONTROL_RECONCILIATION",
@@ -18,7 +20,10 @@
     "FORMAL_CORRECTNESS",
     "SAFETY_HAZARD_CONTROL",
     "EVOLUTION_LEARNING",
-    "RESILIENCE_EXPERIMENTS"
+    "RESILIENCE_EXPERIMENTS",
+    "DURABLE_EXECUTION_LINEAGE",
+    "HITL_APPROVAL_AND_REPLAY",
+    "EVALUATION_FEEDBACK_LIFECYCLE"
   ],
   "frameworks_studied": [
     "NASA_SYSTEMS_ENGINEERING",
@@ -40,9 +45,25 @@
     "IEC_61508_PUBLIC_FUNCTIONAL_SAFETY_LIFECYCLE",
     "NASA_FDIR_FAULT_MANAGEMENT",
     "STPA",
-    "CHAOS_ENGINEERING"
+    "CHAOS_ENGINEERING",
+    "OPENAI_AGENTS_API_2026",
+    "OPENAI_AGENTS_SDK_2026",
+    "MICROSOFT_AGENT_FRAMEWORK_1_X_2026",
+    "GOOGLE_ADK_2_X_2026",
+    "GOOGLE_AGENTS_CLI_2026",
+    "LANGGRAPH_1_2_X_2026",
+    "LANGSMITH_2026"
   ],
-  "files": [
+  "pass2_files": [
+    "15_prior_frameworks_deep_pass.md",
+    "16_agent_runtime_frameworks_2026.md",
+    "17_state_resume_side_effect_matrix.md",
+    "18_agent_runtime_failure_case_matrix.md",
+    "19_pass2_sources.md",
+    "20_pass2_current_universal_gap_audit.md",
+    "21_pass2_candidate_map.md"
+  ],
+  "historical_pass1_files": [
     "README.md",
     "SOURCES.md",
     "01_systems_engineering_safety_lifecycle.md",
@@ -61,43 +82,47 @@
     "13_current_universal_gap_audit.md",
     "14_refactor_candidate_map.md"
   ],
-  "gap_summary": {
-    "high_or_medium_high": [
-      "G01_ARCHITECTURE_BENCHMARK_TAXONOMY_NOT_DURABLE_IN_META_METHOD",
-      "G02_NO_UNIFIED_DERIVED_SYSTEM_MODEL_GRAPH",
-      "G03_INTER_OWNER_INTERACTION_CONTRACT_UNDERSPECIFIED",
-      "G04_ENVIRONMENT_SUBSTRATE_ARCHITECTURE_FRAGMENTED",
-      "G05_NO_QUANTITATIVE_SLI_SLO_ERROR_BUDGET",
-      "G06_NO_COMPLETE_REQUIREMENT_TO_EVIDENCE_TRACE_MATRIX",
-      "G07_NO_FORMAL_MODEL_CHECKING_FOR_CORE_WRITER_AUTHORITY_PROTOCOL",
-      "G08_NO_EXPLICIT_RUNTIME_SUPERVISION_RECOVERY_TOPOLOGY",
-      "G09_FDIR_DECOMPOSITION_INCOMPLETE",
-      "G10_NO_SYSTEM_HAZARD_UNSAFE_CONTROL_ACTION_MODEL",
-      "G11_NO_VERIFICATION_COVERAGE_CLOSURE",
-      "G13_COMMON_MODE_INDEPENDENCE_UNDERMODELED",
-      "G16_NO_RESOURCE_LEVEL_GITOPS_DESIRED_OBSERVED_RECONCILER_INVENTORY",
-      "G19_NO_SHARED_EXTERNAL_MUTATION_IDEMPOTENCY_RETRY_CONTRACT",
-      "G23_CONCURRENT_MULTIPLE_FAULT_ANALYSIS_NOT_FIRST_CLASS"
-    ],
-    "medium": [
-      "G12_DRIVER_MONITOR_REFERENCE_MODEL_SEPARATION_PARTIAL",
-      "G14_ARCHITECTURE_FITNESS_MAP_FRAGMENTED",
-      "G15_MAPE_K_KNOWLEDGE_VIEW_UNTYPED",
-      "G17_PROGRESSIVE_ROLLOUT_CANARY_AD_HOC",
-      "G18_CHAOS_STEADY_STATE_BLAST_RADIUS_CONTRACT_ABSENT",
-      "G20_PLATFORM_RESPONSIBILITY_GROWTH_UNMEASURED",
-      "G21_OPERATIONAL_TOIL_UNQUANTIFIED",
-      "G22_PROMOTION_LIFECYCLE_NOT_UNIFORM"
-    ],
-    "conditional": [
-      "G24_WRITER_MODEL_TRANSITION_TRIGGER_NOT_FORMALLY_GOVERNED"
-    ]
+  "current_gap_audit_ref": "research/system_architecture_library/20_pass2_current_universal_gap_audit.md",
+  "current_candidate_ref": "research/system_architecture_library/21_pass2_candidate_map.md",
+  "pass2_new_findings": [
+    "G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL",
+    "G26_HITL_APPROVAL_BINDING_NOT_SHARED_INVARIANT",
+    "G27_CONTEXT_COMPACTION_GOVERNANCE_NOT_FIRST_CLASS",
+    "G28_RUNTIME_REPLAY_AND_STATE_CLASS_TAXONOMY_UNDECLARED",
+    "G29_PROTOCOL_INTEGRATION_COMPATIBILITY_NOT_FIRST_CLASS",
+    "G30_EVALUATION_FEEDBACK_PROMOTION_LIFECYCLE_FRAGMENTED"
+  ],
+  "highest_priority_findings_after_pass2": [
+    "G02_NO_UNIFIED_DERIVED_SYSTEM_MODEL_GRAPH",
+    "G04_ENVIRONMENT_SUBSTRATE_ARCHITECTURE_FRAGMENTED",
+    "G05_NO_QUANTITATIVE_SLI_SLO_ERROR_BUDGET",
+    "G06_NO_COMPLETE_REQUIREMENT_TO_EVIDENCE_TRACE_MATRIX",
+    "G07_NO_FORMAL_MODEL_CHECKING_FOR_CORE_WRITER_AUTHORITY_PROTOCOL",
+    "G08_NO_EXPLICIT_RUNTIME_SUPERVISION_RECOVERY_TOPOLOGY",
+    "G09_FDIR_DECOMPOSITION_INCOMPLETE",
+    "G10_NO_SYSTEM_HAZARD_UNSAFE_CONTROL_ACTION_MODEL",
+    "G11_NO_VERIFICATION_COVERAGE_CLOSURE",
+    "G13_COMMON_MODE_INDEPENDENCE_UNDERMODELED",
+    "G19_NO_SHARED_EXTERNAL_MUTATION_IDEMPOTENCY_RETRY_CONTRACT",
+    "G23_CONCURRENT_MULTIPLE_FAULT_ANALYSIS_NOT_FIRST_CLASS",
+    "G25_NO_UNIFIED_DURABLE_EXECUTION_LINEAGE_MODEL",
+    "G28_RUNTIME_REPLAY_AND_STATE_CLASS_TAXONOMY_UNDECLARED"
+  ],
+  "research_freshness": {
+    "version_sensitive_agent_framework_facts_observed_on": "2026-10-13",
+    "must_reobserve_before_implementation_dependency": true,
+    "current_release_observations": {
+      "GOOGLE_ADK_PYTHON": "2.10.0 observed",
+      "LANGGRAPH": "1.2.13 observed",
+      "MICROSOFT_AGENT_FRAMEWORK_PYTHON": "1.19.0 observed",
+      "OPENAI_AGENTS_API": "current official Agents API beta documentation observed"
+    }
   },
   "standards_boundary": {
     "do_178c_normative_conformance_claimed": false,
     "iec_61508_normative_conformance_claimed": false,
     "uvm_ieee_1800_2_conformance_claimed": false,
-    "note": "Public first-party/original sources are used for architecture learning; paid normative standards are not reproduced and no certification claim is made."
+    "note": "Public first-party/original sources are architecture-learning evidence only; paid normative standards are not reproduced and no certification claim is made."
   },
   "next_gate": "M7_IMPLEMENTATION_AND_SUPERSESSION",
   "next_gate_status": "BLOCKED_PENDING_EXPLICIT_USER_REFACTOR_COMMAND"

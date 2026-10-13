@@ -1,61 +1,105 @@
 # System Architecture & Reliability Benchmark Library
 
-Status: `LEARNING_EVIDENCE / NON_AUTHORITY`  
+Status: `PASS2_DEEP_RESEARCH_COMPLETE / NON_AUTHORITY / REFACTOR_HOLD`  
 Created: 2026-10-13  
 Scope: Universal Continuity architecture/maintenance benchmark research  
-Load policy: cold-path only; **never** part of normal bootstrap or ordinary BUSINESS execution.
+Load policy: **cold-path only**; never part of normal bootstrap or ordinary BUSINESS execution.
 
 ## Why this library exists
 
-The 2026-10-13 user challenge exposed a real meta-method gap: earlier Universal audits were bounded and mechanically careful, but the architecture-learning scout did not maintain a broad enough reference taxonomy across control theory, distributed systems, verification, safety engineering, reliability engineering, supervision/recovery and organizational flow. That omission can make a local or control-plane audit internally correct while still failing to ask an important family of system questions.
+A user challenge exposed a maintenance meta-method gap: an audit can be mechanically correct against its checklist while the checklist itself omits a mature family of architecture, control, verification, recovery or reliability questions. A second challenge correctly identified that the first research pass was still too shallow to be called “deep learning.”
 
-This directory is the corrective **knowledge/evidence library**, not the corrective architecture. It deliberately does **not** change `ENTRYPOINT.md`, `SYSTEM_BLUEPRINT.md`, owner contracts, BUSINESS state, controller behavior, Git mutation rules, execution routing or production gates. Those changes are held until an explicit later refactor command.
+Pass 2 therefore raises the research bar. A studied framework must now be understood at architecture-comparison depth across:
 
-## Parent-system outline used for the study
+1. purpose/problem boundary;
+2. runtime/control/execution model;
+3. state and authority;
+4. failure semantics;
+5. recovery/resume/reconciliation;
+6. verification/observability/evaluation;
+7. lifecycle/change/versioning;
+8. explicit non-guarantees and misuse boundaries;
+9. mapping to Universal without cargo-cult adoption.
 
-Instead of treating named frameworks as a flat checklist, the study maps them into twelve system dimensions:
+This is still not a claim of exhaustive mastery of every API, every source file, every paid standards clause or every future version.
 
-1. **Purpose / lifecycle / decomposition** — mission, scope, hierarchy, interfaces, requirement flow, lifecycle gates.
-2. **Control / reconciliation** — desired state, observed state, sensors, analysis, planning, effectors, convergence.
-3. **Authority / change** — source of truth, versioning, mutation ownership, reconciliation, rollback and promotion.
-4. **Topology / interaction** — owner boundaries, inter-group contracts, intra-group flow, dependency direction and cognitive load.
-5. **Execution / environment** — runtime substrate, dev/test/staging/production parity, capability availability and deployment context.
-6. **Supervision / recovery** — detection, isolation, restart, escalation, degraded mode, safe state and recovery limits.
-7. **Reliability governance** — service objectives, error budgets, toil, release velocity, observability and operational readiness.
-8. **Verification / assurance** — driver/monitor/reference checking, coverage, traceability, independence and evidence ceilings.
-9. **Formal correctness** — explicit state machines, safety/liveness properties, concurrency/interleaving exploration.
-10. **Safety / hazard control** — losses, hazards, unsafe control actions, constraints, fault interactions and lifecycle safety.
-11. **Evolution / learning** — incremental change, fitness functions, experiment feedback, supersession and knowledge retention.
-12. **Resilience experiments** — fault injection, steady-state hypotheses, blast radius, recovery observation and chaos boundaries.
+## Pass 2 scope
 
-## Framework families studied
+The original reliability/systems-engineering set was deepened:
 
-- NASA Systems Engineering / V-model-style lifecycle reasoning
-- Evolutionary Architecture and architectural fitness functions
-- Team Topologies / inter-group interaction modes and cognitive load
-- Distributed systems: consensus, stale leaders, idempotency, retries, backoff and ambiguous outcomes
-- UVM verification architecture
-- IBM autonomic computing / MAPE-K
-- Kubernetes Controller / Operator reconciliation
-- Erlang/OTP Supervision Tree
-- GitOps / OpenGitOps change authority
-- Google SRE reliability governance
-- AWS Well-Architected Operational Excellence
-- environment parity / Twelve-Factor dev-prod parity
-- DO-178C public design-assurance guidance and FAA recognition boundary
-- TLA+ / model checking
-- N-version programming and common-mode/correlated failures
-- IEC 61508 public functional-safety lifecycle material
-- NASA fault management / FDIR
-- STPA system-theoretic hazard analysis
-- Chaos Engineering
+- NASA Systems Engineering / V-model reasoning;
+- Evolutionary Architecture / fitness functions;
+- Team Topologies / inter-group interaction;
+- distributed-systems consistency, retries and idempotency;
+- UVM verification architecture;
+- MAPE-K;
+- Kubernetes controller/operator reconciliation;
+- Erlang/OTP supervision;
+- GitOps/OpenGitOps;
+- Google SRE;
+- AWS Well-Architected Operational Excellence;
+- environment parity / Twelve-Factor;
+- public DO-178C assurance guidance;
+- public IEC 61508 lifecycle/safety-integrity concepts;
+- TLA+ / model checking;
+- N-version/common-mode failure research;
+- NASA FDIR/fault management;
+- STPA;
+- Chaos Engineering.
+
+And current agent-runtime families were added as first-class subjects:
+
+- OpenAI Agents API;
+- OpenAI Agents SDK;
+- Microsoft Agent Framework current 1.x;
+- Google ADK current 2.x;
+- Google Agents CLI/evaluation lifecycle;
+- LangGraph current 1.2.x;
+- LangSmith tracing/evaluation/deployment lifecycle.
+
+## Parent dimensions
+
+The research is organized around architecture questions rather than product names:
+
+1. Purpose / lifecycle / decomposition
+2. Control / reconciliation
+3. Authority / change
+4. Topology / interaction
+5. Execution / environment
+6. Supervision / recovery
+7. Reliability governance
+8. Verification / assurance
+9. Formal correctness
+10. Safety / hazard control
+11. Evolution / learning
+12. Resilience experiments
+13. Durable execution lineage
+14. HITL / approval / replay semantics
+15. Evaluation feedback lifecycle
 
 ## Reading order
 
-Start with `12_cross_framework_matrix.md`, then `13_current_universal_gap_audit.md`. Individual framework notes explain what a pattern actually means before any mapping is attempted. `14_refactor_candidate_map.md` contains **candidates only** and is intentionally frozen pending user authorization.
+For the current deep pass:
 
-## Epistemic and standards boundary
+1. `15_prior_frameworks_deep_pass.md`
+2. `16_agent_runtime_frameworks_2026.md`
+3. `17_state_resume_side_effect_matrix.md`
+4. `18_agent_runtime_failure_case_matrix.md`
+5. `19_pass2_sources.md`
+6. `20_pass2_current_universal_gap_audit.md`
+7. `21_pass2_candidate_map.md`
 
-This library distills publicly accessible first-party/original material and high-signal primary papers. It does not reproduce paid standards, and it does not claim normative compliance with DO-178C, IEC 61508, IEEE 1800.2/UVM, or any certification regime. Public official material is enough to identify useful architecture questions, not enough to certify this system.
+The original `01`–`14` notes remain historical Pass-1 evidence and should not be mistaken for the current depth claim.
 
-Framework names are not authority. A similarity to Kubernetes, UVM, MAPE-K, SRE, STPA or another discipline is a candidate lens only. Literal transplantation is rejected unless it fits Universal's actual threat model, owner boundaries, runtime and evidence requirements.
+## Authority boundary
+
+This directory is **learning/evidence, not corrective architecture**. It does not change `ENTRYPOINT.md`, `SYSTEM_BLUEPRINT.md`, owner contracts, BUSINESS state, execution routing, writer semantics or production gates. `21_pass2_candidate_map.md` is frozen candidate material only.
+
+No framework name is authority. No architecture change is authorized until a later explicit user command causes the maintenance controller to leave the M7 hold after rereading current authority and reassessing the candidates.
+
+## Standards and freshness boundary
+
+- Paid normative DO-178C and IEC 61508 text is not reproduced; no certification claim is made.
+- UVM public concepts do not establish IEEE 1800.2 conformance.
+- GitHub issue evidence is implementation failure evidence, not normative behavior.
+- OpenAI/Microsoft/Google/LangGraph facts are version-sensitive and timestamped to 2026-10-13; they must be re-observed before becoming implementation dependencies.

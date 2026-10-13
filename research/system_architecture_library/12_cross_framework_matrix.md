@@ -1,68 +1,76 @@
-# 12 — Cross-Framework Matrix
+# 12 — Cross-Framework Matrix — Pass 2
 
-This matrix is a **question generator**, not a framework-adoption plan. Each family sees a different failure surface; combining them reduces blind spots without requiring literal transplantation.
+Status: `QUESTION_GENERATOR / NON_AUTHORITY`
 
-| System dimension | Strong source lenses | Core question for Universal | Current state |
-|---|---|---|---|
-| Purpose / lifecycle / outline | NASA SE, IEC 61508, DO-178C public guidance | Are goals, requirements, interfaces, implementation, verification, validation, operation, modification and retirement connected end-to-end? | PARTIAL; strong local contracts, weak global trace matrix |
-| Evolution | Evolutionary Architecture, AWS OE, SRE | Which architectural characteristics must remain fit as the system changes, and how are they measured? | PARTIAL; many tests, no unified fitness map |
-| Inter-group interaction | Team Topologies, hierarchical MAPE-K | What interaction mode/dependency exists between Universal and each owner, and when is it temporary vs service-like? | GAP |
-| Intra-group flow | UVM, NASA product realization | How does stimulus/input become actions, evidence, checking, transition and output inside an owner? | PARTIAL / owner-specific |
-| Desired vs observed state | Kubernetes, GitOps, MAPE-K | Who owns desired state, who owns live observed state, and what reconciler is authorized? | PARTIAL; authority semantics strong but resource inventory absent |
-| Control loop | MAPE-K, Kubernetes, STPA | What is monitored, analyzed, planned, executed; what process model can be stale; what effectors can cause harm? | PARTIAL / implicit |
-| Change authority | GitOps, NASA CM, DO-178C/IEC lifecycle | How does a candidate change become accepted authority, and how is rollback/supersession controlled? | STRONG locally, promotion model not uniform |
-| Distributed consistency | Raft, idempotency practice | Under which writer/topology assumptions is lease+CAS safe; how are ambiguous outcomes/retries handled? | Strong single-writer design; retry contract incomplete |
-| Supervision / recovery | Erlang/OTP, NASA FDIR | What fails together, restarts together, escalates, degrades, or enters safe hold? | GAP as a general architecture |
-| Reliability governance | Google SRE, AWS OE | What SLI/SLO/error budget governs reliability vs change velocity and operational toil? | GAP |
-| Environment architecture | AWS OE, Twelve-Factor, execution-readiness contract | What can execute in chat/CI/owner runtime/plugin/external verifier, with what parity and evidence promotion? | PARTIAL; capability handshake exists, no unified matrix |
-| Verification architecture | UVM, NASA V&V, DO-178C | Are driver and monitor independent; what is the reference model; what coverage is closed? | PARTIAL; no unified coverage closure |
-| Formal correctness | TLA+, Raft formal-spec practice | Have core concurrency/state invariants been modeled across all interleavings? | GAP |
-| Diverse assurance | N-version research | Are reviewers/models actually independent across failure domains, or merely different labels on correlated paths? | PARTIAL; strong self-attestation rules, no common-mode matrix |
-| Safety/hazards | STPA, IEC 61508, NASA FDIR | What system losses/hazards can occur from unsafe control actions even without component failure? | GAP |
-| Resilience experiments | Chaos Engineering, UVM fault stimulus, NASA test | What steady state should survive which injected fault, with what blast radius? | PARTIAL; synthetic scenarios exist, no steady-state/coverage model |
-| Observability | SRE, MAPE-K, Kubernetes status/conditions | Which signals show user-facing health, control-plane health, saturation, and degradation? | PARTIAL; incidents/signals exist, operational metrics fragmented |
-| Knowledge / learning | MAPE-K Knowledge, Evolutionary Architecture, SRE postmortems | What knowledge is authoritative vs cached vs candidate vs historical, and how does accepted learning change future behavior? | Strong authority precedence; typed knowledge-plane view absent |
+The matrix combines mature systems/reliability disciplines with current agent runtimes. It is not an adoption checklist.
 
-## Framework complementarity
+| System dimension | Strong lenses | Current Universal assessment |
+|---|---|---|
+| Purpose/lifecycle/outline | NASA SE, V-model, IEC/DO public guidance | PARTIAL — local contracts strong; global requirement/evidence lifecycle incomplete |
+| Evolution/fitness | Evolutionary Architecture, SRE, AWS OE | PARTIAL — many checks; no unified fitness map |
+| Inter-owner interaction | Team Topologies, hierarchical MAPE-K, multi-agent runtimes | GAP — ownership clearer than interaction/backpressure/escalation mode |
+| Deterministic vs model routing | Google ADK 2.x, Microsoft workflows, LangGraph | STRENGTH/PARTIAL — deterministic maintenance exists; owner-specific business routing not uniformly modeled |
+| Desired vs observed | Kubernetes, GitOps, MAPE-K, LangSmith deployment reconciler | PARTIAL — authority semantics strong; per-resource reconciler inventory absent |
+| Execution environment | OpenAI Agents API, MS hosting, ADK, LangGraph, Twelve-Factor | GAP/PARTIAL — readiness exists; substrate/persistence/isolation/replay/evidence matrix absent |
+| Durable execution lineage | OpenAI RunState/Session, MS AgentSession+checkpoint, ADK session/events, LangGraph thread/checkpoint | GAP — task lease lineage strong, runtime-nested lineage not unified |
+| State taxonomy | current agent runtimes | GAP — session/workflow/memory/artifact/live external state distinctions not declared across adapters |
+| Replay/idempotency | distributed systems, all four current runtimes | PARTIAL — Git CAS/unknown outcome strong; shared external-effect replay contract absent |
+| HITL/approval | OpenAI SDK, MS RequestPort, ADK HITL, LangGraph interrupt | PARTIAL — user authority strong; exact approval occurrence binding not shared |
+| Context transformation | MS Harness compaction, OpenAI managed compaction, long-run agents | GAP/PARTIAL — Git truth protects business state, but compaction/control-obligation invariants not first-class |
+| Supervision/recovery | OTP, NASA FDIR | GAP — no shared dependency-aware restart/retry/degraded/escalation topology |
+| Reliability governance | Google SRE, AWS OE | GAP — no measurable SLI/SLO/error budget/toil governance |
+| Verification architecture | UVM, NASA V&V, DO public assurance, LangSmith/Agents CLI eval | PARTIAL — strong tests/fault injection, weak coverage closure/trace matrix |
+| Formal correctness | TLA+, Raft formal reasoning | GAP — core writer/CAS interleavings not model checked |
+| Independence/common mode | N-version research, multi-agent orchestrators | PARTIAL — self-attestation boundary strong; no independence matrix |
+| Hazard/control | STPA, IEC/NASA safety reasoning | GAP — no explicit losses/hazards/UCA model for high-impact controls |
+| Resilience experiments | Chaos Engineering, UVM fault stimulus | PARTIAL — synthetic failures exist; steady-state/blast-radius contracts absent |
+| Evaluation feedback | Agents CLI, LangSmith, MS evaluation, OpenAI traces/evals | PARTIAL/GAP — tests exist; live failure → reproducible eval → promotion lifecycle fragmented |
+| Protocol compatibility | MCP/A2A/provider integrations | PARTIAL — some pinning exists; selected-runtime protocol compatibility not first-class evidence |
+| Knowledge/learning | MAPE-K, postmortems, evolution system | STRONG/PARTIAL — authority precedence strong; typed control-loop knowledge view absent |
+
+## Complementary groups
 
 ### MAPE-K + Kubernetes + GitOps
+MAPE-K explains control-loop cognition; Kubernetes explains reconciliation; GitOps explains desired-state change authority. They are complementary, not synonyms.
 
-Together they distinguish **control-loop cognition**, **declarative reconciliation**, and **change authority**. They should not be collapsed into one mechanism. MAPE-K asks how the controller reasons; Kubernetes asks how current and desired state converge; GitOps asks how desired state is versioned/distributed/reconciled.
+### OTP + FDIR + SRE
+OTP gives dependency-aware bounded restart/escalation; FDIR adds detection/isolation/recovery/safe-state reasoning; SRE adds measurable objectives and operational-risk budgets.
 
-### OTP + NASA FDIR + SRE
+### UVM + V&V + TLA+
+UVM asks who drives/observes/checks and what coverage remains; V&V asks whether requirements and intended use are proven; TLA+ explores concurrency/state interleavings tests may miss.
 
-OTP gives dependency-aware restart/escalation; FDIR gives fault detection/isolation/recovery and safe/degraded response; SRE gives measurable reliability objectives and budgeted operational risk. Together they expose the difference between “we detected a defect” and “the system has a bounded, observable recovery strategy.”
+### STPA + N-version/common-mode analysis
+STPA catches unsafe control even when components nominally work; common-mode analysis prevents “many reviewers” from being mistaken for independent evidence.
 
-### UVM + NASA V&V + TLA+
+### Current agent runtimes
+OpenAI, Microsoft, ADK and LangGraph independently converge on several difficult boundaries: durable run identity, pause/resume, approval binding, checkpoint replay, external-effect idempotency, environment separation, tracing/evaluation and nested execution identity. Their differences are useful: there is no one generic “agent state” semantics.
 
-UVM emphasizes reusable drivers/monitors/scoreboards/coverage; NASA/assurance practice emphasizes requirement-to-verification/validation traceability; TLA+ explores state/concurrency properties. A system with all three evidence types is much harder to fool than one with only unit tests or reviewer prose.
+## Negative-space questions required after Pass 2
 
-### STPA + N-version research
+A future global architecture review should be able to answer:
 
-STPA attacks unsafe system control and flawed process models; N-version research attacks false confidence from apparently independent redundancy. Together they warn that several reviewers can agree on the same unsafe action if they share a flawed specification or evidence source.
+1. What is the parent-system outline and lifecycle boundary?
+2. Which decisions are deterministic workflow versus model judgment?
+3. What are every control loop’s sensors, process model, planner, effectors and authority?
+4. What are desired-state and observed-state authorities per managed resource?
+5. What owner/inter-owner interaction/dependency/backpressure paths exist?
+6. Which environment/runtime executes each capability, with what persistence, isolation and evidence ceiling?
+7. What exact durable lineage identifies task, runtime session, run, checkpoint, nested execution, tool request and external effect?
+8. Which state class is conversation/session, workflow/checkpoint, memory, artifact, cache or external live state?
+9. What is the replay unit after interruption/crash/restore for each runtime?
+10. How are external mutations idempotently identified and reconciled after unknown outcomes?
+11. What exact occurrence does an approval authorize, and when is it invalidated?
+12. Can compaction/summarization remove an obligation or change execution semantics without detection?
+13. What detects, isolates, recovers, degrades and escalates failures; what are retry/restart budgets?
+14. What SLI/SLO/error budget and toil data govern reliability versus change velocity?
+15. Which requirements map to which guards/tests/fault/model/live evidence?
+16. What states/transitions/interactions/environments/recovery paths remain uncovered?
+17. Which concurrency algorithms need model checking?
+18. Which reviewers share common-mode failure sources?
+19. What losses/hazards/unsafe control actions exist for high-impact mutations?
+20. What safe chaos/fault experiment would falsify the design, with what steady-state/blast-radius/abort rule?
+21. How does a live failure become a reproducible eval and then a promoted regression guard?
+22. What version/protocol combination produced the evidence being relied on?
+23. What topology change would invalidate the current single-writer consistency model?
 
-### Evolutionary Architecture + Team Topologies + Operational Excellence
-
-These lenses prevent the remedy itself becoming the next problem: use fitness functions to guide change, explicit interaction modes to prevent coordination sprawl, and small reversible changes to limit blast radius.
-
-## Negative-space questions now required by the benchmark
-
-A future architecture review should be able to answer, at minimum:
-
-1. What is the system outline and lifecycle boundary?
-2. What are the control loops and their sensors/effectors?
-3. What are the desired/observed states and reconcilers?
-4. What are the inter-owner and intra-owner interaction/dependency paths?
-5. What environments execute/verify each capability?
-6. What are the reliability objectives and budgets?
-7. What detects, isolates, recovers and escalates failures?
-8. What hazards/unsafe control actions exist?
-9. What requirements map to which verification and validation evidence?
-10. What transition/interaction/failure coverage remains untested?
-11. Which core algorithms need formal model checking?
-12. Which “independent” reviewers share common-mode failure domains?
-13. How is architecture evolution fitness measured?
-14. How are changes promoted, canaried, rolled back and retired?
-15. What chaos/fault experiments are safe and what steady state must survive them?
-
-These questions are research output only until the user authorizes refactor/adoption.
+These are research requirements only until the user authorizes implementation/refactor.
