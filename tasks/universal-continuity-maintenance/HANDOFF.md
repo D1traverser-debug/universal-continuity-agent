@@ -8,72 +8,79 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `69`
-- current controller run: `user-proposal-independence-and-main-cas-v65-2026-10-13`
-- current controller status: `ACTIVE` revision `18`, reopened to `M7_IMPLEMENTATION_AND_SUPERSESSION` by M10 second-order review
-- latest green hosted validation: GitHub Actions `38329561028` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
+- manifest_version: `71`
+- completed controller run: `user-proposal-independence-and-main-cas-v65-2026-10-13`
+- controller status: `COMPLETE` revision `23`
+- implementation/alignment validation: GitHub Actions `38330150551` / job `115077831629` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
+- final user-facing `COMMITTED` still requires live reread of the published closure checkpoint and its post-publish CI; this handoff does not treat a stored run id as perpetual current truth.
 
-## 本轮确认并修复的核心问题
+## 本轮完成的进化
 
-### 1. 不得把用户的想法、疑问或类比自动当成决定
+### 1. 用户提出的办法不再被自动当成决定
 
-现有冷路径维护政策本来已经规定：用户提出的 mechanism 不是默认 canonical，必须区分用户目标/约束与用户提出的办法，并挑战用户和助手的初始方案。但本轮仍出现了真实复发：用户只是问“你觉得怎么做”，系统就顺势创建 PR-first branch，把一个候选方案推成了实施方向。
+本轮暴露了一个真实复发：冷路径政策早已规定用户提出的 mechanism 不是默认 canonical，但实际对话中仍出现“用户只是问/提想法 → 系统顺势采纳 → 直接开始实施”的行为。
 
-因此这次没有再创建一套重复政策，而是把最小不变量提升到 `ENTRYPOINT.md` 热路径：
+因此没有再新建重复 policy，而是在 `ENTRYPOINT.md` 增加最小热路径不变量：
 
 > Questions, suggestions, analogies, or tentative ideas are candidates, not authority. Do not infer approval; assess independently before acting unless explicitly instructed.
 
-详细分类、证据、替代方案和 adoption 规则仍由 `SYSTEM_MAINTENANCE_POLICY.json` 负责。用户的明确目标/约束仍是高权威输入，但“顺着用户猜一个方案然后直接执行”不再合法。
+含义是：
+- 用户明确目标、约束、纠错仍是高权威输入；
+- 用户提出的具体做法、类比、猜测、疑问先作为 candidate；
+- 不得为了显得配合就揣测“用户已经同意这个方案”；
+- 先独立检查事实、目标、替代方案、失败模式和适用边界；
+- 只有证据/authority gate 支持，或用户明确决定/指令，才执行。
 
-### 2. Universal `main` 保持唯一工程权威，material write 使用 HEAD-CAS
+详细分类和 adoption 规则继续由 `SYSTEM_MAINTENANCE_POLICY.json` 持有，避免把 ENTRYPOINT 堆成大 prompt。
 
-此前把 `main protected=false` 单独标成 HIGH，是把多人/多独立 writer 仓库的威胁模型套到了当前 `SINGLE_ACTIVE_CHAT` 总控模型上。该结论已撤回。
+### 2. Universal 继续直接维护 `main`，但 material write 改成 HEAD-level CAS
 
-当前模型不是 PR-first。Universal material control-plane mutation 的标准路径由 `PROGRESS_OBSERVABILITY_POLICY.json` 约束：
+此前把 `main protected=false` 单独标成 HIGH，是错误地套用了多人/多独立 writer 的威胁模型。当前 repo 的 writer model 是 `SINGLE_ACTIVE_CHAT`，因此该 HIGH 结论已从架构和 handoff 撤销。
 
-1. 写前 reread 当前 `main` HEAD；
-2. 校验当前 active `lease_id / resume_epoch`；
-3. reread 本次操作所需的精确 authority；
-4. systemic/non-trivial maintenance 还必须由 controller 放行 `MATERIAL_PATCH`；
-5. 基于刚观测到的 HEAD 构造一个 tree 和一个 commit；
-6. 只用 `update_ref(force=false, expected_sha=observed_head)` 推进 `main`；
-7. 如果 HEAD 已变化，立即 abort，重新读取 HEAD / lease / authority 并重新判断，禁止 replay 或 force 旧 commit；
-8. 写后 reread `main`，观察 CI，再 reread authoritative task state 后才允许 `COMMITTED`。
+当前标准 material mutation 路径：
 
-这轮实际 checkpoint 与实现已经使用了这条 HEAD-level CAS 路径，而不是普通 contents 覆盖。
+1. reread 当前 `main` HEAD；
+2. verify 当前 active `lease_id / resume_epoch`；
+3. reread 本次操作需要的精确 authority；
+4. systemic/non-trivial maintenance 由 controller 放行 `MATERIAL_PATCH`；
+5. 基于刚观测的 HEAD 构造一个 tree + commit；
+6. 只允许 `update_ref(force=false, expected_sha=observed_head)` 推进 `main`；
+7. HEAD mismatch 时 abort，重新读取 HEAD / lease / authority，禁止 replay/force stale commit；
+8. 写后 reread `main`、观察 CI、再 reread authoritative task state，才允许 `COMMITTED`。
 
-### 3. PR-first 实验没有成为架构
+该规则由 `PROGRESS_OBSERVABILITY_POLICY.json` 持有，并由 `tests/test_user_proposal_and_main_mutation_integrity.py` 回归保护。
 
-本轮曾创建实验分支 `continuity/pr-first-mutation-gate-v65`。这是错误威胁模型下产生的候选实验；它没有 merge，也不是 authoritative implementation。当前架构明确：`PR-first` 和 branch protection **不是 `SINGLE_ACTIVE_CHAT` 模型的默认要求**。
+### 3. PR-first 不是当前默认架构
 
-如果未来 writer 模型真的变成多人、多个独立 Agent、机器人或外部服务可并发写入，再重新评估 GitHub-side branch protection / ruleset / permission gate。那是新的威胁模型决定，不是当前 `main protected=false` 自动等于 HIGH。
+当前模型不是 PR-first。实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation；它没有 PR，不得因为已经存在就自动 promotion。
 
-当前 assurance ceiling 仍需诚实保留：active-lease + HEAD-CAS 能防 stale/concurrent compliant writer 覆盖，但无法物理阻止一个本来就有 GitHub 写权限、且故意无视协议的 authorized writer。当前没有证据要求为这种更强威胁模型增加 PR 生命周期。
+`SYSTEM_BLUEPRINT.md` 现在明确：在 `SINGLE_ACTIVE_CHAT` 模型下，Universal `main` 是唯一工程权威；material compliant writes 使用 active lease + observed-HEAD CAS + CI + reread。PR-first / branch protection 只有在 writer topology、权限或威胁模型真实变化时再评估。
 
-## 本轮真实验证与 reopen
+保证边界也明确：HEAD-CAS 能防 stale/concurrent compliant writer 覆盖；它不能物理阻止一个本来就有 GitHub 写权限、且故意无视协议的 authorized writer。当前没有证据要求为这种更强威胁模型增加 PR 生命周期。
 
-- 第一版热路径规则写得过长，CI `38329213434` 真实失败：risk-tiered audit PASS、Agent architecture PASS、pytest `298 passed / 1 failed`；唯一失败是 `ENTRYPOINT.md` 8447 bytes 超过 8192-byte hot-path budget。
-- controller 因此 M8→M7 reopen，没有放宽预算，而是把热路径规则压缩成一句，详细语义继续留在冷路径 policy。
-- 修正后的 CI `38329561028` 全绿：risk-tiered audit PASS、Agent architecture harness PASS、full pytest PASS。
-- M10 二阶检查随后发现本 HANDOFF 仍保留旧的 “unprotected main = HIGH” 结论，因此再次 M10→M7 reopen。当前这次修改就是移除该 stale threat-model conclusion，并让 `SYSTEM_BLUEPRINT.md` 与已验证的 mutation contract 对齐。
+## 真实 controller / CI 轨迹
 
-## 与此前 v63 修复的关系
+本 run 完整经过 M0→M11，并有两次真实 reopen：
 
-此前已完成的两项修复继续有效：
-
-- ChatGPT automation/task existence、enabled state、scheduler liveness 属于 external product state；依赖现时状态的判断必须 live reread。用户主动删除核心监控不得被自动逆转。
-- `manifest_version` 是 task mutation/CAS lineage；`latest_meta_maintenance_run_ref` 是最近真正完成的 formal proof。普通 task mutation 不要求二者 exact equality，也不得为了追版本号伪造 formal proof。
+1. 第一版 ENTRYPOINT 规则过长，CI `38329213434` / job `115074858091`：risk-tiered audit PASS、Agent architecture PASS、pytest `298 passed / 1 failed`。唯一失败是 ENTRYPOINT 8447 bytes > 8192-byte budget。controller M8→M7 reopen，压缩热路径规则而没有放宽预算。
+2. 修正后 CI `38329561028` 全绿。
+3. M10 二阶检查发现旧 HANDOFF 仍写着 “unprotected main = HIGH / mutation gateway or branch protection”，会让下一次继承重新拿到错误威胁模型，因此 M10→M7 reopen。
+4. 对齐后的 authoritative implementation/checkpoint CI `38330150551` / `115077831629` 全绿：risk-tiered audit PASS、Agent architecture harness PASS、full pytest PASS。
+5. M9 确认该变化是 Universal control-plane invariant，不需要取得任何 BUSINESS lease、修改任何 BUSINESS truth 或复制 owner-local rule。
+6. M10 复核确认：旧 HIGH 文案已删除；PR-first 实验没有 PR 且非 authority；direct-main CAS 与 architecture/handoff 对齐；HARNESS monitor booleans 仍被限定为 lower-authority historical cache；独立语义/live outcome 保证仍未被夸大。
 
 ## 仍然 OPEN 的真实边界
 
-- `HARNESS_STATUS.json` 内旧 monitor-enabled 字段仍是历史 lower-authority cache；不得覆盖 live product reread 或 task manifest，下次安全 rebuild 时收敛即可。
+- `HARNESS_STATUS.json` 内旧 monitor-enabled 字段仍是 rebuildable lower-authority historical cache；不得覆盖 live product reread 或 task manifest，下次安全 rebuild 时收敛。
 - 历史 issue #12 只保留原始 silent enabled→disabled provenance 未解；本次用户主动删除不是复发证据。
-- `independent_meta_semantic_review` 仍 OPEN：CI/回归证明 scoped structural correctness，不证明独立语义判断与 live outcome。
-- formal controller-meta promotion 仍 OPEN；只能使用 genuinely COMPLETE trace，不能倒填历史。
-- Financial current-head architecture revalidation 与 fresh-chat DUAL 3-output retest 仍 OPEN；本 SYSTEM_INFRA 任务不取得 BUSINESS lease，不修改 BUSINESS truth。
+- `independent_meta_semantic_review` 仍 OPEN：CI/回归证明 scoped structural correctness，不证明独立语义判断或 live outcome。
+- formal controller-meta promotion 仍 OPEN；当前已有 genuinely COMPLETE trace 可供评估，但不得为了追版本号伪造 chronology。
+- Financial current-head architecture revalidation 与 fresh-chat DUAL 3-output retest 仍 OPEN；由 Financial owner authority 完成。
 
-## 后续原则
+## 后续默认原则
 
-默认不要再把“用户提出一个办法”解释为“用户已经决定采用”。先独立判断目标、证据、替代方案和适用威胁模型，再行动。
-
-Universal 当前继续直接维护 `main`；material control-plane write 使用 active lease + observed-HEAD CAS + CI + authoritative reread。只有当 writer topology / permission threat model 真实变化时，才重新评估 PR-first 或 GitHub-side protection。
+- 不要把用户的 suggestion/question/analogy/tentative idea 自动解释成 approval 或 architecture decision。
+- 先独立判断，再执行；明确用户指令除外。
+- Universal 当前继续直接维护 `main`，material write 使用 active lease + observed-HEAD CAS + CI + authoritative reread。
+- `main protected=false` 本身不再被定为当前 HIGH defect；如果 writer topology/permission threat model 变化，再重新评估 GitHub-side protection。
+- 不取得 BUSINESS lease，不改写 BUSINESS truth。
