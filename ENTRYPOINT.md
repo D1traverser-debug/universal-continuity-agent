@@ -6,7 +6,7 @@ Engineering authority: this repository `main`
 
 ## Kernel boundary
 
-Chat is ephemeral; the durable object is the task. Universal owns cross-owner control-plane invariants; domain owners keep business rules/state/evidence/artifacts. If required Continuity resources are unavailable, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; never rebuild execution truth from Memory or old chat.
+Chat is ephemeral; the durable object is the task. Universal owns cross-owner control-plane invariants; domain owners own business truth. If Continuity authority is unavailable, fail closed with `CONTINUITY_BOOTSTRAP_UNAVAILABLE`; never rebuild execution truth from Memory or old chat.
 
 ## Minimal bootstrap invariant
 
@@ -21,30 +21,30 @@ Everything else is event-driven and cold-path unless activated.
 
 ## Lightweight ingress triage
 
-Before a material response/action, do only a cheap defect-signal preflight: `NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`.
+Before material response/action classify only: `NO_DEFECT`, `INVESTIGATE`, or `CONFIRMED_DEFECT`.
 
-- `NO_DEFECT` → normal owner/business execution; do not load full maintenance or global discovery.
-- `INVESTIGATE` → inspect only evidence needed to confirm/reject the defect; no suspected-authority mutation.
+- `NO_DEFECT` → normal execution; no maintenance stack/global discovery.
+- `INVESTIGATE` → inspect only evidence needed to confirm/reject; do not mutate suspected authority.
 - `CONFIRMED_DEFECT` → enter maintenance in the same turn.
 
-For systemic/non-trivial maintenance, `runtime/maintenance_controller.py` enforces `SYSTEM_MAINTENANCE_POLICY.json`. It forbids stage skipping, material patching before implementation, and closure before all canonical stages; re-open invalidates downstream receipts.
+Systemic/non-trivial maintenance is controlled by `runtime/maintenance_controller.py` + `SYSTEM_MAINTENANCE_POLICY.json`; no stage skipping, pre-M7 material patch, or premature closure.
 
 ## Intent routing
 
 `学习继承，任务不继承` applies to **NEW_TASK**. Explicit `继承 / 继续 / 恢复 / 接着上次` is `CONTINUE` first.
 
-- **Bare CONTINUE** → `BARE_INHERIT_DISCOVERY.json`; derive the full source quorum from `OWNER_REGISTRY.json`; query every required source before reporting a total.
+- **Bare CONTINUE** → `BARE_INHERIT_DISCOVERY.json`; derive quorum from `OWNER_REGISTRY.json` and query every required source before totals.
 - **Named CONTINUE** → exact owner/task manifest + short checkpoint first; global discovery only if ambiguous.
 - **SYSTEM_INFRA** → explicit-only; never a bare candidate.
 - **NEW_TASK** → matching owner, without unfinished task state.
 
-`OWNER_REGISTRY.json` is the sole control-plane owner-membership authority. Parallel copied owner lists are forbidden.
+`OWNER_REGISTRY.json` is the sole control-plane owner-membership authority; copied owner lists are forbidden.
 
 ## Continuation invariant
 
-For a selected durable task: read manifest + short checkpoint; show **继承前进度** before takeover mutation; reconcile protocol if needed; acquire/verify writer lease; load only next-action artifacts/capabilities; continue from authoritative `current_stage / next_action`.
+For a selected durable task: read manifest + short checkpoint; show **继承前进度** before takeover; reconcile protocol if needed; acquire/verify writer lease; load only next-action evidence/capabilities; continue from authoritative `current_stage / next_action`.
 
-A real takeover increments `resume_epoch` and supersedes the old lease. Same-writer refresh preserves both. `INCOMPLETE_DISCOVERY` never auto-resumes. Bare candidates are resumable USER tasks only.
+Real takeover increments `resume_epoch` and supersedes the old lease; same-writer refresh preserves both. `INCOMPLETE_DISCOVERY` never auto-resumes. Bare candidates are resumable USER tasks only.
 
 ## Event-driven authority loading
 
@@ -53,10 +53,10 @@ Load only when activated:
 - **Owner admission/topology** → `OWNER_REGISTRY.json` + `AGENT_ARCHITECTURE_CONTRACT.json`.
 - **Protocol mismatch** → `VERSION_LIFECYCLE_POLICY.json` + `LIVE_CHAT_RECONCILIATION_POLICY.json`.
 - **Recovery gap** → `CONTEXT_RECOVERY_POLICY.json` → exact refs → selective history.
-- **Material owner execution** → exact owner Skill + `continuity/EXECUTION_CAPABILITIES.json` + `EXECUTION_READINESS_CONTRACT.json`; handshake only required capabilities.
-- **Execution/methodology proof** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; apply the current receipt/action-binding contract there rather than copying it into this bootstrap.
-- **Artifact/file/storage** → `artifact_io@1.0`; load `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when activated.
-- **Plausible system-defect hypothesis** → `SYSTEM_MAINTENANCE_POLICY.json` + `runtime/maintenance_controller.py`; triage before discussion. Confirmed defects enter maintenance/evolution in the same turn; never close them as an unowned “future risk”.
+- **Material owner execution** → owner Skill + `continuity/EXECUTION_CAPABILITIES.json` + `EXECUTION_READINESS_CONTRACT.json`; handshake required capabilities only.
+- **Execution/methodology proof** → `OWNER_ADAPTER_CONTRACT.json`, `runtime/execution_receipt.py`, `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`.
+- **Artifact/file/storage** → `artifact_io@1.0`; `ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json` only when activated.
+- **Plausible system defect** → `SYSTEM_MAINTENANCE_POLICY.json` + maintenance controller; triage before discussion, confirmed defects enter maintenance same turn.
 - **Maintenance/repeated failure/drift/material correction** → `operational_hygiene@1.0` + maintenance controller.
 - **Durable learning/evolution** → `evolution@1.0` + `CONTINUOUS_LEARNING_POLICY.md`.
 - **Media evidence/distillation** → `MEDIA_DISTILLATION_PROTOCOL.md`.
@@ -66,19 +66,17 @@ Methodology profiles are conditional contracts loaded only on activation. Owners
 
 ## Owner execution boundary
 
-Repository declarations are capability ceilings, not current execution proof. Before a material owner action, refresh the exact owner Skill/capability manifest, observe only capabilities needed now, evaluate readiness/methodology, use only a real allowed route, bind receipts to the exact action/input, and block only the unavailable hard gate.
+Declarations are capability ceilings, not execution proof. Before material owner action, refresh exact owner Skill/capability, observe only needed capabilities, evaluate readiness/methodology, use a real allowed route, bind receipts to exact action/input, and block only unavailable hard gates.
 
-Operational methodology proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration conformance, owner regression or CI must not substitute for current-action operational proof.
-
-Normal product use is one ChatGPT owner entry. Executor/readiness/assurance selection is system-internal and must not create a second business SOP, alter the TaskContract, or silently reduce outputs.
+Operational proof uses `runtime/methodology_conformance.py:evaluate_operational_methodology_conformance`; declaration, regression or CI does not substitute for current-action proof. Normal product use remains one ChatGPT owner entry; internal executor/readiness/assurance selection must not create a second business SOP or alter the TaskContract.
 
 ## Agent product architecture
 
-Every BUSINESS owner exposes the `agent_manifest_ref` declared by `OWNER_REGISTRY.json`:
+Every BUSINESS owner exposes the `agent_manifest_ref` from `OWNER_REGISTRY.json`:
 
 `Skill/router → Runtime/executor → Workflow/state → Harness/eval → References → Continuity`.
 
-Universal validates structure through `AGENT_ARCHITECTURE_CONTRACT.json` and `runtime/agent_architecture_audit.py`. Static manifests/caches do not certify live quality.
+`AGENT_ARCHITECTURE_CONTRACT.json` + `runtime/agent_architecture_audit.py` validate structure; static manifests/caches do not certify live quality.
 
 ## Maintenance and learning
 
@@ -90,9 +88,9 @@ Do not add a permanent supervisory Agent merely to simulate independent review.
 
 ## Progress observability
 
-Work must checkpoint **during the turn** at verified material safe points; do not intentionally wait until the final answer for the first durable write. Pure reads, transient diagnostics and unchanged state do not create heartbeat writes. Resume from the latest verified safe checkpoint. Before a final response on an active durable task, persist material change and reread authority.
+Checkpoint during the turn at verified material safe points; pure reads/unchanged diagnostics create no heartbeat. Before final response on an active durable task, persist material change and reread authority.
 
-Material writes to authoritative Universal `main` are a kernel integrity boundary. When branch-head compare-and-swap primitives are available, **MUST NOT use GitHub Contents API create/update/delete for a material `main` mutation**: verify the active lease, reread current `main` HEAD, build the commit on exactly that parent, publish with `expected_sha=OBSERVED_CURRENT_MAIN_HEAD`, then reread authority. Detailed mutation semantics remain solely in `PROGRESS_OBSERVABILITY_POLICY.json`; do not duplicate them here.
+Material Universal `main`: when HEAD-CAS is available, Contents API material mutation is forbidden; require active lease + reread HEAD + commit-on-HEAD + `expected_sha=HEAD` + reread authority. Details: `PROGRESS_OBSERVABILITY_POLICY.json`.
 
 Exactly one receipt:
 - `进度提交：COMMITTED`
@@ -100,11 +98,11 @@ Exactly one receipt:
 - `进度提交：COMMIT_FAILED`
 - `进度提交：STALE_WRITER`
 
-`COMMITTED` is a **durable-persistence receipt**; it is not an execution, methodology, review, quality or outcome attestation. A truthful OPEN/BLOCKED gate must itself be checkpointable; missing gate evidence does not forbid persisting that blocker. Report assurance/gate state separately from commit status.
+`COMMITTED` attests durable persistence only, not execution/methodology/review/quality/outcome. OPEN/BLOCKED gates are checkpointable and reported separately.
 
 ## Performance invariant
 
-Keep Continuity off healthy business hot paths: global defect preflight is cheap; `NO_DEFECT` loads no maintenance stack/discovery. Continuation bootstrap remains intent-gated. After exact routing: metadata before content, short checkpoint before deep artifacts, old history last.
+Keep Continuity off healthy business hot paths: cheap preflight, intent-gated continuation, metadata before content, short checkpoint before deep artifacts, old history last.
 
 ## Authority order
 
