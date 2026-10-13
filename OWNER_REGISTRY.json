@@ -1,17 +1,23 @@
 {
   "schema_version": "3.2",
   "continuity_protocol_version": "3.7",
-  "updated_at": "2026-10-11",
+  "updated_at": "2026-10-13",
   "membership_authority": {
     "role": "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY",
     "business_owner_selector": "owners[*].owner_kind == BUSINESS",
     "bare_inherit_selector": "owners[*].bare_inherit_participant == true",
     "bare_inherit_source_field": "bare_inherit_source",
-    "derived_surfaces": ["BARE_INHERIT_DISCOVERY quorum","runtime/system_audit business-owner scope","owner metadata sweep scope","Agent architecture scope"],
+    "derived_surfaces": [
+      "BARE_INHERIT_DISCOVERY quorum",
+      "runtime/system_audit business-owner scope",
+      "owner metadata sweep scope",
+      "Agent architecture scope"
+    ],
     "parallel_hard_coded_owner_lists_allowed": false,
     "rebuildable_remote_observations_allowed": false,
     "remote_observation_cache": "OWNER_ARCHITECTURE_OBSERVATIONS.json",
-    "admission_rule": "Adding or removing an owner must not require editing a second owner-name allowlist. BUSINESS membership is declared here; discovery, audit topology and Agent-architecture scope are derived from this registry. Rebuildable execution/adaptation/architecture observations must converge to the derived BUSINESS set and fail closed while incomplete."
+    "adapter_status_semantics": "STABLE_ADMISSION_AND_PROTOCOL_BINDING_ONLY__NO_CI_PASS_FAIL_PENDING_LIVE_QUALITY_CURRENT_ASSURANCE_OR_TRANSIENT_BLOCKER_CLAIMS",
+    "admission_rule": "Adding or removing an owner must not require editing a second owner-name allowlist. BUSINESS membership is declared here; discovery, audit topology and Agent-architecture scope are derived from this registry. BUSINESS adapter_status is stable admission/protocol metadata only. Mutable execution, CI, drift, quality, blocker and live assurance observations belong in dedicated rebuildable observation/evidence surfaces and must never be encoded here."
   },
   "resolver": {
     "owner": "UNIVERSAL_CONTINUITY_HARNESS",
@@ -28,13 +34,96 @@
   },
   "default_owner": "GENERIC_HANDOFF",
   "owners": [
-    {"name":"GENERIC_HANDOFF","owner_kind":"FALLBACK","domains":["*"],"priority":0,"adapter_status":"READY_V37_NATIVE","checkpoint_authority":"generic durable task manifest/checkpoint","bare_inherit_participant":true,"bare_inherit_source":"GENERIC_TASK_REGISTRY.json","bare_inherit":"USER_DEFAULT_ELIGIBLE_ONLY"},
-    {"name":"FINANCIAL_WRITING_AGENT_RUNTIME","owner_kind":"BUSINESS","domains":["FINANCIAL_WRITING"],"priority":100,"adapter_status":"READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_ALL_PROFILES_BOUND__ACTION_RECEIPT_V1_3_WIRED_AND_OWNER_CI_PASS__INDEPENDENT_OPERATIONAL_VERIFICATION_PENDING__LIVE_QUALITY_EVIDENCE_PENDING","discovery":"domain continuity index and compatible persisted domain runtime when available","bare_inherit_participant":true,"bare_inherit_source":"D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md","checkpoint_authority":"GitHub task manifest/handoff for continuity plus compatible persisted domain runtime checkpoint when available","protocol_adapter":"D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json","execution_capability_ref":"D1traverser-debug/financial-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json","agent_manifest_ref":"D1traverser-debug/financial-writing-agent@main:continuity/AGENT_MANIFEST.json"},
-    {"name":"FINANCIAL_WRITING_AGENT_ENGINEERING","owner_kind":"ENGINEERING","domains":["FINANCIAL_WRITING_SITE_RUNTIME"],"priority":100,"adapter_status":"READY_EXPLICIT_ONLY_DOMAIN_INDEX","discovery":"private domain continuity/TASK_INDEX.md","bare_inherit_participant":false,"checkpoint_authority":"private domain engineering handoff"},
-    {"name":"FINANCIAL_WRITING_AGENT_STANDALONE","owner_kind":"STANDALONE","domains":["FINANCIAL_WRITING"],"priority":90,"adapter_status":"CONTRACT_READY_PERSISTENCE_CONDITIONAL","bare_inherit_participant":false,"checkpoint_authority":"trusted persisted standalone ledger"},
-    {"name":"A_SHARE_MARKET_AGENT","owner_kind":"BUSINESS","aliases":["A_SHARE_RECOMMENDATION","A_SHARE_REVIEW"],"domains":["A_SHARE_RECOMMENDATION","A_SHARE_REVIEW","A_SHARE_MARKET"],"priority":100,"adapter_status":"READY_V37_ACTIVE_ENTRY_RECONCILED__METHODOLOGY_DECLARATION_BOUND__OWNER_REGRESSION_PASS__PRE_V1_3_SELF_AUDIT_HISTORICAL_ONLY__CURRENT_V1_3_OPERATIONAL_PASS_PENDING","discovery":"domain owner API plus private domain continuity/TASK_INDEX.md","bare_inherit_participant":true,"bare_inherit_source":"D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md","checkpoint_authority":"domain cutover-status-selected authority","protocol_adapter":"D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json","execution_capability_ref":"D1traverser-debug/a-share-event-driven-agent@main:continuity/EXECUTION_CAPABILITIES.json","agent_manifest_ref":"D1traverser-debug/a-share-event-driven-agent@main:continuity/AGENT_MANIFEST.json"},
-    {"name":"NOVEL_WRITING_AGENT","owner_kind":"BUSINESS","aliases":["NOVEL_OS"],"domains":["NOVEL"],"priority":100,"adapter_status":"READY_V37_GITHUB_DOMAIN_OWNER__METHODOLOGY_BOUND__OWNER_REGRESSION_PASS__RELEASE_EVIDENCE_BINDING_HARDENED__CHAT_BRIDGED_SELF_ATTESTED__SIGNING_FEEDBACK_REPAIR_ACTIVE__OWNER_METADATA_REFRESHED_2_2_0_2_3","discovery":"D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json","bare_inherit_participant":true,"bare_inherit_source":"D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json","checkpoint_authority":"D1traverser-debug/novel-writing-agent@main:projects/<task_id>/checkpoints/CURRENT_CHECKPOINT.json","business_state_authority":"D1traverser-debug/novel-writing-agent@main","protocol_adapter":"D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json","execution_capability_ref":"D1traverser-debug/novel-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json","agent_manifest_ref":"D1traverser-debug/novel-writing-agent@main:continuity/AGENT_MANIFEST.json","lease_authority":"Universal task manifest CAS"},
-    {"name":"VIDEO_GROWTH_AGENT","owner_kind":"BUSINESS","domains":["VIDEO_GROWTH"],"priority":100,"adapter_status":"READY_V37_ACTIVE_TASK_RECONCILED__METHODOLOGY_BOUND__OWNER_REGRESSION_PASS__STRICT_ISOLATED_REVIEW_AND_UNIQUE_GENERATION_GATE_BLOCKERS_EXPLICIT","discovery":"private domain continuity/TASK_INDEX.md","bare_inherit_participant":true,"bare_inherit_source":"D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md","checkpoint_authority":"Video Growth Agent durable recovery chain","protocol_adapter":"D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json","execution_capability_ref":"D1traverser-debug/video-growth-agent@main:continuity/EXECUTION_CAPABILITIES.json","agent_manifest_ref":"D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json"}
+    {
+      "name": "GENERIC_HANDOFF",
+      "owner_kind": "FALLBACK",
+      "domains": ["*"],
+      "priority": 0,
+      "adapter_status": "READY_V37_NATIVE",
+      "checkpoint_authority": "generic durable task manifest/checkpoint",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "GENERIC_TASK_REGISTRY.json",
+      "bare_inherit": "USER_DEFAULT_ELIGIBLE_ONLY"
+    },
+    {
+      "name": "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "owner_kind": "BUSINESS",
+      "domains": ["FINANCIAL_WRITING"],
+      "priority": 100,
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER_DECLARED",
+      "discovery": "domain continuity index and compatible persisted domain runtime when available",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/financial-writing-agent@main:continuity/TASK_INDEX.md",
+      "checkpoint_authority": "GitHub task manifest/handoff for continuity plus compatible persisted domain runtime checkpoint when available",
+      "protocol_adapter": "D1traverser-debug/financial-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/financial-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json",
+      "agent_manifest_ref": "D1traverser-debug/financial-writing-agent@main:continuity/AGENT_MANIFEST.json"
+    },
+    {
+      "name": "FINANCIAL_WRITING_AGENT_ENGINEERING",
+      "owner_kind": "ENGINEERING",
+      "domains": ["FINANCIAL_WRITING_SITE_RUNTIME"],
+      "priority": 100,
+      "adapter_status": "READY_EXPLICIT_ONLY_DOMAIN_INDEX",
+      "discovery": "private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": false,
+      "checkpoint_authority": "private domain engineering handoff"
+    },
+    {
+      "name": "FINANCIAL_WRITING_AGENT_STANDALONE",
+      "owner_kind": "STANDALONE",
+      "domains": ["FINANCIAL_WRITING"],
+      "priority": 90,
+      "adapter_status": "CONTRACT_READY_PERSISTENCE_CONDITIONAL",
+      "bare_inherit_participant": false,
+      "checkpoint_authority": "trusted persisted standalone ledger"
+    },
+    {
+      "name": "A_SHARE_MARKET_AGENT",
+      "owner_kind": "BUSINESS",
+      "aliases": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW"],
+      "domains": ["A_SHARE_RECOMMENDATION", "A_SHARE_REVIEW", "A_SHARE_MARKET"],
+      "priority": 100,
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER_DECLARED",
+      "discovery": "domain owner API plus private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/a-share-event-driven-agent@main:continuity/TASK_INDEX.md",
+      "checkpoint_authority": "domain cutover-status-selected authority",
+      "protocol_adapter": "D1traverser-debug/a-share-event-driven-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/EXECUTION_CAPABILITIES.json",
+      "agent_manifest_ref": "D1traverser-debug/a-share-event-driven-agent@main:continuity/AGENT_MANIFEST.json"
+    },
+    {
+      "name": "NOVEL_WRITING_AGENT",
+      "owner_kind": "BUSINESS",
+      "aliases": ["NOVEL_OS"],
+      "domains": ["NOVEL"],
+      "priority": 100,
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER_DECLARED",
+      "discovery": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/novel-writing-agent@main:continuity/TASK_INDEX.json",
+      "checkpoint_authority": "D1traverser-debug/novel-writing-agent@main:projects/<task_id>/checkpoints/CURRENT_CHECKPOINT.json",
+      "business_state_authority": "D1traverser-debug/novel-writing-agent@main",
+      "protocol_adapter": "D1traverser-debug/novel-writing-agent@main:continuity/UNIVERSAL_PROTOCOL_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/novel-writing-agent@main:continuity/EXECUTION_CAPABILITIES.json",
+      "agent_manifest_ref": "D1traverser-debug/novel-writing-agent@main:continuity/AGENT_MANIFEST.json",
+      "lease_authority": "Universal task manifest CAS"
+    },
+    {
+      "name": "VIDEO_GROWTH_AGENT",
+      "owner_kind": "BUSINESS",
+      "domains": ["VIDEO_GROWTH"],
+      "priority": 100,
+      "adapter_status": "READY_V37_PROTOCOL_ADAPTER_DECLARED",
+      "discovery": "private domain continuity/TASK_INDEX.md",
+      "bare_inherit_participant": true,
+      "bare_inherit_source": "D1traverser-debug/video-growth-agent@main:continuity/TASK_INDEX.md",
+      "checkpoint_authority": "Video Growth Agent durable recovery chain",
+      "protocol_adapter": "D1traverser-debug/video-growth-agent@main:continuity/OWNER_ADAPTER.json",
+      "execution_capability_ref": "D1traverser-debug/video-growth-agent@main:continuity/EXECUTION_CAPABILITIES.json",
+      "agent_manifest_ref": "D1traverser-debug/video-growth-agent@main:continuity/AGENT_MANIFEST.json"
+    }
   ],
   "cutover": {
     "status": "GITHUB_ENGINEERING_HOME_ACTIVE",

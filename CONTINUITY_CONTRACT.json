@@ -6,6 +6,10 @@
     "canonical_instruction": "STARTUP_HOOK.md",
     "automatic_library_event_listener_claim": false,
     "automatic_github_event_listener_claim": false,
+    "continuation_routing_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
+    "defect_signal_preflight_scope": "ALL_MATERIAL_RESPONSE_OR_ACTION_INPUTS",
+    "defect_signal_preflight_is_lightweight": true,
+    "no_defect_loads_full_maintenance": false,
     "explicit_continue_intent_precedes_new_task_learning_rule": true,
     "missing_trigger_result": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED"
   },
@@ -78,6 +82,8 @@
     "new_task_inherits_unfinished_state": false,
     "explicit_continuation_required_for_task_state": true,
     "explicit_continue_command_must_trigger_continuity_before_learning_only_reply": true,
+    "material_input_runs_lightweight_defect_preflight_before_material_action": true,
+    "no_defect_preflight_must_not_trigger_full_maintenance_or_global_discovery": true,
     "non_user_tasks_excluded_from_bare_inherit": true,
     "explicit_system_infra_task_may_resume_when_explicit_only_and_resume_eligible": true,
     "owner_state_beats_continuity_pointer": true,
@@ -145,8 +151,9 @@
     "atomicity_limit": "GitHub manifest writes use blob-SHA compare-and-swap semantics; stale writers must refetch and fail closed. Domain runtimes may provide stronger guards."
   },
   "performance": {
-    "startup_hook": "intent-gated; no scan for ordinary messages",
-    "new_chat_global_discovery": "first explicit continuation message only",
+    "startup_hook": "explicit-continuation routing plus cheap defect preflight for material inputs",
+    "continuation_global_discovery": "first explicit continuation message only",
+    "defect_signal_preflight": "all material inputs; NO_DEFECT loads no full maintenance stack or global discovery",
     "steady_state": "no repeated global scan after task/owner selected",
     "candidate_metadata_only": true,
     "short_handoff_before_deep_artifacts": true,

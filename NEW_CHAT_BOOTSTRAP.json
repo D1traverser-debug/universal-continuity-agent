@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6",
   "continuity_protocol_version": "3.7",
-  "updated_at": "2026-10-11",
+  "updated_at": "2026-10-13",
   "applies": "first explicit continuation or first substantive user message after account-level routing",
   "startup_hook": {
     "required": true,
@@ -9,9 +9,18 @@
     "account_level_instruction_expected": true,
     "github_or_library_files_auto_load": false,
     "missing_hook_result": "CONTINUITY_BOOTSTRAP_NOT_TRIGGERED",
+    "continuation_routing_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
+    "defect_signal_preflight_scope": "ALL_MATERIAL_RESPONSE_OR_ACTION_INPUTS",
+    "defect_signal_preflight_states": [
+      "NO_DEFECT",
+      "INVESTIGATE",
+      "CONFIRMED_DEFECT"
+    ],
+    "no_defect_loads_full_maintenance": false,
     "continue_intent_precedence": "Explicit 继承/继续/恢复 intent must route here before NEW_TASK learning-only inheritance is applied."
   },
   "flow": [
+    "Run only the cheap defect-signal preflight before a material response/action; NO_DEFECT continues normal owner/business execution without full maintenance or global discovery.",
     "Require the account-level startup hook to route explicit continuation intent into Universal Continuity; file presence alone is not a trigger.",
     "Classify CONTINUE vs NEW_TASK before loading task state.",
     "For bare CONTINUE such as 继承/继续/恢复 with no exact task hint, execute BARE_INHERIT_DISCOVERY.json, derive the current participant/source quorum from OWNER_REGISTRY.json, and query every derived required source before reporting a total candidate count. Never reuse a historical owner count or copied owner-name list.",
@@ -51,7 +60,13 @@
   },
   "context_recovery": {
     "policy": "CONTEXT_RECOVERY_POLICY.json",
-    "load_order": ["metadata", "short_handoff", "exact_artifact_refs", "selective_search", "old_chat_history_last_resort"],
+    "load_order": [
+      "metadata",
+      "short_handoff",
+      "exact_artifact_refs",
+      "selective_search",
+      "old_chat_history_last_resort"
+    ],
     "preload_entire_old_chat": false,
     "handoff_is_transcript": false,
     "artifact_reference_preferred_over_copy": true,
@@ -142,8 +157,10 @@
     "limitation": "GitHub per-file manifest updates use the previously read blob SHA as a compare-and-swap guard; stale writers fail closed."
   },
   "performance": {
-    "startup_hook_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
-    "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_ONLY",
+    "startup_hook_scope": "EXPLICIT_CONTINUATION_ROUTING_PLUS_GLOBAL_LIGHTWEIGHT_DEFECT_PREFLIGHT",
+    "continuity_bootstrap_scope": "EXPLICIT_CONTINUATION_INTENT_ONLY",
+    "defect_signal_preflight_scope": "ALL_MATERIAL_INPUTS__CHEAP_THREE_STATE__NO_GLOBAL_DISCOVERY_ON_NO_DEFECT",
+    "bootstrap_scope": "FIRST_SUBSTANTIVE_MESSAGE_AFTER_ACTIVATION_ONLY",
     "steady_state": "After task/owner selection, do not repeat global discovery until task switch, explicit re-inherit, or detected lease/contract drift.",
     "discovery_payload": "Read manifest/index metadata only; read short handoff after selection; load deeper artifacts only when needed.",
     "old_history_policy": "LAST_RESORT",

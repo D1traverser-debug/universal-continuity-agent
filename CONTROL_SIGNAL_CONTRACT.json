@@ -36,16 +36,48 @@
   "consumption": {
     "consumer": "CURRENT_VALID_UNIVERSAL_MAINTENANCE_WRITER",
     "runtime": "runtime/control_signal.py",
-    "required_order": ["REOBSERVE", "RESOLVE_RETRIEVABLE_FACTS", "CLASSIFY_ACTIONABILITY", "ASK_ONLY_UNAVAILABLE_FACT_OR_HUMAN_JUDGMENT", "BUILD_AGENT_READY_BRIEF", "DELEGATE_OR_CLOSE"],
+    "required_order": [
+      "REOBSERVE",
+      "RESOLVE_RETRIEVABLE_FACTS",
+      "CLASSIFY_ACTIONABILITY",
+      "ASK_ONLY_UNAVAILABLE_FACT_OR_HUMAN_JUDGMENT",
+      "BUILD_AGENT_READY_BRIEF",
+      "DELEGATE_OR_CLOSE"
+    ],
     "required_action": "Re-observe evidence first. Resolve retrievable facts autonomously. Ask the user only for unavailable facts or genuine human judgment. If actionable, construct a stable Agent-ready brief before delegation; otherwise close or retain the signal with reason.",
-    "work_admission_states": ["VERIFY_REQUIRED", "FACT_GATHERING", "NEEDS_USER_INFORMATION", "NEEDS_HUMAN_JUDGMENT", "BRIEF_REQUIRED", "READY_TO_DELEGATE", "NOT_ACTIONABLE"],
+    "work_admission_states": [
+      "VERIFY_REQUIRED",
+      "FACT_GATHERING",
+      "NEEDS_USER_INFORMATION",
+      "NEEDS_HUMAN_JUDGMENT",
+      "BRIEF_REQUIRED",
+      "READY_TO_DELEGATE",
+      "NOT_ACTIONABLE"
+    ],
     "retrievable_fact_is_user_choice": false,
     "raw_chat_or_issue_history_is_agent_ready_brief": false,
     "issue_closure_does_not_rewrite_business_truth": true
   },
+  "lifecycle": {
+    "current_drift_reference_field": "active_control_signal_ref",
+    "historical_or_resolved_reference_field": "resolved_control_signal_ref",
+    "undifferentiated_control_signal_ref_for_current_cache_forbidden": true,
+    "reobserve_before_present_tense_claim": true,
+    "resolved_condition_action": "Close or explicitly retain the issue with reason, and move any rebuildable observation-cache pointer from active_control_signal_ref to resolved_control_signal_ref.",
+    "closed_signal_may_prove_current_drift": false,
+    "open_signal_may_override_fresher_reobservation": false
+  },
   "agent_ready_brief": {
     "required_for_ready_to_delegate": true,
-    "required_fields": ["behavior", "current_state", "desired_state", "stable_interfaces", "acceptance_criteria", "out_of_scope", "evidence_refs"],
+    "required_fields": [
+      "behavior",
+      "current_state",
+      "desired_state",
+      "stable_interfaces",
+      "acceptance_criteria",
+      "out_of_scope",
+      "evidence_refs"
+    ],
     "principle": "A downstream Agent receives stable behavior/state/interfaces/evidence and testable acceptance criteria, not a noisy transcript or stale line-number/file-layout micromanagement.",
     "out_of_scope_must_be_explicit": true,
     "acceptance_criteria_must_be_testable": true

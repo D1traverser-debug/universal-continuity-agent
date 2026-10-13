@@ -3,9 +3,24 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+
 ALLOWED_OWNER_KINDS = {"BUSINESS", "FALLBACK", "ENGINEERING", "STANDALONE", "INFRA"}
 MEMBERSHIP_AUTHORITY_ROLE = "SOLE_CONTROL_PLANE_OWNER_MEMBERSHIP_AUTHORITY"
 FORBIDDEN_REBUILDABLE_OBSERVATION_PREFIXES = ("observed_", "architecture_validation_")
+MUTABLE_BUSINESS_ADAPTER_STATUS_TOKENS = (
+    "CI_",
+    "REGRESSION",
+    "PASS",
+    "FAIL",
+    "PENDING",
+    "LIVE_",
+    "CURRENT_",
+    "SELF_ATTESTED",
+    "BLOCKER",
+    "ACTIVE_TASK",
+    "ACTIVE_ENTRY",
+    "METADATA_REFRESHED",
+)
 
 
 def _text(value: Any) -> str:
@@ -20,7 +35,13 @@ def owner_entries(registry: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
 
 
 def business_owner_names(registry: Mapping[str, Any]) -> tuple[str, ...]:
-    return tuple(sorted(_text(entry.get("name")) for entry in owner_entries(registry) if _text(entry.get("owner_kind")) == "BUSINESS" and _text(entry.get("name"))))
+    return tuple(
+        sorted(
+            _text(entry.get("name"))
+            for entry in owner_entries(registry)
+            if _text(entry.get("owner_kind")) == "BUSINESS" and _text(entry.get("name"))
+        )
+    )
 
 
 def bare_inherit_sources(registry: Mapping[str, Any]) -> tuple[dict[str, str], ...]:
@@ -28,7 +49,8 @@ def bare_inherit_sources(registry: Mapping[str, Any]) -> tuple[dict[str, str], .
     for entry in owner_entries(registry):
         if entry.get("bare_inherit_participant") is not True:
             continue
-        name = _text(entry.get("name")); source = _text(entry.get("bare_inherit_source"))
+        name = _text(entry.get("name"))
+        source = _text(entry.get("bare_inherit_source"))
         if name and source:
             rows.append({"owner": name, "source": source})
     rows.sort(key=lambda row: row["owner"])
@@ -49,28 +71,49 @@ def validate_owner_registry(registry: Mapping[str, Any]) -> tuple[str, ...]:
             errors.append("OWNER_REGISTRY membership_authority role is invalid")
         if membership.get("parallel_hard_coded_owner_lists_allowed") is not False:
             errors.append("OWNER_REGISTRY must forbid parallel hard-coded owner lists")
+        if membership.get("rebuildable_remote_observations_allowed") is not False:
+            errors.append("OWNER_REGISTRY must keep rebuildable remote observations outside membership authority")
+        semantics = _text(membership.get("adapter_status_semantics"))
+        if semantics and "STABLE_ADMISSION" not in semantics:
+            errors.append("OWNER_REGISTRY adapter_status_semantics must describe stable admission metadata")
 
-    names: set[str] = set(); namespace: dict[str, str] = {}; bare_sources: dict[str, str] = {}; kind_by_name: dict[str, str] = {}
+    names: set[str] = set()
+    namespace: dict[str, str] = {}
+    bare_sources: dict[str, str] = {}
+    kind_by_name: dict[str, str] = {}
     default_owner = _text(registry.get("default_owner"))
 
     for index, raw in enumerate(owners_raw):
         if not isinstance(raw, Mapping):
-            errors.append(f"OWNER_REGISTRY owners[{index}] is not an object"); continue
+            errors.append(f"OWNER_REGISTRY owners[{index}] is not an object")
+            continue
         name = _text(raw.get("name"))
         if not name:
-            errors.append(f"OWNER_REGISTRY owners[{index}] missing name"); continue
-        if name in names: errors.append(f"duplicate owner name:{name}")
+            errors.append(f"OWNER_REGISTRY owners[{index}] missing name")
+            continue
+        if name in names:
+            errors.append(f"duplicate owner name:{name}")
         names.add(name)
+
         for key in raw:
             key_text = _text(key)
             if any(key_text.startswith(prefix) for prefix in FORBIDDEN_REBUILDABLE_OBSERVATION_PREFIXES):
-                errors.append(f"{name}: rebuildable remote observation field does not belong in OWNER_REGISTRY:{key_text}")
-        kind = _text(raw.get("owner_kind")); kind_by_name[name] = kind
-        if kind not in ALLOWED_OWNER_KINDS: errors.append(f"{name}: invalid or missing owner_kind:{kind or 'MISSING'}")
+                errors.append(
+                    f"{name}: rebuildable remote observation field does not belong in OWNER_REGISTRY:{key_text}"
+                )
+
+        kind = _text(raw.get("owner_kind"))
+        kind_by_name[name] = kind
+        if kind not in ALLOWED_OWNER_KINDS:
+            errors.append(f"{name}: invalid or missing owner_kind:{kind or 'MISSING'}")
+
         domains = raw.get("domains")
-        if not isinstance(domains, list) or not any(_text(item) for item in domains): errors.append(f"{name}: domains must be a non-empty list")
+        if not isinstance(domains, list) or not any(_text(item) for item in domains):
+            errors.append(f"{name}: domains must be a non-empty list")
+
         participant = raw.get("bare_inherit_participant")
-        if not isinstance(participant, bool): errors.append(f"{name}: bare_inherit_participant must be boolean")
+        if not isinstance(participant, bool):
+            errors.append(f"{name}: bare_inherit_participant must be boolean")
         source = _text(raw.get("bare_inherit_source"))
         if participant is True:
             if not source:
@@ -80,15 +123,33 @@ def validate_owner_registry(registry: Mapping[str, Any]) -> tuple[str, ...]:
                 if previous is not None and previous != name:
                     errors.append(f"duplicate bare_inherit_source:{source}:{previous}:{name}")
                 bare_sources[source] = name
+
         if kind == "BUSINESS":
-            for field in ("checkpoint_authority", "protocol_adapter", "execution_capability_ref"):
-                if not _text(raw.get(field)): errors.append(f"{name}: BUSINESS owner missing {field}")
+            for field in ("checkpoint_authority", "protocol_adapter", "execution_capability_ref", "agent_manifest_ref"):
+                if not _text(raw.get(field)):
+                    errors.append(f"{name}: BUSINESS owner missing {field}")
+            adapter_status = _text(raw.get("adapter_status"))
+            if not adapter_status:
+                errors.append(f"{name}: BUSINESS owner missing adapter_status")
+            else:
+                upper_status = adapter_status.upper()
+                if not upper_status.startswith("READY_V37_"):
+                    errors.append(f"{name}: BUSINESS adapter_status must be stable READY_V37 admission metadata")
+                for token in MUTABLE_BUSINESS_ADAPTER_STATUS_TOKENS:
+                    if token in upper_status:
+                        errors.append(
+                            f"{name}: BUSINESS adapter_status contains mutable operational assurance token:{token}"
+                        )
+                        break
+
         aliases = raw.get("aliases", [])
         for token in (name, *aliases) if isinstance(aliases, list) else (name,):
             token_text = _text(token)
-            if not token_text: continue
+            if not token_text:
+                continue
             previous = namespace.get(token_text)
-            if previous is not None and previous != name: errors.append(f"owner name/alias collision:{token_text}:{previous}:{name}")
+            if previous is not None and previous != name:
+                errors.append(f"owner name/alias collision:{token_text}:{previous}:{name}")
             namespace[token_text] = name
 
     if not default_owner or default_owner not in names:
