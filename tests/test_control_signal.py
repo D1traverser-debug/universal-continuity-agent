@@ -1,6 +1,8 @@
 from runtime.control_signal import (
+    SignalLifecycleState,
     WorkAdmissionState,
     assess_signal_admission,
+    current_remediation_allowed,
     validate_agent_ready_brief,
     validate_control_signal,
 )
@@ -52,6 +54,47 @@ def test_signal_requires_real_evidence_refs():
     result = validate_control_signal(payload)
     assert result.valid is False
     assert "evidence_refs must be a non-empty string list" in result.errors
+
+
+def test_signal_lifecycle_accepts_active_historical_open_and_resolved_only():
+    for state in ("ACTIVE", "HISTORICAL_OPEN", "RESOLVED"):
+        payload = signal()
+        payload["lifecycle_state"] = state
+        assert validate_control_signal(payload).valid is True
+
+    payload = signal()
+    payload["lifecycle_state"] = "OPEN"
+    result = validate_control_signal(payload)
+    assert result.valid is False
+    assert "lifecycle_state is invalid" in result.errors
+
+
+def test_historical_open_and_resolved_cannot_drive_current_remediation():
+    assert current_remediation_allowed(
+        lifecycle_state=SignalLifecycleState.HISTORICAL_OPEN,
+        reobserved_current_condition=True,
+        current_authorization=True,
+    ) is False
+    assert current_remediation_allowed(
+        lifecycle_state=SignalLifecycleState.RESOLVED,
+        reobserved_current_condition=True,
+        current_authorization=True,
+    ) is False
+    assert current_remediation_allowed(
+        lifecycle_state=SignalLifecycleState.ACTIVE,
+        reobserved_current_condition=False,
+        current_authorization=True,
+    ) is False
+    assert current_remediation_allowed(
+        lifecycle_state=SignalLifecycleState.ACTIVE,
+        reobserved_current_condition=True,
+        current_authorization=False,
+    ) is False
+    assert current_remediation_allowed(
+        lifecycle_state=SignalLifecycleState.ACTIVE,
+        reobserved_current_condition=True,
+        current_authorization=True,
+    ) is True
 
 
 def test_signal_must_be_reobserved_before_clarification_or_delegation():

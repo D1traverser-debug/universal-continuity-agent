@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "purpose": "Separate non-authoritative detection/monitoring signals from single-writer authoritative task state and make signal consumption verify-first rather than clarification-first.",
   "transport": {
     "preferred": "GITHUB_ISSUE",
@@ -59,12 +59,21 @@
     "issue_closure_does_not_rewrite_business_truth": true
   },
   "lifecycle": {
+    "states": ["ACTIVE", "HISTORICAL_OPEN", "RESOLVED"],
+    "active_definition": "Current re-observed condition remains actionable under current authority/user intent.",
+    "historical_open_definition": "A historical incident still has unresolved provenance or observability questions, but the incident itself is not current drift and must not drive present-tense remediation without fresh evidence.",
+    "resolved_definition": "The condition no longer requires open investigation; the signal remains historical evidence only.",
     "current_drift_reference_field": "active_control_signal_ref",
+    "historical_open_reference_field": "historical_open_control_signal_ref",
     "historical_or_resolved_reference_field": "resolved_control_signal_ref",
     "undifferentiated_control_signal_ref_for_current_cache_forbidden": true,
     "reobserve_before_present_tense_claim": true,
+    "historical_open_requires_fresh_reobservation_before_current_remediation": true,
+    "historical_open_may_authorize_recreation_or_reenable": false,
     "resolved_condition_action": "Close or explicitly retain the issue with reason, and move any rebuildable observation-cache pointer from active_control_signal_ref to resolved_control_signal_ref.",
+    "historical_open_action": "Keep the unresolved historical question explicit, but mark the issue/body/cache so it cannot be consumed as current drift. Current remediation requires a fresh observation plus current authority/user intent.",
     "closed_signal_may_prove_current_drift": false,
+    "historical_open_signal_may_prove_current_drift": false,
     "open_signal_may_override_fresher_reobservation": false
   },
   "agent_ready_brief": {
@@ -86,5 +95,5 @@
     "dedupe_key": "signal_type + subject + latest_observed_head_or_evidence_identity",
     "prefer_update_existing_open_signal": true
   },
-  "assurance_boundary": "A signal proves only that an observation was reported. Work-admission classification proves only deterministic process state, not that the diagnosis is semantically correct. Neither is a lease, a business state transition, nor live quality proof."
+  "assurance_boundary": "A signal proves only that an observation was reported. Work-admission classification proves only deterministic process state, not that the diagnosis is semantically correct. ACTIVE, HISTORICAL_OPEN and RESOLVED are lifecycle semantics, not leases, business state transitions, or live quality proof."
 }

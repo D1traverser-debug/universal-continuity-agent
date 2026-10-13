@@ -15,6 +15,7 @@ ALLOWED_TYPES = {
     "OTHER_CONTROL_PLANE_SIGNAL",
 }
 ALLOWED_SEVERITIES = {"INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"}
+ALLOWED_LIFECYCLE_STATES = {"ACTIVE", "HISTORICAL_OPEN", "RESOLVED"}
 REQUIRED_FIELDS = (
     "signal_id",
     "signal_type",
@@ -44,6 +45,12 @@ class WorkAdmissionState(str, Enum):
     BRIEF_REQUIRED = "BRIEF_REQUIRED"
     READY_TO_DELEGATE = "READY_TO_DELEGATE"
     NOT_ACTIONABLE = "NOT_ACTIONABLE"
+
+
+class SignalLifecycleState(str, Enum):
+    ACTIVE = "ACTIVE"
+    HISTORICAL_OPEN = "HISTORICAL_OPEN"
+    RESOLVED = "RESOLVED"
 
 
 @dataclass(frozen=True)
@@ -81,9 +88,34 @@ def validate_control_signal(signal: Mapping[str, Any]) -> SignalValidation:
         errors.append("signal_type is invalid")
     if signal.get("severity") not in ALLOWED_SEVERITIES:
         errors.append("severity is invalid")
+    lifecycle_state = signal.get("lifecycle_state")
+    if lifecycle_state is not None and lifecycle_state not in ALLOWED_LIFECYCLE_STATES:
+        errors.append("lifecycle_state is invalid")
     if signal.get("authoritative_state_mutation") not in (None, False):
         errors.append("control signal cannot claim authoritative_state_mutation")
     return SignalValidation(valid=not errors, errors=tuple(errors))
+
+
+def current_remediation_allowed(
+    *,
+    lifecycle_state: str | SignalLifecycleState,
+    reobserved_current_condition: bool,
+    current_authorization: bool,
+) -> bool:
+    """Return whether a signal may drive a present-tense state repair.
+
+    Historical-open and resolved signals may still justify provenance/history work, but
+    they cannot by themselves authorize current remediation. ACTIVE signals still need
+    a fresh observation and current authority/user authorization.
+    """
+
+    try:
+        state = SignalLifecycleState(str(lifecycle_state))
+    except ValueError:
+        return False
+    if state is not SignalLifecycleState.ACTIVE:
+        return False
+    return bool(reobserved_current_condition and current_authorization)
 
 
 def validate_agent_ready_brief(brief: Mapping[str, Any] | None) -> SignalValidation:

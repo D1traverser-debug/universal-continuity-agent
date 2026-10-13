@@ -44,13 +44,18 @@ def test_business_membership_adapter_status_is_stable_not_live_assurance():
     assert any("mutable operational assurance token" in item for item in errors)
 
 
-def test_control_signal_cache_distinguishes_active_from_resolved():
+def test_control_signal_cache_distinguishes_active_historical_open_and_resolved():
     contract = load("CONTROL_SIGNAL_CONTRACT.json")
     observations = load("OWNER_ARCHITECTURE_OBSERVATIONS.json")
+    manifest = load("tasks/universal-continuity-maintenance/TASK_MANIFEST.json")
     lifecycle = contract["lifecycle"]
 
+    assert lifecycle["states"] == ["ACTIVE", "HISTORICAL_OPEN", "RESOLVED"]
+    assert lifecycle["historical_open_reference_field"] == "historical_open_control_signal_ref"
     assert lifecycle["undifferentiated_control_signal_ref_for_current_cache_forbidden"] is True
     assert lifecycle["closed_signal_may_prove_current_drift"] is False
+    assert lifecycle["historical_open_signal_may_prove_current_drift"] is False
+    assert lifecycle["historical_open_may_authorize_recreation_or_reenable"] is False
     assert lifecycle["open_signal_may_override_fresher_reobservation"] is False
 
     rows = {row["owner"]: row for row in observations["owners"]}
@@ -61,6 +66,20 @@ def test_control_signal_cache_distinguishes_active_from_resolved():
     assert rows["A_SHARE_MARKET_AGENT"]["latest_context_footprint"]["result"] == "WITHIN_TARGET"
     assert rows["NOVEL_WRITING_AGENT"]["active_control_signal_ref"].endswith("#3")
     assert rows["VIDEO_GROWTH_AGENT"]["active_control_signal_ref"].endswith("#4")
+
+    assert manifest["open_control_signal_refs"] == [
+        "D1traverser-debug/universal-continuity-agent#3",
+        "D1traverser-debug/universal-continuity-agent#4",
+    ]
+    assert manifest["historical_open_control_signal_refs"] == [
+        "D1traverser-debug/universal-continuity-agent#12"
+    ]
+    assert manifest["resolved_control_signal_refs"] == [
+        "D1traverser-debug/universal-continuity-agent#2",
+        "D1traverser-debug/universal-continuity-agent#7",
+    ]
+    assert manifest["monitor_recreation_authorized"] is False
+    assert "NOT_CURRENT_DRIFT" in manifest["monitor_historical_issue_12_status"]
 
 
 def test_universal_entrypoint_preserves_reserved_headroom_under_hard_budget():
