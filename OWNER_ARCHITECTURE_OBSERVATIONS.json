@@ -3,7 +3,7 @@
   "role": "REBUILDABLE_REMOTE_AGENT_ARCHITECTURE_OBSERVATION_CACHE",
   "authority_boundary": "This file records observations and validation receipts. It is not owner membership authority, business state authority, or proof of live model quality. active_control_signal_ref means a currently open/reobserved drift signal; resolved_control_signal_ref is historical evidence only.",
   "contract_ref": "AGENT_ARCHITECTURE_CONTRACT.json",
-  "refreshed_at": "2026-10-13T06:21:12Z",
+  "refreshed_at": "2026-10-13T06:52:00Z",
   "owners": [
     {
       "owner": "FINANCIAL_WRITING_AGENT_RUNTIME",

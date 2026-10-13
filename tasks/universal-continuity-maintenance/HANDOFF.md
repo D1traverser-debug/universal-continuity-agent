@@ -8,41 +8,56 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `80`
+- manifest_version: `81`
 - current controller run: `universal-global-control-plane-audit-v67-2026-10-13`
-- controller status: `ACTIVE` revision `15` at `M8_MULTI_LAYER_VALIDATION`
+- controller status: `ACTIVE` revision `17` at `M10_SECOND_ORDER_REVIEW_AND_GLOBAL_CLAIM_CALIBRATION`
+- corrective validation: GitHub Actions `38358219416` / job `115165991116` — risk-tiered/full control-plane audit PASS, Agent architecture PASS, full pytest PASS
 
-## v67 全局审计：当前修复状态
+## v67 已验证修复
 
-已实施：
-- continuation bootstrap 与全局 cheap defect preflight scope 分离；
-- BUSINESS `adapter_status` 只保留 stable admission/protocol metadata，动态 CI/PASS/PENDING/LIVE assurance 禁止写进 membership authority；
-- control signal cache 区分 active/resolved；A-share #2 已 live reobserve 后关闭；
-- task manifest 的 control-signal contract version 已对齐 1.1；
-- Universal ENTRYPOINT 保留 hard 8192 cap，并要求至少 512-byte reserve。
+本轮全局审计覆盖入口、执行、工作流、竞争/并发、冲突、遗忘/恢复、废旧/影子机制、覆盖/绕过、调用、继承、状态权威、CI/测试和跨 Agent 边界。
 
-第一次 M8 CI `38357483978` / job `115163633645`：control-plane audit PASS、Agent architecture PASS、full pytest `303 passed / 7 failed`，因此真实 reopen 到 M7 revision 14。
+当前已修并通过 M8：
+- continuation bootstrap 与 all-material-input cheap defect preflight 的 machine-readable scope 对齐；`NO_DEFECT` 不加载完整 maintenance/global discovery。
+- BUSINESS owner membership authority 不再承载动态 CI/PASS/PENDING/LIVE assurance；`runtime/owner_topology.py` 对 mutable operational assurance token fail closed。
+- control signals 区分 active/resolved；A-share #2 在当前 Skill 6,733 bytes 的 live reobserve 后关闭，Financial #7 保持 resolved；Novel #3、Video #4 保持 active。
+- `control_signal_contract_version` 指针已从 1.0 对齐到 1.1。
+- ENTRYPOINT 在恢复所有既有 methodology/progress/defect-triage regression anchors 后，仍满足 8,192-byte hard cap，并保留至少 512 bytes reserve。
+- 第一次 M8 曾真实失败 `303 passed / 7 failed`，controller reopen 到 M7；没有掩盖。修复 stale synthetic owner fixtures 后，第二次 M8 `38358219416 / 115165991116` 全绿。
 
-## M7 correction revision 15
+## M9 fresh reobservation
 
-ENTRYPOINT 已恢复既有回归保护的语义锚点：methodology receipt delegation、declaration-vs-operational-proof separation、plausible-defect triage、mid-turn checkpoint、COMMITTED 仅表示 durable persistence。
+四个 BUSINESS owner 当前 head 均与已验证 observation set 一致：
+- Financial `6494cd58a93d82f7fc6849803b6b7493cf66443f`
+- A-share `651d97533cd62d34dc230f0b5047715074ab1803`
+- Novel `46606fee061a5cf5421a5d0ef145a5955fd66760`
+- Video `8f7d0cfb8121fc1a06e1e3a24c1167649d4def94`
 
-同时重新核对 `AGENT_ARCHITECTURE_CONTRACT.json` 后确认：BUSINESS owner admission **确实要求** `agent_manifest_ref`。所以第一次对 CI 的“validator 过度收紧”判断只对了一半：真正过期的是 synthetic owner fixtures。现在已更新 fixture，加入 `agent_manifest_ref` 和 stable `READY_V37_*` status；没有为了让测试绿而削弱新 owner admission contract。
+因此本轮无需取得任何 BUSINESS lease，也没有修改文章、市场日、小说 Canon/project 或视频项目业务真值。`OWNER_ARCHITECTURE_OBSERVATIONS.json` 只刷新 rebuildable observation 时间和 signal lifecycle。
 
-下一步重新跑 M8 全量 CI；任何失败继续 reopen。
+## 已确认仍成立的主链
 
-## 其他边界
+- **入口**：最小 bootstrap 只从 `ENTRYPOINT.md + CURRENT_PROTOCOL.json` 起；正常 BUSINESS 产品仍是一个 ChatGPT owner/Skill 入口，executor/readiness 是内部选择。
+- **执行/调用**：repository capability 声明只是 ceiling，不是当前执行证明；material owner action 必须按 exact capability/readiness/methodology evidence 放行。
+- **工作流**：systemic maintenance 由 controller 约束 M0→M11；业务 owner 的 workflow/state 仍归业务 owner，不复制进 Universal。
+- **竞争/并发**：当前 `SINGLE_ACTIVE_CHAT`，lease_id + resume_epoch + stale-writer fail-closed；Universal material main write 使用 observed-HEAD CAS。
+- **冲突/覆盖**：engineering authority、task state、business evidence、cache、scratch、external refs、Memory/chat 分层；lower authority 不能静默覆盖 fresher higher authority。
+- **遗忘/恢复**：metadata → short handoff → exact refs → selective history → old chat last resort；Memory/chat 不作为 task execution authority。
+- **继承**：bare inherit quorum 从 `OWNER_REGISTRY` 动态派生；任一 required source 缺失即 `INCOMPLETE_DISCOVERY`，partial 不得声称完整或自动恢复。
+- **废旧/影子机制**：`PROTOCOL.md` 仍只作 human reference，不进入 hot-path authority；旧 branches 无 PR 且非 authority。
 
-- lease/CAS、bare inherit quorum、recovery order、artifact authority 分层、内部 executor routing 等主链本轮未发现新结构缺陷。
-- live automation reread仍没有启用的 Continuity 核心 monitor；不自动重建。
-- HARNESS_STATUS 的历史 monitor cache 仍 lower-authority/stale，不能覆盖 live reread。
-- Novel #3、Video #4、历史 monitor #12 仍 open；Financial #7、A-share #2 为 resolved。
-- private owner CI 未执行的地方不称 PASS；Financial DUAL 3-output fresh-chat retest 仍 owner-scoped OPEN。
+## M10 需要明确校准的剩余边界
+
+- `HARNESS_STATUS.json` 仍含 lower-authority historical monitor cache；当前 live product reread没有启用的 Continuity 核心 monitor，用户主动删除的事实优先。安全 cache rebuild 仍是 cleanup，不以风险重写换表面整洁。
+- Novel #3、Video #4 是仍然 open 的 owner-local hot-path drift；不是本轮 Universal 可越权修改的 BUSINESS truth。
+- 历史 monitor #12 只保留原 silent disable provenance 未解；当前 monitor absence 是用户意图，不是 recurrence 证据。
+- private owner CI runner 未执行的地方仍不能称 PASS；Financial fresh-chat DUAL 3-output retest 仍是 Financial-owner scoped OPEN。
 - independent semantic/live-outcome assurance 与 formal controller-meta promotion 仍 OPEN。
+- 本次全局审计证明的是声明范围内的结构/live-control-surface检查，不声称所有未来未知失败均被预知。
 
-### 本轮工具操作失误
+### 本轮工具操作失误产生的非权威 branch clutter
 
-误创建的 `__noop`、`__noop2`、`__noop3`、`__noop4`、`__noop5` 仍无 PR、非 authority。当前 connector 无 delete-ref primitive，cleanup=`OPEN_TOOL_LIMITED`；不得假称删除。
+误创建的 `__noop`、`__noop2`、`__noop3`、`__noop4`、`__noop5` 没有 PR、没有进入 main/authority。当前 connector 没有 delete-ref primitive，cleanup=`OPEN_TOOL_LIMITED`；不得用 force-reset 冒充删除。
 
 ## v65 direct-main / PR-first 回归锚点
 
