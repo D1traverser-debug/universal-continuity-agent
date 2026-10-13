@@ -48,3 +48,18 @@ def test_material_universal_main_mutation_uses_head_level_cas_not_pr_first_by_de
     assert "CI/validation" in postconditions
     assert "before reporting COMMITTED" in postconditions
     assert "does not physically block an authorized external writer" in mutation["assurance_ceiling"]
+
+
+def test_blueprint_and_handoff_bind_the_single_writer_threat_model_without_stale_high_claim():
+    blueprint = (ROOT / "SYSTEM_BLUEPRINT.md").read_text(encoding="utf-8")
+    handoff = (ROOT / "tasks/universal-continuity-maintenance/HANDOFF.md").read_text(encoding="utf-8")
+
+    assert "`SINGLE_ACTIVE_CHAT` writer model" in blueprint
+    assert "observed-HEAD compare-and-swap" in blueprint
+    assert "PR-first and branch protection are not default requirements" in blueprint
+    assert "not evidence that unprotected `main` is itself a HIGH defect" in blueprint
+
+    assert "Tool-level unbypassable enforcement — HIGH / OPEN" not in handoff
+    assert "当前模型不是 PR-first" in handoff
+    assert "active lease + observed-HEAD CAS + CI + authoritative reread" in handoff
+    assert "没有 merge，也不是 authoritative implementation" in handoff

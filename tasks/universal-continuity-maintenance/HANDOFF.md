@@ -8,81 +8,72 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `64`
-- system-maintenance policy: `1.8`
-- meta-maintenance: `1.3`
-- latest completed formal meta-run: `audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json`
-- latest completed controller state: `tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json`
-- latest controller run: `monitor-external-state-authority-v63-2026-10-12`
-- latest controller status: `COMPLETE` revision `33`
-- latest hosted validation: GitHub Actions `38277130974` / job `114905234417` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
+- manifest_version: `69`
+- current controller run: `user-proposal-independence-and-main-cas-v65-2026-10-13`
+- current controller status: `ACTIVE` revision `18`, reopened to `M7_IMPLEMENTATION_AND_SUPERSESSION` by M10 second-order review
+- latest green hosted validation: GitHub Actions `38329561028` — risk-tiered audit PASS, Agent architecture harness PASS, full pytest PASS
 
-## 本轮缺陷审计结论
+## 本轮确认并修复的核心问题
 
-本轮不是风险清单式审查，而是一次真实 fresh systemic maintenance trajectory。用户提出“检查总控是否有缺陷隐患”后先做 triage；用户随后澄清当前核心监控是其主动删除，系统没有把该删除误当作新的静默失活事故。确认的缺陷进入 `runtime/maintenance_controller.py`，完整走过 M0→M11；期间两次真实 CI failure 都触发 reopen，而不是被忽略。
+### 1. 不得把用户的想法、疑问或类比自动当成决定
 
-### 已确认并修复 1：外部产品状态被旧仓库观测冒充当前事实
+现有冷路径维护政策本来已经规定：用户提出的 mechanism 不是默认 canonical，必须区分用户目标/约束与用户提出的办法，并挑战用户和助手的初始方案。但本轮仍出现了真实复发：用户只是问“你觉得怎么做”，系统就顺势创建 PR-first branch，把一个候选方案推成了实施方向。
 
-此前 task/status surfaces 仍携带 monitor enabled/hourly 的现时语义，但 ChatGPT automation product state 已因用户主动删除发生变化。根因不是“用户删了监控”，而是外部产品状态可以脱离 GitHub 变化，仓库过去缺少足够严格的 freshness/authority 边界。
+因此这次没有再创建一套重复政策，而是把最小不变量提升到 `ENTRYPOINT.md` 热路径：
 
-现在的架构规则：ChatGPT automation/task 是否存在、是否 enabled、scheduler 是否存活属于 **external product state**。GitHub 可以保存期望策略与带时间戳的 last-observed evidence，但任何依赖“现在是否存在/启用”的判断都必须在产品面可用时 live reread。显式用户删除/禁用不得被自动逆转，除非之后获得新授权。
+> Questions, suggestions, analogies, or tentative ideas are candidates, not authority. Do not infer approval; assess independently before acting unless explicitly instructed.
 
-当前 2026-10-13T00:27:13+08:00 的产品面 reread：没有核心 Continuity monitor tasks；用户已明确确认这是主动删除，因此 `monitor_recreation_authorized=false`。历史 issue #12 仍只保留其原始未解问题：此前那次 silent enabled→disabled 的 provenance 未知；当前主动删除不是该历史事故复发证据。
+详细分类、证据、替代方案和 adoption 规则仍由 `SYSTEM_MAINTENANCE_POLICY.json` 负责。用户的明确目标/约束仍是高权威输入，但“顺着用户猜一个方案然后直接执行”不再合法。
 
-### 已确认并修复 2：task manifest mutation version 与 formal meta-proof version 错误耦合
+### 2. Universal `main` 保持唯一工程权威，material write 使用 HEAD-CAS
 
-合法 new-chat takeover 会由 `runtime/universal_continuity.py::acquire_resume_lease()` 增加 `manifest_version`。旧 regression 同时要求 `latest_meta_maintenance_run_ref.target_manifest_version == current manifest_version`。这意味着普通 takeover/任务 checkpoint 也会迫使系统制造一份“当前版本 formal meta-run”，否则 CI 失败。
+此前把 `main protected=false` 单独标成 HIGH，是把多人/多独立 writer 仓库的威胁模型套到了当前 `SINGLE_ACTIVE_CHAT` 总控模型上。该结论已撤回。
 
-该 failure class 在 V53 已出现并以“每次 takeover 补当前版本 formal meta-run”修过；本轮同类再次发生，而且当前 controller contract 已明确禁止为了关门倒造未完成轨迹。因此按 policy 1.8 做 abstraction escalation，不再重复 V53 同层补丁。
+当前模型不是 PR-first。Universal material control-plane mutation 的标准路径由 `PROGRESS_OBSERVABILITY_POLICY.json` 约束：
 
-新的架构模型：
-- `manifest_version` = durable task mutation / CAS lineage；合法 takeover/checkpoint 可独立增长；
-- `latest_meta_maintenance_run_ref` = **最近一条真正完成的 formal maintenance proof**；
-- completed formal run 的 `target_manifest_version` 不能晚于 current manifest，但普通 task mutation 不要求 exact equality；
-- ACTIVE/BLOCKED trajectory 不能为了追版本号而被伪装成 completed formal proof；
-- exact-current proof binding 只应由另一个明确的 promotion/freshness gate 在确实需要时要求。
+1. 写前 reread 当前 `main` HEAD；
+2. 校验当前 active `lease_id / resume_epoch`；
+3. reread 本次操作所需的精确 authority；
+4. systemic/non-trivial maintenance 还必须由 controller 放行 `MATERIAL_PATCH`；
+5. 基于刚观测到的 HEAD 构造一个 tree 和一个 commit；
+6. 只用 `update_ref(force=false, expected_sha=observed_head)` 推进 `main`；
+7. 如果 HEAD 已变化，立即 abort，重新读取 HEAD / lease / authority 并重新判断，禁止 replay 或 force 旧 commit；
+8. 写后 reread `main`，观察 CI，再 reread authoritative task state 后才允许 `COMMITTED`。
 
-该规则已写入 `SYSTEM_BLUEPRINT.md`，并由 `tests/test_meta_maintenance.py` 与 `tests/test_meta_governance_status_alignment.py` 回归保护。
+这轮实际 checkpoint 与实现已经使用了这条 HEAD-level CAS 路径，而不是普通 contents 覆盖。
 
-## 本轮真实验证
+### 3. PR-first 实验没有成为架构
 
-1. 首次实现后的 CI `38275331371` 真实失败：manifest compaction 漏掉 `methodology_owner_declaration_contract_version`；controller reopen M7 并修复。
-2. 第二次 CI `38275584909`：risk-tiered audit PASS、architecture PASS，但 pytest 294 pass / 1 fail，暴露上述 manifest/meta-proof 版本耦合；controller reopen 到 M2A，查到 V53 同类历史并升级到 system-architecture repair。
-3. 生命周期解耦实现后的 CI `38276628670` 全绿。
-4. M10 二阶审查发现 repair semantics 还没有进入 architecture map，于是再次 reopen M7，将两条不变量写入 `SYSTEM_BLUEPRINT.md` 并增加 regression anchor。
-5. 最终 hosted validation `38277130974` / `114905234417`：risk-tiered audit PASS、Agent architecture harness PASS、full pytest PASS。
+本轮曾创建实验分支 `continuity/pr-first-mutation-gate-v65`。这是错误威胁模型下产生的候选实验；它没有 merge，也不是 authoritative implementation。当前架构明确：`PR-first` 和 branch protection **不是 `SINGLE_ACTIVE_CHAT` 模型的默认要求**。
 
-这因此是当前任务中第一条可诚实记录为 **fresh / no-user-reminder / M0→M11 complete** 的 controller trajectory；不是把旧事故中途接管的历史倒称为 ingress-native proof。
+如果未来 writer 模型真的变成多人、多个独立 Agent、机器人或外部服务可并发写入，再重新评估 GitHub-side branch protection / ruleset / permission gate。那是新的威胁模型决定，不是当前 `main protected=false` 自动等于 HIGH。
 
-## 仍然 OPEN 的真实缺陷/边界
+当前 assurance ceiling 仍需诚实保留：active-lease + HEAD-CAS 能防 stale/concurrent compliant writer 覆盖，但无法物理阻止一个本来就有 GitHub 写权限、且故意无视协议的 authorized writer。当前没有证据要求为这种更强威胁模型增加 PR 生命周期。
 
-### A. Tool-level unbypassable enforcement — HIGH / OPEN
+## 本轮真实验证与 reopen
 
-GitHub `main` 目前仍 `protected=false`，没有 required status checks enforcement。repo 内 `maintenance_controller.py` 可以规定和验证顺序，但不能物理阻止一个外部 GitHub connector/API 直接 mutation。因此当前保证仍是 **repo/controller + CI level enforcement**，不是 unbypassable mutation-path enforcement。
+- 第一版热路径规则写得过长，CI `38329213434` 真实失败：risk-tiered audit PASS、Agent architecture PASS、pytest `298 passed / 1 failed`；唯一失败是 `ENTRYPOINT.md` 8447 bytes 超过 8192-byte hot-path budget。
+- controller 因此 M8→M7 reopen，没有放宽预算，而是把热路径规则压缩成一句，详细语义继续留在冷路径 policy。
+- 修正后的 CI `38329561028` 全绿：risk-tiered audit PASS、Agent architecture harness PASS、full pytest PASS。
+- M10 二阶检查随后发现本 HANDOFF 仍保留旧的 “unprotected main = HIGH” 结论，因此再次 M10→M7 reopen。当前这次修改就是移除该 stale threat-model conclusion，并让 `SYSTEM_BLUEPRINT.md` 与已验证的 mutation contract 对齐。
 
-下一层如果要关闭此门，应评估 controller-aware mutation gateway 或 GitHub branch protection / required checks。不要再通过增加 prompt、Supervisor Agent 或更多提醒文本来伪装硬约束。本聊天当前可用 GitHub connector 没有 branch-protection 写动作，因此本轮未冒充已经关闭。
+## 与此前 v63 修复的关系
 
-### B. HARNESS_STATUS historical monitor cache — LOWER-AUTHORITY DRIFT / OPEN FOR CONVERGENCE
+此前已完成的两项修复继续有效：
 
-`HARNESS_STATUS.json` 是明确标注的 rebuildable cache，内部仍可能含本轮之前的 monitor-enabled historical observations。它现在不能覆盖 task manifest 与 live product reread，也不能再作为 present-tense liveness evidence。后续重建该 cache 时应收敛到新模型；该缓存漂移不再是当前 liveness authority。
+- ChatGPT automation/task existence、enabled state、scheduler liveness 属于 external product state；依赖现时状态的判断必须 live reread。用户主动删除核心监控不得被自动逆转。
+- `manifest_version` 是 task mutation/CAS lineage；`latest_meta_maintenance_run_ref` 是最近真正完成的 formal proof。普通 task mutation 不要求二者 exact equality，也不得为了追版本号伪造 formal proof。
 
-### C. Independent semantic / live outcome proof — OPEN
+## 仍然 OPEN 的真实边界
 
-最终 CI 证明 scoped regression/structure 通过，不证明独立语义判断无误，也不证明未来外部产品变化或实际业务结果。`independent_meta_semantic_review` 继续 OPEN。
+- `HARNESS_STATUS.json` 内旧 monitor-enabled 字段仍是历史 lower-authority cache；不得覆盖 live product reread 或 task manifest，下次安全 rebuild 时收敛即可。
+- 历史 issue #12 只保留原始 silent enabled→disabled provenance 未解；本次用户主动删除不是复发证据。
+- `independent_meta_semantic_review` 仍 OPEN：CI/回归证明 scoped structural correctness，不证明独立语义判断与 live outcome。
+- formal controller-meta promotion 仍 OPEN；只能使用 genuinely COMPLETE trace，不能倒填历史。
+- Financial current-head architecture revalidation 与 fresh-chat DUAL 3-output retest 仍 OPEN；本 SYSTEM_INFRA 任务不取得 BUSINESS lease，不修改 BUSINESS truth。
 
-### D. Formal controller-meta promotion — OPEN but now eligible
+## 后续原则
 
-当前最新 formal meta-run 仍是 V61，没有为了本轮追 `manifest_version` 而伪造新 formal proof。现在 controller trajectory 已 genuinely COMPLETE，可在下一次维护动作中评估是否把这条完整 trace 正式 promotion/bind 到 meta-governance proof。
+默认不要再把“用户提出一个办法”解释为“用户已经决定采用”。先独立判断目标、证据、替代方案和适用威胁模型，再行动。
 
-### E. 既有业务侧开放门
-
-Financial current-head architecture revalidation 与 fresh-chat DUAL 3-output retest 仍 OPEN；本 SYSTEM_INFRA 审计没有取得 Financial BUSINESS lease，也没有修改其业务真值。
-
-## 下一步
-
-优先级建议：
-1. 评估并关闭 **tool-level mutation bypass**（mutation gateway 或 GitHub protection/required checks）；
-2. 用这条 COMPLETE controller trace 做 **formal controller-meta promotion**，但只在 proof schema/contract 真正满足时推进，不能倒填；
-3. 下次 HARNESS_STATUS rebuild 时收敛 monitor cache；
-4. 继续 Financial 已登记的 current-head architecture revalidation / fresh-chat DUAL 3-output retest；
-5. 保持所有 BUSINESS owner lease/business truth 边界不变。
+Universal 当前继续直接维护 `main`；material control-plane write 使用 active lease + observed-HEAD CAS + CI + authoritative reread。只有当 writer topology / permission threat model 真实变化时，才重新评估 PR-first 或 GitHub-side protection。

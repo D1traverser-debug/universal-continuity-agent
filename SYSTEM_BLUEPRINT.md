@@ -32,6 +32,8 @@ Stable cross-agent invariants:
 - authoritative reread before `COMMITTED`;
 - lower-authority cache/chat context never silently overriding durable truth.
 
+Under the configured `SINGLE_ACTIVE_CHAT` writer model, Universal `main` remains the single engineering authority. Material compliant writes use the active lease plus an observed-HEAD compare-and-swap, followed by CI and authoritative reread. PR-first and branch protection are not default requirements for this model; stronger GitHub-side enforcement is a separate threat-model choice, not evidence that unprotected `main` is itself a HIGH defect.
+
 Task mutation lineage and formal maintenance proof are separate lifecycle axes. `manifest_version` is the durable task mutation/CAS lineage and may advance on a legal takeover or checkpoint write even when no new formal maintenance proof has completed. `latest_meta_maintenance_run_ref` points to the latest **completed** formal proof; its `target_manifest_version` must never be newer than the current task manifest, but generic task mutation does not require exact equality. A task-only mutation must never manufacture or backfill a completed formal meta-run merely to mirror the newest manifest version. Exact-current binding is reserved for an explicit promotion/freshness gate that separately requires it.
 
 Responsibility pointers remain explicit even though they are not fixed bootstrap input:
