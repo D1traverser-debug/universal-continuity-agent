@@ -7,59 +7,62 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `87`
+- manifest_version: `88`
 - current controller run: `human-readable-durable-revision-v68-2026-10-13`
-- controller status: `ACTIVE` revision `12` at `M8_MULTI_LAYER_VALIDATION`
+- controller status: `ACTIVE` revision `14` at `M8_MULTI_LAYER_VALIDATION`
 - prepatch audit: `audits/HUMAN_READABLE_DURABLE_REVISION_V68_PREPATCH_2026-10-13.json`
 
-## v68 目标
+## v68 设计结论
 
-用户指出当前对外同时出现 `manifest_version`、controller revision、protocol version、Git SHA，难以理解“这次到底是什么版本”，并建议参考 SVN/日期序列。目标不是把 Git 改成 SVN，而是建立一个**用户看得懂、又不增加第二套权威状态**的修订号。
+用户要解决的是“我看不懂你每次提交到底是哪一版”，不是把 Git 换成 SVN。已学习 SVN、Git tag / `git describe` 与 CalVer 后，Universal 采用派生的人类修订号：
 
-## 学习与设计结论
+`UC-YYYYMMDD-rN`
 
-- SVN 的 `rN` 好用，是因为每次集中式仓库提交都有一个全局递增自然数；这个特性不应生搬硬套到多个 Git 仓库。
-- Git SHA 继续是精确不可变工程身份；Git tag 只适合重要发布点，不应每次 checkpoint 都打 tag。
-- CalVer 日期能让人快速知道“什么时候”，但单独日期不能区分同一天多次提交。
-- 因此 Universal 先试运行：`UC-YYYYMMDD-rN`。
-- `YYYYMMDD` 来自已经权威持久化的 `updated_at/persisted_at` 日期；`rN` 直接复用已经存在的 `manifest_version`（未来 owner 可映射到自己的 monotonic durable version）。
-- **不新增 daily counter、不做每日归零、不扫 Git history、不新增 revision registry、不把标签写回 manifest 形成第二份真值。**
+其中日期来自权威持久化时间的日历日期，`rN` 直接复用已有 monotonic `manifest_version`。因此没有 daily counter、没有每日归零、没有新的 revision registry、没有 Git history scan，也不会用 tag 给每个 checkpoint 再造一层身份。
 
-当前 prepatch 状态 `manifest_version=86` 对应的示例是 `UC-20261013-r86`。本次实现 checkpoint 持久化后，用户可见修订号应由新 manifest 动态派生，而不是硬编码保存。
+技术 namespace 继续分开：
 
-## 放在哪一层
+- Git SHA = 精确不可变工程身份；
+- protocol 3.7 = 兼容语义；
+- manifest_version = durable task/CAS 单调状态序列；
+- controller revision = 单次维护 run 内部轨迹；
+- Human Durable Revision = 用户显示层，派生而非权威。
 
-这不是“维护系统专用版本号”，而是**durable progress receipt 的显示层**：
+## 第一次 M8 真实失败并 reopen
 
-- `Git SHA`：机器/工程精确定位；
-- `protocol 3.7`：兼容语义；
-- `manifest_version`：任务状态/CAS 的单调序列；
-- `controller revision`：一次维护 run 内部轨迹；
-- `Human Durable Revision`：给用户看的派生标签。
+CI `38363727516 / 115183763873`：control-plane audit PASS、Agent architecture PASS，但 full pytest `317 passed / 2 failed`。
 
-所以主要落在现有 `PROGRESS_OBSERVABILITY_POLICY.json` 与 `VERSION_LIFECYCLE_POLICY.json`，没有新建 root policy。
+失败项不是版本格式本身：
 
-## 已实现，待 M8
+1. controller M7 implementation receipt 缺少 maintenance policy 要求的 `prepatch_checkpoint` 绑定；
+2. 重写 HANDOFF 时丢掉了既有 single-writer 回归锚点 `当前模型不是 PR-first`。
 
-- `PROGRESS_OBSERVABILITY_POLICY.json` → schema 1.1，定义 human revision 的 receipt 行为；
-- `VERSION_LIFECYCLE_POLICY.json` → schema 1.1，明确 Git / protocol / durable state / controller / human revision 五个 namespace；
-- `runtime/human_revision.py` → 纯确定性 O(1) 格式化/派生；
-- `tests/test_human_revision.py` → 覆盖同日多次、跨日不归零、时区不偷偷换日、非法 scope/version fail closed、namespace separation；
-- 没有改 `ENTRYPOINT.md`，避免为了显示层再次消耗 hot-path budget；
-- 没有改 BUSINESS owner 状态。
+因此 controller 已真实 reopen 到 M7，再修回 M8。Human Durable Revision 设计未改，只修过程/回归表面。
+
+## receipt 行为
+
+- `COMMITTED`：显示新持久化修订号；
+- `NO_MATERIAL_CHANGE`：号不变，并明确“版本未变”；
+- `COMMIT_FAILED`：不造新号，最多显示上一个已验证修订；
+- `STALE_WRITER`：不造新号；
+- 继承时先显示 takeover 前的已持久化修订号。
+
+## 这是不是维护系统专用？
+
+不是。它属于 durable progress receipt 的通用显示层。但本轮**只在 Universal 自己先试运行**。未来 Financial / A股 / Novel / Video 若采用，只能映射到各自已经存在的 monotonic durable owner version 和稳定 scope code；不会建一个 5 仓库共用的中央流水号。
+
+## 复杂度控制
+
+没有新增 root policy / registry / Agent / service；没有扩大 ENTRYPOINT；没有新增 hot-path 远程调用。只扩展现有 `PROGRESS_OBSERVABILITY_POLICY.json`、`VERSION_LIFECYCLE_POLICY.json`，加一个纯确定性 `runtime/human_revision.py` 和 focused tests。
+
+## v65 direct-main / PR-first 回归锚点
+
+当前模型不是 PR-first。
+
+Universal material compliant writes 继续使用 active lease + observed-HEAD CAS + CI + authoritative reread。PR-first 和 branch protection 不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的默认要求；unprotected `main` 本身不是 HIGH defect。
+
+实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
 
 ## 下一步
 
-M8 跑 Universal control-plane audit、Agent architecture harness、full pytest。失败就 reopen。通过后只做 propagation review：确认未来其他 Agent 可以复用规则，但**本轮不自动给四个 BUSINESS repo 写入新格式**。先让 Universal 自己跑稳，再决定是否推广。
-
-## 顺手纠正的旧状态
-
-v67 closure 后的 GitHub Actions `38360976886 / 115174841711` 已经 PASS；此前 manifest 仍写着 `POST_CLOSURE_CI_REQUIRED`。本轮在不改变 v67事实的前提下，已把该 lower-level status 纠正为 `POST_CLOSURE_CI_PASS`。
-
-## 边界
-
-- 不把 Human Revision 当 Git SHA、protocol 或业务版本。
-- 不允许跨 5 个 repo 共用一个中央计数器；那会引入锁、竞争和单点。
-- `NO_MATERIAL_CHANGE` 不加号；`COMMIT_FAILED/STALE_WRITER` 不造新号。
-- 回滚也生成新的持久状态版本；旧号永不复用。
-- 非权威 branch / scratch 不发行用户修订号。
+重新跑 M8 全量 CI；任何失败继续 reopen。通过后做 M9 propagation review（不写四个 BUSINESS repo）、M10 二阶检查、M11 closure 与 post-closure CI/reread。

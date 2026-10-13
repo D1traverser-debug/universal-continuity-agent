@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 87,
+  "manifest_version": 88,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,10 +10,10 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-13T15:32:42+08:00",
+  "updated_at": "2026-10-13T15:36:57+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
-  "next_action": "v68 Human Durable Revision pilot is implemented and awaiting M8 validation. Validate PROGRESS_OBSERVABILITY_POLICY 1.1, VERSION_LIFECYCLE_POLICY 1.1, runtime/human_revision.py and focused regressions with the Universal control-plane/architecture/full pytest CI. Reopen on any failure. If green, perform M9 propagation review without mutating BUSINESS owners, M10 second-order review, then M11 closure and post-closure CI/reread.",
+  "next_action": "v68 first M8 failed 2 process regressions while control-plane and architecture checks passed. Controller reopened and repaired the missing prepatch_checkpoint binding plus the protected PR-first/single-writer handoff anchor. Re-run M8 full CI against the unchanged Human Durable Revision design; reopen on any failure. If green, perform M9 propagation review without BUSINESS mutations, M10 second-order review, M11 closure and post-closure CI/reread.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "contract_version": "CONTINUITY_V3_7",
@@ -31,6 +31,7 @@
   "progress_observability_policy_version": "1.1",
   "version_lifecycle_policy_version": "1.1",
   "human_revision_scheme_status": "UNIVERSAL_PILOT_ACTIVE__FORMAT_UC_YYYYMMDD_rN__DERIVED_FROM_UPDATED_AT_PLUS_MANIFEST_VERSION__NO_NEW_COUNTER_OR_AUTHORITY",
+  "human_revision_latest_expected": "DERIVE_AT_READ_TIME__CURRENT_STATE_WOULD_RENDER_UC-20261013-r88",
   "latest_meta_maintenance_run_ref": "audits/META_MAINTENANCE_FAILURE_CLASS_ESCALATION_V61_2026-10-12.json",
   "meta_proof_binding_model": "LATEST_COMPLETED_FORMAL_PROOF_TARGET_MUST_NOT_EXCEED_CURRENT_MANIFEST_VERSION__TASK_MUTATION_DOES_NOT_REQUIRE_EXACT_CURRENT_PROOF",
   "last_completed_maintenance_controller_run_id": "universal-global-control-plane-audit-v67-2026-10-13",
@@ -38,7 +39,9 @@
   "last_completed_maintenance_controller_status": "COMPLETE_REVISION_27__GLOBAL_CONTROL_PLANE_AUDIT__HISTORICAL_OPEN_SIGNAL_LIFECYCLE__FOUR_REAL_REOPENS__FINAL_M8_AND_POST_CLOSURE_CI_PASS",
   "current_maintenance_controller_run_id": "human-readable-durable-revision-v68-2026-10-13",
   "current_maintenance_controller_state_ref": "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
-  "current_maintenance_controller_status": "ACTIVE_REVISION_12__M8_MULTI_LAYER_VALIDATION",
+  "current_maintenance_controller_status": "ACTIVE_REVISION_14__M8_REVALIDATION_AFTER_TWO_REAL_PROCESS_REGRESSIONS",
+  "human_revision_v68_first_validation_ref": "github-actions:38363727516/job/115183763873",
+  "human_revision_v68_first_validation_status": "CONTROL_PLANE_PASS__AGENT_ARCHITECTURE_PASS__PYTEST_317_PASS_2_FAIL__REAL_REOPEN",
   "formal_controller_meta_promotion_status": "OPEN__EVALUATE_COMPLETE_TRACES_WITHOUT_FABRICATED_CHRONOLOGY",
   "meta_governance_assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
   "independent_meta_semantic_review": "OPEN_OPERATOR_DEPENDENCE_LIVE_HELDOUT_GRADER_REQUIRED",
@@ -64,17 +67,9 @@
   "global_audit_v67_final_ref": "audits/UNIVERSAL_GLOBAL_CONTROL_PLANE_AUDIT_V67_FINAL_2026-10-13.json",
   "audit_branch_cleanup_status": "OPEN_TOOL_LIMITED__NONAUTHORITATIVE___NOOP_BRANCHES_AND_OLD_MAINTENANCE_BRANCHES__NO_DELETE_REF_PRIMITIVE__NO_PRS",
   "control_signal_issue": "D1traverser-debug/universal-continuity-agent#12",
-  "open_control_signal_refs": [
-    "D1traverser-debug/universal-continuity-agent#3",
-    "D1traverser-debug/universal-continuity-agent#4"
-  ],
-  "historical_open_control_signal_refs": [
-    "D1traverser-debug/universal-continuity-agent#12"
-  ],
-  "resolved_control_signal_refs": [
-    "D1traverser-debug/universal-continuity-agent#2",
-    "D1traverser-debug/universal-continuity-agent#7"
-  ],
+  "open_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#3","D1traverser-debug/universal-continuity-agent#4"],
+  "historical_open_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#12"],
+  "resolved_control_signal_refs": ["D1traverser-debug/universal-continuity-agent#2","D1traverser-debug/universal-continuity-agent#7"],
   "financial_owner_head": "6494cd58a93d82f7fc6849803b6b7493cf66443f",
   "a_share_owner_head": "651d97533cd62d34dc230f0b5047715074ab1803",
   "novel_owner_head": "46606fee061a5cf5421a5d0ef145a5955fd66760",
@@ -92,16 +87,7 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": [
-    "继承系统",
-    "Continuity",
-    "system maintenance",
-    "human revision",
-    "versioning",
-    "CalVer",
-    "SVN",
-    "Git"
-  ],
+  "keywords": ["继承系统","Continuity","system maintenance","human revision","versioning","CalVer","SVN","Git"],
   "artifact_refs": [
     "ENTRYPOINT.md",
     "CURRENT_PROTOCOL.json",
