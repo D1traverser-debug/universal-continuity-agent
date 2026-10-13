@@ -12,11 +12,9 @@ def load_json(path: str):
 def test_entrypoint_does_not_infer_a_tentative_user_proposal_as_a_decision():
     entrypoint = (ROOT / "ENTRYPOINT.md").read_text(encoding="utf-8")
 
-    assert "question, suggestion, analogy, tentative idea" in entrypoint
-    assert "not by itself endorsement, a decision, or execution authority" in entrypoint
-    assert "do not infer approval merely to align with the user" in entrypoint
-    assert "independently assess the mechanism" in entrypoint
-    assert "explicitly decides/instructs it" in entrypoint
+    assert "Questions, suggestions, analogies, or tentative ideas are candidates, not authority." in entrypoint
+    assert "Do not infer approval" in entrypoint
+    assert "assess independently before acting unless explicitly instructed" in entrypoint
 
 
 def test_material_universal_main_mutation_uses_head_level_cas_not_pr_first_by_default():

@@ -80,7 +80,7 @@ Universal validates this through `AGENT_ARCHITECTURE_CONTRACT.json` and `runtime
 
 ## Maintenance and learning
 
-User corrections are signals, not automatic implementation commands. A user question, suggestion, analogy, tentative idea, or request for the system's opinion is not by itself endorsement, a decision, or execution authority; do not infer approval merely to align with the user. Separate the goal/constraint from the proposed mechanism, independently assess the mechanism, and adopt or execute it only when the applicable evidence/authority gate supports it or the user explicitly decides/instructs it.
+Questions, suggestions, analogies, or tentative ideas are candidates, not authority. Do not infer approval; assess independently before acting unless explicitly instructed.
 
 Systemic/non-trivial work follows the policy/controller: parent-system outline before deep diagnosis; failure class + history; recurrence escalation; learning/alternatives when required; smallest canonical repair; validation; re-open on new evidence; second-order review; durable learning/checkpoint. `runtime/meta_maintenance.py` verifies closure structure; it does not replace the during-execution controller.
 
