@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 81,
+  "manifest_version": 82,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,10 +10,10 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-13T14:52:00+08:00",
+  "updated_at": "2026-10-13T14:58:00+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
-  "next_action": "v67 corrective validation is green and M9 remote reobservation is complete. Controller is ACTIVE revision 17 at M10. Perform second-order/global-claim review across entry, execution, workflow, writer competition, authority conflicts, recovery/forgetting, obsolete surfaces, bypass/calling/inheritance and open assurance boundaries. If no new defect appears, persist M11 closure, then observe post-closure CI and reread authoritative main/task/controller before COMMITTED.",
+  "next_action": "v67 M10 second-order review found HISTORICAL_OPEN_SIGNAL_AMBIGUOUS_WITH_ACTIVE_DRIFT. Controller reopened to M7 revision 18. Add historical-open control-signal lifecycle semantics, reclassify issue #12 so unresolved historical provenance cannot drive present-tense monitor remediation, separate it from current active signals in task state, add regression, then rerun M8-M10 and close only after post-closure CI/reread.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "contract_version": "CONTINUITY_V3_7",
@@ -35,7 +35,7 @@
   "last_completed_maintenance_controller_status": "COMPLETE_REVISION_25__SINGLE_CHATGPT_OWNER_ENTRY_INTERNAL_EXECUTOR_DISPATCH__REAL_POST_CLOSURE_CI_REOPEN__CORRECTIVE_VALIDATION_PASS",
   "current_maintenance_controller_run_id": "universal-global-control-plane-audit-v67-2026-10-13",
   "current_maintenance_controller_state_ref": "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
-  "current_maintenance_controller_status": "ACTIVE_REVISION_17__M10_SECOND_ORDER_REVIEW_AND_GLOBAL_CLAIM_CALIBRATION",
+  "current_maintenance_controller_status": "ACTIVE_REVISION_18__M7_REOPEN_HISTORICAL_OPEN_SIGNAL_LIFECYCLE",
   "formal_controller_meta_promotion_status": "OPEN__CURRENT_COMPLETE_TRACE_ELIGIBLE_FOR_EVALUATION_WITHOUT_CHRONOLOGY_FABRICATION",
   "meta_governance_assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
   "independent_meta_semantic_review": "OPEN_OPERATOR_DEPENDENCE_LIVE_HELDOUT_GRADER_REQUIRED",
@@ -46,7 +46,7 @@
   "monitor_product_state_last_observed": "NO_ENABLED_CORE_CONTINUITY_MONITOR_TASKS_PRESENT__THREE_UNRELATED_TASKS_DISABLED",
   "monitor_recreation_authorized": false,
   "monitor_liveness_status": "LIVE_REREAD_CONFIRMS_CORE_MONITORS_ABSENT_BY_USER_INTENT__HISTORICAL_SIGNAL_12_OPEN",
-  "monitor_historical_issue_12_status": "HISTORICAL_SILENT_DISABLE_PROVENANCE_UNRESOLVED__CURRENT_INTENTIONAL_DELETION_IS_NOT_RECURRENCE_EVIDENCE",
+  "monitor_historical_issue_12_status": "OPEN_HISTORICAL_PROVENANCE_ONLY__NOT_CURRENT_DRIFT__DO_NOT_RECREATE_OR_REENABLE_WITHOUT_NEW_USER_AUTHORIZATION",
   "harness_monitor_cache_status": "LOWER_AUTHORITY_HISTORICAL_OBSERVATION_FIELDS_STALE__LIVE_REREAD_2026_10_13_OVERRIDES_PRESENT_TENSE_INTERPRETATION__SAFE_CACHE_CONVERGENCE_OPEN",
   "tool_level_mutation_enforcement_status": "SINGLE_ACTIVE_CHAT_OPERATIONAL_MODEL__MATERIAL_DIRECT_MAIN_WRITES_USE_ACTIVE_LEASE_PLUS_HEAD_CAS__PHYSICAL_ENFORCEMENT_AGAINST_AN_AUTHORIZED_NONCOMPLIANT_WRITER_NOT_CLAIMED",
   "main_mutation_integrity_status": "REGRESSION_VERIFIED__DIRECT_MAIN_ACTIVE_LEASE_PLUS_HEAD_CAS__PR_FIRST_NOT_DEFAULT__ASSURANCE_CEILING_EXPLICIT",
@@ -55,13 +55,15 @@
   "agent_product_entry_status": "REGRESSION_VERIFIED__ALL_CURRENT_BUSINESS_OWNER_MANIFESTS_PROPAGATED__UNIVERSAL_CORRECTIVE_CI_PASS__PRIVATE_OWNER_CI_RUNNERS_NOT_EXECUTED",
   "agent_product_entry_invariant": "ONE_CHATGPT_OWNER_SKILL_ENTRY__SYSTEM_INTERNAL_EXECUTION_MODE_SELECTION__SINGLE_CANONICAL_OWNER_WORKFLOW",
   "agent_product_entry_assurance_ceiling": "STRUCTURAL_PRODUCT_INTERFACE_CONFORMANCE_PLUS_UNIVERSAL_REGRESSION_AND_CORRECTIVE_CI_PASS__PRIVATE_OWNER_CI_EXECUTION_NOT_OBSERVED__NO_LIVE_BUSINESS_QUALITY_OR_OUTCOME_PROOF",
-  "global_audit_v67_status": "M8_CORRECTIVE_CI_PASS__M9_REMOTE_REOBSERVATION_COMPLETE__M10_ACTIVE",
+  "global_audit_v67_status": "REOPENED_M7_AT_M10__HISTORICAL_OPEN_SIGNAL_LIFECYCLE_PATCH_PENDING",
   "global_audit_v67_validation_ref": "github-actions:38358219416/job/115165991116",
   "audit_branch_cleanup_status": "OPEN_TOOL_LIMITED__ACCIDENTAL_NONAUTHORITATIVE_BRANCHES___NOOP___NOOP2___NOOP3___NOOP4___NOOP5__NO_DELETE_REF_PRIMITIVE__NO_PRS",
   "control_signal_issue": "D1traverser-debug/universal-continuity-agent#12",
   "open_control_signal_refs": [
     "D1traverser-debug/universal-continuity-agent#3",
-    "D1traverser-debug/universal-continuity-agent#4",
+    "D1traverser-debug/universal-continuity-agent#4"
+  ],
+  "historical_open_control_signal_refs": [
     "D1traverser-debug/universal-continuity-agent#12"
   ],
   "resolved_control_signal_refs": [
@@ -74,7 +76,7 @@
   "video_owner_head": "8f7d0cfb8121fc1a06e1e3a24c1167649d4def94",
   "financial_control_signal_status": "HEAD_6494CD_UNCHANGED__PRODUCT_INTERFACE_STRUCTURALLY_VALIDATED__PRIVATE_OWNER_CI_RUNNER_NOT_EXECUTED__FRESH_BUSINESS_RETEST_OPEN",
   "financial_live_trajectory_status": "HISTORICAL_LIVE_TRAJECTORY_EXECUTED__CURRENT_GLOBAL_AUDIT_DID_NOT_REEXECUTE_BUSINESS_TRAJECTORY__FRESH_CHAT_DUAL_3_OUTPUT_RETEST_OPEN",
-  "architecture_freshness_model_status": "M9_CURRENT_BUSINESS_OWNER_HEADS_REREAD_AND_UNCHANGED__SIGNAL_LIFECYCLE_REOBSERVED__OBSERVATION_CACHE_REFRESHED",
+  "architecture_freshness_model_status": "M9_REOBSERVATION_INVALIDATED_BY_M10_REOPEN__RERUN_AFTER_SIGNAL_LIFECYCLE_PATCH",
   "resume_epoch": 8,
   "active_lease": {
     "lease_id": "lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654",
@@ -85,6 +87,6 @@
   "writer_model": "SINGLE_ACTIVE_CHAT",
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
-  "keywords": ["继承系统", "Continuity", "system maintenance", "global control-plane audit", "entry", "execution", "workflow", "inheritance", "concurrency", "conflict"],
+  "keywords": ["继承系统", "Continuity", "system maintenance", "global control-plane audit", "entry", "execution", "workflow", "inheritance", "concurrency", "conflict", "historical open signal"],
   "artifact_refs": ["ENTRYPOINT.md", "CURRENT_PROTOCOL.json", "STARTUP_HOOK.md", "NEW_CHAT_BOOTSTRAP.json", "CONTINUITY_CONTRACT.json", "SYSTEM_MAINTENANCE_POLICY.json", "PROGRESS_OBSERVABILITY_POLICY.json", "SYSTEM_BLUEPRINT.md", "AGENT_ARCHITECTURE_CONTRACT.json", "EXECUTION_READINESS_CONTRACT.json", "OWNER_REGISTRY.json", "OWNER_ARCHITECTURE_OBSERVATIONS.json", "CONTROL_SIGNAL_CONTRACT.json", "ARTIFACT_CONTEXT_GOVERNANCE_POLICY.json", "HARNESS_STATUS.json", "runtime/owner_topology.py", "runtime/system_audit.py", "tests/test_unified_ingress_and_controller.py", "tests/test_owner_registry_authority.py", "tests/test_hot_path_loading.py", "tests/test_global_control_plane_v67.py", "tests/test_bare_inherit_discovery.py", "tests/test_system_audit.py", "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json", "tasks/universal-continuity-maintenance/HANDOFF.md", "audits/UNIVERSAL_GLOBAL_CONTROL_PLANE_AUDIT_V67_PREPATCH_2026-10-13.json"]
 }
