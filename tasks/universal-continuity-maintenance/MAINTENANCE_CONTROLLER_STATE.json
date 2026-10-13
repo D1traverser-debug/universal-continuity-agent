@@ -3,8 +3,8 @@
   "run_id":"user-proposal-independence-and-main-cas-v65-2026-10-13",
   "triage_outcome":"CONFIRMED_DEFECT",
   "status":"ACTIVE",
-  "revision":13,
-  "current_stage":"M8_MULTI_LAYER_VALIDATION",
+  "revision":14,
+  "current_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION",
   "completed_stage_receipts":[
     {"stage":"M0_INTAKE_AND_SIGNAL_CLASSIFICATION","revision":1,"evidence_refs":["user-signal://2026-10-13/anti-sycophancy-and-main-threat-model-correction","github-branch://D1traverser-debug/universal-continuity-agent/continuity/pr-first-mutation-gate-v65"],"summary":"Confirmed two linked defects: a tentative user idea/question was inferred as implementation authority, and unprotected-main risk was overclassified using the wrong multi-writer threat model."},
     {"stage":"M1_REQUIREMENT_AND_PRELIMINARY_FAILURE_CLASSIFICATION","revision":2,"evidence_refs":["SYSTEM_MAINTENANCE_POLICY.json","OWNER_ADAPTER_CONTRACT.json","tasks/universal-continuity-maintenance/TASK_MANIFEST.json"],"summary":"Classified USER_PROPOSAL_INFERRED_AS_DECISION_OR_CANONICAL_MECHANISM as recurrent and DIRECT_MAIN_THREAT_MODEL_MISCLASSIFICATION as first-observed."},
@@ -16,10 +16,11 @@
     {"stage":"M4A_FACT_DECISION_FRONTIER","revision":8,"evidence_refs":["tasks/universal-continuity-maintenance/TASK_MANIFEST.json","github-branch://D1traverser-debug/universal-continuity-agent/main?protected=false"],"summary":"Resolved retrievable facts: SINGLE_ACTIVE_CHAT writer model, current lease, unprotected main, and available expected-sha ref update. No user architecture choice remains."},
     {"stage":"M5_INSTRUCTION_AND_CONTROL_SURFACE_DECISION","revision":9,"evidence_refs":["ENTRYPOINT.md","SYSTEM_MAINTENANCE_POLICY.json","PROGRESS_OBSERVABILITY_POLICY.json"],"summary":"Escalate only the recurrent anti-canonicalization invariant to ENTRYPOINT; keep detailed semantics in existing maintenance policy and place direct-main commit integrity in the existing progress/commit policy."},
     {"stage":"M6_DESIGN_AND_COMPLEXITY_EFFICIENCY_BUDGET","revision":10,"evidence_refs":["audits/USER_PROPOSAL_AND_DIRECT_MAIN_CAS_V65_PREPATCH_2026-10-13.json"],"summary":"Minimal design adds one hot-path rule, one commit-integrity section and focused regression without PR lifecycle or new authorities."},
-    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["audits/USER_PROPOSAL_AND_DIRECT_MAIN_CAS_V65_PREPATCH_2026-10-13.json","tasks/universal-continuity-maintenance/HANDOFF.md"],"summary":"The repair preserves direct main, removes the erroneous HIGH-by-default branch-protection framing, and increases concurrency safety with HEAD CAS at lower operational cost than PR-first."},
-    {"stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":13,"evidence_refs":["github-commit://11340d5760b349a6fd0dfbb24656a2e740c90baf","ENTRYPOINT.md","PROGRESS_OBSERVABILITY_POLICY.json","tests/test_user_proposal_and_main_mutation_integrity.py"],"summary":"Implemented the minimal hot-path anti-inference rule and direct-main HEAD-CAS contract with focused regressions. The experimental PR-first branch remains unmerged and non-authoritative."}
+    {"stage":"M6A_ARCHITECTURE_PAYOFF_AND_DELETION_TEST","revision":11,"evidence_refs":["audits/USER_PROPOSAL_AND_DIRECT_MAIN_CAS_V65_PREPATCH_2026-10-13.json","tasks/universal-continuity-maintenance/HANDOFF.md"],"summary":"The repair preserves direct main, removes the erroneous HIGH-by-default branch-protection framing, and increases concurrency safety with HEAD CAS at lower operational cost than PR-first."}
   ],
-  "reopen_history":[],
+  "reopen_history":[
+    {"target_stage":"M7_IMPLEMENTATION_AND_SUPERSESSION","revision":14,"reason":"CI validation found ENTRYPOINT hot-path budget regression: 8447 bytes exceeds the 8192-byte limit. Preserve the invariant but compress its hot-path expression; detailed semantics remain in cold-path policy.","evidence_refs":["github-actions://D1traverser-debug/universal-continuity-agent/runs/38329213434/jobs/115074858091","tests/test_hot_path_loading.py"]}
+  ],
   "investigation_resolution":null,
   "prepatch_checkpoint":{"ref":"audits/USER_PROPOSAL_AND_DIRECT_MAIN_CAS_V65_PREPATCH_2026-10-13.json","revision":12,"bound_completed_stage_count":11,"authoritative_reread_verified":true},
   "blocker":null
