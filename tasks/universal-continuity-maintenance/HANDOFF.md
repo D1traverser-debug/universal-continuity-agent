@@ -11,10 +11,13 @@
 - human revision: `UC-20261013-r95` (derived presentation only)
 - current controller: `architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13`
 - controller status: `BLOCKED revision 20 @ M7_IMPLEMENTATION_AND_SUPERSESSION`
+- pause checkpoint: `tasks/universal-continuity-maintenance/PAUSE_CHECKPOINT_2026-10-13.md`
 
 ## 用户当前明确边界
 
 先把之前浅学的体系都学深，并加入当前主流 Agent runtime：OpenAI Agents API/SDK、Microsoft Agent Framework、Google ADK/Agents CLI、LangGraph/LangSmith。建立独立库、重新找出 Universal 的问题。**不调整、不重构，等待用户后续明确命令。**
+
+用户现在要求暂停当前窗口并把进度完整留存，准备之后从新窗口继续本任务。不得在暂停后自行进入 M7 implementation。
 
 ## Pass 2 已完成
 
@@ -46,22 +49,13 @@ Pass-2 files：`15_prior_frameworks_deep_pass.md`、`16_agent_runtime_frameworks
 
 核心共同结论：**checkpoint/persistence ≠ exactly-once external effect**。当前成熟框架仍需显式处理 replay、幂等、lost ACK、approval identity、session/workflow lineage 和外部结果 reconciliation。
 
-## 第一次 Pass-2 checkpoint CI 的真实失败
+## 当前验证状态
 
-CI `38382360943` / job `115245654728`：control-plane audit PASS、Agent architecture PASS，但 full pytest 为 `320 passed / 2 failed`。两项均是现有回归保护而不是研究内容错误：
-1. BLOCKED controller 的 `investigation_resolution` 必须保持 null；
-2. Handoff 必须保留 v65 精确回归锚点 `当前模型不是 PR-first`。
+- `38382360943 / 115245654728`：control-plane PASS、Agent architecture PASS、pytest `320 passed / 2 failed`。
+- `38382648214 / 115246616835`：control-plane PASS、Agent architecture PASS、pytest `321 passed / 1 failed`。
+- `38384381827 / 115252412136`：control-plane PASS、Agent architecture PASS、pytest `321 passed / 1 failed`。
 
-第二次 corrective CI `38382648214` / job `115246616835`：control-plane audit PASS、Agent architecture PASS，full pytest `321 passed / 1 failed`；剩余失败是 Handoff 还缺另一个 v65 精确锚点。该锚点已在本次纠正中恢复，不能用语义近似替代回归合同。
-
-## 不应误读
-
-- 不代表采用任何一个框架；
-- 不代表要把 Universal 改成 Kubernetes/UVM/OTP；
-- 不代表增加 supervisor Agent；
-- 不代表当前需要 Raft；
-- 不代表 DO-178C/IEC 61508 合规；
-- 不代表已经读完每个项目每一行源码或未来版本；当前完成的是足以做架构比较的深度。
+当前唯一已知 pytest failure 是 Handoff 回归保护要求保留精确 v65 锚点 `没有 merge，也不是 authoritative implementation`。本 Handoff 已恢复该精确短语；新窗口恢复后应先检查本次/后续 CI 是否全绿，再决定是否需要仅做 checkpoint-correction。研究内容本身没有因此失效。
 
 ## M7 冻结
 
@@ -69,11 +63,19 @@ CI `38382360943` / job `115245654728`：control-plane audit PASS、Agent archite
 
 ## 本轮过程异常（不得隐藏）
 
-Pass 2 前两个新研究文件曾通过 GitHub Contents API 直接提交，未显式走 `observed HEAD + expected_sha CAS`。在当前 single active writer 下未观察到冲突，且只改 NON_AUTHORITY research 文件，没有改 BUSINESS/production behavior，但它违反了 v65 后的合规写入流程。已停止；后续 checkpoint 从重新读取 current main 使用 expected-HEAD CAS。controller/manifest 保留此事实。
+Pass 2 前两个新研究文件曾通过 GitHub Contents API 直接提交，未显式走 `observed HEAD + expected_sha CAS`。随后创建本暂停 checkpoint 时又发生一次同类 operator-side Contents API 写入；另有一次误创建临时 probe 文件。它们没有改 BUSINESS 真值，但都是违反当前 direct-main 合规写入流程的操作偏差。后续修正必须使用 current main reread + active lease + expected-HEAD CAS，并把临时 probe 从 authority tree 清理掉；不得把这些异常从恢复上下文里省略。
 
 ## 仍开放但不是本轮重构授权
 
 G01–G30 都只是 diagnosis/candidate input；Novel #3、Video #4 owner-local drift 仍由其 owner 管；Financial fresh-chat DUAL 三输出实测仍 owner-scoped OPEN；private owner CI 未执行处不能称 PASS；independent semantic/live-outcome assurance 仍 OPEN；monitor #12 仍 `HISTORICAL_OPEN`；`__noop*` / 旧 maintenance branch 仍非权威 cleanup debt。
+
+## 新窗口恢复指令
+
+本任务是 `SYSTEM_INFRA / EXPLICIT_ONLY`。按当前 Continuity 规则，裸 `继承` 不应自动把 SYSTEM_INFRA 当默认候选。为了保证新窗口准确恢复当前任务，请使用：
+
+`继承，继续架构可靠性深研任务（continuity:universal-continuity-maintenance）`
+
+新窗口必须先读 `ENTRYPOINT.md` + `CURRENT_PROTOCOL.json`，再读当前 `TASK_MANIFEST.json`、本 `HANDOFF.md` 和 `PAUSE_CHECKPOINT_2026-10-13.md`，先展示继承前进度，再合法 takeover（新 resume_epoch / lease），然后从 authoritative next_action 继续；不得凭聊天记忆重建任务。
 
 ## v65 direct-main / PR-first 回归锚点
 
@@ -81,8 +83,10 @@ G01–G30 都只是 diagnosis/candidate input；Novel #3、Video #4 owner-local 
 
 active lease + observed-HEAD CAS + CI + authoritative reread
 
+实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
+
 Universal 合规 material main write 继续以该链路为准；`main protected=false` 本身不是当前 `SINGLE_ACTIVE_CHAT` 威胁模型下的 HIGH defect；若 writer topology/权限威胁模型改变，必须重新评估。
 
 ## 下一步
 
-**等待用户明确重构命令。** 在此之前只允许研究证据维护/事实纠正，不进入 M7 production implementation。
+暂停。新窗口恢复后第一件事是确认 current main、清理误创建临时 probe、检查/重跑 checkpoint CI，并保持 M7 blocked，除非用户随后明确下达重构命令。
