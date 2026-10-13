@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chat-product-entry-and-internal-executor-boundary-v66-2026-10-13",
+  "created_at": "2026-10-13T11:01:05+08:00",
+  "triage": "CONFIRMED_DEFECT",
+  "failure_class": "INTERNAL_EXECUTION_ADAPTER_EXPOSED_AS_USER_PRODUCT_ROUTE",
+  "recurrence_status": "CROSS_OWNER_RECURRENT",
+  "user_goal": {
+    "statement": "Each business Agent should present one normal ChatGPT-facing product entry while GitHub remains durable engineering/rule/continuity authority. Internal executors, guards, runtime bindings and assurance labels must make that experience reliable without becoming user-selected product routes.",
+    "not_requested": [
+      "deploy or require a new MCP service",
+      "create a second business workflow",
+      "remove internal execution or assurance identifiers",
+      "move all owner business state into Universal or GitHub continuity",
+      "weaken fail-closed quality or evidence gates"
+    ]
+  },
+  "parent_system_outline": {
+    "interaction": "user -> ChatGPT -> matched BUSINESS owner/Skill",
+    "authority": "owner GitHub main holds engineering/rule authority; exact business state/checkpoint authority remains owner-declared",
+    "dispatch": "current-session capability handshake selects internal executor/evidence mode",
+    "workflow": "one canonical owner business workflow/SOP/quality contract",
+    "persistence": "owner-specific guarded state/checkpoint + Universal continuity/lease where applicable",
+    "consumers": [
+      "FINANCIAL_WRITING_AGENT_RUNTIME",
+      "A_SHARE_MARKET_AGENT",
+      "NOVEL_WRITING_AGENT",
+      "VIDEO_GROWTH_AGENT"
+    ],
+    "bypass_surface": "Skill/manifest/readiness prose that makes internal modes look like separate user routes"
+  },
+  "root_cause": {
+    "layer": "SYSTEM_ARCHITECTURE",
+    "detail": "Universal execution-readiness correctly distinguished capability/assurance modes, and owner manifests described runtime layers, but the shared Agent architecture never encoded the product-interface boundary: one ChatGPT-facing owner entry, internal mode selection, one canonical owner workflow. Owner Skills therefore leaked implementation vocabulary into normal product use."
+  },
+  "history": [
+    {
+      "ref": "github-commit://D1traverser-debug/financial-writing-agent/d50adb726fd1a8671a2bd23bf04105797d6faeab",
+      "lesson": "Guarded GitHub chat was intentionally made first-class for the user's GitHub-mounted + GPT-chat operating model."
+    },
+    {
+      "ref": "github-commit://D1traverser-debug/financial-writing-agent/1948a9f80275aad202955c932430d7c882c82c97",
+      "lesson": "Financial already converged business workflow control into one kernel while preserving adapter-specific persistence/assurance."
+    },
+    {
+      "ref": "github-commit://D1traverser-debug/universal-continuity-agent/da3b383852195b43ab984fa00e019c8dc03920de",
+      "lesson": "Universal added readiness routing, but did not declare that routes are internal product implementation."
+    }
+  ],
+  "learning_scout": {
+    "decision": "SCOUT_REQUIRED",
+    "sources": [
+      {
+        "ref": "https://developers.openai.com/plugins/concepts/skills",
+        "disposition": "ACCEPT",
+        "learning": "Skills are workflow guidance/resources and can orchestrate available tools; they do not require separate user workflows per executor."
+      },
+      {
+        "ref": "https://developers.openai.com/plugins/concepts/plugins",
+        "disposition": "ACCEPT",
+        "learning": "Plugins can package Skills and optional tools/MCP; smallest useful shape is valid."
+      },
+      {
+        "ref": "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt",
+        "disposition": "ACCEPT",
+        "learning": "Plugin installation/product surface is separate from the backend execution mechanism."
+      }
+    ]
+  },
+  "capability_reuse": {
+    "reuse": [
+      "AGENT_ARCHITECTURE_CONTRACT.json",
+      "runtime/agent_architecture.py",
+      "EXECUTION_READINESS_CONTRACT.json",
+      "SYSTEM_BLUEPRINT.md",
+      "existing owner Skill/AGENT_MANIFEST surfaces"
+    ],
+    "new_root_surface_required": false,
+    "new_mcp_or_service_required": false
+  },
+  "alternatives": [
+    {
+      "id": "NO_CHANGE_EXPLAIN_IN_CHAT",
+      "decision": "REJECT",
+      "failure_mode": "Fresh chats and other owners can repeat the same route-leakage confusion."
+    },
+    {
+      "id": "FINANCIAL_ONLY_WORDING",
+      "decision": "REJECT",
+      "failure_mode": "Leaves the shared architecture defect active in A-share/Novel/Video and future owners."
+    },
+    {
+      "id": "DELETE_EXECUTION_MODE_IDENTIFIERS",
+      "decision": "REJECT",
+      "failure_mode": "Destroys useful readiness/assurance/evidence distinctions and weakens fail-closed execution."
+    },
+    {
+      "id": "SHARED_SINGLE_ENTRY_INTERNAL_DISPATCH_INVARIANT",
+      "decision": "ACCEPT",
+      "failure_mode": "If overbroad, could incorrectly force owner business state into one substrate; design therefore constrains only the user-facing entry and dispatch semantics, not domain state authority."
+    }
+  ],
+  "accepted_design": {
+    "business_product_interface": {
+      "interaction_surface": "CHATGPT",
+      "entry_model": "SINGLE_OWNER_ENTRY",
+      "execution_mode_selection": "SYSTEM_INTERNAL",
+      "business_contract_model": "SINGLE_CANONICAL_OWNER_WORKFLOW"
+    },
+    "rules": [
+      "OWNER_NATIVE, CHAT_BRIDGED, DETERMINISTIC_TOOL and ISOLATED_EXTERNAL remain internal dispatch/evidence labels.",
+      "Normal task use does not ask the user to select an execution mode.",
+      "Expose implementation/assurance mode only when the user asks, when diagnosing a blocker, or when a genuine external authorization/decision is required.",
+      "Capability differences may change assurance or block an exact hard gate; they may not define a second SOP or silently narrow the canonical business contract.",
+      "GitHub main remains engineering/rule/continuity authority; owner-specific business state/checkpoint authority remains domain-declared."
+    ],
+    "propagation": [
+      "Universal shared contract/validator/readiness/blueprint",
+      "Financial Skill/manifest/GITHUB_CHAT contract/plugin metadata",
+      "A-share Skill/manifest/plugin metadata",
+      "Novel Skill/manifest",
+      "Video Skill/manifest"
+    ]
+  },
+  "prepatch_heads": {
+    "universal": "ad486d6bc4cb04e1cb0ef9c056df2cc5b6842cc2",
+    "financial": "3a8dd1b1158c62cf8759841e1df93cf84cc14c8b",
+    "a_share": "f8ad4decde3adb0f3f87ed7019ce6e9f5981e07c",
+    "novel": "349879601b3114c7caee999ef4079088666c1d90",
+    "video": "977ad5329b1ffb1f971db922fac3e17bf91a412a"
+  },
+  "business_state_boundary": "No BUSINESS task lease, business-stage state, article, market-day decision, novel Canon/project state, or video project truth may be changed by this SYSTEM_INFRA propagation.",
+  "validation_plan": [
+    "Add deterministic Universal product_interface validation and focused regression.",
+    "Move all current BUSINESS manifests to architecture contract 1.2 and declare the same product interface.",
+    "Apply minimal owner Skill wording changes without changing business SOP.",
+    "Run/observe each owner CI; retain existing unrelated drift/open assurance rather than claiming it closed.",
+    "Refresh Universal architecture observation cache only after exact owner heads and validation evidence are known.",
+    "Run Universal risk-tiered audit, Agent architecture audit and full pytest.",
+    "Reopen M7 if validation or second-order review exposes a contradiction."
+  ],
+  "assurance_ceiling": "STRUCTURAL_PRODUCT_INTERFACE_AND_EXECUTION_BOUNDARY_CONFORMANCE",
+  "open_world_boundary": "This repair cannot prove future model behavior, live editorial/market/novel/video quality, provider isolation, external credentials, or that every future UI/product change will preserve the interaction surface."
+}
