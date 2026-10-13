@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "architecture-applicability-v69-m7-correction-and-m8-validation-2026-10-13",
+  "task_id": "continuity:universal-continuity-maintenance",
+  "controller_run_id": "architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13",
+  "m7_correction": {
+    "root_issue": "ENTRYPOINT bootstrap guard initially exceeded the reserved-headroom budget, then compression exposed historical exact-string regression anchors.",
+    "failed_validation_history": [
+      "github-actions://D1traverser-debug/universal-continuity-agent/38397187483/job/115295288959",
+      "github-actions://D1traverser-debug/universal-continuity-agent/38398103616/job/115298389856",
+      "github-actions://D1traverser-debug/universal-continuity-agent/38398294857/job/115299037679",
+      "github-actions://D1traverser-debug/universal-continuity-agent/38398462355/job/115299602108",
+      "github-actions://D1traverser-debug/universal-continuity-agent/38398746972/job/115300598134"
+    ],
+    "final_material_commit": "8ac05af3b009c7bfc323286ba6e1c85faf72cd54",
+    "final_material_parent": "ca4bd388aca9384e4045134d33edb9bd9431860b",
+    "publish_route": "GIT_DATA_TREE_COMMIT_PLUS_UPDATE_REF_EXPECTED_SHA",
+    "expected_sha": "ca4bd388aca9384e4045134d33edb9bd9431860b",
+    "force": false,
+    "authoritative_reread_verified": true,
+    "result": "BOOTSTRAP_GUARD_RETAINED__HISTORICAL_REGRESSION_ANCHORS_RETAINED__HEADROOM_CONTRACT_RESTORED"
+  },
+  "m8_validation": {
+    "workflow_run": "github-actions://D1traverser-debug/universal-continuity-agent/38398927554",
+    "job": "github-actions://D1traverser-debug/universal-continuity-agent/38398927554/job/115301225424",
+    "control_plane_audit": "PASS",
+    "agent_architecture_harness": "PASS",
+    "pytest": "323 passed",
+    "status": "PASS"
+  },
+  "research_scope": {
+    "paid_normative_do_178c_counted_as_fully_studied": false,
+    "paid_normative_iec_61508_counted_as_fully_studied": false,
+    "public_faa_iec_material_retained_as_bounded_evidence_lenses": true,
+    "uvm_retained_from_public_accellera_material": true,
+    "applicability_result": "SIX_CONSOLIDATED_PRIMITIVE_FAMILIES__NO_FRAMEWORK_ZOO"
+  },
+  "production_architecture_refactor_applied": false,
+  "next_stage": "M9_CROSS_SUBSYSTEM_INHERITANCE_AND_PROPAGATION"
+}
