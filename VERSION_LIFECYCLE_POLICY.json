@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "continuity_protocol": "3.7",
-  "purpose": "Keep one active Continuity protocol while preserving business history and providing explicit migration edges.",
+  "purpose": "Keep one active Continuity protocol while preserving business history and providing explicit migration edges, while keeping technical and user-facing version namespaces distinct.",
   "active_working_tree": {
     "active_protocol_count": 1,
     "active_protocol": "3.7",
@@ -13,8 +13,51 @@
     "patch_hardening_requires_protocol_bump": false,
     "minor_semantic_change_requires_protocol_bump": true,
     "breaking_semantic_change_requires_protocol_bump": true,
-    "examples_patch": ["tests", "owner conformance", "documentation", "cleanup", "compatible adapters"],
+    "examples_patch": ["tests", "owner conformance", "documentation", "cleanup", "compatible adapters", "human-readable revision presentation"],
     "principle": "Do not create a new protocol version for every internal improvement."
+  },
+  "version_namespaces": {
+    "git_commit": {
+      "authority": "EXACT_IMMUTABLE_ENGINEERING_IDENTITY",
+      "source": "Git commit object SHA",
+      "user_default_display": false,
+      "rule": "Keep Git as the engineering source of truth. A human revision must never replace or reinterpret the commit SHA."
+    },
+    "protocol": {
+      "authority": "COMPATIBILITY_SEMANTICS",
+      "source": "continuity_protocol_version",
+      "user_default_display": "ONLY_WHEN_COMPATIBILITY_OR_MIGRATION_IS_RELEVANT",
+      "rule": "Protocol versions describe compatibility semantics, not chronological submissions."
+    },
+    "durable_state_version": {
+      "authority": "MONOTONIC_OWNER_OR_TASK_STATE_SEQUENCE",
+      "source": "authoritative manifest_version or owner-equivalent durable version",
+      "user_default_display": false,
+      "rule": "This version remains the concurrency/state sequence used by the task or owner."
+    },
+    "controller_revision": {
+      "authority": "RUN_LOCAL_MAINTENANCE_TRACE",
+      "source": "maintenance controller revision",
+      "user_default_display": false,
+      "rule": "Controller revision is internal to one maintenance run and is not a repository or product version."
+    },
+    "human_revision": {
+      "authority": "DERIVED_PRESENTATION_ONLY",
+      "model": "CALVER_PLUS_EXISTING_DURABLE_SEQUENCE",
+      "format": "<scope>-YYYYMMDD-rN",
+      "example": "UC-20261013-r86",
+      "date_source": "calendar date from the authoritative persisted timestamp exactly as encoded",
+      "sequence_source": "the already-authoritative monotonic durable-state version",
+      "derived_not_stored_as_new_authority": true,
+      "new_counter": false,
+      "daily_reset": false,
+      "global_cross_repo_counter": false,
+      "git_history_scan": false,
+      "tag_every_checkpoint": false,
+      "git_release_tags": "OPTIONAL_STABLE_MILESTONES_ONLY",
+      "svn_semantics_borrowed": "human-friendly monotonic revision concept only; do not emulate SVN's centralized repository-global counter across Git repositories",
+      "cross_owner_rule": "Each owner/task uses its own existing monotonic durable version and stable scope code. Numbers from different owners are not globally comparable."
+    }
   },
   "chat_behavior": {
     "protocol_version_pinned_at_chat_creation": false,
@@ -26,7 +69,8 @@
     "canonical_new_field": "continuity_protocol_version",
     "legacy_compatibility_field": "contract_version",
     "domain_contract_should_be_separate": true,
-    "last_reconciliation_field": "last_protocol_reconciled_at"
+    "last_reconciliation_field": "last_protocol_reconciled_at",
+    "human_revision_is_derived_field": true
   },
   "supported_migration_edges": [
     {
@@ -58,12 +102,14 @@
     "Preserve task_id, owner business state, current_stage, next_action, business artifacts and valid active lease unless the business owner itself requires a migration.",
     "Protocol migration may add observability, metadata and compatibility fields without replaying completed business work.",
     "Unknown or unsupported old state fails closed instead of being guessed from chat memory.",
-    "Historical paused/archived tasks may be migrated lazily when explicitly resumed; they do not need eager writes merely because the protocol changed."
+    "Historical paused/archived tasks may be migrated lazily when explicitly resumed; they do not need eager writes merely because the protocol changed.",
+    "Human revision presentation changes must not rewrite Git history, reset durable owner/task versions, or force protocol migration."
   ],
   "cleanup": {
     "delete_superseded_root_runtime_docs_when_current_authority_exists": true,
     "git_history_is_implementation_archive": true,
     "never_delete_business_evidence_for_protocol_cleanup": true,
-    "never_keep_parallel_active_protocol_copies_for_convenience": true
+    "never_keep_parallel_active_protocol_copies_for_convenience": true,
+    "do_not_create_tag_or_revision_registry_for_every_checkpoint": true
   }
 }
