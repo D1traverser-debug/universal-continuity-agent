@@ -78,6 +78,39 @@
       "rule": "A task must be able to persist the truthful fact that an execution/methodology/quality gate is still OPEN or BLOCKED. Missing higher-assurance evidence blocks that gate or completion claim, not the ability to checkpoint the blocker itself. Report the assurance/gate state separately from COMMITTED."
     }
   },
+  "repository_mutation_gate": {
+    "scope": "MATERIAL_UNIVERSAL_CONTROL_PLANE_GITHUB_MUTATIONS",
+    "principle": "Fresh authoritative reread is necessary before a write, but it does not make an unprotected direct-main write safe. Material control-plane changes should travel through a reviewable candidate branch and CI before main changes.",
+    "default_path": [
+      "reread current main HEAD and the exact authoritative task/policy surfaces required by the action",
+      "create a short-lived working branch from that exact main HEAD",
+      "apply material repository mutations only to the working branch",
+      "open a pull request targeting main",
+      "require the pull-request head to pass the repository continuity CI and refresh/retest if the head or base changes materially",
+      "merge using the verified pull-request head SHA",
+      "reread main and the authoritative task/checkpoint after merge before reporting COMMITTED"
+    ],
+    "freshness_before_action": "Lower-authority caches may be stale without becoming an operational defect when the affected action rereads the current higher-authority source before use. Cache drift becomes material when a consumer treats the cache as authority, skips the required reread, or the cache can drive an unsafe action by itself.",
+    "direct_main_write": "DEGRADED_ONLY__NOT_DEFAULT_FOR_MATERIAL_CONTROL_PLANE_CHANGE",
+    "emergency_exception_requires": [
+      "explicit reason the PR path is unavailable or would increase immediate recovery risk",
+      "fresh main/authority reread immediately before the mutation",
+      "smallest safe mutation",
+      "post-write CI observation where available",
+      "authoritative reread and durable exception record"
+    ],
+    "physical_enforcement_boundary": "Repository policy and CI cannot make this path unbypassable while GitHub main is unprotected. Physical enforcement requires GitHub branch protection or a repository ruleset outside this repository's own mutable contents.",
+    "recommended_external_enforcement": {
+      "target": "main",
+      "require_pull_request_before_merging": true,
+      "require_status_checks": true,
+      "required_check": "test",
+      "require_branch_up_to_date_before_merging": true,
+      "block_force_pushes": true,
+      "block_deletions": true,
+      "allow_bypass": false
+    }
+  },
   "anti_false_positive": {
     "assistant_self_report_is_not_proof": true,
     "cache_update_is_not_authoritative_commit": true,
