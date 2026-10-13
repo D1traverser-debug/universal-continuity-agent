@@ -7,25 +7,24 @@
 - contract: `CONTINUITY_V3_7`
 - current writer lease: `lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67`
 - resume_epoch: `9`
-- manifest_version: `98`
-- human revision: `UC-20261013-r98` (derived presentation only)
+- manifest_version: `99`
+- human revision: `UC-20261013-r99` (derived presentation only)
 - current controller: `architecture-reliability-benchmark-library-gap-audit-v69-2026-10-13`
-- controller status: `ACTIVE revision 31 @ M8_MULTI_LAYER_VALIDATION`
-- M7 implementation receipt: `audits/ARCHITECTURE_APPLICABILITY_AND_MAIN_MUTATION_ROUTE_V69_M7_IMPLEMENTATION_2026-10-13.json`
+- controller status: `ACTIVE revision 32 @ M7_IMPLEMENTATION_AND_SUPERSESSION`
+- M8 failure receipt: `audits/ARCHITECTURE_APPLICABILITY_V69_M8_HEADROOM_FAILURE_2026-10-13.json`
 
-## 本轮用户授权与研究结果
+## 研究裁剪与适用性结论
 
-用户授权的是：删除/降级核心资料无法可靠获取的研究项，并用保留下来的知识做适用性筛选；**不是**直接进行 Universal 生产架构重构。
+用户授权：删除/降级核心资料无法可靠获取的研究项，并用保留下来的知识做适用性筛选；未授权 Universal 生产架构重构。
 
-当前有效研究集已经裁剪：
+当前有效研究集：
+- RTCA DO-178C 与 IEC 61508 的付费规范正文已从“完整深研框架集合”移除；FAA/IEC 公开一手资料只作为 bounded evidence lens；
+- UVM 保留，Accellera 公开资料足够做架构级比较；
+- 其余成熟体系与当前 OpenAI/Microsoft/Google/LangGraph Agent runtime 保留。
 
-- RTCA DO-178C 付费规范正文、IEC 61508 付费规范系列已从“完整深研框架集合”移除；
-- FAA/IEC 公开一手资料仅保留为 bounded evidence lens，不产生规范符合性/认证主张；
-- UVM 保留，因为 Accellera 公开资料足以做架构级研究；
-- 其余成熟体系和 2026 Agent runtime 继续保留。
+当前适用性权威研究视图：`research/system_architecture_library/22_applicability_screen.md`。
 
-`research/system_architecture_library/22_applicability_screen.md` 是当前适用性结果，压缩为六类共享原语：
-
+六类共享原语：
 1. Derived System / Authority Model；
 2. Runtime Semantics + Execution Lineage + Effect Contract；
 3. Assurance / Coverage / Evaluation Trace；
@@ -33,29 +32,27 @@
 5. Measured Reliability + Progressive Rollout / Resilience；
 6. Formal Writer / Commit Protocol。
 
-结论：大部分保留知识**都能用上**，但主要作为共享 invariant、failure model、verification question 或少量共用原语，而不是每个框架变成一个模块。框架动物园、无条件 multi-agent、Raft、字面 UVM/Kubernetes/MAPE-K 移植等均不采用。
+结论：大部分保留知识都能用上，但主要作为共享 invariant、failure model、verification question 或少量共用原语，不按框架逐个建模块。Raft、字面 UVM/Kubernetes/MAPE-K 移植、永久 LLM supervisor、抹平 runtime 差异的 generic abstraction、无证据 SLO 等明确不采用。
 
-## 复发性 main 写入流程缺陷
+## main 写入流程复发与修复状态
 
-适用性文件首次写入时再次发生 Contents API material-main write，提交 `2ec72f478ce225ec0a9619a3d70a516e89bb0da0`。没有观察到内容冲突，但属于 `RECURRED_AFTER_FIX`。
+创建 `22_applicability_screen.md` 时发生 Contents API material-main write `2ec72f...`，属于 `RECURRED_AFTER_FIX`。controller 已升级根因并在 mandatory `ENTRYPOINT.md` 增加 HEAD-CAS bootstrap guard，同时加回归测试；详细合同继续由 `PROGRESS_OBSERVABILITY_POLICY.json` 唯一持有，不切换 PR-first。
 
-controller 已 reopen 到 M2A，重新完成 M2A–M6A，并在 M7 做了更高抽象层修复：
+第一版 M7 material patch `6a8cc347...` 使用合规 `active lease + observed HEAD + expected_sha CAS + reread` 发布，逻辑方向没有被 M8 否定。
 
-- `ENTRYPOINT.md` 现在在 mandatory bootstrap 中明确：有 branch-head CAS primitive 时，material `main` **MUST NOT use GitHub Contents API create/update/delete**；
-- 必须 active lease + reread current HEAD + commit parent=current HEAD + `expected_sha=OBSERVED_CURRENT_MAIN_HEAD` + authoritative reread；
-- 详细合同仍只由 `PROGRESS_OBSERVABILITY_POLICY.json` 持有；
-- `tests/test_user_proposal_and_main_mutation_integrity.py` 新增 bootstrap 回归；
-- 没有切成 PR-first，也没有新增 parallel mutation policy。
+## M8 唯一失败与当前 reopen
 
-M7 material patch 使用的合规发布链：
+CI `38397187483 / 115295288959`：
+- control-plane audit PASS；
+- Agent architecture PASS；
+- pytest `322 passed / 1 failed`；
+- 唯一失败：`ENTRYPOINT.md` 8142 bytes，只剩 50 bytes headroom，而合同要求至少 512 bytes（因此 ENTRYPOINT 必须 <=7680 bytes）。
 
-`0ba190c05f1b14913d873695bb63c75598098d30 -> 6a8cc347c942d0589acbde0971b427f6e0893708`
+controller 已按失败证据从 M8 reopen 到 M7。**不得放宽 512-byte headroom**。当前动作只允许把同一 bootstrap invariant 等价压缩，并同步回归测试；研究裁剪与六原语适用性结论不受该文本预算失败影响。
 
-`update_ref(expected_sha=0ba190c05f1b14913d873695bb63c75598098d30)` 成功，且已 reread `main` 验证 `6a8cc347...` 为 authority。
+## 下一步
 
-## 当前下一步
-
-当前进入 M8：观察 `6a8cc347...` 及本 M7 checkpoint 的 CI，验证 bootstrap guard、回归测试、controller structural validity、研究库 catalog/README 一致性。若绿则继续 M9 propagation → M10 second-order review → M11 durable checkpoint；若失败则按 controller reopen。
+压缩 `ENTRYPOINT.md` 到 <=7680 bytes 并保留 main mutation guard 的核心语义；通过 Git Data tree/commit + `update_ref(expected_sha=current observed main)` 发布；重新完成 M7，进入 M8 重跑 CI。若绿，再走 M9 → M10 → M11。
 
 生产架构重构仍未授权。
 
