@@ -78,6 +78,33 @@
       "rule": "A task must be able to persist the truthful fact that an execution/methodology/quality gate is still OPEN or BLOCKED. Missing higher-assurance evidence blocks that gate or completion claim, not the ability to checkpoint the blocker itself. Report the assurance/gate state separately from COMMITTED."
     }
   },
+  "authoritative_git_main_mutation": {
+    "scope": "Universal material control-plane writes to the authoritative GitHub main branch while the configured writer model is SINGLE_ACTIVE_CHAT",
+    "default_workflow": "DIRECT_MAIN_WITH_HEAD_CAS",
+    "branch_protection_required_by_default": false,
+    "pr_first_required_by_default": false,
+    "preconditions": [
+      "reread the current main HEAD immediately before preparing the material mutation",
+      "verify the active task lease_id and resume_epoch still belong to the current writer",
+      "reread the exact authority surfaces required for the mutation",
+      "for systemic or non-trivial maintenance, verify the maintenance controller currently permits MATERIAL_PATCH"
+    ],
+    "commit_model": "Build one tree and one commit whose parent is exactly the observed current main HEAD.",
+    "publish_model": {
+      "operation": "UPDATE_MAIN_REF_WITH_COMPARE_AND_SWAP",
+      "force": false,
+      "expected_sha": "OBSERVED_CURRENT_MAIN_HEAD",
+      "new_sha": "PREPARED_COMMIT_SHA"
+    },
+    "head_mismatch_behavior": "Abort the publication, reread current main HEAD, task lease and affected authority, then re-evaluate from the new state. Never replay or force a commit prepared against a stale parent.",
+    "direct_contents_write_for_material_control_plane_change_when_head_cas_primitives_are_available": false,
+    "postconditions": [
+      "reread main and verify the intended commit is authoritative",
+      "run or observe the relevant CI/validation",
+      "reread authoritative task state before reporting COMMITTED"
+    ],
+    "assurance_ceiling": "This provides compliant single-writer optimistic-concurrency integrity. It does not physically block an authorized external writer that intentionally ignores the lease/CAS protocol; stronger permission or branch-protection controls are a separate threat-model decision."
+  },
   "anti_false_positive": {
     "assistant_self_report_is_not_proof": true,
     "cache_update_is_not_authoritative_commit": true,
