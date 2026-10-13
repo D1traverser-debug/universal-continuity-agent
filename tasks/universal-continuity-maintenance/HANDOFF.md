@@ -7,9 +7,9 @@
 - current_stage: `SYSTEM_MAINTENANCE_ACTIVE`
 - current writer lease: `lease-8ecdf71e-46b3-4e7d-b2ea-61ee05c6d654`
 - resume_epoch: `8`
-- manifest_version: `89`
+- manifest_version: `90`
 - current controller run: `human-readable-durable-revision-v68-2026-10-13`
-- controller status: `ACTIVE` revision `16` at `M8_MULTI_LAYER_VALIDATION`
+- controller status: `ACTIVE` revision `18` at `M8_MULTI_LAYER_VALIDATION`
 
 ## Human Durable Revision
 
@@ -52,7 +52,7 @@ This is exactly the anti-bloat decision: one small formatter, existing policy su
 
 - first M8 `38363727516 / 115183763873`: control-plane PASS, architecture PASS, pytest `317 passed / 2 failed`; real reopen.
 - second M8 `38363967497 / 115184549077`: all steps PASS, then second-order review deliberately reopened because of the duplicate-label/adoption-boundary issue above.
-- current step: re-run M8 against policy schemas 1.2 and the no-stored-label regression.
+- third M8 `38364713013 / 115186953138`: control-plane PASS, architecture PASS, pytest `321 passed / 1 failed`; the only failure was a protected historical regression anchor in this handoff, not the revision algorithm. Reopened and restored the exact anchor.
 
 ## Cross-owner boundary
 
@@ -66,8 +66,8 @@ Future adoption must be owner-local and explicit: map an existing monotonic dura
 
 Universal material compliant writes continue to use active lease + observed-HEAD CAS + CI + authoritative reread. PR-first and branch protection are not default requirements under the current `SINGLE_ACTIVE_CHAT` threat model; unprotected `main` alone is not a HIGH defect.
 
-The experimental branch `continuity/pr-first-mutation-gate-v65` is unmerged and non-authoritative.
+实验分支 `continuity/pr-first-mutation-gate-v65` **没有 merge，也不是 authoritative implementation**；它仍是 unmerged / no-PR / non-authoritative experimental branch。
 
 ## Next
 
-Re-run M8. If green: M9 records propagation analysis only, M10 rechecks hidden failure modes (same-day, date change, gap, rollback, failure/stale/no-change, scope collision, missing owner sequence, timestamp anomaly, branch/scratch, tags, protocol/Git namespace confusion, performance), then M11 closure and post-closure CI/reread.
+Re-run M8. If green: M9 records propagation analysis only, M10 rechecks hidden failure modes (same-day, date change, gaps, rollback, failure/stale/no-change, scope collision, missing owner sequence, timestamp anomaly, branch/scratch, tags, protocol/Git namespace confusion, performance), then M11 closure and post-closure CI/reread.

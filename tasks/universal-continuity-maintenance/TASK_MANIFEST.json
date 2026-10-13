@@ -1,6 +1,6 @@
 {
   "schema_version": "3.7",
-  "manifest_version": 89,
+  "manifest_version": 90,
   "task_id": "continuity:universal-continuity-maintenance",
   "task_class": "SYSTEM_INFRA",
   "domain": "CONTINUITY",
@@ -10,10 +10,10 @@
   "resume_eligible": true,
   "resume_visibility": "EXPLICIT_ONLY",
   "recovery_owner": "UNIVERSAL_CONTINUITY_HARNESS",
-  "updated_at": "2026-10-13T15:43:41+08:00",
+  "updated_at": "2026-10-13T15:46:01+08:00",
   "current_stage": "SYSTEM_MAINTENANCE_ACTIVE",
   "current_stage_semantics": "STABLE_LIFECYCLE_STAGE_NOT_CUMULATIVE_CHANGELOG",
-  "next_action": "v68 Human Durable Revision pilot is re-entering M8 after a second-order correction. Revalidate policy schemas 1.2, derived-only manifest behavior, scope-local ordering/gap semantics, owner adoption fail-closed rules, runtime formatter and focused tests. On green M8, complete M9 as propagation analysis only without BUSINESS mutation, then M10 bounded second-order review, M11 closure and post-closure CI/reread.",
+  "next_action": "v68 third M8 failed one protected handoff regression anchor while control-plane and architecture checks passed. The exact historical statement that the v65 experimental branch 没有 merge，也不是 authoritative implementation has been restored. Re-run M8; on green, complete propagation analysis only, second-order review, M11 closure and post-closure CI/reread without BUSINESS mutation.",
   "checkpoint_ref": "tasks/universal-continuity-maintenance/HANDOFF.md",
   "manifest_ref": "tasks/universal-continuity-maintenance/TASK_MANIFEST.json",
   "contract_version": "CONTINUITY_V3_7",
@@ -38,11 +38,13 @@
   "last_completed_maintenance_controller_status": "COMPLETE_REVISION_27__GLOBAL_CONTROL_PLANE_AUDIT__HISTORICAL_OPEN_SIGNAL_LIFECYCLE__FOUR_REAL_REOPENS__FINAL_M8_AND_POST_CLOSURE_CI_PASS",
   "current_maintenance_controller_run_id": "human-readable-durable-revision-v68-2026-10-13",
   "current_maintenance_controller_state_ref": "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
-  "current_maintenance_controller_status": "ACTIVE_REVISION_16__M8_REVALIDATION_AFTER_DERIVED_ONLY_AND_SCOPE_ADOPTION_HARDENING",
+  "current_maintenance_controller_status": "ACTIVE_REVISION_18__M8_REVALIDATION_AFTER_FINAL_HANDOFF_ANCHOR_RESTORE",
   "human_revision_v68_first_validation_ref": "github-actions:38363727516/job/115183763873",
   "human_revision_v68_first_validation_status": "CONTROL_PLANE_PASS__AGENT_ARCHITECTURE_PASS__PYTEST_317_PASS_2_FAIL__REAL_REOPEN",
   "human_revision_v68_second_validation_ref": "github-actions:38363967497/job/115184549077",
   "human_revision_v68_second_validation_status": "PASS_BEFORE_SECOND_ORDER_REOPEN__DERIVED_LABEL_STORAGE_AND_SCOPE_ADOPTION_BOUNDARY_HARDENED_AFTERWARD",
+  "human_revision_v68_third_validation_ref": "github-actions:38364713013/job/115186953138",
+  "human_revision_v68_third_validation_status": "CONTROL_PLANE_PASS__AGENT_ARCHITECTURE_PASS__PYTEST_321_PASS_1_FAIL__REAL_REOPEN",
   "formal_controller_meta_promotion_status": "OPEN__EVALUATE_COMPLETE_TRACES_WITHOUT_FABRICATED_CHRONOLOGY",
   "meta_governance_assurance_ceiling": "STRUCTURED_PROCESS_CONFORMANCE_ONLY",
   "independent_meta_semantic_review": "OPEN_OPERATOR_DEPENDENCE_LIVE_HELDOUT_GRADER_REQUIRED",
@@ -89,16 +91,5 @@
   "takeover_policy": "EXPLICIT_SYSTEM_INFRA_TAKEOVER_SUPERSEDES_OLD_CHAT",
   "registry_role": "AUTHORITATIVE_TASK_MANIFEST",
   "keywords": ["继承系统","Continuity","system maintenance","human revision","versioning","CalVer","SVN","Git"],
-  "artifact_refs": [
-    "ENTRYPOINT.md",
-    "CURRENT_PROTOCOL.json",
-    "VERSION_LIFECYCLE_POLICY.json",
-    "PROGRESS_OBSERVABILITY_POLICY.json",
-    "SYSTEM_MAINTENANCE_POLICY.json",
-    "runtime/human_revision.py",
-    "tests/test_human_revision.py",
-    "tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json",
-    "tasks/universal-continuity-maintenance/HANDOFF.md",
-    "audits/HUMAN_READABLE_DURABLE_REVISION_V68_PREPATCH_2026-10-13.json"
-  ]
+  "artifact_refs": ["ENTRYPOINT.md","CURRENT_PROTOCOL.json","VERSION_LIFECYCLE_POLICY.json","PROGRESS_OBSERVABILITY_POLICY.json","SYSTEM_MAINTENANCE_POLICY.json","runtime/human_revision.py","tests/test_human_revision.py","tasks/universal-continuity-maintenance/MAINTENANCE_CONTROLLER_STATE.json","tasks/universal-continuity-maintenance/HANDOFF.md","audits/HUMAN_READABLE_DURABLE_REVISION_V68_PREPATCH_2026-10-13.json"]
 }
