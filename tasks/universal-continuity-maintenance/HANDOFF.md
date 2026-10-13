@@ -3,7 +3,7 @@
 - task_id: `continuity:universal-continuity-maintenance`
 - owner: `UNIVERSAL_CONTINUITY_HARNESS`
 - status: `ACTIVE`
-- manifest_version: `103`
+- manifest_version: `104`
 - resume_epoch: `9`
 - active lease: `lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67`
 - current controller: `main-mutation-mechanical-enforcement-v70-2026-10-13`
