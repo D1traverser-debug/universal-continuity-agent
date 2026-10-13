@@ -3,7 +3,7 @@
 - task_id: `continuity:universal-continuity-maintenance`
 - owner: `UNIVERSAL_CONTINUITY_HARNESS`
 - status: `ACTIVE`
-- manifest_version: `102`
+- manifest_version: `103`
 - resume_epoch: `9`
 - active lease: `lease-350c8bbe-08cf-47e7-8116-0537f9c9ad67`
 - current controller: `main-mutation-mechanical-enforcement-v70-2026-10-13`
@@ -24,6 +24,16 @@
 这证明 v69 的 ENTRYPOINT 文字 guard 不是机械 enforcement。该失败类再次定为 `RECURRED_AFTER_FIX`，必须提升到 tool/repository permission 层；不得再通过增加提示语或 exact-text regression 宣称关闭。当前暴露的 GitHub connector 没有 repository rules/branch-protection 的管理写操作，所以 prevention 真实状态为 OPEN/BLOCKED。
 
 事故状态：`audits/MAIN_MUTATION_RECURRENCE_V70_2026-10-13.json`。
+
+## v65 direct-main / PR-first 回归锚点
+
+当前模型不是 PR-first。
+
+active lease + observed-HEAD CAS + CI + authoritative reread
+
+实验分支 `continuity/pr-first-mutation-gate-v65` 没有 merge，也不是 authoritative implementation。
+
+这些锚点描述当前 authority 与历史实验边界；它们不表示 convention-only PR-first、提示语或回归文案可以替代本轮已证明缺失的机械 enforcement。
 
 ## next_action
 
