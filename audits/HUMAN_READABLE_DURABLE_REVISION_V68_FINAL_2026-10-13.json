@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "run_id": "human-readable-durable-revision-v68-2026-10-13",
+  "status": "COMPLETE_PENDING_POST_CLOSURE_OBSERVATION",
+  "user_goal": "Provide one understandable revision in durable progress/resume receipts without making the user interpret manifest_version, controller revision, protocol version or Git SHA.",
+  "accepted_model": {
+    "name": "Human Durable Revision",
+    "universal_pilot_format": "UC-YYYYMMDD-rN",
+    "date_semantics": "calendar context from the authoritative persisted timestamp exactly as encoded",
+    "ordering_semantics": "rN orders revisions only within the same revision scope",
+    "sequence_source": "existing authoritative monotonic durable task/owner version",
+    "stored_as_authority": false,
+    "daily_reset": false,
+    "global_cross_repo_counter": false,
+    "git_tag_per_checkpoint": false,
+    "git_history_scan": false
+  },
+  "why_not_svn_clone": "SVN's repository-wide natural-number revision is useful because SVN has a centralized repository commit stream. The current system uses separate Git repositories and durable owner/task streams. Emulating one shared SVN counter would create a new mutable authority, locking/coordination, timezone/reset policy, failure recovery and cross-repository contention.",
+  "why_not_daily_counter": "RYYYYMMDD.001 would need a new counter and reset boundary; it could race, drift or duplicate. The accepted design reuses an existing monotonic sequence instead.",
+  "version_namespace_separation": {
+    "git_sha": "exact immutable engineering identity",
+    "protocol_version": "compatibility semantics",
+    "durable_state_version": "monotonic task/owner state/CAS sequence",
+    "controller_revision": "maintenance-run-local trace",
+    "human_revision": "derived user-facing presentation only"
+  },
+  "scope_and_adoption": {
+    "maintenance_only": false,
+    "universal_first_pilot": true,
+    "business_owner_mutation_in_this_run": false,
+    "future_owner_rule": "Map only to an already-existing monotonic durable version whose identity lifetime matches the intended revision scope, plus a stable scope code. If none exists, omit the human revision and fix owner versioning separately; never invent a display-only counter.",
+    "cross_scope_numeric_comparison": false,
+    "gaps_allowed": true,
+    "gap_meaning": "Internal safe checkpoints, lease/control metadata or other durable transitions may consume r values; gaps are not missing releases and are never backfilled."
+  },
+  "complexity_and_bloat_review": {
+    "new_root_policy": false,
+    "new_registry": false,
+    "new_agent": false,
+    "new_service": false,
+    "new_counter": false,
+    "entrypoint_growth": false,
+    "startup_preload_growth": false,
+    "new_remote_read_per_receipt": false,
+    "git_history_or_tag_traversal_per_receipt": false,
+    "core_task_state_schema_expanded_for_display_label": false,
+    "implementation": ["PROGRESS_OBSERVABILITY_POLICY.json", "VERSION_LIFECYCLE_POLICY.json", "runtime/human_revision.py", "tests/test_human_revision.py"],
+    "runtime_cost": "O(1) formatting from metadata already loaded for the receipt"
+  },
+  "hidden_risk_review": [
+    {"risk":"same-day multiple durable writes","decision":"safe; rN distinguishes them without a daily counter"},
+    {"risk":"date boundary","decision":"sequence never resets; date is context only"},
+    {"risk":"timezone representation","decision":"use the persisted timestamp's encoded calendar date; do not make identity depend on viewer timezone"},
+    {"risk":"timestamp anomaly/backward calendar date","decision":"rN remains the ordering signal; date never overrides sequence"},
+    {"risk":"NO_MATERIAL_CHANGE","decision":"same last verified revision; do not mint a number"},
+    {"risk":"COMMIT_FAILED or STALE_WRITER","decision":"no new revision; stale/unverified writer cannot advance user-visible revision"},
+    {"risk":"rollback/revert","decision":"rollback is a new durable state and therefore receives a new rN; old numbers are never reused"},
+    {"risk":"internal checkpoints cause visible gaps","decision":"allowed and documented; rN is a durable-state revision, not a count of user messages or releases"},
+    {"risk":"owner/task scope collision","decision":"scope-local; owner-wide code allowed only if underlying sequence is owner-wide; otherwise scope code must identify the actual durable stream"},
+    {"risk":"owner lacks monotonic durable version","decision":"fail closed for human revision; do not invent a display counter"},
+    {"risk":"stored derived label becomes stale","decision":"forbidden; a v68 pilot copy was detected and removed during second-order review"},
+    {"risk":"Git tag/reference bloat","decision":"no tag per checkpoint; tags remain optional release milestones"},
+    {"risk":"confusing human revision with protocol/Git/controller versions","decision":"five namespaces explicitly separated in VERSION_LIFECYCLE_POLICY 1.2"},
+    {"risk":"global traversal across agents on every receipt","decision":"forbidden; derive after exact owner/task selection from already-loaded owner authority only"},
+    {"risk":"Universal hot-path bloat","decision":"ENTRYPOINT unchanged; no startup rule added"}
+  ],
+  "cross_owner_propagation_review": {
+    "financial": "single ChatGPT owner entry confirmed; no version mapping installed in this run",
+    "a_share": "single ChatGPT owner entry confirmed; no version mapping installed in this run",
+    "novel": "single ChatGPT owner entry confirmed; no version mapping installed in this run",
+    "video": "single ChatGPT owner entry confirmed; current active task manifest visibly has manifest_version 20, demonstrating a possible future mapping, but no mutation was made",
+    "decision": "Do not propagate implementation yet. Universal pilot must stand alone first; owner rollout is a separate owner-scoped adoption decision with version-source validation."
+  },
+  "validation_history": [
+    "38363727516 / 115183763873: control-plane PASS, architecture PASS, pytest 317 passed / 2 failed; real reopen",
+    "38363967497 / 115184549077: all CI steps PASS, then second-order review reopened on stored-derived-label and owner-scope/adoption semantics",
+    "38364713013 / 115186953138: control-plane PASS, architecture PASS, pytest 321 passed / 1 failed; real reopen for protected handoff anchor",
+    "38364980981 / 115187832418: risk-tiered/full control-plane audit PASS, Agent architecture harness PASS, full pytest PASS"
+  ],
+  "remaining_boundaries": [
+    "Human Durable Revision is not globally unique across independent scopes and must never be used as a database key or cross-owner ordering key.",
+    "Future BUSINESS owner adoption remains unimplemented by design until each owner maps a valid monotonic durable version and scope.",
+    "Existing v67 open gates remain unchanged: Novel/Video owner-local drift, Financial fresh-chat DUAL retest, private owner CI execution gaps, independent semantic/live-outcome assurance, formal controller-meta promotion, historical monitor provenance and tool-limited branch cleanup."
+  ],
+  "assurance_ceiling": "UNIVERSAL_PILOT_STRUCTURAL_AND_DETERMINISTIC_REVISION_PRESENTATION_WITH_FULL_UNIVERSAL_REGRESSION_PASS__NOT_CROSS_OWNER_ROLLOUT__NOT_GLOBAL_RELEASE_VERSIONING__NOT_BUSINESS_QUALITY_PROOF",
+  "post_closure_ci_observation_required_before_user_facing_committed_receipt": true
+}
