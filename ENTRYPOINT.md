@@ -1,24 +1,11 @@
-# Universal Continuity — RETIRED
+# RETIRED ENTRYPOINT
 
-Status: `RETIRED_READ_ONLY`
-Successor: `D1traverser-debug/universal-agent-os@main`
-Successor entrypoint: `ENTRYPOINT.md`
-Retired on: 2026-10-14
+Status: `TOMBSTONE_ONLY`
 
-This repository is no longer an active control plane.
+Do not load any former file, protocol, task state, lease, owner registry, maintenance workflow, or runtime from this repository.
 
-## Required behavior
-
-- Do not create new tasks here.
-- Do not acquire or refresh leases/resume_epoch ownership here.
-- Do not create new maintenance-controller runs here.
-- Do not use `OWNER_REGISTRY.json` or the v3.7 protocol as current routing authority.
-- Do not write new business continuity checkpoints here.
-
-For all new work, continuation, requirements, multi-Agent coordination and system maintenance, bootstrap:
+For all current tasks, continuation, requirements, Agent routing, maintenance, retrieval, and system evolution, use:
 
 `D1traverser-debug/universal-agent-os@main:ENTRYPOINT.md`
 
-Historical files in this repository remain readable as audit/provenance evidence and migration input only. The four business Agent repositories remain available as domain code/rule/artifact providers, but their cross-domain control plane is UAOS.
-
-If a historical task still points here, follow the UAOS Agent Registry and task cutover rules. Legacy v3.7 lease/progress-receipt semantics are compatibility evidence, not active authority.
+This file exists only so stale external links fail safely toward the current controller instead of reviving retired semantics.

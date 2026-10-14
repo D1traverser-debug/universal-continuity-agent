@@ -1,0 +1,9 @@
+{
+  "retired_at": "2026-10-14",
+  "mode": "TOMBSTONE_DEFAULT_BRANCH",
+  "successor": "D1traverser-debug/universal-agent-os@main",
+  "successor_entrypoint": "ENTRYPOINT.md",
+  "old_runtime_present_on_default_branch": false,
+  "old_control_state_present_on_default_branch": false,
+  "git_history_role": "FORENSIC_ONLY__NOT_NORMAL_RETRIEVAL"
+}

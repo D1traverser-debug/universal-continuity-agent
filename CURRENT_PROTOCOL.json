@@ -1,12 +1,11 @@
 {
-  "continuity_protocol_version": "3.7",
-  "status": "RETIRED_READ_ONLY",
-  "retired_at": "2026-10-14",
-  "successor_repository": "D1traverser-debug/universal-agent-os",
-  "successor_entrypoint": "ENTRYPOINT.md",
-  "new_task_writes_allowed": false,
-  "lease_writes_allowed": false,
-  "maintenance_writes_allowed": false,
-  "historical_read_allowed": true,
-  "migration_authority": "D1traverser-debug/universal-agent-os@main:config/AGENT_REGISTRY.json"
+  "status": "RETIRED_TOMBSTONE_ONLY",
+  "active_controller": "D1traverser-debug/universal-agent-os@main",
+  "active_entrypoint": "ENTRYPOINT.md",
+  "runtime_allowed": false,
+  "task_state_allowed": false,
+  "lease_allowed": false,
+  "maintenance_allowed": false,
+  "retrieval_authority": false,
+  "historical_default_branch_content_removed": true
 }

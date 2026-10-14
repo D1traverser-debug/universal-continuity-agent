@@ -1,1 +1,0 @@
-{"status":"RECURRENCE_OPEN","observed_bad_commit":"b0dd89ffdc43876951cfb430d57ea6b0eb1e4792","recovery_commit":"240029ddf6168d6a55a9af05357330a3a49cf167","classification":"RECURRED_AFTER_FIX","previous_control":"ENTRYPOINT_ADVISORY_GUARD","required_next_control_layer":"MECHANICAL_REPOSITORY_OR_TOOL_ENFORCEMENT","current_tree_restored":true,"production_refactor_deferred":true}
